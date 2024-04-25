@@ -14,28 +14,36 @@ class ScaffoldWithNavBar extends StatelessWidget {
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blue,
+        showUnselectedLabels: true,
+        selectedItemColor: Colors.amber[800],
+        unselectedItemColor: Colors.grey,
+        elevation: 0,
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.settings,
+              Icons.search_outlined,
             ),
-            label: 'Settings',
-            backgroundColor: Colors.blue,
+            label: 'Search',
           ),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.chat,
+                Icons.location_on_outlined,
               ),
-              label: 'Chat'),
+              label: 'Map'),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.home,
+                Icons.notifications_outlined,
               ),
-              label: 'Home'),
+              label: 'Feed'),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.person,
+                Icons.shopping_cart_outlined,
+              ),
+              label: 'Shop'),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person_outline,
               ),
               label: 'Profile'),
         ],

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
@@ -19,10 +18,10 @@ class CustomCard extends StatelessWidget {
     return Container(
       width: width,
       height: heigth,
-      color: backgroundColor ?? Colors.white,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         border: Border.all(),
+        color: backgroundColor ?? Colors.white,
       ),
       child: content,
     );

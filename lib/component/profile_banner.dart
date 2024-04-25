@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:trip_memories_mobile/component/custom_card.dart';
 
 class ProfileBanner extends StatelessWidget {
@@ -9,30 +7,46 @@ class ProfileBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Container(
-          width: 20,
-          height: 20,
-          child: CircleAvatar(
+        SizedBox(
+          width: 100,
+          height: 100,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(50.0),
+            ),
             child: Image.asset('assets/images/profileSample.png'),
           ),
         ),
-        Text(
-          'Jane Doe',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        const Column(
+          children: [
+            Text(
+              'Jane Doe',
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              '@jane_doe',
+              style: TextStyle(fontSize: 15, color: Colors.grey),
+            ),
+          ],
         ),
-        Text(
-          '@jane_doe',
-          style: TextStyle(fontSize: 15, color: Colors.grey),
-        ),
-        CustomCard(
-          width: 20,
-          heigth: 10,
+        const CustomCard(
+          width: 50,
+          heigth: 25,
+          backgroundColor: Colors.red,
           content: Icon(
             Icons.logout,
           ),
         ),
-        CustomCard(width: 40, heigth: 10, content: Text('Editer'))
+        const CustomCard(
+          width: 100,
+          heigth: 25,
+          content: Text(
+            'Editer',
+            textAlign: TextAlign.center,
+          ),
+        )
       ],
     );
   }

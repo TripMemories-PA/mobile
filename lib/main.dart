@@ -15,11 +15,11 @@ final GlobalKey<NavigatorState> _sectionANavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'sectionANav');
 
 void main() {
-  runApp(NestedTabNavigationExampleApp());
+  runApp(MyApp());
 }
 
-class NestedTabNavigationExampleApp extends StatelessWidget {
-  NestedTabNavigationExampleApp({super.key});
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
 
   final GoRouter _router = GoRouter(
     navigatorKey: _rootNavigatorKey,

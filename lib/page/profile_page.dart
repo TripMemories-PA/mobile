@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../component/custom_card.dart';
 import '../component/profile_banner.dart';
@@ -13,14 +15,25 @@ class ProfilePage extends StatelessWidget {
         children: [
           Column(
             children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20.0),
-                  bottomRight: Radius.circular(20.0),
+              SizedBox(
+                height: 280,
+                width: MediaQuery.of(context).size.width,
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(20.0),
+                        bottomRight: Radius.circular(20.0),
+                      ),
+                      child: Image.asset('assets/images/louvre.png'),
+                    ),
+                    const Positioned(
+                      bottom: 0,
+                        child: ProfileBanner()),
+                  ]
                 ),
-                child: Image.asset('assets/images/louvre.png'),
               ),
-              const ProfileBanner(),
+
               const SizedBox(
                 height: 20,
               ),

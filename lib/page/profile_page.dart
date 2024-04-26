@@ -22,32 +22,37 @@ class ProfilePage extends StatelessWidget {
   child: BlocBuilder<ProfileBloc, ProfileState>(
   builder: (context, state) {
     return Scaffold(
-      body: ListView(
-        children: [
-          Column(
-            children: [
-              _buildProfileInfos(context),
-              const SizedBox(
-                height: 20,
-              ),
-              _buildSubsAndVisitedPlaces(context),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Center(
-            child: Column(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          context.read<ProfileBloc>().add(GetProfileEvent('TBD'));
+        },
+        child: ListView(
+          children: [
+            Column(
               children: [
-                const MyFriendsMyPostsMenu(),
+                _buildProfileInfos(context),
                 const SizedBox(
-                  height: 15,
+                  height: 20,
                 ),
-                navigationShell,
+                _buildSubsAndVisitedPlaces(context),
               ],
             ),
-          ),
-        ],
+            const SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: Column(
+                children: [
+                  const MyFriendsMyPostsMenu(),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  navigationShell,
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   },

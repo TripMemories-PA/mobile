@@ -94,10 +94,34 @@ class MyFriendsComponent extends StatelessWidget {
                 ],
               ),
               const Expanded(child: SizedBox()),
-              IconButton(onPressed: () => print('coucou'), icon: const Icon(Icons.chat)),
-              const SizedBox(width: 5),
-              IconButton(onPressed: () => print('coucou'), icon: const Icon(Icons.remove_red_eye)),
-              const SizedBox(width: 20),
+              SizedBox(
+                width: 30,
+                height: 30,
+                child: IconButton(
+                  iconSize: 15,
+                  onPressed: () => print('coucou'),
+                  icon: const Icon(Icons.chat),
+                  color: Colors.white,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(MyColors.purple),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 15),
+              SizedBox(
+                width: 30,
+                height: 30,
+                child: IconButton(
+                  iconSize: 15,
+                  onPressed: () => print('coucou'),
+                  icon: const Icon(Icons.remove_red_eye),
+                  color: Colors.white,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(MyColors.purple),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 30),
             ],
           ),
         ],

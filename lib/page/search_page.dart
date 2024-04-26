@@ -6,11 +6,12 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-        body: ColoredBox(
-      color: Colors.blue,
-      child: Center(
-        child: Text('RECHERCHER'),
+      body: ColoredBox(
+        color: Colors.blue,
+        child: Center(
+          child: Text('RECHERCHER'),
+        ),
       ),
-    ));
+    );
   }
 }

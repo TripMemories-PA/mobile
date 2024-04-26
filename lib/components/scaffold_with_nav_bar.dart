@@ -27,25 +27,29 @@ class ScaffoldWithNavBar extends StatelessWidget {
             label: 'Search',
           ),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.location_on_outlined,
-              ),
-              label: 'Map'),
+            icon: Icon(
+              Icons.location_on_outlined,
+            ),
+            label: 'Map',
+          ),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.notifications_outlined,
-              ),
-              label: 'Feed'),
+            icon: Icon(
+              Icons.notifications_outlined,
+            ),
+            label: 'Feed',
+          ),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.shopping_cart_outlined,
-              ),
-              label: 'Shop'),
+            icon: Icon(
+              Icons.shopping_cart_outlined,
+            ),
+            label: 'Shop',
+          ),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person_outline,
-              ),
-              label: 'Profile'),
+            icon: Icon(
+              Icons.person_outline,
+            ),
+            label: 'Profile',
+          ),
         ],
         currentIndex: navigationShell.currentIndex,
         onTap: (int index) => _onTap(context, index),

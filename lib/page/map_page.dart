@@ -6,11 +6,12 @@ class MapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-        body: ColoredBox(
-      color: Colors.red,
-      child: Center(
-        child: Text('MAP PAGE'),
+      body: ColoredBox(
+        color: Colors.red,
+        child: Center(
+          child: Text('MAP PAGE'),
+        ),
       ),
-    ));
+    );
   }
 }

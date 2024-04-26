@@ -6,11 +6,12 @@ class FeedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-        body: ColoredBox(
-      color: Colors.yellow,
-      child: Center(
-        child: Text('FEED'),
+      body: ColoredBox(
+        color: Colors.yellow,
+        child: Center(
+          child: Text('FEED'),
+        ),
       ),
-    ));
+    );
   }
 }

@@ -6,11 +6,12 @@ class ShopPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-        body: ColoredBox(
-      color: Colors.orange,
-      child: Center(
-        child: Text('SHOP PAGE'),
+      body: ColoredBox(
+        color: Colors.orange,
+        child: Center(
+          child: Text('SHOP PAGE'),
+        ),
       ),
-    ));
+    );
   }
 }

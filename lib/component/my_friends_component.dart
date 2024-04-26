@@ -18,7 +18,7 @@ class MyFriendsComponent extends StatelessWidget {
           children: [
             CustomCard(
               width: MediaQuery.of(context).size.width * 0.40,
-              heigth: 40,
+              height: 40,
               content: const Text(
                 'Ajouter un amis',
                 textAlign: TextAlign.center,
@@ -27,7 +27,7 @@ class MyFriendsComponent extends StatelessWidget {
             ),
             CustomCard(
               width: MediaQuery.of(context).size.width * 0.40,
-              heigth: 40,
+              height: 40,
               content: const Text(
                 'Gérer les demandes',
                 textAlign: TextAlign.center,
@@ -61,7 +61,7 @@ class MyFriendsComponent extends StatelessWidget {
   CustomCard _buildFriendCard(BuildContext context) {
     return CustomCard(
       width: MediaQuery.of(context).size.width * 0.90,
-      heigth: 55,
+      height: 55,
       borderColor: MyColors.lightGrey,
       content: Column(
         mainAxisAlignment: MainAxisAlignment.center,

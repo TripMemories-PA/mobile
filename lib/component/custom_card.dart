@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 class CustomCard extends StatelessWidget {
   const CustomCard({
     super.key,
-    required this.width,
-    required this.heigth,
+    this.width,
+    this.height,
     required this.content,
     this.backgroundColor,
     this.borderColor,
   });
 
-  final double width;
-  final double heigth;
+  final double? width;
+  final double? height;
   final Widget content;
   final Color? backgroundColor;
   final Color? borderColor;
@@ -20,7 +20,7 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      height: heigth,
+      height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.0),
         border: Border.all(

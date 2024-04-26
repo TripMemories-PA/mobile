@@ -43,7 +43,7 @@ class ProfileBanner extends StatelessWidget {
                   SizedBox(width: 10),
                   CustomCard(
                     width: 50,
-                    heigth: 25,
+                    height: 25,
                     backgroundColor: Colors.red,
                     content: Icon(
                       Icons.logout,
@@ -55,7 +55,7 @@ class ProfileBanner extends StatelessWidget {
                   SizedBox(width: 10),
                   CustomCard(
                     width: 100,
-                    heigth: 25,
+                    height: 25,
                     content: Text(
                       'Editer',
                       textAlign: TextAlign.center,

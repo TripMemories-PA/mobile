@@ -14,5 +14,5 @@ class ProfileState {
     );
   }
 
-  final Profile profile;
+  final Profile? profile;
 }

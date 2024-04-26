@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../bloc/profile/profile_bloc.dart';
 import '../component/custom_card.dart';
 import '../component/my_friends_my_posts_menu.dart';
 import '../component/profile_banner.dart';
@@ -15,6 +17,10 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+  create: (context) => ProfileBloc()..add(GetProfileEvent('TBD')),
+  child: BlocBuilder<ProfileBloc, ProfileState>(
+  builder: (context, state) {
     return Scaffold(
       body: ListView(
         children: [
@@ -44,6 +50,9 @@ class ProfilePage extends StatelessWidget {
         ],
       ),
     );
+  },
+),
+);
   }
 
   SizedBox _buildProfileInfos(BuildContext context) {

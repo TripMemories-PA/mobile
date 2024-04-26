@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trip_memories_mobile/component/custom_card.dart';
+import 'package:trip_memories_mobile/constants/my_colors.dart';
 
 class ProfileBanner extends StatelessWidget {
   const ProfileBanner({super.key});
@@ -46,7 +47,10 @@ class ProfileBanner extends StatelessWidget {
                     backgroundColor: Colors.red,
                     content: Icon(
                       Icons.logout,
+                      color: Colors.white,
+                      size: 15,
                     ),
+                    borderColor: Colors.transparent,
                   ),
                   SizedBox(width: 10),
                   CustomCard(
@@ -55,7 +59,12 @@ class ProfileBanner extends StatelessWidget {
                     content: Text(
                       'Editer',
                       textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                      )
                     ),
+                    borderColor: Colors.transparent,
+                    backgroundColor: MyColors.purple,
                   )
                 ],
               ),

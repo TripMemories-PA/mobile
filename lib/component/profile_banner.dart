@@ -33,7 +33,9 @@ class ProfileBanner extends StatelessWidget {
                       Text(
                         'Jane Doe',
                         style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Text(
                         '@jane_doe',

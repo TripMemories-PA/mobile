@@ -20,7 +20,14 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Profile {
-  String get firstName => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
+  String get firstname => throw _privateConstructorUsedError;
+  String get lastname => throw _privateConstructorUsedError;
+  UploadFile get avatar => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -32,7 +39,17 @@ abstract class $ProfileCopyWith<$Res> {
   factory $ProfileCopyWith(Profile value, $Res Function(Profile) then) =
       _$ProfileCopyWithImpl<$Res, Profile>;
   @useResult
-  $Res call({String firstName});
+  $Res call(
+      {int id,
+      String username,
+      String email,
+      String firstname,
+      String lastname,
+      UploadFile avatar,
+      DateTime createdAt,
+      DateTime? updatedAt});
+
+  $UploadFileCopyWith<$Res> get avatar;
 }
 
 /// @nodoc
@@ -48,14 +65,57 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? firstName = null,
+    Object? id = null,
+    Object? username = null,
+    Object? email = null,
+    Object? firstname = null,
+    Object? lastname = null,
+    Object? avatar = null,
+    Object? createdAt = null,
+    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
-      firstName: null == firstName
-          ? _value.firstName
-          : firstName // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      firstname: null == firstname
+          ? _value.firstname
+          : firstname // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastname: null == lastname
+          ? _value.lastname
+          : lastname // ignore: cast_nullable_to_non_nullable
+              as String,
+      avatar: null == avatar
+          ? _value.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as UploadFile,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UploadFileCopyWith<$Res> get avatar {
+    return $UploadFileCopyWith<$Res>(_value.avatar, (value) {
+      return _then(_value.copyWith(avatar: value) as $Val);
+    });
   }
 }
 
@@ -66,7 +126,18 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       __$$ProfileImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String firstName});
+  $Res call(
+      {int id,
+      String username,
+      String email,
+      String firstname,
+      String lastname,
+      UploadFile avatar,
+      DateTime createdAt,
+      DateTime? updatedAt});
+
+  @override
+  $UploadFileCopyWith<$Res> get avatar;
 }
 
 /// @nodoc
@@ -80,39 +151,89 @@ class __$$ProfileImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? firstName = null,
+    Object? id = null,
+    Object? username = null,
+    Object? email = null,
+    Object? firstname = null,
+    Object? lastname = null,
+    Object? avatar = null,
+    Object? createdAt = null,
+    Object? updatedAt = freezed,
   }) {
     return _then(_$ProfileImpl(
-      firstName: null == firstName
-          ? _value.firstName
-          : firstName // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      firstname: null == firstname
+          ? _value.firstname
+          : firstname // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastname: null == lastname
+          ? _value.lastname
+          : lastname // ignore: cast_nullable_to_non_nullable
+              as String,
+      avatar: null == avatar
+          ? _value.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as UploadFile,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
-  const _$ProfileImpl({required this.firstName});
+
+@JsonSerializable(explicitToJson: true)
+class _$ProfileImpl implements _Profile {
+  const _$ProfileImpl(
+      {required this.id,
+      required this.username,
+      required this.email,
+      required this.firstname,
+      required this.lastname,
+      required this.avatar,
+      required this.createdAt,
+      this.updatedAt});
 
   factory _$ProfileImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProfileImplFromJson(json);
 
   @override
-  final String firstName;
+  final int id;
+  @override
+  final String username;
+  @override
+  final String email;
+  @override
+  final String firstname;
+  @override
+  final String lastname;
+  @override
+  final UploadFile avatar;
+  @override
+  final DateTime createdAt;
+  @override
+  final DateTime? updatedAt;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Profile(firstName: $firstName)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'Profile'))
-      ..add(DiagnosticsProperty('firstName', firstName));
+  String toString() {
+    return 'Profile(id: $id, username: $username, email: $email, firstname: $firstname, lastname: $lastname, avatar: $avatar, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -120,13 +241,25 @@ class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ProfileImpl &&
-            (identical(other.firstName, firstName) ||
-                other.firstName == firstName));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.firstname, firstname) ||
+                other.firstname == firstname) &&
+            (identical(other.lastname, lastname) ||
+                other.lastname == lastname) &&
+            (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, firstName);
+  int get hashCode => Object.hash(runtimeType, id, username, email, firstname,
+      lastname, avatar, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -143,12 +276,34 @@ class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
 }
 
 abstract class _Profile implements Profile {
-  const factory _Profile({required final String firstName}) = _$ProfileImpl;
+  const factory _Profile(
+      {required final int id,
+      required final String username,
+      required final String email,
+      required final String firstname,
+      required final String lastname,
+      required final UploadFile avatar,
+      required final DateTime createdAt,
+      final DateTime? updatedAt}) = _$ProfileImpl;
 
   factory _Profile.fromJson(Map<String, dynamic> json) = _$ProfileImpl.fromJson;
 
   @override
-  String get firstName;
+  int get id;
+  @override
+  String get username;
+  @override
+  String get email;
+  @override
+  String get firstname;
+  @override
+  String get lastname;
+  @override
+  UploadFile get avatar;
+  @override
+  DateTime get createdAt;
+  @override
+  DateTime? get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>

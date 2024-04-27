@@ -1,33 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'profile.dart';
+part of 'avatar.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ProfileImpl _$$ProfileImplFromJson(Map<String, dynamic> json) =>
-    _$ProfileImpl(
+_$UploadFileImpl _$$UploadFileImplFromJson(Map<String, dynamic> json) =>
+    _$UploadFileImpl(
       id: (json['id'] as num).toInt(),
-      username: json['username'] as String,
-      email: json['email'] as String,
-      firstname: json['firstname'] as String,
-      lastname: json['lastname'] as String,
-      avatar: UploadFile.fromJson(json['avatar'] as Map<String, dynamic>),
+      filename: json['filename'] as String,
+      url: json['url'] as String,
+      mimeType: json['mimeType'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
     );
 
-Map<String, dynamic> _$$ProfileImplToJson(_$ProfileImpl instance) =>
+Map<String, dynamic> _$$UploadFileImplToJson(_$UploadFileImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'username': instance.username,
-      'email': instance.email,
-      'firstname': instance.firstname,
-      'lastname': instance.lastname,
-      'avatar': instance.avatar.toJson(),
+      'filename': instance.filename,
+      'url': instance.url,
+      'mimeType': instance.mimeType,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };

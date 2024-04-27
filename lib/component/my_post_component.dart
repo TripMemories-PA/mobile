@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:trip_memories_mobile/component/custom_card.dart';
+
+import 'custom_card.dart';
 
 class MyPostsComponents extends StatelessWidget {
   const MyPostsComponents({super.key});
@@ -35,7 +36,10 @@ class MyPostsComponents extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
                 children: [
-                  const Text('14/05/2024', style: TextStyle(fontSize: 20),),
+                  const Text(
+                    '14/05/2024',
+                    style: TextStyle(fontSize: 20),
+                  ),
                   const Expanded(child: SizedBox()),
                   Row(
                     children: List.generate(
@@ -47,13 +51,12 @@ class MyPostsComponents extends StatelessWidget {
               ),
             ),
             const Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec nisl tincidunt tincidunt",
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec nisl tincidunt tincidunt',
               style: TextStyle(fontSize: 15),
             ),
             const SizedBox(
               height: 10,
             ),
-
             ClipRRect(
               borderRadius: const BorderRadius.all(
                 Radius.circular(15.0),
@@ -64,15 +67,20 @@ class MyPostsComponents extends StatelessWidget {
               height: 10,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                IconButton(onPressed: () => print('coucou'), icon: const Icon(Icons.favorite_border)),
-                Text('NB LIKES'),
+                IconButton(
+                    onPressed: () => print('coucou'),
+                    icon: const Icon(Icons.favorite_border)),
+                const Text('NB LIKES'),
                 const SizedBox(width: 5),
-                IconButton(onPressed: () => print('coucou'), icon: const Icon(Icons.chat_bubble_outline)),
-                Text('NB COMM'),
+                IconButton(
+                    onPressed: () => print('coucou'),
+                    icon: const Icon(Icons.chat_bubble_outline)),
+                const Text('NB COMM'),
                 const Expanded(child: SizedBox()),
-                IconButton(onPressed: () => print('coucou'), icon: const Icon(Icons.delete)),
+                IconButton(
+                    onPressed: () => print('coucou'),
+                    icon: const Icon(Icons.delete)),
               ],
             ),
           ],

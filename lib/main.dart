@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trip_memories_mobile/component/my_post_component.dart';
-import 'package:trip_memories_mobile/page/feed_page.dart';
-import 'package:trip_memories_mobile/page/map_page.dart';
-import 'package:trip_memories_mobile/page/profile_page.dart';
-import 'package:trip_memories_mobile/page/search_page.dart';
-import 'package:trip_memories_mobile/page/shop_page.dart';
 
 import 'component/my_friends_component.dart';
+import 'component/my_post_component.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
+import 'page/feed_page.dart';
+import 'page/map_page.dart';
+import 'page/profile_page.dart';
+import 'page/search_page.dart';
+import 'page/shop_page.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -30,8 +30,11 @@ class MyApp extends StatelessWidget {
     initialLocation: RouteName.searchPage,
     routes: <RouteBase>[
       StatefulShellRoute.indexedStack(
-        builder: (BuildContext context, GoRouterState state,
-            StatefulNavigationShell navigationShell,) {
+        builder: (
+          BuildContext context,
+          GoRouterState state,
+          StatefulNavigationShell navigationShell,
+        ) {
           return ScaffoldWithNavBar(navigationShell: navigationShell);
         },
         branches: <StatefulShellBranch>[
@@ -75,33 +78,35 @@ class MyApp extends StatelessWidget {
           StatefulShellBranch(
             routes: <RouteBase>[
               StatefulShellRoute.indexedStack(
-                  builder: (BuildContext context, GoRouterState state,
-                      StatefulNavigationShell navigationShell) {
-                    return ProfilePage(navigationShell: navigationShell);
-                  },
-                  branches: <StatefulShellBranch>[
-                    StatefulShellBranch(
-                      navigatorKey: _profileNavigationKey,
-                      routes: <RouteBase>[
-                        GoRoute(
-                          path: RouteName.myFriends,
-                          builder:
-                              (BuildContext context, GoRouterState state) =>
-                                  const MyFriendsComponent(),
-                        ),
-                      ],
-                    ),
-                    StatefulShellBranch(
-                      routes: <RouteBase>[
-                        GoRoute(
-                          path: RouteName.myPosts,
-                          builder:
-                              (BuildContext context, GoRouterState state) =>
-                                  const MyPostsComponents(),
-                        ),
-                      ],
-                    ),
-                  ]),
+                builder: (
+                  BuildContext context,
+                  GoRouterState state,
+                  StatefulNavigationShell navigationShell,
+                ) {
+                  return ProfilePage(navigationShell: navigationShell);
+                },
+                branches: <StatefulShellBranch>[
+                  StatefulShellBranch(
+                    navigatorKey: _profileNavigationKey,
+                    routes: <RouteBase>[
+                      GoRoute(
+                        path: RouteName.myFriends,
+                        builder: (BuildContext context, GoRouterState state) =>
+                            const MyFriendsComponent(),
+                      ),
+                    ],
+                  ),
+                  StatefulShellBranch(
+                    routes: <RouteBase>[
+                      GoRoute(
+                        path: RouteName.myPosts,
+                        builder: (BuildContext context, GoRouterState state) =>
+                            const MyPostsComponents(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
         ],

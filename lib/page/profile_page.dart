@@ -18,62 +18,64 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-  create: (context) => ProfileBloc()..add(GetProfileEvent('TBD')),
-  child: BlocBuilder<ProfileBloc, ProfileState>(
-  builder: (context, state) {
-    return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: () async {
-          context.read<ProfileBloc>().add(GetProfileEvent('TBD'));
-        },
-        child: ListView(
-          children: [
-            Column(
-              children: [
-                _buildProfileInfos(context),
-                const SizedBox(
-                  height: 20,
-                ),
-                _buildSubsAndVisitedPlaces(context),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Center(
-              child: Column(
+      create: (context) => ProfileBloc()..add(GetProfileEvent('TBD')),
+      child: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, state) {
+          return Scaffold(
+            body: RefreshIndicator(
+              onRefresh: () async {
+                context.read<ProfileBloc>().add(GetProfileEvent('TBD'));
+              },
+              child: ListView(
                 children: [
-                  const MyFriendsMyPostsMenu(),
-                  const SizedBox(
-                    height: 15,
+                  Column(
+                    children: [
+                      _buildProfileInfos(context),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      _buildSubsAndVisitedPlaces(context),
+                    ],
                   ),
-                  navigationShell,
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: Column(
+                      children: [
+                        const MyFriendsMyPostsMenu(),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        navigationShell,
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
-  },
-),
-);
   }
 
   SizedBox _buildProfileInfos(BuildContext context) {
     return SizedBox(
       height: 280,
       width: MediaQuery.of(context).size.width,
-      child: Stack(children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(20.0),
-            bottomRight: Radius.circular(20.0),
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(20.0),
+              bottomRight: Radius.circular(20.0),
+            ),
+            child: Image.asset('assets/images/louvre.png'),
           ),
-          child: Image.asset('assets/images/louvre.png'),
-        ),
-        const Positioned(bottom: 0, child: ProfileBanner()),
-      ]),
+          const Positioned(bottom: 0, child: ProfileBanner()),
+        ],
+      ),
     );
   }
 

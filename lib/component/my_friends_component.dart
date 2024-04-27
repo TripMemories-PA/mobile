@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/my_colors.dart';
@@ -57,7 +56,6 @@ class MyFriendsComponent extends StatelessWidget {
     );
   }
 
-
   CustomCard _buildFriendCard(BuildContext context) {
     return CustomCard(
       width: MediaQuery.of(context).size.width * 0.90,
@@ -68,7 +66,9 @@ class MyFriendsComponent extends StatelessWidget {
         children: [
           Row(
             children: [
-              const SizedBox(width: 12,),
+              const SizedBox(
+                width: 12,
+              ),
               SizedBox(
                 width: 40,
                 height: 40,
@@ -84,8 +84,7 @@ class MyFriendsComponent extends StatelessWidget {
                 children: [
                   Text(
                     'Jane Doe',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     '@jane_doe',
@@ -103,7 +102,8 @@ class MyFriendsComponent extends StatelessWidget {
                   icon: const Icon(Icons.chat),
                   color: Colors.white,
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(MyColors.purple),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(MyColors.purple),
                   ),
                 ),
               ),
@@ -117,7 +117,8 @@ class MyFriendsComponent extends StatelessWidget {
                   icon: const Icon(Icons.remove_red_eye),
                   color: Colors.white,
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(MyColors.purple),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(MyColors.purple),
                   ),
                 ),
               ),

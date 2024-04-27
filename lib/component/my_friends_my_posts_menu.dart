@@ -17,7 +17,8 @@ class _MyFriendsMyPostsMenuState extends State<MyFriendsMyPostsMenu> {
   @override
   void initState() {
     super.initState();
-    _selectedRoute = GoRouter.of(context).routeInformationProvider.value.uri.path;
+    _selectedRoute =
+        GoRouter.of(context).routeInformationProvider.value.uri.path;
   }
 
   void _updateSelectedRoute(String route) {
@@ -41,8 +42,9 @@ class _MyFriendsMyPostsMenuState extends State<MyFriendsMyPostsMenu> {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  width: 1.0,
-                  color: _selectedRoute.contains(RouteName.myFriends) ? MyColors.purple : Colors.transparent,
+                  color: _selectedRoute.contains(RouteName.myFriends)
+                      ? MyColors.purple
+                      : Colors.transparent,
                 ),
               ),
             ),
@@ -64,8 +66,9 @@ class _MyFriendsMyPostsMenuState extends State<MyFriendsMyPostsMenu> {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  width: 1.0,
-                  color: _selectedRoute.contains(RouteName.myPosts) ? MyColors.purple : Colors.transparent,
+                  color: _selectedRoute.contains(RouteName.myPosts)
+                      ? MyColors.purple
+                      : Colors.transparent,
                 ),
               ),
             ),
@@ -80,4 +83,3 @@ class _MyFriendsMyPostsMenuState extends State<MyFriendsMyPostsMenu> {
     );
   }
 }
-

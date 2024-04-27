@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:trip_memories_mobile/component/custom_card.dart';
-import 'package:trip_memories_mobile/constants/my_colors.dart';
+
+import '../constants/my_colors.dart';
+import 'custom_card.dart';
 
 class ProfileBanner extends StatelessWidget {
   const ProfileBanner({super.key});
@@ -11,7 +12,6 @@ class ProfileBanner extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
             width: 100,
@@ -32,7 +32,8 @@ class ProfileBanner extends StatelessWidget {
                     children: [
                       Text(
                         'Jane Doe',
-                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         '@jane_doe',
@@ -61,16 +62,15 @@ class ProfileBanner extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
-                      )
+                      ),
                     ),
                     borderColor: Colors.transparent,
                     backgroundColor: MyColors.purple,
-                  )
+                  ),
                 ],
               ),
             ],
-          )
-
+          ),
         ],
       ),
     );

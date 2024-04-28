@@ -22,6 +22,7 @@ class ProfilePage extends StatelessWidget {
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             body: RefreshIndicator(
               onRefresh: () async {
                 context.read<ProfileBloc>().add(GetProfileEvent('TBD'));

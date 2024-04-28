@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/my_colors.dart';
 import 'custom_card.dart';
+import 'popup/modify_user_infos_popup.dart';
 
 class ProfileBanner extends StatelessWidget {
   const ProfileBanner({super.key});
@@ -23,12 +24,12 @@ class ProfileBanner extends StatelessWidget {
               child: Image.asset('assets/images/profileSample.png'),
             ),
           ),
-          const Column(
+          Column(
             children: [
-              SizedBox(height: 30, width: 25),
+              const SizedBox(height: 30, width: 25),
               Row(
                 children: [
-                  Column(
+                  const Column(
                     children: [
                       Text(
                         'Jane Doe',
@@ -43,8 +44,8 @@ class ProfileBanner extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(width: 10),
-                  CustomCard(
+                  const SizedBox(width: 10),
+                  const CustomCard(
                     width: 50,
                     height: 25,
                     backgroundColor: Colors.red,
@@ -55,19 +56,24 @@ class ProfileBanner extends StatelessWidget {
                     ),
                     borderColor: Colors.transparent,
                   ),
-                  SizedBox(width: 10),
-                  CustomCard(
-                    width: 100,
-                    height: 25,
-                    content: Text(
-                      'Editer',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
+                  const SizedBox(width: 10),
+                  InkWell(
+                    onTap: () async {
+                      await modifyUserInfosPopup(context);
+                    },
+                    child: const CustomCard(
+                      width: 100,
+                      height: 25,
+                      content: Text(
+                        'Editer',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
+                      borderColor: Colors.transparent,
+                      backgroundColor: MyColors.purple,
                     ),
-                    borderColor: Colors.transparent,
-                    backgroundColor: MyColors.purple,
                   ),
                 ],
               ),

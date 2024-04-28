@@ -1,15 +1,13 @@
+import '../api/profile/profile_service.dart';
 import '../object/profile/profile.dart';
 import 'profile_interface.dart';
 
 class ProfileRemoteDataSource extends ProfileDataSourceInterface {
-  ProfileRemoteDataSource();
+  final ProfileService _profileService = ProfileService();
 
   @override
-  Future<Profile> getProfile(String id) async {}
-
-  @override
-  Future<void> updateProfile(Profile profile) async {}
-
-  @override
-  Future<void> updatePassword(String password) async {}
+  Future<Profile> getProfile(String id) async {
+    final Profile profile = await _profileService.getProfile(id);
+    return profile;
+  }
 }

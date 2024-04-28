@@ -1,23 +1,25 @@
 import '../object/profile/profile.dart';
-import '../service/profile_interface.dart';
-import '../service/profile_local_data_source.dart';
 import '../service/profile_remote_data_source.dart';
 
-class ProfileRepository extends ProfileDataSourceInterface {
+// TODO(nono): implement the profilelocalDataSource
+class ProfileRepository {
   ProfileRepository({
     required this.profileRemoteDataSource,
-    required this.profilelocalDataSource,
+    //required this.profilelocalDataSource,
   });
 
   final ProfileRemoteDataSource profileRemoteDataSource;
-  final ProfileLocalDataSource profilelocalDataSource;
+  //final ProfileLocalDataSource profilelocalDataSource;
 
-  @override
-  Future<Profile> getProfile(String id) async {}
+  Future<Profile> getProfile(String id) async {
+    return profileRemoteDataSource.getProfile(id);
+  }
 
-  @override
+  /*Future<Profile> getLocalProfile(String id) async {
+    return profilelocalDataSource.getProfile(id);
+  }*/
+
   Future<void> updateProfile(Profile profile) async {}
 
-  @override
   Future<void> updatePassword(String password) async {}
 }

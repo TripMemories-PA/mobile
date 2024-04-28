@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../bloc/profile/profile_bloc.dart';
 import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
 import '../../utils/field_validator.dart';
@@ -13,7 +15,7 @@ class ModifyUserInfosForm extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController userNameController = useTextEditingController();
-    final TextEditingController nameController = useTextEditingController();
+    final TextEditingController lastName = useTextEditingController();
     final TextEditingController firstNameController =
         useTextEditingController();
     final TextEditingController emailController = useTextEditingController();
@@ -56,7 +58,7 @@ class ModifyUserInfosForm extends HookWidget {
                 prefixIcon: Icon(Icons.person_outline),
               ),
               validator: (value) => FieldValidator.validateRequired(value),
-              controller: nameController,
+              controller: lastName,
             ),
           ),
           15.ph,
@@ -101,8 +103,14 @@ class ModifyUserInfosForm extends HookWidget {
           InkWell(
             onTap: () async {
               if (formKey.currentState!.validate()) {
-                // TODO(nono): Implement the update user infos logic
-              }
+                context.read<ProfileBloc>().add(
+                  UpdateProfileEvent(
+                    userName: userNameController.text,
+                    lastName: lastName.text,
+                    firstName: firstNameController.text,
+                    email: emailController.text,
+                  ),
+                );              }
             },
             child: Container(
               height: 45,

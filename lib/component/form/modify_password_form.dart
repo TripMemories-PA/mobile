@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../bloc/profile/profile_bloc.dart';
 import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
 import '../../utils/field_validator.dart';
@@ -56,14 +58,20 @@ class UpdatePasswordForm extends HookWidget {
                 prefixIcon: Icon(Icons.lock_outline),
               ),
               validator: (value) => FieldValidator.validateSamePassword(
-                  value!, passwordController.text),
+                value!,
+                passwordController.text,
+              ),
               controller: confirmPasswordController,
             ),
           ),
           15.ph,
           InkWell(
             onTap: () async {
-              Navigator.of(context).pop(true);
+              context.read<ProfileBloc>().add(
+                    UpdatePasswordEvent(
+                      passwordController.text,
+                    ),
+                  );
             },
             child: Container(
               height: 45,
@@ -75,7 +83,7 @@ class UpdatePasswordForm extends HookWidget {
               ),
               child: const Center(
                 child: Text(
-                  'Modifier les informations',
+                  'Modifier le mot de passe',
                   style: TextStyle(color: Colors.white),
                 ),
               ),

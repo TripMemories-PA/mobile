@@ -9,9 +9,17 @@ class GetProfileEvent extends ProfileEvent {
 }
 
 class UpdateProfileEvent extends ProfileEvent {
-  UpdateProfileEvent(this.profile);
+  UpdateProfileEvent({
+    this.userName,
+    this.lastName,
+    this.firstName,
+    this.email,
+  });
 
-  final Profile profile;
+  final String? userName;
+  final String? lastName;
+  final String? firstName;
+  final String? email;
 }
 
 class UpdatePasswordEvent extends ProfileEvent {

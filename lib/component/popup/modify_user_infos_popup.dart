@@ -13,15 +13,12 @@ class UserInfosFormPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController();
     return Dialog(
       insetPadding: EdgeInsets.zero,
-      child: SizedBox(
-        width: 370,
-        height: MediaQuery.of(context).size.height * 0.8,
-        child: CustomCard(
-          content: _buildContent(context),
-        ),
+      child: CustomCard(
+        width: MediaQuery.of(context).size.width * 0.90,
+        height: MediaQuery.of(context).size.height * 0.81,
+        content: _buildContent(context),
       ),
     );
   }
@@ -30,13 +27,12 @@ class UserInfosFormPopup extends StatelessWidget {
     return ListView(
       children: [
         SizedBox(
-          height: 230,
+          height: MediaQuery.of(context).size.height * 0.26,
           child: Stack(
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20.0),
-                  bottomRight: Radius.circular(20.0),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(15.0),
                 ),
                 child: Image.asset('assets/images/louvre.png'),
               ),
@@ -65,6 +61,7 @@ class UserInfosFormPopup extends StatelessWidget {
             ],
           ),
         ),
+        10.ph,
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(

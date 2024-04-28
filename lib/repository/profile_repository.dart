@@ -4,9 +4,10 @@ import '../service/profile_local_data_source.dart';
 import '../service/profile_remote_data_source.dart';
 
 class ProfileRepository extends ProfileDataSourceInterface {
-  ProfileRepository(
-      {required this.profileRemoteDataSource,
-      required this.profilelocalDataSource});
+  ProfileRepository({
+    required this.profileRemoteDataSource,
+    required this.profilelocalDataSource,
+  });
 
   final ProfileRemoteDataSource profileRemoteDataSource;
   final ProfileLocalDataSource profilelocalDataSource;

@@ -26,11 +26,13 @@ class AuthService implements IAuthService {
     required String username,
     required String email,
     required String password,
+    required String confirmPassword,
   }) async {
     final body = SubscribeModel.createJson(
       username: username,
       email: email,
       password: password,
+      confirmPassword: confirmPassword,
     );
 
     Response response;

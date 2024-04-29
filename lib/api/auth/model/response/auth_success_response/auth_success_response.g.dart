@@ -1,5 +1,4 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
 
 part of 'auth_success_response.dart';
 
@@ -10,14 +9,15 @@ part of 'auth_success_response.dart';
 _$AuthSuccessResponseImpl _$$AuthSuccessResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$AuthSuccessResponseImpl(
-      authToken: json['authToken'] as String,
-      user: UserElementLogInResponse.fromJson(
-          json['user'] as Map<String, dynamic>),
+      type: json['type'] as String,
+      token: json['token'] as String,
+      expiresAt: json['expires_at'] as String,
     );
 
 Map<String, dynamic> _$$AuthSuccessResponseImplToJson(
         _$AuthSuccessResponseImpl instance) =>
     <String, dynamic>{
-      'authToken': instance.authToken,
-      'user': instance.user.toJson(),
+      'type': instance.type,
+      'token': instance.token,
+      'expires_at': instance.expiresAt,
     };

@@ -11,6 +11,7 @@ abstract class IAuthService {
     required String username,
     required String email,
     required String password,
+    required String confirmPassword,
   });
 
   Future<WhoAmIResponse> whoAmI({required String token});

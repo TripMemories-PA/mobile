@@ -10,11 +10,13 @@ abstract class AuthEvent {
 class AppStarted extends AuthEvent {}
 
 class ChangeToLoggedInStatus extends AuthEvent {
-  const ChangeToLoggedInStatus(
-    this.user,
-  );
+  const ChangeToLoggedInStatus({
+    required this.user,
+    required this.authToken,
+  });
 
   final WhoAmIResponse user;
+  final String authToken;
 }
 
 class ChangeToLoggedOutStatus extends AuthEvent {

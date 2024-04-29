@@ -43,7 +43,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
-    on<ChangeToLoggedInStatus>((event, emit) {
+    on<ChangeToLoggedInStatus>((event, emit) async {
+      await authTokenHandler.saveToken(event.authToken);
       emit(
         AuthState.authenticated(
           user: event.user,

@@ -14,7 +14,7 @@ class ModifyUserInfosForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController userNameController = useTextEditingController();
+    final TextEditingController usernameController = useTextEditingController();
     final TextEditingController lastName = useTextEditingController();
     final TextEditingController firstNameController =
         useTextEditingController();
@@ -39,7 +39,7 @@ class ModifyUserInfosForm extends HookWidget {
                 prefixIcon: Icon(Icons.person_outline),
               ),
               validator: (value) => FieldValidator.validateRequired(value),
-              controller: userNameController,
+              controller: usernameController,
             ),
           ),
           15.ph,
@@ -105,7 +105,7 @@ class ModifyUserInfosForm extends HookWidget {
               if (formKey.currentState!.validate()) {
                 context.read<ProfileBloc>().add(
                   UpdateProfileEvent(
-                    userName: userNameController.text,
+                    username: usernameController.text,
                     lastName: lastName.text,
                     firstName: firstNameController.text,
                     email: emailController.text,

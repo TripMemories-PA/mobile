@@ -55,7 +55,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     on<UpdateProfileEvent>((event, emit) async {
       await profileService.updateProfile(
-        userName: event.userName,
+        username: event.username,
         lastName: event.lastName,
         firstName: event.firstName,
         email: event.email,

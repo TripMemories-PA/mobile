@@ -4,10 +4,10 @@ abstract class IProfileService {
   Future<Profile> getProfile(String id);
 
   Future<void> updateProfile({
-    String? userName,
-    String? lastName,
-    String? firstName,
+    String? username,
     String? email,
+    String? firstName,
+    String? lastName,
   });
 
   Future<void> updatePassword({

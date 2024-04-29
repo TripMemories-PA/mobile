@@ -19,7 +19,7 @@ class ProfileService implements IProfileService {
 
   @override
   Future<void> updateProfile({
-    String? userName,
+    String? username,
     String? lastName,
     String? firstName,
     String? email,

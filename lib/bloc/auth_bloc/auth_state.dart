@@ -1,3 +1,4 @@
+import '../../api/auth/model/response/who_am_i_response/who_am_i_response.dart';
 import '../../api/error/api_error.dart';
 
 enum AuthStatus { authenticated, guest }
@@ -6,28 +7,23 @@ class AuthState {
   const AuthState._({
     this.status = AuthStatus.guest,
     this.error,
-    this.userId,
-    this.name,
+    this.user,
   });
 
   const AuthState.authenticated({
-    required String userId,
-    required String name,
+    required WhoAmIResponse user,
   }) : this._(
           status: AuthStatus.authenticated,
-          userId: userId,
-          name: name,
+          user: user,
         );
 
   const AuthState.guest({ApiError? error})
       : this._(
           status: AuthStatus.guest,
           error: error,
-          userId: null,
-          name: null,
+          user: null,
         );
   final AuthStatus status;
   final ApiError? error;
-  final String? userId;
-  final String? name;
+  final WhoAmIResponse? user;
 }

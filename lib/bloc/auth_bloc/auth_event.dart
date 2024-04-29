@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import 'auth_state.dart';
+import '../../api/auth/model/response/who_am_i_response/who_am_i_response.dart';
 
 @immutable
 abstract class AuthEvent {
@@ -9,10 +9,14 @@ abstract class AuthEvent {
 
 class AppStarted extends AuthEvent {}
 
-class ChangeAuthState extends AuthEvent {
-  const ChangeAuthState(
-    this.newState,
+class ChangeToLoggedInStatus extends AuthEvent {
+  const ChangeToLoggedInStatus(
+    this.user,
   );
 
-  final AuthState newState;
+  final WhoAmIResponse user;
+}
+
+class ChangeToLoggedOutStatus extends AuthEvent {
+  const ChangeToLoggedOutStatus();
 }

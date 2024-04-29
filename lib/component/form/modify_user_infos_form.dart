@@ -17,7 +17,9 @@ class ModifyUserInfosForm extends HookWidget {
     final TextEditingController firstNameController =
         useTextEditingController();
     final TextEditingController emailController = useTextEditingController();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
+      key: formKey,
       child: Column(
         children: [
           Container(
@@ -98,7 +100,9 @@ class ModifyUserInfosForm extends HookWidget {
           15.ph,
           InkWell(
             onTap: () async {
-              Navigator.of(context).pop(true);
+              if (formKey.currentState!.validate()) {
+                // TODO(nono): Implement the update user infos logic
+              }
             },
             child: Container(
               height: 45,

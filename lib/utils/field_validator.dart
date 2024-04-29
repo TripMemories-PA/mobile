@@ -20,24 +20,17 @@ class FieldValidator {
 
     final password = value.toString();
 
-    if (password.length < 8 || password.length > 16) {
-      return 'Votre mot de passe doit faire entre 8 et 16 caractères';
-    }
+    const String phrase = r'''
+  Pour un mot de passe valide, assurez-vous qu'il contienne entre 8 et 16 caractères, au moins une lettre, au moins un chiffre, aucun espace, et au moins un caractère spécial parmi !@#$%^&*(),.?":{}|<>.
+''';
 
-    if (!password.contains(RegExp(r'[a-zA-Z]'))) {
-      return 'Votre mot de passe doit contenir au moins une lettre';
-    }
-
-    if (!password.contains(RegExp(r'[0-9]'))) {
-      return 'Votre mot de passe doit contenir au moins un chiffre';
-    }
-
-    if (password.contains(RegExp(r'\s'))) {
-      return 'Votre mot de passe ne peut pas contenir d\'espace';
-    }
-
-    if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-      return 'Votre mot de passe doit contenir au moins un caractère spécial';
+    if (password.length < 8 ||
+        password.length > 16 ||
+        !password.contains(RegExp(r'[a-zA-Z]')) ||
+        !password.contains(RegExp(r'[0-9]')) ||
+        password.contains(RegExp(r'\s')) ||
+        !password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+      return phrase;
     }
 
     return null;

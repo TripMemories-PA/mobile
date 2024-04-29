@@ -1,3 +1,3 @@
 class AppConfig {
-  static const String apiUrl = 'http://localhost:3000/api';
+  static const String apiUrl = 'https://api-fcvt.onrender.com/';
 }

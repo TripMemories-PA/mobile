@@ -33,7 +33,7 @@ jobs:
           distribution: 'oracle'
 
       - name: Change wrapper permissions
-        run: chmod +x gradlew
+        run: chmod +x ./gradlew
 
       - uses: subosito/flutter-action@v2
         with:

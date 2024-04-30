@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'api/auth/auth_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
+import 'bloc/notifier_bloc/notifier_bloc.dart';
 import 'component/my_friends_component.dart';
 import 'component/my_post_component.dart';
 import 'components/scaffold_with_nav_bar.dart';
@@ -120,11 +121,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthBloc(
-        authService: AuthService(),
-        authTokenHandler: AuthTokenHandler(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthBloc(
+            authService: AuthService(),
+            authTokenHandler: AuthTokenHandler(),
+          ),
+        ),
+        BlocProvider<NotifierBloc>(
+          create: (_) => NotifierBloc(),
+        ),
+      ],
       child: MaterialApp.router(
         title: 'Flutter PA',
         routerConfig: _router,

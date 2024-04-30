@@ -20,11 +20,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             email: event.email,
             password: event.password,
           );
-
+          await authBloc.authTokenHandler.saveToken(authResponse.token);
           final WhoAmIResponse user =
               await authBloc.authService.whoAmI(token: authResponse.token);
 
-          await authBloc.authTokenHandler.saveToken(authResponse.token);
           authBloc.add(
             ChangeToLoggedInStatus(
               user: user,
@@ -32,8 +31,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             ),
           );
           emit(const LoginState.notLoading());
+          print('LOGGED IN');
         } catch (exception) {
           if (exception is CustomException) {
+            print(exception.apiError.getDescription());
             emit(
               LoginState.error(
                 error: exception.apiError,

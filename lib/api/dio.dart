@@ -51,7 +51,8 @@ class DioClient {
     Future<Response> Function() dioCall,
   ) async {
     try {
-      return await dioCall();
+      Response response = await dioCall();
+      return response;
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.connectionError) {
@@ -86,7 +87,7 @@ class DioClient {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
-    return _handleDioExceptions(
+    Response response = await _handleDioExceptions(
       () => dio.post(
         path,
         data: data,
@@ -94,6 +95,7 @@ class DioClient {
         options: options,
       ),
     );
+    return response;
   }
 
   Future<Response> patch(

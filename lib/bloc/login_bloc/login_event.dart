@@ -6,11 +6,11 @@ abstract class LoginEvent {
 }
 
 class LoginRequested extends LoginEvent {
+  const LoginRequested({
+    required this.email,
+    required this.password,
+  });
 
-  const LoginRequested(
-    this.email,
-    this.password,
-  );
   final String email;
   final String password;
 }

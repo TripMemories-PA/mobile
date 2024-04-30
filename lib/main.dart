@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trip_memories_mobile/page/login_page.dart';
 
 import 'api/auth/auth_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
-import 'bloc/auth_bloc/auth_state.dart';
 import 'component/my_friends_component.dart';
 import 'component/my_post_component.dart';
 import 'components/scaffold_with_nav_bar.dart';
@@ -89,12 +87,7 @@ class MyApp extends StatelessWidget {
                   GoRouterState state,
                   StatefulNavigationShell navigationShell,
                 ) {
-                  if (context.read<AuthBloc>().state.status ==
-                      AuthStatus.authenticated) {
-                    return ProfilePage(navigationShell: navigationShell);
-                  } else {
-                    return const LoginPage();
-                  }
+                  return ProfilePage(navigationShell: navigationShell);
                 },
                 branches: <StatefulShellBranch>[
                   StatefulShellBranch(

@@ -4,7 +4,7 @@ class LoginModel {
     required String password,
   }) {
     return {
-      'email': email,
+      'login': email,
       'password': password,
     };
   }

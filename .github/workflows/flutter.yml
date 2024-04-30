@@ -36,12 +36,12 @@ jobs:
       # Set Repository Name As Env Variable
       - name: Set repository name as env variable
         run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
-      #- name: Install dependencies
-      #  run: flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
 
       # Consider passing '--fatal-infos' for slightly stricter analysis.
-      #- name: Analyze project source
-        #run: flutter analyze
+      - name: Analyze project source
+        run: flutter analyze
 
       # Run Build Project
       - name: Clone repository
@@ -50,18 +50,12 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: 3.19.0
-      #- run: flutter pub get
-      #- run: flutter build apk
+      - run: flutter pub get
+      - run: flutter build apk
 
       # Create APK Release
-      - name: ls
-        run: ls
-      - name: go to android
-        run: cd android && ls
-      - name: ls
-        run: ls
       - name: Build apk release project (APK) - ${{ env.main_project_module }} module
-        run: ./gradlew assemble
+        run: cd android && ls && ./gradlew assemble
       # Noted For Output [main_project_module]/build/outputs/apk/release/
       - name: Upload APK Release - ${{ env.repository_name }}
         uses: actions/upload-artifact@v3

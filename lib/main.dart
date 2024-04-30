@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import 'api/auth/auth_service.dart';
+import 'bloc/auth_bloc/auth_bloc.dart';
 import 'component/my_friends_component.dart';
 import 'component/my_post_component.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
+import 'local_storage/secure_storage/auth_token_handler.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
 import 'page/profile_page.dart';
@@ -116,9 +120,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Flutter PA',
-      routerConfig: _router,
+    return BlocProvider(
+      create: (context) => AuthBloc(
+        authService: AuthService(),
+        authTokenHandler: AuthTokenHandler(),
+      ),
+      child: MaterialApp.router(
+        title: 'Flutter PA',
+        routerConfig: _router,
+      ),
     );
   }
 }

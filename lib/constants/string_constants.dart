@@ -1,4 +1,18 @@
 class StringConstants {
+
+  // Basic
+  String get yes => 'Yes';
+  String get no => 'No';
+
+  // Authentication
+  String get notAuthenticated => 'Not authenticated';
+  String get wrongEmailOrPassword => 'Wrong email or password';
+  String get emailOrPasswordAlreadyExists => 'Email or username already used';
+  String get invalidEmail => 'Invalid email';
+  String get invalidPassword => 'Invalid password';
+  String get passwordNotMatch => 'The passwords do not match';
+  String get requiredField => 'Required field';
+
   // Error Messages
   String get hostUnreachable => 'Host unreachable';
   String get cannotReachLocalData => 'Cannot reach local data';
@@ -26,4 +40,9 @@ class StringConstants {
   String get badRequest => 'Bad request';
   String get requestTimeout => 'Request timeout';
   String get unauthorized => 'Unauthorized';
+  String get cannotGetUserDetails => 'Cannot get user details';
+  String get cannotGetUserPosts => 'Cannot get user posts';
+
+  String get confirmAction => 'Etes-vous sûr ?';
+
 }

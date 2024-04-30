@@ -15,7 +15,7 @@ class ProfileBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Profile? coucou = context.read<ProfileBloc>().state.profile;
+    final Profile? currentStateProfile = context.read<ProfileBloc>().state.profile;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -28,9 +28,9 @@ class ProfileBanner extends StatelessWidget {
                 borderRadius: const BorderRadius.all(
                   Radius.circular(50.0),
                 ),
-                child: coucou?.avatar?.url != null
+                child: currentStateProfile?.avatar?.url != null
                     ? Image.network(
-                        coucou!.avatar!.url,
+                        currentStateProfile!.avatar!.url,
                         fit: BoxFit.cover,
                       )
                     : const CircleAvatar(
@@ -50,14 +50,14 @@ class ProfileBanner extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        '${coucou?.firstname} ${coucou?.lastname}',
+                        '${currentStateProfile?.firstname} ${currentStateProfile?.lastname}',
                         style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        '@${coucou?.username}',
+                        '@${currentStateProfile?.username}',
                         style:
                             const TextStyle(fontSize: 15, color: Colors.grey),
                       ),

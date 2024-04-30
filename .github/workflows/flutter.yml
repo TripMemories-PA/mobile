@@ -52,7 +52,6 @@ jobs:
           flutter-version: 3.19.0
       - run: flutter pub get
       - run: flutter build apk
-      - run: flutter build appbundle
 
       # Create APK Release
       - name: Build apk release project (APK) - ${{ env.main_project_module }} module

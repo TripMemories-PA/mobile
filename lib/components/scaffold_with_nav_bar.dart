@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../component/notifier_widget.dart';
+
 class ScaffoldWithNavBar extends StatelessWidget {
   const ScaffoldWithNavBar({
     required this.navigationShell,
@@ -12,7 +14,12 @@ class ScaffoldWithNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: navigationShell,
+      body: Stack(
+        children: [
+          const NotifierWidget(),
+          navigationShell,
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: true,
         selectedItemColor: Colors.amber[800],

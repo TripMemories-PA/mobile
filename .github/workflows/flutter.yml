@@ -58,6 +58,7 @@ jobs:
         run: cd android && ls && ./gradlew assemble
       # Noted For Output [main_project_module]/build/outputs/apk/release/
       - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

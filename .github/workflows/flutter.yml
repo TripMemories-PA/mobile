@@ -5,7 +5,7 @@
 name: Dart
 env:
   # The name of the main module repository
-  main_project_module: tripmemories
+  main_project_module: mobile
   # The name of the Play Store
   playstore_name: Tripmemories
 on:

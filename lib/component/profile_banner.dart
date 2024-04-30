@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trip_memories_mobile/component/popup/confirmation_logout_dialog.dart';
 
+import '../bloc/auth_bloc/auth_bloc.dart';
+import '../bloc/auth_bloc/auth_event.dart';
 import '../constants/my_colors.dart';
 import 'custom_card.dart';
 import 'popup/modify_user_infos_popup.dart';
@@ -45,16 +49,33 @@ class ProfileBanner extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(width: 10),
-                  const CustomCard(
-                    width: 50,
-                    height: 25,
-                    backgroundColor: Colors.red,
-                    content: Icon(
-                      Icons.logout,
-                      color: Colors.white,
-                      size: 15,
+                  InkWell(
+                    onTap: () async {
+                      final bool result = await confirmationLogout(
+                        context,
+                        title: 'Etes-vous sûr de vouloir vous déconnecter ?',
+                      );
+                      if (!result) {
+                        return;
+                      } else {
+                        if (context.mounted) {
+                          context.read<AuthBloc>().add(
+                                const ChangeToLoggedOutStatus(),
+                              );
+                        }
+                      }
+                    },
+                    child: const CustomCard(
+                      width: 50,
+                      height: 25,
+                      backgroundColor: Colors.red,
+                      content: Icon(
+                        Icons.logout,
+                        color: Colors.white,
+                        size: 15,
+                      ),
+                      borderColor: Colors.transparent,
                     ),
-                    borderColor: Colors.transparent,
                   ),
                   const SizedBox(width: 10),
                   InkWell(

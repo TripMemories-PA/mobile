@@ -1,5 +1,9 @@
 class StringConstants {
 
+  // Basic
+  String get yes => 'Yes';
+  String get no => 'No';
+
   // Authentication
   String get notAuthenticated => 'Not authenticated';
   String get wrongEmailOrPassword => 'Wrong email or password';
@@ -38,5 +42,7 @@ class StringConstants {
   String get unauthorized => 'Unauthorized';
   String get cannotGetUserDetails => 'Cannot get user details';
   String get cannotGetUserPosts => 'Cannot get user posts';
+
+  String get confirmAction => 'Etes-vous sûr ?';
 
 }

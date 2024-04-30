@@ -54,6 +54,8 @@ jobs:
       - run: flutter build apk
 
       # Create APK Release
+      - name: go to android
+        run: cd android
       - name: Build apk release project (APK) - ${{ env.main_project_module }} module
         run: ./gradlew assemble
       # Noted For Output [main_project_module]/build/outputs/apk/release/

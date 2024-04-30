@@ -55,7 +55,7 @@ jobs:
 
       # Create APK Release
       - name: go to android
-        run: cd .\android
+        run: cd ./android
       - name: ls
         run: ls
       - name: Build apk release project (APK) - ${{ env.main_project_module }} module

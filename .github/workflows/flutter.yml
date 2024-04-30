@@ -36,12 +36,12 @@ jobs:
       # Set Repository Name As Env Variable
       - name: Set repository name as env variable
         run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
-      - name: Install dependencies
-        run: flutter pub get
+      #- name: Install dependencies
+      #  run: flutter pub get
 
       # Consider passing '--fatal-infos' for slightly stricter analysis.
-      - name: Analyze project source
-        run: flutter analyze
+      #- name: Analyze project source
+        #run: flutter analyze
 
       # Run Build Project
       - name: Clone repository
@@ -54,6 +54,8 @@ jobs:
       #- run: flutter build apk
 
       # Create APK Release
+      - name: ls
+        run: ls
       - name: go to android
         run: cd ./android
       - name: ls

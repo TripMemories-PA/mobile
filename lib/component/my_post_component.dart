@@ -69,20 +69,17 @@ class MyPostsComponents extends StatelessWidget {
             Row(
               children: [
                 IconButton(
-                  onPressed: () => print('coucou'),
-                  icon: const Icon(Icons.favorite_border),
+                  icon: const Icon(Icons.favorite_border), onPressed: () {  },
                 ),
                 const Text('NB LIKES'),
                 const SizedBox(width: 5),
                 IconButton(
-                  onPressed: () => print('coucou'),
-                  icon: const Icon(Icons.chat_bubble_outline),
+                  icon: const Icon(Icons.chat_bubble_outline), onPressed: () {  },
                 ),
                 const Text('NB COMM'),
                 const Expanded(child: SizedBox()),
                 IconButton(
-                  onPressed: () => print('coucou'),
-                  icon: const Icon(Icons.delete),
+                  icon: const Icon(Icons.delete), onPressed: () {  },
                 ),
               ],
             ),

@@ -1,3 +1,5 @@
+// ignore_for_file: type=lint
+
 import 'dart:async';
 
 import 'package:dio/dio.dart';

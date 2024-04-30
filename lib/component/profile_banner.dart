@@ -25,11 +25,22 @@ class ProfileBanner extends StatelessWidget {
             width: 100,
             height: 100,
             child: ClipRRect(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(50.0),
-              ),
-              child: Image.asset('assets/images/profileSample.png'),
-            ),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(50.0),
+                ),
+                child: coucou?.avatar?.url != null
+                    ? Image.network(
+                        coucou!.avatar!.url,
+                        fit: BoxFit.cover,
+                      )
+                    : const CircleAvatar(
+                  backgroundColor: MyColors.lightGrey,
+                      child: Icon(
+                          Icons.person,
+                          size: 50,
+                          color: Colors.grey,
+                        ),
+                    )),
           ),
           Column(
             children: [
@@ -47,7 +58,8 @@ class ProfileBanner extends StatelessWidget {
                       ),
                       Text(
                         '@${coucou?.username}',
-                        style: const TextStyle(fontSize: 15, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 15, color: Colors.grey),
                       ),
                     ],
                   ),

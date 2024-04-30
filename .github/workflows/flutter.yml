@@ -1,28 +1,65 @@
-name: Build Release APK
-
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+name: Dart
+env:
+  # The name of the main module repository
+  main_project_module: tripmemories
+  # The name of the Play Store
+  playstore_name: Tripmemories
 on:
   push:
-    branches:
-      - main
-
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
+      - uses: actions/checkout@v4
+      - name: set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          cache: 'gradle'
+          java-version: '17'
+          distribution: 'oracle'
 
-      - name: Build with Gradle
-        run: ./gradlew assembleRelease
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v2
+      - uses: subosito/flutter-action@v2
         with:
-          name: release-apk
-          path: app/build/outputs/apk/release/app-release.apk
+          channel: 'stable' # or: 'beta', 'dev', 'master' (or 'main')
+
+      # Set Current Date As Env Variable
+      - name: Set current date as env variable
+        run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      # Set Repository Name As Env Variable
+      - name: Set repository name as env variable
+        run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Consider passing '--fatal-infos' for slightly stricter analysis.
+      - name: Analyze project source
+        run: flutter analyze
+
+      # Run Build Project
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.19.0
+      - run: flutter pub get
+      - run: flutter build apk
+      - run: flutter build appbundle
+
+      # Create APK Release
+      - name: Build apk release project (APK) - ${{ env.main_project_module }} module
+        run: ./gradlew assemble
+      # Noted For Output [main_project_module]/build/outputs/apk/release/
+      - name: Upload APK Release - ${{ env.repository_name }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.date_today }} - ${{ env.playstore_name }} - ${{ env.repository_name }} - APK(s) release generated
+          path: ${{ env.main_project_module }}/build/outputs/apk/release/

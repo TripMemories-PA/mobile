@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: set up JDK 17
         uses: actions/setup-java@v4
@@ -32,6 +32,8 @@ jobs:
           java-version: '17'
           distribution: 'oracle'
 
+      - name: Change wrapper permissions
+        run: chmod +x gradlew
 
       - uses: subosito/flutter-action@v2
         with:
@@ -51,16 +53,6 @@ jobs:
       # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
         run: flutter analyze
-
-      - name: Set Up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu' # See 'Supported distributions' for available options
-          java-version: '17'
-          cache: 'gradle'
-
-      - name: Change wrapper permissions
-        run: chmod +x gradlew
 
       # Run Build Project
       - name: Build gradle project

@@ -9,7 +9,7 @@ import 'auth_event.dart';
 import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc(this.authService, this.authTokenHandler)
+  AuthBloc({required this.authService, required this.authTokenHandler})
       : super(const AuthState.guest()) {
     on<AppStarted>((event, emit) async {
       final String? token = await authTokenHandler.getAuthToken();

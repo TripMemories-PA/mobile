@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../api/error/api_error.dart';
+import '../../api/error/specific_error/auth_error.dart';
 import '../../api/exception/custom_exception.dart';
 import '../../api/profile/i_profile_service.dart';
+import '../../local_storage/secure_storage/auth_token_handler.dart';
 import '../../object/profile/profile.dart';
 import '../../repository/profile_repository.dart';
 
@@ -18,8 +20,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       (event, emit) async {
         emit(state.copyWith(status: ProfileStatus.loading));
         try {
-          final Profile profile =
-              await profileRepository.getProfile(event.userId);
+          final String? authToken = await AuthTokenHandler().getAuthToken();
+          if (authToken == null) {
+            emit(
+              state.copyWith(
+                status: ProfileStatus.error,
+                error: AuthError.notAuthenticated(),
+              ),
+            );
+            return;
+          }
+          final Profile profile = await profileRepository.getProfile(authToken);
           emit(
             state.copyWith(
               profile: profile,

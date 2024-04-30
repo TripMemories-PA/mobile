@@ -4,7 +4,9 @@ import 'package:trip_memories_mobile/component/popup/confirmation_logout_dialog.
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_event.dart';
+import '../bloc/profile/profile_bloc.dart';
 import '../constants/my_colors.dart';
+import '../object/profile/profile.dart';
 import 'custom_card.dart';
 import 'popup/modify_user_infos_popup.dart';
 
@@ -13,6 +15,7 @@ class ProfileBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Profile? coucou = context.read<ProfileBloc>().state.profile;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -33,18 +36,18 @@ class ProfileBanner extends StatelessWidget {
               const SizedBox(height: 30, width: 25),
               Row(
                 children: [
-                  const Column(
+                  Column(
                     children: [
                       Text(
-                        'Jane Doe',
-                        style: TextStyle(
+                        '${coucou?.firstname} ${coucou?.lastname}',
+                        style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        '@jane_doe',
-                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                        '@${coucou?.username}',
+                        style: const TextStyle(fontSize: 15, color: Colors.grey),
                       ),
                     ],
                   ),

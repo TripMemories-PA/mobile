@@ -10,14 +10,13 @@ class Profile with _$Profile {
   @JsonSerializable(explicitToJson: true)
   const factory Profile({
     required int id,
-    required String username,
     required String email,
-    required String firstname,
-    required String lastname,
-    required UploadFile avatar,
-    required DateTime createdAt,
-    DateTime? updatedAt,
+    required String username,
+    required String? firstname,
+    required String? lastname,
+    UploadFile? avatar,
   }) = _Profile;
 
-  factory Profile.fromJson(Map<String, dynamic> json) => _$ProfileFromJson(json);
+  factory Profile.fromJson(Map<String, dynamic> json) =>
+      _$ProfileFromJson(json);
 }

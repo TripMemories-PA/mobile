@@ -7,7 +7,7 @@ class ProfileRemoteDataSource extends ProfileDataSourceInterface {
 
   @override
   Future<Profile> getProfile(String id) async {
-    final Profile profile = await _profileService.getProfile(id);
+    final Profile profile = await _profileService.getProfile(id: id);
     return profile;
   }
 }

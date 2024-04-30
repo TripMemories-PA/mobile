@@ -1,7 +1,7 @@
 import '../../object/profile/profile.dart';
 
 abstract class IProfileService {
-  Future<Profile> getProfile(String id);
+  Future<Profile> getProfile({required String id});
 
   Future<void> updateProfile({
     String? username,

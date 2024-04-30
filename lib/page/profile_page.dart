@@ -48,14 +48,14 @@ class ProfilePage extends StatelessWidget {
       create: (context) => ProfileBloc(
         profileRepository: RepositoryProvider.of<ProfileRepository>(context),
         profileService: ProfileService(),
-      )..add(GetProfileEvent('TBD')),
+      )..add(GetProfileEvent()),
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           return Scaffold(
             resizeToAvoidBottomInset: false,
             body: RefreshIndicator(
               onRefresh: () async {
-                context.read<ProfileBloc>().add(GetProfileEvent('TBD'));
+                context.read<ProfileBloc>().add(GetProfileEvent());
               },
               child: ListView(
                 children: [

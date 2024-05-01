@@ -25,3 +25,15 @@ class UpdatePasswordEvent extends ProfileEvent {
 
   final String password;
 }
+
+class GetFriendsEvent extends ProfileEvent {
+  GetFriendsEvent({
+    required this.id,
+    required this.page,
+    required this.perPage,
+  });
+
+  final String id;
+  final int page;
+  final int perPage;
+}

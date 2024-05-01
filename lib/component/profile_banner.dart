@@ -15,7 +15,8 @@ class ProfileBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Profile? currentStateProfile = context.read<ProfileBloc>().state.profile;
+    final Profile? currentStateProfile =
+        context.read<ProfileBloc>().state.profile;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -34,13 +35,13 @@ class ProfileBanner extends StatelessWidget {
                         fit: BoxFit.cover,
                       )
                     : const CircleAvatar(
-                  backgroundColor: MyColors.lightGrey,
-                      child: Icon(
+                        backgroundColor: MyColors.lightGrey,
+                        child: Icon(
                           Icons.person,
                           size: 50,
                           color: Colors.grey,
                         ),
-                    )),
+                      )),
           ),
           Column(
             children: [
@@ -50,7 +51,7 @@ class ProfileBanner extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        '${currentStateProfile?.firstname} ${currentStateProfile?.lastname}',
+                        '${currentStateProfile?.firstname ?? 'User'} ${currentStateProfile?.lastname ?? currentStateProfile?.id.toString()}',
                         style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,

@@ -5,20 +5,28 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../bloc/profile/profile_bloc.dart';
 import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
+import '../../object/profile/profile.dart';
 import '../../utils/field_validator.dart';
 
 class ModifyUserInfosForm extends HookWidget {
   const ModifyUserInfosForm({
     super.key,
+    required this.profile,
   });
+
+final Profile profile;
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController usernameController = useTextEditingController();
+    usernameController.text = profile.username;
     final TextEditingController lastName = useTextEditingController();
+    lastName.text = profile.lastname ?? '';
     final TextEditingController firstNameController =
         useTextEditingController();
+    firstNameController.text = profile.firstname ?? '';
     final TextEditingController emailController = useTextEditingController();
+    emailController.text = profile.email;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,

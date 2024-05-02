@@ -6,6 +6,7 @@ import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_event.dart';
 import '../bloc/profile/profile_bloc.dart';
 import '../constants/my_colors.dart';
+import 'bouncing_widget.dart';
 import 'custom_card.dart';
 import 'popup/confirmation_logout_dialog.dart';
 import 'popup/modify_user_infos_popup.dart';
@@ -79,7 +80,7 @@ class ProfileBanner extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(width: 10),
-                      InkWell(
+                      BouncingWidget(
                         onTap: () async {
                           final bool result = await confirmationLogout(
                             context,
@@ -109,7 +110,7 @@ class ProfileBanner extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      InkWell(
+                      BouncingWidget(
                         onTap: () async {
                           await modifyUserInfosPopup(context);
                         },

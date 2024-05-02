@@ -6,6 +6,7 @@ import '../../bloc/profile/profile_bloc.dart';
 import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
 import '../../utils/field_validator.dart';
+import '../bouncing_widget.dart';
 
 class UpdatePasswordForm extends HookWidget {
   const UpdatePasswordForm({
@@ -65,7 +66,7 @@ class UpdatePasswordForm extends HookWidget {
             ),
           ),
           15.ph,
-          InkWell(
+          BouncingWidget(
             onTap: () async {
               context.read<ProfileBloc>().add(
                     UpdatePasswordEvent(

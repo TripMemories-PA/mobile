@@ -7,6 +7,7 @@ import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
 import '../../object/profile/profile.dart';
 import '../../utils/field_validator.dart';
+import '../bouncing_widget.dart';
 
 class ModifyUserInfosForm extends HookWidget {
   ModifyUserInfosForm({
@@ -108,7 +109,7 @@ class ModifyUserInfosForm extends HookWidget {
             ),
           ),
           15.ph,
-          InkWell(
+          BouncingWidget(
             onTap: () async {
               if (formKey.currentState!.validate()) {
                 FocusManager.instance.primaryFocus?.unfocus();

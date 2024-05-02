@@ -11,7 +11,7 @@ _$GetFriendsPaginationResponseImpl _$$GetFriendsPaginationResponseImplFromJson(
     _$GetFriendsPaginationResponseImpl(
       meta: Meta.fromJson(json['meta'] as Map<String, dynamic>),
       data: (json['data'] as List<dynamic>)
-          .map((e) => Data.fromJson(e as Map<String, dynamic>))
+          .map((e) => Profile.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -46,8 +46,3 @@ Map<String, dynamic> _$$MetaImplToJson(_$MetaImpl instance) =>
       'nextPageUrl': instance.nextPageUrl,
       'previousPageUrl': instance.previousPageUrl,
     };
-
-_$DataImpl _$$DataImplFromJson(Map<String, dynamic> json) => _$DataImpl();
-
-Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
-    <String, dynamic>{};

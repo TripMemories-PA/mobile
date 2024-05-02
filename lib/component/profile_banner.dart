@@ -53,7 +53,7 @@ class ProfileBanner extends StatelessWidget {
                       Text(
                         '${currentStateProfile?.firstname ?? 'User'} ${currentStateProfile?.lastname ?? currentStateProfile?.id.toString()}',
                         style: const TextStyle(
-                          fontSize: 25,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

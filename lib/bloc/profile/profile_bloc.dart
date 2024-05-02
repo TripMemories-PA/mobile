@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../api/error/api_error.dart';
@@ -19,7 +21,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }) : super(const ProfileState()) {
     on<GetProfileEvent>(
       (event, emit) async {
+        print('wsh');
         emit(state.copyWith(status: ProfileStatus.loading));
+        print('on get le profil');
+        print(state.status.name);
         try {
           final String? authToken = await AuthTokenHandler().getAuthToken();
           if (authToken == null) {
@@ -38,6 +43,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               status: ProfileStatus.notLoading,
             ),
           );
+          add(GetFriendsEvent(page: 1, perPage: 10));
         } catch (e) {
           // TODO(nono): implement profileLocalDataSource
           /* try {
@@ -80,6 +86,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     on<GetFriendsEvent>(
       (event, emit) async {
+        print('on get les friends');
         emit(state.copyWith(status: ProfileStatus.loading));
         try {
           final String? authToken = await AuthTokenHandler().getAuthToken();

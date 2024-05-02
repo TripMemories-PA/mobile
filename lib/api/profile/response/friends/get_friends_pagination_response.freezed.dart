@@ -22,7 +22,7 @@ GetFriendsPaginationResponse _$GetFriendsPaginationResponseFromJson(
 /// @nodoc
 mixin _$GetFriendsPaginationResponse {
   Meta get meta => throw _privateConstructorUsedError;
-  List<Data> get data => throw _privateConstructorUsedError;
+  List<Profile> get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,7 +38,7 @@ abstract class $GetFriendsPaginationResponseCopyWith<$Res> {
       _$GetFriendsPaginationResponseCopyWithImpl<$Res,
           GetFriendsPaginationResponse>;
   @useResult
-  $Res call({Meta meta, List<Data> data});
+  $Res call({Meta meta, List<Profile> data});
 
   $MetaCopyWith<$Res> get meta;
 }
@@ -68,7 +68,7 @@ class _$GetFriendsPaginationResponseCopyWithImpl<$Res,
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<Data>,
+              as List<Profile>,
     ) as $Val);
   }
 
@@ -90,7 +90,7 @@ abstract class _$$GetFriendsPaginationResponseImplCopyWith<$Res>
       __$$GetFriendsPaginationResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Meta meta, List<Data> data});
+  $Res call({Meta meta, List<Profile> data});
 
   @override
   $MetaCopyWith<$Res> get meta;
@@ -120,7 +120,7 @@ class __$$GetFriendsPaginationResponseImplCopyWithImpl<$Res>
       data: null == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<Data>,
+              as List<Profile>,
     ));
   }
 }
@@ -130,7 +130,7 @@ class __$$GetFriendsPaginationResponseImplCopyWithImpl<$Res>
 class _$GetFriendsPaginationResponseImpl
     implements _GetFriendsPaginationResponse {
   const _$GetFriendsPaginationResponseImpl(
-      {required this.meta, required final List<Data> data})
+      {required this.meta, required final List<Profile> data})
       : _data = data;
 
   factory _$GetFriendsPaginationResponseImpl.fromJson(
@@ -139,9 +139,9 @@ class _$GetFriendsPaginationResponseImpl
 
   @override
   final Meta meta;
-  final List<Data> _data;
+  final List<Profile> _data;
   @override
-  List<Data> get data {
+  List<Profile> get data {
     if (_data is EqualUnmodifiableListView) return _data;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_data);
@@ -186,7 +186,7 @@ abstract class _GetFriendsPaginationResponse
     implements GetFriendsPaginationResponse {
   const factory _GetFriendsPaginationResponse(
       {required final Meta meta,
-      required final List<Data> data}) = _$GetFriendsPaginationResponseImpl;
+      required final List<Profile> data}) = _$GetFriendsPaginationResponseImpl;
 
   factory _GetFriendsPaginationResponse.fromJson(Map<String, dynamic> json) =
       _$GetFriendsPaginationResponseImpl.fromJson;
@@ -194,7 +194,7 @@ abstract class _GetFriendsPaginationResponse
   @override
   Meta get meta;
   @override
-  List<Data> get data;
+  List<Profile> get data;
   @override
   @JsonKey(ignore: true)
   _$$GetFriendsPaginationResponseImplCopyWith<
@@ -512,82 +512,4 @@ abstract class _Meta implements Meta {
   @JsonKey(ignore: true)
   _$$MetaImplCopyWith<_$MetaImpl> get copyWith =>
       throw _privateConstructorUsedError;
-}
-
-Data _$DataFromJson(Map<String, dynamic> json) {
-  return _Data.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Data {
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $DataCopyWith<$Res> {
-  factory $DataCopyWith(Data value, $Res Function(Data) then) =
-      _$DataCopyWithImpl<$Res, Data>;
-}
-
-/// @nodoc
-class _$DataCopyWithImpl<$Res, $Val extends Data>
-    implements $DataCopyWith<$Res> {
-  _$DataCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$DataImplCopyWith<$Res> {
-  factory _$$DataImplCopyWith(
-          _$DataImpl value, $Res Function(_$DataImpl) then) =
-      __$$DataImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$DataImplCopyWithImpl<$Res>
-    extends _$DataCopyWithImpl<$Res, _$DataImpl>
-    implements _$$DataImplCopyWith<$Res> {
-  __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$DataImpl implements _Data {
-  const _$DataImpl();
-
-  factory _$DataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$DataImplFromJson(json);
-
-  @override
-  String toString() {
-    return 'Data()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DataImpl);
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$DataImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _Data implements Data {
-  const factory _Data() = _$DataImpl;
-
-  factory _Data.fromJson(Map<String, dynamic> json) = _$DataImpl.fromJson;
 }

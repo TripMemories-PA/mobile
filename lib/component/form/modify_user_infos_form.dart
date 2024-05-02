@@ -9,12 +9,14 @@ import '../../object/profile/profile.dart';
 import '../../utils/field_validator.dart';
 
 class ModifyUserInfosForm extends HookWidget {
-  const ModifyUserInfosForm({
+  ModifyUserInfosForm({
     super.key,
     required this.profile,
   });
 
 final Profile profile;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,6 @@ final Profile profile;
     firstNameController.text = profile.firstname ?? '';
     final TextEditingController emailController = useTextEditingController();
     emailController.text = profile.email;
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
       child: Column(

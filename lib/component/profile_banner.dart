@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trip_memories_mobile/component/popup/confirmation_logout_dialog.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_event.dart';
+import '../bloc/profile/profile_bloc.dart';
 import '../constants/my_colors.dart';
+import '../object/profile/profile.dart';
 import 'custom_card.dart';
+import 'popup/confirmation_logout_dialog.dart';
 import 'popup/modify_user_infos_popup.dart';
 
 class ProfileBanner extends StatelessWidget {
@@ -13,6 +15,8 @@ class ProfileBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Profile? currentStateProfile =
+        context.read<ProfileBloc>().state.profile;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -25,7 +29,19 @@ class ProfileBanner extends StatelessWidget {
               borderRadius: const BorderRadius.all(
                 Radius.circular(50.0),
               ),
-              child: Image.asset('assets/images/profileSample.png'),
+              child: currentStateProfile?.avatar?.url != null
+                  ? Image.network(
+                      currentStateProfile!.avatar!.url,
+                      fit: BoxFit.cover,
+                    )
+                  : const CircleAvatar(
+                      backgroundColor: MyColors.lightGrey,
+                      child: Icon(
+                        Icons.person,
+                        size: 50,
+                        color: Colors.grey,
+                      ),
+                    ),
             ),
           ),
           Column(
@@ -33,18 +49,19 @@ class ProfileBanner extends StatelessWidget {
               const SizedBox(height: 30, width: 25),
               Row(
                 children: [
-                  const Column(
+                  Column(
                     children: [
                       Text(
-                        'Jane Doe',
-                        style: TextStyle(
-                          fontSize: 25,
+                        '${currentStateProfile?.firstname ?? 'User'} ${currentStateProfile?.lastname ?? currentStateProfile?.id.toString()}',
+                        style: const TextStyle(
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        '@jane_doe',
-                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                        '@${currentStateProfile?.username}',
+                        style:
+                            const TextStyle(fontSize: 15, color: Colors.grey),
                       ),
                     ],
                   ),

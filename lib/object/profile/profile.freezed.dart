@@ -21,13 +21,11 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Profile {
   int get id => throw _privateConstructorUsedError;
-  String get username => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  String get firstname => throw _privateConstructorUsedError;
-  String get lastname => throw _privateConstructorUsedError;
-  UploadFile get avatar => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
+  String? get firstname => throw _privateConstructorUsedError;
+  String? get lastname => throw _privateConstructorUsedError;
+  UploadFile? get avatar => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,15 +39,13 @@ abstract class $ProfileCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String username,
       String email,
-      String firstname,
-      String lastname,
-      UploadFile avatar,
-      DateTime createdAt,
-      DateTime? updatedAt});
+      String username,
+      String? firstname,
+      String? lastname,
+      UploadFile? avatar});
 
-  $UploadFileCopyWith<$Res> get avatar;
+  $UploadFileCopyWith<$Res>? get avatar;
 }
 
 /// @nodoc
@@ -66,54 +62,48 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
   @override
   $Res call({
     Object? id = null,
-    Object? username = null,
     Object? email = null,
-    Object? firstname = null,
-    Object? lastname = null,
-    Object? avatar = null,
-    Object? createdAt = null,
-    Object? updatedAt = freezed,
+    Object? username = null,
+    Object? firstname = freezed,
+    Object? lastname = freezed,
+    Object? avatar = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      firstname: null == firstname
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      firstname: freezed == firstname
           ? _value.firstname
           : firstname // ignore: cast_nullable_to_non_nullable
-              as String,
-      lastname: null == lastname
+              as String?,
+      lastname: freezed == lastname
           ? _value.lastname
           : lastname // ignore: cast_nullable_to_non_nullable
-              as String,
-      avatar: null == avatar
+              as String?,
+      avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
-              as UploadFile,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as UploadFile?,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $UploadFileCopyWith<$Res> get avatar {
-    return $UploadFileCopyWith<$Res>(_value.avatar, (value) {
+  $UploadFileCopyWith<$Res>? get avatar {
+    if (_value.avatar == null) {
+      return null;
+    }
+
+    return $UploadFileCopyWith<$Res>(_value.avatar!, (value) {
       return _then(_value.copyWith(avatar: value) as $Val);
     });
   }
@@ -128,16 +118,14 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String username,
       String email,
-      String firstname,
-      String lastname,
-      UploadFile avatar,
-      DateTime createdAt,
-      DateTime? updatedAt});
+      String username,
+      String? firstname,
+      String? lastname,
+      UploadFile? avatar});
 
   @override
-  $UploadFileCopyWith<$Res> get avatar;
+  $UploadFileCopyWith<$Res>? get avatar;
 }
 
 /// @nodoc
@@ -152,47 +140,37 @@ class __$$ProfileImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? username = null,
     Object? email = null,
-    Object? firstname = null,
-    Object? lastname = null,
-    Object? avatar = null,
-    Object? createdAt = null,
-    Object? updatedAt = freezed,
+    Object? username = null,
+    Object? firstname = freezed,
+    Object? lastname = freezed,
+    Object? avatar = freezed,
   }) {
     return _then(_$ProfileImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      firstname: null == firstname
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      firstname: freezed == firstname
           ? _value.firstname
           : firstname // ignore: cast_nullable_to_non_nullable
-              as String,
-      lastname: null == lastname
+              as String?,
+      lastname: freezed == lastname
           ? _value.lastname
           : lastname // ignore: cast_nullable_to_non_nullable
-              as String,
-      avatar: null == avatar
+              as String?,
+      avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
-              as UploadFile,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as UploadFile?,
     ));
   }
 }
@@ -203,13 +181,11 @@ class __$$ProfileImplCopyWithImpl<$Res>
 class _$ProfileImpl implements _Profile {
   const _$ProfileImpl(
       {required this.id,
-      required this.username,
       required this.email,
+      required this.username,
       required this.firstname,
       required this.lastname,
-      required this.avatar,
-      required this.createdAt,
-      this.updatedAt});
+      this.avatar});
 
   factory _$ProfileImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProfileImplFromJson(json);
@@ -217,23 +193,19 @@ class _$ProfileImpl implements _Profile {
   @override
   final int id;
   @override
-  final String username;
-  @override
   final String email;
   @override
-  final String firstname;
+  final String username;
   @override
-  final String lastname;
+  final String? firstname;
   @override
-  final UploadFile avatar;
+  final String? lastname;
   @override
-  final DateTime createdAt;
-  @override
-  final DateTime? updatedAt;
+  final UploadFile? avatar;
 
   @override
   String toString() {
-    return 'Profile(id: $id, username: $username, email: $email, firstname: $firstname, lastname: $lastname, avatar: $avatar, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Profile(id: $id, email: $email, username: $username, firstname: $firstname, lastname: $lastname, avatar: $avatar)';
   }
 
   @override
@@ -242,24 +214,20 @@ class _$ProfileImpl implements _Profile {
         (other.runtimeType == runtimeType &&
             other is _$ProfileImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.username, username) ||
                 other.username == username) &&
-            (identical(other.email, email) || other.email == email) &&
             (identical(other.firstname, firstname) ||
                 other.firstname == firstname) &&
             (identical(other.lastname, lastname) ||
                 other.lastname == lastname) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+            (identical(other.avatar, avatar) || other.avatar == avatar));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, username, email, firstname,
-      lastname, avatar, createdAt, updatedAt);
+  int get hashCode => Object.hash(
+      runtimeType, id, email, username, firstname, lastname, avatar);
 
   @JsonKey(ignore: true)
   @override
@@ -278,32 +246,26 @@ class _$ProfileImpl implements _Profile {
 abstract class _Profile implements Profile {
   const factory _Profile(
       {required final int id,
-      required final String username,
       required final String email,
-      required final String firstname,
-      required final String lastname,
-      required final UploadFile avatar,
-      required final DateTime createdAt,
-      final DateTime? updatedAt}) = _$ProfileImpl;
+      required final String username,
+      required final String? firstname,
+      required final String? lastname,
+      final UploadFile? avatar}) = _$ProfileImpl;
 
   factory _Profile.fromJson(Map<String, dynamic> json) = _$ProfileImpl.fromJson;
 
   @override
   int get id;
   @override
-  String get username;
-  @override
   String get email;
   @override
-  String get firstname;
+  String get username;
   @override
-  String get lastname;
+  String? get firstname;
   @override
-  UploadFile get avatar;
+  String? get lastname;
   @override
-  DateTime get createdAt;
-  @override
-  DateTime? get updatedAt;
+  UploadFile? get avatar;
   @override
   @JsonKey(ignore: true)
   _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>

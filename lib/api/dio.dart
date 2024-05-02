@@ -87,7 +87,7 @@ class DioClient {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
-    Response response = await _handleDioExceptions(
+    final Response response = await _handleDioExceptions(
       () => dio.post(
         path,
         data: data,

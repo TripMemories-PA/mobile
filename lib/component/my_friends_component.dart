@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/profile/profile_bloc.dart';
 import '../constants/my_colors.dart';
+import '../object/profile/profile.dart';
 import 'custom_card.dart';
 
 class MyFriendsComponent extends StatelessWidget {
@@ -11,6 +14,7 @@ class MyFriendsComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -38,25 +42,44 @@ class MyFriendsComponent extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        _buildFriendsList(context),
+        BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (context.read<ProfileBloc>().state.status ==
+                ProfileStatus.loading) {
+              return const CircularProgressIndicator();
+            } else {
+              return _buildFriendsList(context);
+            }
+          },
+        ),
       ],
     );
   }
 
   Widget _buildFriendsList(BuildContext context) {
-    return Column(
-      children: List.generate(15, (index) {
-        return Column(
-          children: [
-            _buildFriendCard(context),
-            const SizedBox(height: 10),
-          ],
-        );
-      }),
+    final List<Profile>? friends =
+        context.read<ProfileBloc>().state.friends?.data;
+    if (friends == null || friends.isEmpty) {
+      return const Center(child: Text('Aucun amis ajouté'));
+    }
+    return Flexible(
+      child: ListView(
+        padding: const EdgeInsets.only(top: 10, bottom: 100),
+        children: context
+                .read<ProfileBloc>()
+                .state
+                .friends
+                ?.data
+                .map(
+                  (friend) => _buildFriendCard(context, friend),
+                )
+                .toList() ??
+            [],
+      ),
     );
   }
 
-  CustomCard _buildFriendCard(BuildContext context) {
+  CustomCard _buildFriendCard(BuildContext context, Profile friend) {
     return CustomCard(
       width: MediaQuery.of(context).size.width * 0.90,
       height: 55,

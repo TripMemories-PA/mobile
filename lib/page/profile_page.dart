@@ -7,10 +7,8 @@ import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/profile/profile_bloc.dart';
 import '../component/custom_card.dart';
-import '../component/form/login_form.dart';
 import '../component/my_friends_my_posts_menu.dart';
 import '../component/profile_banner.dart';
-import '../constants/route_name.dart';
 import '../repository/profile_repository.dart';
 import '../service/profile_remote_data_source.dart';
 import 'login_page.dart';
@@ -27,8 +25,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (context.read<AuthBloc>().state.status ==
-            AuthStatus.authenticated) {
+        if (context.read<AuthBloc>().state.status == AuthStatus.authenticated) {
           return _buildProfilePage();
         } else {
           return const LoginPage();
@@ -39,57 +36,57 @@ class ProfilePage extends StatelessWidget {
 
   RepositoryProvider<ProfileRepository> _buildProfilePage() {
     return RepositoryProvider<ProfileRepository>(
-    create: (context) => ProfileRepository(
-      profileRemoteDataSource: ProfileRemoteDataSource(),
-      // TODO(nono): Implement ProfileLocalDataSource
-      //profilelocalDataSource: ProfileLocalDataSource(),
-    ),
-    child: BlocProvider(
-      create: (context) => ProfileBloc(
-        profileRepository: RepositoryProvider.of<ProfileRepository>(context),
-        profileService: ProfileService(),
-      )..add(GetProfileEvent('TBD')),
-      child: BlocBuilder<ProfileBloc, ProfileState>(
-        builder: (context, state) {
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: RefreshIndicator(
-              onRefresh: () async {
-                context.read<ProfileBloc>().add(GetProfileEvent('TBD'));
-              },
-              child: ListView(
-                children: [
-                  Column(
-                    children: [
-                      _buildProfileInfos(context),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      _buildSubsAndVisitedPlaces(context),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: Column(
+      create: (context) => ProfileRepository(
+        profileRemoteDataSource: ProfileRemoteDataSource(),
+        // TODO(nono): Implement ProfileLocalDataSource
+        //profilelocalDataSource: ProfileLocalDataSource(),
+      ),
+      child: BlocProvider(
+        create: (context) => ProfileBloc(
+          profileRepository: RepositoryProvider.of<ProfileRepository>(context),
+          profileService: ProfileService(),
+        )..add(GetProfileEvent()),
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            return Scaffold(
+              resizeToAvoidBottomInset: false,
+              body: RefreshIndicator(
+                onRefresh: () async {
+                  context.read<ProfileBloc>().add(GetProfileEvent());
+                },
+                child: ListView(
+                  children: [
+                    Column(
                       children: [
-                        const MyFriendsMyPostsMenu(),
+                        _buildProfileInfos(context),
                         const SizedBox(
-                          height: 15,
+                          height: 20,
                         ),
-                        navigationShell,
+                        _buildSubsAndVisitedPlaces(context),
                       ],
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Center(
+                      child: Column(
+                        children: [
+                          const MyFriendsMyPostsMenu(),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          navigationShell,
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
-    ),
-  );
+    );
   }
 
   SizedBox _buildProfileInfos(BuildContext context) {
@@ -135,10 +132,15 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildFriendsCard(BuildContext context) {
-    return const Center(
+    int? friendsCount = context.read<ProfileBloc>().state.friends?.meta.total;
+    friendsCount ??= 0;
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [Text('NB ABONNES'), Text('amis ajoutés')],
+        children: [
+          Text(friendsCount.toString()),
+          const Text('amis ajoutés'),
+        ],
       ),
     );
   }

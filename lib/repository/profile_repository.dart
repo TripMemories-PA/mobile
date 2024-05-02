@@ -1,3 +1,4 @@
+import '../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../object/profile/profile.dart';
 import '../service/profile_remote_data_source.dart';
 
@@ -9,6 +10,7 @@ class ProfileRepository {
   });
 
   final ProfileRemoteDataSource profileRemoteDataSource;
+
   //final ProfileLocalDataSource profilelocalDataSource;
 
   Future<Profile> getProfile(String id) async {
@@ -22,4 +24,12 @@ class ProfileRepository {
   Future<void> updateProfile(Profile profile) async {}
 
   Future<void> updatePassword(String password) async {}
+
+  Future<GetFriendsPaginationResponse> getFriends({
+    required String id,
+    required int page,
+    required int perPage,
+  }) async {
+    return profileRemoteDataSource.getFriends(id: id, page: page, perPage: perPage);
+  }
 }

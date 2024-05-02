@@ -31,10 +31,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             ),
           );
           emit(const LoginState.notLoading());
-          print('LOGGED IN');
         } catch (exception) {
           if (exception is CustomException) {
-            print(exception.apiError.getDescription());
             emit(
               LoginState.error(
                 error: exception.apiError,

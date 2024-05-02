@@ -1,7 +1,8 @@
 import '../../object/profile/profile.dart';
+import 'response/friends/get_friends_pagination_response.dart';
 
 abstract class IProfileService {
-  Future<Profile> getProfile(String id);
+  Future<Profile> getProfile({required String id});
 
   Future<void> updateProfile({
     String? username,
@@ -13,4 +14,6 @@ abstract class IProfileService {
   Future<void> updatePassword({
     required String password,
   });
+
+  Future<GetFriendsPaginationResponse> getFriends({required String id, required int page, required int perPage});
 }

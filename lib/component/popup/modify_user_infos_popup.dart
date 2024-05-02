@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../bloc/profile/profile_bloc.dart';
 import '../../num_extensions.dart';
+import '../../object/profile/profile.dart';
 import '../custom_card.dart';
 import '../form/modify_password_form.dart';
 import '../form/modify_user_infos_form.dart';
@@ -9,7 +12,10 @@ import '../form/modify_user_infos_form.dart';
 class UserInfosFormPopup extends StatelessWidget {
   const UserInfosFormPopup({
     super.key,
+    required this.profileBloc,
   });
+
+  final ProfileBloc profileBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +30,7 @@ class UserInfosFormPopup extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
+    final Profile profile = profileBloc.state.profile!;
     return ListView(
       children: [
         SizedBox(
@@ -66,7 +73,9 @@ class UserInfosFormPopup extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
-              const ModifyUserInfosForm(),
+              ModifyUserInfosForm(
+                profile: profile,
+              ),
               15.ph,
               const UpdatePasswordForm(),
             ],
@@ -81,9 +90,11 @@ Future<bool> modifyUserInfosPopup(
   BuildContext context, {
   Color? color,
 }) async {
-  return (await showDialog<bool>(
+  return await showDialog<bool>(
         context: context,
-        builder: (_) => const UserInfosFormPopup(),
-      )) ??
+        builder: (_) => UserInfosFormPopup(
+          profileBloc: context.read<ProfileBloc>(),
+        ),
+      ) ??
       false;
 }

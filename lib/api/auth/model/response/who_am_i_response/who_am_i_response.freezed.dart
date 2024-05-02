@@ -25,11 +25,10 @@ mixin _$WhoAmIResponse {
   String get username => throw _privateConstructorUsedError;
   String? get firstname => throw _privateConstructorUsedError;
   String? get lastname => throw _privateConstructorUsedError;
-  @JsonKey(name: 'createdAt')
   String get createdAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'updatedAt')
   String get updatedAt => throw _privateConstructorUsedError;
-  String? get avatar => throw _privateConstructorUsedError;
+  UploadFile? get avatar => throw _privateConstructorUsedError;
+  UploadFile? get banner => throw _privateConstructorUsedError;
   List<FriendRequest>? get sentFriendRequests =>
       throw _privateConstructorUsedError;
   List<FriendRequest>? get receivedFriendRequests =>
@@ -54,12 +53,16 @@ abstract class $WhoAmIResponseCopyWith<$Res> {
       String username,
       String? firstname,
       String? lastname,
-      @JsonKey(name: 'createdAt') String createdAt,
-      @JsonKey(name: 'updatedAt') String updatedAt,
-      String? avatar,
+      String createdAt,
+      String updatedAt,
+      UploadFile? avatar,
+      UploadFile? banner,
       List<FriendRequest>? sentFriendRequests,
       List<FriendRequest>? receivedFriendRequests,
       List<dynamic>? friends});
+
+  $UploadFileCopyWith<$Res>? get avatar;
+  $UploadFileCopyWith<$Res>? get banner;
 }
 
 /// @nodoc
@@ -83,6 +86,7 @@ class _$WhoAmIResponseCopyWithImpl<$Res, $Val extends WhoAmIResponse>
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? avatar = freezed,
+    Object? banner = freezed,
     Object? sentFriendRequests = freezed,
     Object? receivedFriendRequests = freezed,
     Object? friends = freezed,
@@ -119,7 +123,11 @@ class _$WhoAmIResponseCopyWithImpl<$Res, $Val extends WhoAmIResponse>
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as UploadFile?,
+      banner: freezed == banner
+          ? _value.banner
+          : banner // ignore: cast_nullable_to_non_nullable
+              as UploadFile?,
       sentFriendRequests: freezed == sentFriendRequests
           ? _value.sentFriendRequests
           : sentFriendRequests // ignore: cast_nullable_to_non_nullable
@@ -133,6 +141,30 @@ class _$WhoAmIResponseCopyWithImpl<$Res, $Val extends WhoAmIResponse>
           : friends // ignore: cast_nullable_to_non_nullable
               as List<dynamic>?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UploadFileCopyWith<$Res>? get avatar {
+    if (_value.avatar == null) {
+      return null;
+    }
+
+    return $UploadFileCopyWith<$Res>(_value.avatar!, (value) {
+      return _then(_value.copyWith(avatar: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UploadFileCopyWith<$Res>? get banner {
+    if (_value.banner == null) {
+      return null;
+    }
+
+    return $UploadFileCopyWith<$Res>(_value.banner!, (value) {
+      return _then(_value.copyWith(banner: value) as $Val);
+    });
   }
 }
 
@@ -150,12 +182,18 @@ abstract class _$$WhoAmIResponseImplCopyWith<$Res>
       String username,
       String? firstname,
       String? lastname,
-      @JsonKey(name: 'createdAt') String createdAt,
-      @JsonKey(name: 'updatedAt') String updatedAt,
-      String? avatar,
+      String createdAt,
+      String updatedAt,
+      UploadFile? avatar,
+      UploadFile? banner,
       List<FriendRequest>? sentFriendRequests,
       List<FriendRequest>? receivedFriendRequests,
       List<dynamic>? friends});
+
+  @override
+  $UploadFileCopyWith<$Res>? get avatar;
+  @override
+  $UploadFileCopyWith<$Res>? get banner;
 }
 
 /// @nodoc
@@ -177,6 +215,7 @@ class __$$WhoAmIResponseImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? avatar = freezed,
+    Object? banner = freezed,
     Object? sentFriendRequests = freezed,
     Object? receivedFriendRequests = freezed,
     Object? friends = freezed,
@@ -213,7 +252,11 @@ class __$$WhoAmIResponseImplCopyWithImpl<$Res>
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as UploadFile?,
+      banner: freezed == banner
+          ? _value.banner
+          : banner // ignore: cast_nullable_to_non_nullable
+              as UploadFile?,
       sentFriendRequests: freezed == sentFriendRequests
           ? _value._sentFriendRequests
           : sentFriendRequests // ignore: cast_nullable_to_non_nullable
@@ -239,9 +282,10 @@ class _$WhoAmIResponseImpl implements _WhoAmIResponse {
       required this.username,
       this.firstname,
       this.lastname,
-      @JsonKey(name: 'createdAt') required this.createdAt,
-      @JsonKey(name: 'updatedAt') required this.updatedAt,
+      required this.createdAt,
+      required this.updatedAt,
       this.avatar,
+      this.banner,
       final List<FriendRequest>? sentFriendRequests,
       final List<FriendRequest>? receivedFriendRequests,
       final List<dynamic>? friends})
@@ -263,13 +307,13 @@ class _$WhoAmIResponseImpl implements _WhoAmIResponse {
   @override
   final String? lastname;
   @override
-  @JsonKey(name: 'createdAt')
   final String createdAt;
   @override
-  @JsonKey(name: 'updatedAt')
   final String updatedAt;
   @override
-  final String? avatar;
+  final UploadFile? avatar;
+  @override
+  final UploadFile? banner;
   final List<FriendRequest>? _sentFriendRequests;
   @override
   List<FriendRequest>? get sentFriendRequests {
@@ -304,7 +348,7 @@ class _$WhoAmIResponseImpl implements _WhoAmIResponse {
 
   @override
   String toString() {
-    return 'WhoAmIResponse(id: $id, email: $email, username: $username, firstname: $firstname, lastname: $lastname, createdAt: $createdAt, updatedAt: $updatedAt, avatar: $avatar, sentFriendRequests: $sentFriendRequests, receivedFriendRequests: $receivedFriendRequests, friends: $friends)';
+    return 'WhoAmIResponse(id: $id, email: $email, username: $username, firstname: $firstname, lastname: $lastname, createdAt: $createdAt, updatedAt: $updatedAt, avatar: $avatar, banner: $banner, sentFriendRequests: $sentFriendRequests, receivedFriendRequests: $receivedFriendRequests, friends: $friends)';
   }
 
   @override
@@ -325,6 +369,7 @@ class _$WhoAmIResponseImpl implements _WhoAmIResponse {
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.banner, banner) || other.banner == banner) &&
             const DeepCollectionEquality()
                 .equals(other._sentFriendRequests, _sentFriendRequests) &&
             const DeepCollectionEquality().equals(
@@ -344,6 +389,7 @@ class _$WhoAmIResponseImpl implements _WhoAmIResponse {
       createdAt,
       updatedAt,
       avatar,
+      banner,
       const DeepCollectionEquality().hash(_sentFriendRequests),
       const DeepCollectionEquality().hash(_receivedFriendRequests),
       const DeepCollectionEquality().hash(_friends));
@@ -370,9 +416,10 @@ abstract class _WhoAmIResponse implements WhoAmIResponse {
       required final String username,
       final String? firstname,
       final String? lastname,
-      @JsonKey(name: 'createdAt') required final String createdAt,
-      @JsonKey(name: 'updatedAt') required final String updatedAt,
-      final String? avatar,
+      required final String createdAt,
+      required final String updatedAt,
+      final UploadFile? avatar,
+      final UploadFile? banner,
       final List<FriendRequest>? sentFriendRequests,
       final List<FriendRequest>? receivedFriendRequests,
       final List<dynamic>? friends}) = _$WhoAmIResponseImpl;
@@ -391,13 +438,13 @@ abstract class _WhoAmIResponse implements WhoAmIResponse {
   @override
   String? get lastname;
   @override
-  @JsonKey(name: 'createdAt')
   String get createdAt;
   @override
-  @JsonKey(name: 'updatedAt')
   String get updatedAt;
   @override
-  String? get avatar;
+  UploadFile? get avatar;
+  @override
+  UploadFile? get banner;
   @override
   List<FriendRequest>? get sentFriendRequests;
   @override

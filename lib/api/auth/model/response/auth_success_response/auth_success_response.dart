@@ -9,7 +9,7 @@ class AuthSuccessResponse with _$AuthSuccessResponse {
   const factory AuthSuccessResponse({
     required String type,
     required String token,
-    @JsonKey(name: 'expires_at') required String expiresAt,
+    required DateTime createdAt,
   }) = _AuthSuccessResponse;
 
   factory AuthSuccessResponse.fromJson(Map<String, dynamic> json) =>

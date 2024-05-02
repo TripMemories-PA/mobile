@@ -15,7 +15,12 @@ _$WhoAmIResponseImpl _$$WhoAmIResponseImplFromJson(Map<String, dynamic> json) =>
       lastname: json['lastname'] as String?,
       createdAt: json['createdAt'] as String,
       updatedAt: json['updatedAt'] as String,
-      avatar: json['avatar'] as String?,
+      avatar: json['avatar'] == null
+          ? null
+          : UploadFile.fromJson(json['avatar'] as Map<String, dynamic>),
+      banner: json['banner'] == null
+          ? null
+          : UploadFile.fromJson(json['banner'] as Map<String, dynamic>),
       sentFriendRequests: (json['sentFriendRequests'] as List<dynamic>?)
           ?.map((e) => FriendRequest.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -36,6 +41,7 @@ Map<String, dynamic> _$$WhoAmIResponseImplToJson(
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
       'avatar': instance.avatar,
+      'banner': instance.banner,
       'sentFriendRequests': instance.sentFriendRequests,
       'receivedFriendRequests': instance.receivedFriendRequests,
       'friends': instance.friends,

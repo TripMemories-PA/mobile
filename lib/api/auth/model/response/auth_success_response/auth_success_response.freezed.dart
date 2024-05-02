@@ -22,8 +22,7 @@ AuthSuccessResponse _$AuthSuccessResponseFromJson(Map<String, dynamic> json) {
 mixin _$AuthSuccessResponse {
   String get type => throw _privateConstructorUsedError;
   String get token => throw _privateConstructorUsedError;
-  @JsonKey(name: 'expires_at')
-  String get expiresAt => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,10 +36,7 @@ abstract class $AuthSuccessResponseCopyWith<$Res> {
           AuthSuccessResponse value, $Res Function(AuthSuccessResponse) then) =
       _$AuthSuccessResponseCopyWithImpl<$Res, AuthSuccessResponse>;
   @useResult
-  $Res call(
-      {String type,
-      String token,
-      @JsonKey(name: 'expires_at') String expiresAt});
+  $Res call({String type, String token, DateTime createdAt});
 }
 
 /// @nodoc
@@ -58,7 +54,7 @@ class _$AuthSuccessResponseCopyWithImpl<$Res, $Val extends AuthSuccessResponse>
   $Res call({
     Object? type = null,
     Object? token = null,
-    Object? expiresAt = null,
+    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
       type: null == type
@@ -69,10 +65,10 @@ class _$AuthSuccessResponseCopyWithImpl<$Res, $Val extends AuthSuccessResponse>
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as String,
-      expiresAt: null == expiresAt
-          ? _value.expiresAt
-          : expiresAt // ignore: cast_nullable_to_non_nullable
-              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 }
@@ -85,10 +81,7 @@ abstract class _$$AuthSuccessResponseImplCopyWith<$Res>
       __$$AuthSuccessResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String type,
-      String token,
-      @JsonKey(name: 'expires_at') String expiresAt});
+  $Res call({String type, String token, DateTime createdAt});
 }
 
 /// @nodoc
@@ -104,7 +97,7 @@ class __$$AuthSuccessResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? type = null,
     Object? token = null,
-    Object? expiresAt = null,
+    Object? createdAt = null,
   }) {
     return _then(_$AuthSuccessResponseImpl(
       type: null == type
@@ -115,10 +108,10 @@ class __$$AuthSuccessResponseImplCopyWithImpl<$Res>
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as String,
-      expiresAt: null == expiresAt
-          ? _value.expiresAt
-          : expiresAt // ignore: cast_nullable_to_non_nullable
-              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -127,9 +120,7 @@ class __$$AuthSuccessResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AuthSuccessResponseImpl implements _AuthSuccessResponse {
   const _$AuthSuccessResponseImpl(
-      {required this.type,
-      required this.token,
-      @JsonKey(name: 'expires_at') required this.expiresAt});
+      {required this.type, required this.token, required this.createdAt});
 
   factory _$AuthSuccessResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthSuccessResponseImplFromJson(json);
@@ -139,12 +130,11 @@ class _$AuthSuccessResponseImpl implements _AuthSuccessResponse {
   @override
   final String token;
   @override
-  @JsonKey(name: 'expires_at')
-  final String expiresAt;
+  final DateTime createdAt;
 
   @override
   String toString() {
-    return 'AuthSuccessResponse(type: $type, token: $token, expiresAt: $expiresAt)';
+    return 'AuthSuccessResponse(type: $type, token: $token, createdAt: $createdAt)';
   }
 
   @override
@@ -154,13 +144,13 @@ class _$AuthSuccessResponseImpl implements _AuthSuccessResponse {
             other is _$AuthSuccessResponseImpl &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.token, token) || other.token == token) &&
-            (identical(other.expiresAt, expiresAt) ||
-                other.expiresAt == expiresAt));
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, type, token, expiresAt);
+  int get hashCode => Object.hash(runtimeType, type, token, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -179,10 +169,9 @@ class _$AuthSuccessResponseImpl implements _AuthSuccessResponse {
 
 abstract class _AuthSuccessResponse implements AuthSuccessResponse {
   const factory _AuthSuccessResponse(
-          {required final String type,
-          required final String token,
-          @JsonKey(name: 'expires_at') required final String expiresAt}) =
-      _$AuthSuccessResponseImpl;
+      {required final String type,
+      required final String token,
+      required final DateTime createdAt}) = _$AuthSuccessResponseImpl;
 
   factory _AuthSuccessResponse.fromJson(Map<String, dynamic> json) =
       _$AuthSuccessResponseImpl.fromJson;
@@ -192,8 +181,7 @@ abstract class _AuthSuccessResponse implements AuthSuccessResponse {
   @override
   String get token;
   @override
-  @JsonKey(name: 'expires_at')
-  String get expiresAt;
+  DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$AuthSuccessResponseImplCopyWith<_$AuthSuccessResponseImpl> get copyWith =>

@@ -15,8 +15,6 @@ class ProfileBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Profile? currentStateProfile =
-        context.read<ProfileBloc>().state.profile;
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         return SizedBox(
@@ -31,9 +29,9 @@ class ProfileBanner extends StatelessWidget {
                   borderRadius: const BorderRadius.all(
                     Radius.circular(50.0),
                   ),
-                  child: currentStateProfile?.avatar?.url != null
+                  child: context.read<ProfileBloc>().state.profile?.avatar?.url != null
                       ? Image.network(
-                          currentStateProfile!.avatar!.url,
+                          context.read<ProfileBloc>().state.profile!.avatar!.url,
                           fit: BoxFit.cover,
                         )
                       : const CircleAvatar(
@@ -54,14 +52,14 @@ class ProfileBanner extends StatelessWidget {
                       Column(
                         children: [
                           Text(
-                            '${currentStateProfile?.firstname ?? 'User'} ${currentStateProfile?.lastname ?? currentStateProfile?.id.toString()}',
+                            '${context.read<ProfileBloc>().state.profile?.firstname ?? 'User'} ${context.read<ProfileBloc>().state.profile?.lastname ?? context.read<ProfileBloc>().state.profile?.id.toString()}',
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            '@${currentStateProfile?.username}',
+                            '@${context.read<ProfileBloc>().state.profile?.username}',
                             style: const TextStyle(
                                 fontSize: 15, color: Colors.grey),
                           ),

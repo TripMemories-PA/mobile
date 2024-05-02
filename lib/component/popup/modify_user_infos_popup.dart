@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../bloc/profile/profile_bloc.dart';
+import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
 import '../../object/profile/profile.dart';
 import '../custom_card.dart';
@@ -47,12 +48,25 @@ class UserInfosFormPopup extends StatelessWidget {
                 bottom: 0,
                 left: MediaQuery.of(context).size.width * 0.35,
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.20,
+                  width: 100,
+                  height: 100,
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(
                       Radius.circular(50.0),
                     ),
-                    child: Image.asset('assets/images/profileSample.png'),
+                    child: profile.avatar?.url != null
+                        ? Image.network(
+                      profile.avatar!.url,
+                      fit: BoxFit.cover,
+                    )
+                        : const CircleAvatar(
+                      backgroundColor: MyColors.lightGrey,
+                      child: Icon(
+                        Icons.person,
+                        size: 50,
+                        color: Colors.grey,
+                      ),
+                    ),
                   ),
                 ),
               ),

@@ -103,10 +103,6 @@ class LoginForm extends HookWidget {
                 ),
                 if (context.read<LoginBloc>().state.loading)
                   const CircularProgressIndicator(),
-                ElevatedButton(
-                  onPressed: () => print(context.read<AuthBloc>().state.status),
-                  child: const Text('coucou'),
-                ),
               ],
             ),
           );

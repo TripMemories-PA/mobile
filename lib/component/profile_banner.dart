@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trip_memories_mobile/component/popup/confirmation_logout_dialog.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_event.dart';
@@ -8,6 +7,7 @@ import '../bloc/profile/profile_bloc.dart';
 import '../constants/my_colors.dart';
 import '../object/profile/profile.dart';
 import 'custom_card.dart';
+import 'popup/confirmation_logout_dialog.dart';
 import 'popup/modify_user_infos_popup.dart';
 
 class ProfileBanner extends StatelessWidget {
@@ -26,22 +26,23 @@ class ProfileBanner extends StatelessWidget {
             width: 100,
             height: 100,
             child: ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(50.0),
-                ),
-                child: currentStateProfile?.avatar?.url != null
-                    ? Image.network(
-                        currentStateProfile!.avatar!.url,
-                        fit: BoxFit.cover,
-                      )
-                    : const CircleAvatar(
-                        backgroundColor: MyColors.lightGrey,
-                        child: Icon(
-                          Icons.person,
-                          size: 50,
-                          color: Colors.grey,
-                        ),
-                      )),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(50.0),
+              ),
+              child: currentStateProfile?.avatar?.url != null
+                  ? Image.network(
+                      currentStateProfile!.avatar!.url,
+                      fit: BoxFit.cover,
+                    )
+                  : const CircleAvatar(
+                      backgroundColor: MyColors.lightGrey,
+                      child: Icon(
+                        Icons.person,
+                        size: 50,
+                        color: Colors.grey,
+                      ),
+                    ),
+            ),
           ),
           Column(
             children: [

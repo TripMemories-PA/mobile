@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../bloc/profile/profile_bloc.dart';
 import '../constants/my_colors.dart';
 import '../object/profile/profile.dart';

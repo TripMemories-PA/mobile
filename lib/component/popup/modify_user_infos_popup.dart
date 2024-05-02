@@ -34,7 +34,7 @@ class UserInfosFormPopup extends StatelessWidget {
     final Profile profile = profileBloc.state.profile!;
     final String? avatarUrl = profile.avatar?.url;
     final String? bannerUrl = profile.banner?.url;
-    return ListView(
+    return Column(
       children: [
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.26,
@@ -42,14 +42,16 @@ class UserInfosFormPopup extends StatelessWidget {
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 210,
-                child: bannerUrl !=
-                    null
-                    ? Image.network(
-                  bannerUrl,
-                  fit: BoxFit.cover,
-                )
-                    : Image.asset('assets/images/louvre.png'),
+                height: 200,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(14.0),
+                  child: bannerUrl != null
+                      ? Image.network(
+                          bannerUrl,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset('assets/images/louvre.png'),
+                ),
               ),
               Positioned(
                 bottom: 0,
@@ -63,17 +65,17 @@ class UserInfosFormPopup extends StatelessWidget {
                     ),
                     child: avatarUrl != null
                         ? Image.network(
-                      avatarUrl,
-                      fit: BoxFit.cover,
-                    )
+                            avatarUrl,
+                            fit: BoxFit.cover,
+                          )
                         : const CircleAvatar(
-                      backgroundColor: MyColors.lightGrey,
-                      child: Icon(
-                        Icons.person,
-                        size: 50,
-                        color: Colors.grey,
-                      ),
-                    ),
+                            backgroundColor: MyColors.lightGrey,
+                            child: Icon(
+                              Icons.person,
+                              size: 50,
+                              color: Colors.grey,
+                            ),
+                          ),
                   ),
                 ),
               ),

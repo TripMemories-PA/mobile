@@ -15,6 +15,7 @@ class Profile with _$Profile {
     required String? firstname,
     required String? lastname,
     UploadFile? avatar,
+    UploadFile? banner,
   }) = _Profile;
 
   factory Profile.fromJson(Map<String, dynamic> json) =>

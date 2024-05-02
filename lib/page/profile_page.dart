@@ -100,7 +100,11 @@ class ProfilePage extends StatelessWidget {
               bottomLeft: Radius.circular(20.0),
               bottomRight: Radius.circular(20.0),
             ),
-            child: Image.asset('assets/images/louvre.png'),
+            child: context.read<ProfileBloc>().state.profile?.banner?.url != null ? Image.network(
+              context.read<ProfileBloc>().state.profile!.avatar!.url,
+              fit: BoxFit.cover,
+            )
+                : Image.asset('assets/images/louvre.png'),
           ),
           const Positioned(bottom: 0, child: ProfileBanner()),
         ],

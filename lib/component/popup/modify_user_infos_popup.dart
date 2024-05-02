@@ -34,15 +34,15 @@ class UserInfosFormPopup extends StatelessWidget {
     final Profile profile = profileBloc.state.profile!;
     final String? avatarUrl = profile.avatar?.url;
     final String? bannerUrl = profile.banner?.url;
-    return Column(
+    return ListView(
       children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.26,
+          height: MediaQuery.of(context).size.height * 0.23,
           child: Stack(
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 200,
+                height: 180,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(14.0),
                   child: bannerUrl != null
@@ -110,14 +110,16 @@ class UserInfosFormPopup extends StatelessWidget {
 }
 
 Future<bool> modifyUserInfosPopup(
-  BuildContext context, {
-  Color? color,
-}) async {
+    BuildContext context, {
+      Color? color,
+    }) async {
   return await showDialog<bool>(
-        context: context,
-        builder: (_) => UserInfosFormPopup(
-          profileBloc: context.read<ProfileBloc>(),
-        ),
-      ) ??
+    context: context,
+    builder: (_) => Scaffold(
+      body: UserInfosFormPopup(
+        profileBloc: context.read<ProfileBloc>(),
+      ),
+    ),
+  ) ??
       false;
 }

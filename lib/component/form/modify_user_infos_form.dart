@@ -14,9 +14,8 @@ class ModifyUserInfosForm extends HookWidget {
     required this.profile,
   });
 
-final Profile profile;
+  final Profile profile;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
 
   @override
   Widget build(BuildContext context) {
@@ -113,13 +112,14 @@ final Profile profile;
             onTap: () async {
               if (formKey.currentState!.validate()) {
                 context.read<ProfileBloc>().add(
-                  UpdateProfileEvent(
-                    username: usernameController.text,
-                    lastName: lastName.text,
-                    firstName: firstNameController.text,
-                    email: emailController.text,
-                  ),
-                );              }
+                      UpdateProfileEvent(
+                        username: usernameController.text,
+                        lastName: lastName.text,
+                        firstName: firstNameController.text,
+                        email: emailController.text,
+                      ),
+                    );
+              }
             },
             child: Container(
               height: 45,

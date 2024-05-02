@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -63,8 +64,7 @@ class MyFriendsComponent extends StatelessWidget {
       return const Center(child: Text('Aucun amis ajouté'));
     }
     return Flexible(
-      child: ListView(
-        padding: const EdgeInsets.only(top: 10, bottom: 100),
+      child: Column(
         children: context
                 .read<ProfileBloc>()
                 .state
@@ -80,6 +80,7 @@ class MyFriendsComponent extends StatelessWidget {
   }
 
   CustomCard _buildFriendCard(BuildContext context, Profile friend) {
+    final String? avatarUrl = friend.avatar?.url;
     return CustomCard(
       width: MediaQuery.of(context).size.width * 0.90,
       height: 55,
@@ -99,19 +100,46 @@ class MyFriendsComponent extends StatelessWidget {
                   borderRadius: const BorderRadius.all(
                     Radius.circular(50.0),
                   ),
-                  child: Image.asset('assets/images/profileSample.png'),
+                  child: avatarUrl != null
+                      ? CachedNetworkImage(
+                    imageUrl: avatarUrl,
+                    fit: BoxFit.cover,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Center(
+                      child: CircularProgressIndicator(
+                        value: downloadProgress.progress,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) =>
+                    const Icon(Icons.error),
+                  )
+                      : const CircleAvatar(
+                          backgroundColor: MyColors.lightGrey,
+                          child: Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(width: 10),
-              const Column(
+              Column(
                 children: [
                   Text(
-                    'Jane Doe',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    '${friend.firstname} ' '${friend.lastname}',
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    '@jane_doe',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    '@${friend.username}',
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),

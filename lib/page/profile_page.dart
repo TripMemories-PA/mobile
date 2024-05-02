@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -90,20 +91,32 @@ class ProfilePage extends StatelessWidget {
   }
 
   SizedBox _buildProfileInfos(BuildContext context) {
+    final String? bannerUrl =
+        context.read<ProfileBloc>().state.profile?.banner?.url;
     return SizedBox(
       height: 280,
       width: MediaQuery.of(context).size.width,
       child: Stack(
         children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(20.0),
-              bottomRight: Radius.circular(20.0),
-            ),
-            child: context.read<ProfileBloc>().state.profile?.banner?.url != null ? Image.network(
-              context.read<ProfileBloc>().state.profile!.avatar!.url,
-              fit: BoxFit.cover,
-            )
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 210,
+            child: bannerUrl != null
+                ? CachedNetworkImage(
+                    imageUrl: bannerUrl,
+                    fit: BoxFit.cover,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Center(
+                      child: CircularProgressIndicator(
+                        value: downloadProgress.progress,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  )
                 : Image.asset('assets/images/louvre.png'),
           ),
           const Positioned(bottom: 0, child: ProfileBanner()),

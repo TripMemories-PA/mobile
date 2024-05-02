@@ -18,7 +18,9 @@ class LoginForm extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController emailController = useTextEditingController();
+    emailController.text = 'test@mail.com';
     final TextEditingController passwordController = useTextEditingController();
+    passwordController.text = 'Test1234!';
     useTextEditingController();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return BlocProvider(

@@ -13,8 +13,6 @@ _$WhoAmIResponseImpl _$$WhoAmIResponseImplFromJson(Map<String, dynamic> json) =>
       username: json['username'] as String,
       firstname: json['firstname'] as String?,
       lastname: json['lastname'] as String?,
-      createdAt: json['createdAt'] as String,
-      updatedAt: json['updatedAt'] as String,
       avatar: json['avatar'] == null
           ? null
           : UploadFile.fromJson(json['avatar'] as Map<String, dynamic>),
@@ -38,8 +36,6 @@ Map<String, dynamic> _$$WhoAmIResponseImplToJson(
       'username': instance.username,
       'firstname': instance.firstname,
       'lastname': instance.lastname,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
       'avatar': instance.avatar,
       'banner': instance.banner,
       'sentFriendRequests': instance.sentFriendRequests,

@@ -32,17 +32,24 @@ class UserInfosFormPopup extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     final Profile profile = profileBloc.state.profile!;
+    final String? avatarUrl = profile.avatar?.url;
+    final String? bannerUrl = profile.banner?.url;
     return ListView(
       children: [
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.26,
           child: Stack(
             children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(15.0),
-                ),
-                child: Image.asset('assets/images/louvre.png'),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 210,
+                child: bannerUrl !=
+                    null
+                    ? Image.network(
+                  bannerUrl,
+                  fit: BoxFit.cover,
+                )
+                    : Image.asset('assets/images/louvre.png'),
               ),
               Positioned(
                 bottom: 0,
@@ -54,9 +61,9 @@ class UserInfosFormPopup extends StatelessWidget {
                     borderRadius: const BorderRadius.all(
                       Radius.circular(50.0),
                     ),
-                    child: profile.avatar?.url != null
+                    child: avatarUrl != null
                         ? Image.network(
-                      profile.avatar!.url,
+                      avatarUrl,
                       fit: BoxFit.cover,
                     )
                         : const CircleAvatar(

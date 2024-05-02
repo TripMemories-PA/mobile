@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -5,7 +6,6 @@ import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_event.dart';
 import '../bloc/profile/profile_bloc.dart';
 import '../constants/my_colors.dart';
-import '../object/profile/profile.dart';
 import 'custom_card.dart';
 import 'popup/confirmation_logout_dialog.dart';
 import 'popup/modify_user_infos_popup.dart';
@@ -15,6 +15,8 @@ class ProfileBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String? avatarUrl =
+        context.read<ProfileBloc>().state.profile?.avatar?.url;
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         return SizedBox(
@@ -29,10 +31,21 @@ class ProfileBanner extends StatelessWidget {
                   borderRadius: const BorderRadius.all(
                     Radius.circular(50.0),
                   ),
-                  child: context.read<ProfileBloc>().state.profile?.avatar?.url != null
-                      ? Image.network(
-                          context.read<ProfileBloc>().state.profile!.avatar!.url,
+                  child: avatarUrl != null
+                      ? CachedNetworkImage(
+                          imageUrl: avatarUrl,
                           fit: BoxFit.cover,
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Center(
+                            child: CircularProgressIndicator(
+                              value: downloadProgress.progress,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).colorScheme.error,
+                              ),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
                         )
                       : const CircleAvatar(
                           backgroundColor: MyColors.lightGrey,

@@ -22,7 +22,6 @@ AuthSuccessResponse _$AuthSuccessResponseFromJson(Map<String, dynamic> json) {
 mixin _$AuthSuccessResponse {
   String get type => throw _privateConstructorUsedError;
   String get token => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +35,7 @@ abstract class $AuthSuccessResponseCopyWith<$Res> {
           AuthSuccessResponse value, $Res Function(AuthSuccessResponse) then) =
       _$AuthSuccessResponseCopyWithImpl<$Res, AuthSuccessResponse>;
   @useResult
-  $Res call({String type, String token, DateTime createdAt});
+  $Res call({String type, String token});
 }
 
 /// @nodoc
@@ -54,7 +53,6 @@ class _$AuthSuccessResponseCopyWithImpl<$Res, $Val extends AuthSuccessResponse>
   $Res call({
     Object? type = null,
     Object? token = null,
-    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
       type: null == type
@@ -65,10 +63,6 @@ class _$AuthSuccessResponseCopyWithImpl<$Res, $Val extends AuthSuccessResponse>
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ) as $Val);
   }
 }
@@ -81,7 +75,7 @@ abstract class _$$AuthSuccessResponseImplCopyWith<$Res>
       __$$AuthSuccessResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String type, String token, DateTime createdAt});
+  $Res call({String type, String token});
 }
 
 /// @nodoc
@@ -97,7 +91,6 @@ class __$$AuthSuccessResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? type = null,
     Object? token = null,
-    Object? createdAt = null,
   }) {
     return _then(_$AuthSuccessResponseImpl(
       type: null == type
@@ -108,10 +101,6 @@ class __$$AuthSuccessResponseImplCopyWithImpl<$Res>
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ));
   }
 }
@@ -119,8 +108,7 @@ class __$$AuthSuccessResponseImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AuthSuccessResponseImpl implements _AuthSuccessResponse {
-  const _$AuthSuccessResponseImpl(
-      {required this.type, required this.token, required this.createdAt});
+  const _$AuthSuccessResponseImpl({required this.type, required this.token});
 
   factory _$AuthSuccessResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthSuccessResponseImplFromJson(json);
@@ -129,12 +117,10 @@ class _$AuthSuccessResponseImpl implements _AuthSuccessResponse {
   final String type;
   @override
   final String token;
-  @override
-  final DateTime createdAt;
 
   @override
   String toString() {
-    return 'AuthSuccessResponse(type: $type, token: $token, createdAt: $createdAt)';
+    return 'AuthSuccessResponse(type: $type, token: $token)';
   }
 
   @override
@@ -143,14 +129,12 @@ class _$AuthSuccessResponseImpl implements _AuthSuccessResponse {
         (other.runtimeType == runtimeType &&
             other is _$AuthSuccessResponseImpl &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.token, token) || other.token == token) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+            (identical(other.token, token) || other.token == token));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, type, token, createdAt);
+  int get hashCode => Object.hash(runtimeType, type, token);
 
   @JsonKey(ignore: true)
   @override
@@ -170,8 +154,7 @@ class _$AuthSuccessResponseImpl implements _AuthSuccessResponse {
 abstract class _AuthSuccessResponse implements AuthSuccessResponse {
   const factory _AuthSuccessResponse(
       {required final String type,
-      required final String token,
-      required final DateTime createdAt}) = _$AuthSuccessResponseImpl;
+      required final String token}) = _$AuthSuccessResponseImpl;
 
   factory _AuthSuccessResponse.fromJson(Map<String, dynamic> json) =
       _$AuthSuccessResponseImpl.fromJson;
@@ -180,8 +163,6 @@ abstract class _AuthSuccessResponse implements AuthSuccessResponse {
   String get type;
   @override
   String get token;
-  @override
-  DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$AuthSuccessResponseImplCopyWith<_$AuthSuccessResponseImpl> get copyWith =>

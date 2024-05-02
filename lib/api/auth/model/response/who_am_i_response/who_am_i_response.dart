@@ -14,8 +14,6 @@ class WhoAmIResponse with _$WhoAmIResponse {
     required String username,
     String? firstname,
     String? lastname,
-    required String createdAt,
-    required String updatedAt,
     UploadFile? avatar,
     UploadFile? banner,
     List<FriendRequest>? sentFriendRequests,

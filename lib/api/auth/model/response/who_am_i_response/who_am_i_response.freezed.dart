@@ -25,8 +25,6 @@ mixin _$WhoAmIResponse {
   String get username => throw _privateConstructorUsedError;
   String? get firstname => throw _privateConstructorUsedError;
   String? get lastname => throw _privateConstructorUsedError;
-  String get createdAt => throw _privateConstructorUsedError;
-  String get updatedAt => throw _privateConstructorUsedError;
   UploadFile? get avatar => throw _privateConstructorUsedError;
   UploadFile? get banner => throw _privateConstructorUsedError;
   List<FriendRequest>? get sentFriendRequests =>
@@ -53,8 +51,6 @@ abstract class $WhoAmIResponseCopyWith<$Res> {
       String username,
       String? firstname,
       String? lastname,
-      String createdAt,
-      String updatedAt,
       UploadFile? avatar,
       UploadFile? banner,
       List<FriendRequest>? sentFriendRequests,
@@ -83,8 +79,6 @@ class _$WhoAmIResponseCopyWithImpl<$Res, $Val extends WhoAmIResponse>
     Object? username = null,
     Object? firstname = freezed,
     Object? lastname = freezed,
-    Object? createdAt = null,
-    Object? updatedAt = null,
     Object? avatar = freezed,
     Object? banner = freezed,
     Object? sentFriendRequests = freezed,
@@ -112,14 +106,6 @@ class _$WhoAmIResponseCopyWithImpl<$Res, $Val extends WhoAmIResponse>
           ? _value.lastname
           : lastname // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
-      updatedAt: null == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String,
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
@@ -182,8 +168,6 @@ abstract class _$$WhoAmIResponseImplCopyWith<$Res>
       String username,
       String? firstname,
       String? lastname,
-      String createdAt,
-      String updatedAt,
       UploadFile? avatar,
       UploadFile? banner,
       List<FriendRequest>? sentFriendRequests,
@@ -212,8 +196,6 @@ class __$$WhoAmIResponseImplCopyWithImpl<$Res>
     Object? username = null,
     Object? firstname = freezed,
     Object? lastname = freezed,
-    Object? createdAt = null,
-    Object? updatedAt = null,
     Object? avatar = freezed,
     Object? banner = freezed,
     Object? sentFriendRequests = freezed,
@@ -241,14 +223,6 @@ class __$$WhoAmIResponseImplCopyWithImpl<$Res>
           ? _value.lastname
           : lastname // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
-      updatedAt: null == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String,
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
@@ -282,8 +256,6 @@ class _$WhoAmIResponseImpl implements _WhoAmIResponse {
       required this.username,
       this.firstname,
       this.lastname,
-      required this.createdAt,
-      required this.updatedAt,
       this.avatar,
       this.banner,
       final List<FriendRequest>? sentFriendRequests,
@@ -306,10 +278,6 @@ class _$WhoAmIResponseImpl implements _WhoAmIResponse {
   final String? firstname;
   @override
   final String? lastname;
-  @override
-  final String createdAt;
-  @override
-  final String updatedAt;
   @override
   final UploadFile? avatar;
   @override
@@ -348,7 +316,7 @@ class _$WhoAmIResponseImpl implements _WhoAmIResponse {
 
   @override
   String toString() {
-    return 'WhoAmIResponse(id: $id, email: $email, username: $username, firstname: $firstname, lastname: $lastname, createdAt: $createdAt, updatedAt: $updatedAt, avatar: $avatar, banner: $banner, sentFriendRequests: $sentFriendRequests, receivedFriendRequests: $receivedFriendRequests, friends: $friends)';
+    return 'WhoAmIResponse(id: $id, email: $email, username: $username, firstname: $firstname, lastname: $lastname, avatar: $avatar, banner: $banner, sentFriendRequests: $sentFriendRequests, receivedFriendRequests: $receivedFriendRequests, friends: $friends)';
   }
 
   @override
@@ -364,10 +332,6 @@ class _$WhoAmIResponseImpl implements _WhoAmIResponse {
                 other.firstname == firstname) &&
             (identical(other.lastname, lastname) ||
                 other.lastname == lastname) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
             (identical(other.banner, banner) || other.banner == banner) &&
             const DeepCollectionEquality()
@@ -386,8 +350,6 @@ class _$WhoAmIResponseImpl implements _WhoAmIResponse {
       username,
       firstname,
       lastname,
-      createdAt,
-      updatedAt,
       avatar,
       banner,
       const DeepCollectionEquality().hash(_sentFriendRequests),
@@ -416,8 +378,6 @@ abstract class _WhoAmIResponse implements WhoAmIResponse {
       required final String username,
       final String? firstname,
       final String? lastname,
-      required final String createdAt,
-      required final String updatedAt,
       final UploadFile? avatar,
       final UploadFile? banner,
       final List<FriendRequest>? sentFriendRequests,
@@ -437,10 +397,6 @@ abstract class _WhoAmIResponse implements WhoAmIResponse {
   String? get firstname;
   @override
   String? get lastname;
-  @override
-  String get createdAt;
-  @override
-  String get updatedAt;
   @override
   UploadFile? get avatar;
   @override

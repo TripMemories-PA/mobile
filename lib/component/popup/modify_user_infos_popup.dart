@@ -20,12 +20,19 @@ class UserInfosFormPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      insetPadding: EdgeInsets.zero,
-      child: CustomCard(
-        width: MediaQuery.of(context).size.width * 0.90,
-        height: MediaQuery.of(context).size.height * 0.81,
-        content: _buildContent(context),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Builder(
+        builder: (context) {
+          return Dialog(
+            insetPadding: EdgeInsets.zero,
+            child: CustomCard(
+              width: MediaQuery.of(context).size.width * 0.90,
+              height: MediaQuery.of(context).size.height * 0.81,
+              content: _buildContent(context),
+            ),
+          );
+        },
       ),
     );
   }
@@ -97,7 +104,7 @@ class UserInfosFormPopup extends StatelessWidget {
           child: Column(
             children: [
               ModifyUserInfosForm(
-                profile: profile,
+                profileBloc: profileBloc,
               ),
               15.ph,
               const UpdatePasswordForm(),
@@ -110,16 +117,14 @@ class UserInfosFormPopup extends StatelessWidget {
 }
 
 Future<bool> modifyUserInfosPopup(
-    BuildContext context, {
-      Color? color,
-    }) async {
+    BuildContext context,) async {
   return await showDialog<bool>(
     context: context,
-    builder: (_) => Scaffold(
-      body: UserInfosFormPopup(
+    builder: (_) =>
+       UserInfosFormPopup(
         profileBloc: context.read<ProfileBloc>(),
       ),
-    ),
+
   ) ??
       false;
 }

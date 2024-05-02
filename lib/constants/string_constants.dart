@@ -45,4 +45,6 @@ class StringConstants {
 
   String get confirmAction => 'Etes-vous sûr ?';
 
+  String get profileUpdated => 'Profil modifié !';
+
 }

@@ -98,14 +98,14 @@ class DioClient {
     return response;
   }
 
-  Future<Response> patch(
+  Future<Response> put(
     String path, {
     data,
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
     return _handleDioExceptions(
-      () => dio.patch(
+      () => dio.put(
         path,
         data: data,
         queryParameters: queryParameters,

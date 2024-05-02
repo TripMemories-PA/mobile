@@ -46,9 +46,16 @@ class ProfileService implements IProfileService {
     String? lastName,
     String? firstName,
     String? email,
-  }) {
-    // TODO(nono): implement updateProfile
-    throw UnimplementedError();
+  }) async {
+    await DioClient.instance.put(
+      apiProfileUrl,
+      data: {
+        'username': username,
+        'lastname': lastName,
+        'firstname': firstName,
+        'email': email,
+      },
+    );
   }
 
   @override

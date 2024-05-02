@@ -11,23 +11,23 @@ import '../../utils/field_validator.dart';
 class ModifyUserInfosForm extends HookWidget {
   ModifyUserInfosForm({
     super.key,
-    required this.profile,
+    required this.profileBloc,
   });
 
-  final Profile profile;
+  final ProfileBloc profileBloc;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController usernameController = useTextEditingController();
-    usernameController.text = profile.username;
+    usernameController.text = profileBloc.state.profile!.username;
     final TextEditingController lastName = useTextEditingController();
-    lastName.text = profile.lastname ?? '';
+    lastName.text = profileBloc.state.profile?.lastname ?? '';
     final TextEditingController firstNameController =
         useTextEditingController();
-    firstNameController.text = profile.firstname ?? '';
+    firstNameController.text = profileBloc.state.profile?.firstname ?? '';
     final TextEditingController emailController = useTextEditingController();
-    emailController.text = profile.email;
+    emailController.text = profileBloc.state.profile!.email;
     return Form(
       key: formKey,
       child: Column(
@@ -111,7 +111,8 @@ class ModifyUserInfosForm extends HookWidget {
           InkWell(
             onTap: () async {
               if (formKey.currentState!.validate()) {
-                context.read<ProfileBloc>().add(
+                FocusManager.instance.primaryFocus?.unfocus();
+                profileBloc.add(
                       UpdateProfileEvent(
                         username: usernameController.text,
                         lastName: lastName.text,

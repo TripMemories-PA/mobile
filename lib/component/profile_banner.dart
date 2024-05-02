@@ -17,108 +17,113 @@ class ProfileBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     final Profile? currentStateProfile =
         context.read<ProfileBloc>().state.profile;
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SizedBox(
-            width: 100,
-            height: 100,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(50.0),
-              ),
-              child: currentStateProfile?.avatar?.url != null
-                  ? Image.network(
-                      currentStateProfile!.avatar!.url,
-                      fit: BoxFit.cover,
-                    )
-                  : const CircleAvatar(
-                      backgroundColor: MyColors.lightGrey,
-                      child: Icon(
-                        Icons.person,
-                        size: 50,
-                        color: Colors.grey,
-                      ),
-                    ),
-            ),
-          ),
-          Column(
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const SizedBox(height: 30, width: 25),
-              Row(
+              SizedBox(
+                width: 100,
+                height: 100,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(50.0),
+                  ),
+                  child: currentStateProfile?.avatar?.url != null
+                      ? Image.network(
+                          currentStateProfile!.avatar!.url,
+                          fit: BoxFit.cover,
+                        )
+                      : const CircleAvatar(
+                          backgroundColor: MyColors.lightGrey,
+                          child: Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
+                        ),
+                ),
+              ),
+              Column(
                 children: [
-                  Column(
+                  const SizedBox(height: 30, width: 25),
+                  Row(
                     children: [
-                      Text(
-                        '${currentStateProfile?.firstname ?? 'User'} ${currentStateProfile?.lastname ?? currentStateProfile?.id.toString()}',
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
+                      Column(
+                        children: [
+                          Text(
+                            '${currentStateProfile?.firstname ?? 'User'} ${currentStateProfile?.lastname ?? currentStateProfile?.id.toString()}',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            '@${currentStateProfile?.username}',
+                            style: const TextStyle(
+                                fontSize: 15, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 10),
+                      InkWell(
+                        onTap: () async {
+                          final bool result = await confirmationLogout(
+                            context,
+                            title:
+                                'Etes-vous sûr de vouloir vous déconnecter ?',
+                          );
+                          if (!result) {
+                            return;
+                          } else {
+                            if (context.mounted) {
+                              context.read<AuthBloc>().add(
+                                    const ChangeToLoggedOutStatus(),
+                                  );
+                            }
+                          }
+                        },
+                        child: const CustomCard(
+                          width: 50,
+                          height: 25,
+                          backgroundColor: Colors.red,
+                          content: Icon(
+                            Icons.logout,
+                            color: Colors.white,
+                            size: 15,
+                          ),
+                          borderColor: Colors.transparent,
                         ),
                       ),
-                      Text(
-                        '@${currentStateProfile?.username}',
-                        style:
-                            const TextStyle(fontSize: 15, color: Colors.grey),
+                      const SizedBox(width: 10),
+                      InkWell(
+                        onTap: () async {
+                          await modifyUserInfosPopup(context);
+                        },
+                        child: const CustomCard(
+                          width: 100,
+                          height: 25,
+                          content: Text(
+                            'Editer',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          borderColor: Colors.transparent,
+                          backgroundColor: MyColors.purple,
+                        ),
                       ),
                     ],
-                  ),
-                  const SizedBox(width: 10),
-                  InkWell(
-                    onTap: () async {
-                      final bool result = await confirmationLogout(
-                        context,
-                        title: 'Etes-vous sûr de vouloir vous déconnecter ?',
-                      );
-                      if (!result) {
-                        return;
-                      } else {
-                        if (context.mounted) {
-                          context.read<AuthBloc>().add(
-                                const ChangeToLoggedOutStatus(),
-                              );
-                        }
-                      }
-                    },
-                    child: const CustomCard(
-                      width: 50,
-                      height: 25,
-                      backgroundColor: Colors.red,
-                      content: Icon(
-                        Icons.logout,
-                        color: Colors.white,
-                        size: 15,
-                      ),
-                      borderColor: Colors.transparent,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  InkWell(
-                    onTap: () async {
-                      await modifyUserInfosPopup(context);
-                    },
-                    child: const CustomCard(
-                      width: 100,
-                      height: 25,
-                      content: Text(
-                        'Editer',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      borderColor: Colors.transparent,
-                      backgroundColor: MyColors.purple,
-                    ),
                   ),
                 ],
               ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

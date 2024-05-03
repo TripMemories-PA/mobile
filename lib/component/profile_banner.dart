@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,6 +9,7 @@ import 'bouncing_widget.dart';
 import 'custom_card.dart';
 import 'popup/confirmation_logout_dialog.dart';
 import 'popup/modify_user_infos_popup.dart';
+import 'profile_picture.dart';
 
 class ProfileBanner extends StatelessWidget {
   const ProfileBanner({super.key});
@@ -25,39 +25,7 @@ class ProfileBanner extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SizedBox(
-                width: 100,
-                height: 100,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(50.0),
-                  ),
-                  child: avatarUrl != null
-                      ? CachedNetworkImage(
-                          imageUrl: avatarUrl,
-                          fit: BoxFit.cover,
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) => Center(
-                            child: CircularProgressIndicator(
-                              value: downloadProgress.progress,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                Theme.of(context).colorScheme.error,
-                              ),
-                            ),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                        )
-                      : const CircleAvatar(
-                          backgroundColor: MyColors.lightGrey,
-                          child: Icon(
-                            Icons.person,
-                            size: 50,
-                            color: Colors.grey,
-                          ),
-                        ),
-                ),
-              ),
+              const ProfilePicture(),
               Column(
                 children: [
                   const SizedBox(height: 30, width: 25),

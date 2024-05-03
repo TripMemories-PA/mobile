@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../api/error/api_error.dart';
 import '../../api/error/specific_error/auth_error.dart';
@@ -6,6 +7,7 @@ import '../../api/exception/custom_exception.dart';
 import '../../api/profile/i_profile_service.dart';
 import '../../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../../local_storage/secure_storage/auth_token_handler.dart';
+import '../../object/avatar/avatar.dart';
 import '../../object/profile/profile.dart';
 import '../../repository/profile_repository.dart';
 
@@ -127,7 +129,27 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         }
       },
     );
+
+    on<UpdateProfilePictureEvent>((event, emit) async {
+      try {
+        emit(state.copyWith(status: ProfileStatus.loading));
+        final UploadFile newPicture = await profileService.updateProfilePicture(image: event.image);
+        Profile? updatedProfile = state.profile;
+        if (updatedProfile != null) {
+          updatedProfile = updatedProfile.copyWith(avatar: newPicture);
+        }
+        emit(state.copyWith(status: ProfileStatus.updated, profile: updatedProfile));
+      } catch (e) {
+        emit(
+          state.copyWith(
+            status: ProfileStatus.error,
+            error: e is CustomException ? e.apiError : ApiError.unknown(),
+          ),
+        );
+      }
+    });
   }
+
 
   final IProfileService profileService;
 }

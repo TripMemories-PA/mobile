@@ -35,3 +35,9 @@ class GetFriendsEvent extends ProfileEvent {
   final int page;
   final int perPage;
 }
+
+class UpdateProfilePictureEvent extends ProfileEvent {
+  UpdateProfilePictureEvent(this.image);
+
+  final XFile image;
+}

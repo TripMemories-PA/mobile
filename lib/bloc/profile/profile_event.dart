@@ -41,3 +41,9 @@ class UpdateProfilePictureEvent extends ProfileEvent {
 
   final XFile image;
 }
+
+class UpdateProfileBannerEvent extends ProfileEvent {
+  UpdateProfileBannerEvent(this.image);
+
+  final XFile image;
+}

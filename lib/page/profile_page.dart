@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +9,7 @@ import '../bloc/notifier_bloc/notification_type.dart';
 import '../bloc/notifier_bloc/notifier_bloc.dart';
 import '../bloc/notifier_bloc/notifier_event.dart';
 import '../bloc/profile/profile_bloc.dart';
+import '../component/banner_picture.dart';
 import '../component/custom_card.dart';
 import '../component/my_friends_my_posts_menu.dart';
 import '../component/profile_banner.dart';
@@ -87,7 +87,8 @@ class ProfilePage extends StatelessWidget {
                     ),
                     BlocListener<ProfileBloc, ProfileState>(
                       listener: (context, state) {
-                        final NotifierBloc notifierBloc = context.read<NotifierBloc>();
+                        final NotifierBloc notifierBloc =
+                            context.read<NotifierBloc>();
 
                         if (state.status == ProfileStatus.error) {
                           notifierBloc.add(
@@ -107,7 +108,6 @@ class ProfilePage extends StatelessWidget {
                             ),
                           );
                         }
-
                       },
                       child: 0.ph,
                     ),
@@ -127,30 +127,10 @@ class ProfilePage extends StatelessWidget {
     return SizedBox(
       height: 280,
       width: MediaQuery.of(context).size.width,
-      child: Stack(
+      child: const Stack(
         children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 210,
-            child: bannerUrl != null
-                ? CachedNetworkImage(
-                    imageUrl: bannerUrl,
-                    fit: BoxFit.cover,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) => Center(
-                      child: CircularProgressIndicator(
-                        value: downloadProgress.progress,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).colorScheme.error,
-                        ),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  )
-                : Image.asset('assets/images/louvre.png'),
-          ),
-          const Positioned(bottom: 0, child: ProfileBanner()),
+          BannerPicture(),
+          Positioned(bottom: 0, child: ProfileBanner()),
         ],
       ),
     );

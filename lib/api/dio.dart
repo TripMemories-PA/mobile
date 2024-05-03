@@ -51,7 +51,7 @@ class DioClient {
     Future<Response> Function() dioCall,
   ) async {
     try {
-      Response response = await dioCall();
+      final Response response = await dioCall();
       return response;
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||

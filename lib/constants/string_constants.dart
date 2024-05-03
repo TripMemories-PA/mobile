@@ -42,6 +42,7 @@ class StringConstants {
   String get unauthorized => 'Unauthorized';
   String get cannotGetUserDetails => 'Cannot get user details';
   String get cannotGetUserPosts => 'Cannot get user posts';
+  String get badImageFormat => "Mauvaise format d'image: seulement jpg, jpeg et png sont autorisés";
 
   String get confirmAction => 'Etes-vous sûr ?';
 

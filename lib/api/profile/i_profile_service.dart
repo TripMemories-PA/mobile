@@ -23,4 +23,8 @@ abstract class IProfileService {
   Future<UploadFile> updateProfilePicture({
     required XFile image,
   });
+
+  Future<UploadFile> updateProfileBanner({
+    required XFile image,
+  });
 }

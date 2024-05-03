@@ -18,8 +18,6 @@ class ProfileBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
-        final String? avatarUrl =
-            context.read<ProfileBloc>().state.profile?.avatar?.url;
         return SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Row(

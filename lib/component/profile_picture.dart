@@ -12,10 +12,11 @@ class ProfilePicture extends StatelessWidget {
 
   Future<void> _selectImage(BuildContext context) async {
     final picker = ImagePicker();
-    await picker.pickImage(source: ImageSource.gallery).then(
+    await picker.pickImage(source: ImageSource.gallery,).then(
           (pickedImage) => {
         if (pickedImage != null)
           {
+            print(pickedImage.path),
             context.read<ProfileBloc>().add(
               UpdateProfilePictureEvent(
                 pickedImage,
@@ -28,6 +29,8 @@ class ProfilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<ProfileBloc, ProfileState>(
+  builder: (context, state) {
     final String? avatarUrl =
         context.read<ProfileBloc>().state.profile?.avatar?.url;
     return GestureDetector(
@@ -65,5 +68,7 @@ class ProfilePicture extends StatelessWidget {
         ),
       ),
     );
+  },
+);
   }
 }

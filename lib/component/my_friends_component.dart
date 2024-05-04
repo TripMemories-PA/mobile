@@ -149,13 +149,12 @@ class MyFriendsComponent extends StatelessWidget {
                 height: 30,
                 child: IconButton(
                   iconSize: 15,
-                  onPressed: () => print('coucou'),
                   icon: const Icon(Icons.chat),
                   color: Colors.white,
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(MyColors.purple),
-                  ),
+                  ), onPressed: () {  },
                 ),
               ),
               const SizedBox(width: 15),
@@ -164,13 +163,12 @@ class MyFriendsComponent extends StatelessWidget {
                 height: 30,
                 child: IconButton(
                   iconSize: 15,
-                  onPressed: () => print('coucou'),
                   icon: const Icon(Icons.remove_red_eye),
                   color: Colors.white,
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(MyColors.purple),
-                  ),
+                  ), onPressed: () {  },
                 ),
               ),
               const SizedBox(width: 30),

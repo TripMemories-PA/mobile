@@ -1,3 +1,5 @@
+// ignore_for_file: type=lint
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'auth_success_response.dart';

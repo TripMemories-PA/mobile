@@ -56,3 +56,20 @@ jobs:
           token: ${{ secrets.TOKEN }}
 
 
+  analyze_project:
+    name: Analyze project source
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable' # or: 'beta', 'dev', 'master' (or 'main')
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Consider passing '--fatal-infos' for slightly stricter analysis.
+      - name: Analyze project source
+        run: flutter analyze

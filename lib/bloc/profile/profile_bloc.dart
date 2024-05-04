@@ -151,8 +151,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         if (updatedProfile != null) {
           updatedProfile = updatedProfile.copyWith(avatar: newAvatar);
         }
-        emit(state.copyWith(
-            status: ProfileStatus.updated, profile: updatedProfile));
+        emit(
+          state.copyWith(
+            status: ProfileStatus.updated,
+            profile: updatedProfile,
+          ),
+        );
       } catch (e) {
         emit(
           state.copyWith(
@@ -183,8 +187,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         if (updatedProfile != null) {
           updatedProfile = updatedProfile.copyWith(banner: newBanner);
         }
-        emit(state.copyWith(
-            status: ProfileStatus.updated, profile: updatedProfile));
+        emit(
+          state.copyWith(
+            status: ProfileStatus.updated,
+            profile: updatedProfile,
+          ),
+        );
       } catch (e) {
         emit(
           state.copyWith(

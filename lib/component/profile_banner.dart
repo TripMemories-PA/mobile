@@ -41,7 +41,9 @@ class ProfileBanner extends StatelessWidget {
                           Text(
                             '@${context.read<ProfileBloc>().state.profile?.username}',
                             style: const TextStyle(
-                                fontSize: 15, color: Colors.grey),
+                              fontSize: 15,
+                              color: Colors.grey,
+                            ),
                           ),
                         ],
                       ),

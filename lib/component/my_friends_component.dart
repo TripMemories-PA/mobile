@@ -102,20 +102,20 @@ class MyFriendsComponent extends StatelessWidget {
                   ),
                   child: avatarUrl != null
                       ? CachedNetworkImage(
-                    imageUrl: avatarUrl,
-                    fit: BoxFit.cover,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) => Center(
-                      child: CircularProgressIndicator(
-                        value: downloadProgress.progress,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).colorScheme.error,
-                        ),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) =>
-                    const Icon(Icons.error),
-                  )
+                          imageUrl: avatarUrl,
+                          fit: BoxFit.cover,
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Center(
+                            child: CircularProgressIndicator(
+                              value: downloadProgress.progress,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).colorScheme.error,
+                              ),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        )
                       : const CircleAvatar(
                           backgroundColor: MyColors.lightGrey,
                           child: Icon(
@@ -132,7 +132,9 @@ class MyFriendsComponent extends StatelessWidget {
                   Text(
                     '${friend.firstname} ' '${friend.lastname}',
                     style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
                     '@${friend.username}',
@@ -154,7 +156,8 @@ class MyFriendsComponent extends StatelessWidget {
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(MyColors.purple),
-                  ), onPressed: () {  },
+                  ),
+                  onPressed: () {},
                 ),
               ),
               const SizedBox(width: 15),
@@ -168,7 +171,8 @@ class MyFriendsComponent extends StatelessWidget {
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(MyColors.purple),
-                  ), onPressed: () {  },
+                  ),
+                  onPressed: () {},
                 ),
               ),
               const SizedBox(width: 30),

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../bloc/profile/profile_bloc.dart';
 import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
-import '../../object/profile/profile.dart';
 import '../../utils/field_validator.dart';
 import '../bouncing_widget.dart';
 

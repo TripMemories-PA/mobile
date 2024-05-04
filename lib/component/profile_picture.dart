@@ -16,7 +16,6 @@ class ProfilePicture extends StatelessWidget {
           (pickedImage) => {
         if (pickedImage != null)
           {
-            print(pickedImage.path),
             context.read<ProfileBloc>().add(
               UpdateProfilePictureEvent(
                 pickedImage,

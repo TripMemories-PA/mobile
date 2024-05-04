@@ -122,8 +122,6 @@ class ProfilePage extends StatelessWidget {
   }
 
   SizedBox _buildProfileInfos(BuildContext context) {
-    final String? bannerUrl =
-        context.read<ProfileBloc>().state.profile?.banner?.url;
     return SizedBox(
       height: 280,
       width: MediaQuery.of(context).size.width,

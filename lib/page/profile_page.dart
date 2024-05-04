@@ -11,7 +11,7 @@ import '../bloc/notifier_bloc/notifier_event.dart';
 import '../bloc/profile/profile_bloc.dart';
 import '../component/banner_picture.dart';
 import '../component/custom_card.dart';
-import '../component/my_friends_my_posts_menu.dart';
+import '../component/my_friends_my_posts.dart';
 import '../component/profile_banner.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
@@ -56,63 +56,44 @@ class ProfilePage extends StatelessWidget {
           builder: (context, state) {
             return Scaffold(
               resizeToAvoidBottomInset: false,
-              body: RefreshIndicator(
-                onRefresh: () async {
-                  context.read<ProfileBloc>().add(GetProfileEvent());
-                },
-                child: ListView(
-                  children: [
-                    Column(
-                      children: [
-                        _buildProfileInfos(context),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        _buildSubsAndVisitedPlaces(context),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Center(
-                      child: Column(
-                        children: [
-                          const MyFriendsMyPostsMenu(),
-                          const SizedBox(
-                            height: 15,
+              body: ListView(
+                children: [
+                  _buildProfileInfos(context),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  _buildSubsAndVisitedPlaces(context),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const MyFriendsMyPosts(),
+                  BlocListener<ProfileBloc, ProfileState>(
+                    listener: (context, state) {
+                      final NotifierBloc notifierBloc =
+                          context.read<NotifierBloc>();
+
+                      if (state.status == ProfileStatus.error) {
+                        notifierBloc.add(
+                          AppendNotification(
+                            notification: state.error?.getDescription() ??
+                                StringConstants().errorWhilePostingComment,
+                            type: NotificationType.error,
                           ),
-                          navigationShell,
-                        ],
-                      ),
-                    ),
-                    BlocListener<ProfileBloc, ProfileState>(
-                      listener: (context, state) {
-                        final NotifierBloc notifierBloc =
-                            context.read<NotifierBloc>();
+                        );
+                      }
 
-                        if (state.status == ProfileStatus.error) {
-                          notifierBloc.add(
-                            AppendNotification(
-                              notification: state.error?.getDescription() ??
-                                  StringConstants().errorWhilePostingComment,
-                              type: NotificationType.error,
-                            ),
-                          );
-                        }
-
-                        if (state.status == ProfileStatus.updated) {
-                          notifierBloc.add(
-                            AppendNotification(
-                              notification: StringConstants().profileUpdated,
-                              type: NotificationType.success,
-                            ),
-                          );
-                        }
-                      },
-                      child: 0.ph,
-                    ),
-                  ],
-                ),
+                      if (state.status == ProfileStatus.updated) {
+                        notifierBloc.add(
+                          AppendNotification(
+                            notification: StringConstants().profileUpdated,
+                            type: NotificationType.success,
+                          ),
+                        );
+                      }
+                    },
+                    child: 0.ph,
+                  ),
+                ],
               ),
             );
           },

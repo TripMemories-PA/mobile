@@ -26,6 +26,7 @@ mixin _$Profile {
   String? get firstname => throw _privateConstructorUsedError;
   String? get lastname => throw _privateConstructorUsedError;
   UploadFile? get avatar => throw _privateConstructorUsedError;
+  UploadFile? get banner => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,9 +44,11 @@ abstract class $ProfileCopyWith<$Res> {
       String username,
       String? firstname,
       String? lastname,
-      UploadFile? avatar});
+      UploadFile? avatar,
+      UploadFile? banner});
 
   $UploadFileCopyWith<$Res>? get avatar;
+  $UploadFileCopyWith<$Res>? get banner;
 }
 
 /// @nodoc
@@ -67,6 +70,7 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
     Object? firstname = freezed,
     Object? lastname = freezed,
     Object? avatar = freezed,
+    Object? banner = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -93,6 +97,10 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as UploadFile?,
+      banner: freezed == banner
+          ? _value.banner
+          : banner // ignore: cast_nullable_to_non_nullable
+              as UploadFile?,
     ) as $Val);
   }
 
@@ -105,6 +113,18 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
 
     return $UploadFileCopyWith<$Res>(_value.avatar!, (value) {
       return _then(_value.copyWith(avatar: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UploadFileCopyWith<$Res>? get banner {
+    if (_value.banner == null) {
+      return null;
+    }
+
+    return $UploadFileCopyWith<$Res>(_value.banner!, (value) {
+      return _then(_value.copyWith(banner: value) as $Val);
     });
   }
 }
@@ -122,10 +142,13 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       String username,
       String? firstname,
       String? lastname,
-      UploadFile? avatar});
+      UploadFile? avatar,
+      UploadFile? banner});
 
   @override
   $UploadFileCopyWith<$Res>? get avatar;
+  @override
+  $UploadFileCopyWith<$Res>? get banner;
 }
 
 /// @nodoc
@@ -145,6 +168,7 @@ class __$$ProfileImplCopyWithImpl<$Res>
     Object? firstname = freezed,
     Object? lastname = freezed,
     Object? avatar = freezed,
+    Object? banner = freezed,
   }) {
     return _then(_$ProfileImpl(
       id: null == id
@@ -171,6 +195,10 @@ class __$$ProfileImplCopyWithImpl<$Res>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as UploadFile?,
+      banner: freezed == banner
+          ? _value.banner
+          : banner // ignore: cast_nullable_to_non_nullable
+              as UploadFile?,
     ));
   }
 }
@@ -185,7 +213,8 @@ class _$ProfileImpl implements _Profile {
       required this.username,
       required this.firstname,
       required this.lastname,
-      this.avatar});
+      this.avatar,
+      this.banner});
 
   factory _$ProfileImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProfileImplFromJson(json);
@@ -202,10 +231,12 @@ class _$ProfileImpl implements _Profile {
   final String? lastname;
   @override
   final UploadFile? avatar;
+  @override
+  final UploadFile? banner;
 
   @override
   String toString() {
-    return 'Profile(id: $id, email: $email, username: $username, firstname: $firstname, lastname: $lastname, avatar: $avatar)';
+    return 'Profile(id: $id, email: $email, username: $username, firstname: $firstname, lastname: $lastname, avatar: $avatar, banner: $banner)';
   }
 
   @override
@@ -221,13 +252,14 @@ class _$ProfileImpl implements _Profile {
                 other.firstname == firstname) &&
             (identical(other.lastname, lastname) ||
                 other.lastname == lastname) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar));
+            (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.banner, banner) || other.banner == banner));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, email, username, firstname, lastname, avatar);
+      runtimeType, id, email, username, firstname, lastname, avatar, banner);
 
   @JsonKey(ignore: true)
   @override
@@ -250,7 +282,8 @@ abstract class _Profile implements Profile {
       required final String username,
       required final String? firstname,
       required final String? lastname,
-      final UploadFile? avatar}) = _$ProfileImpl;
+      final UploadFile? avatar,
+      final UploadFile? banner}) = _$ProfileImpl;
 
   factory _Profile.fromJson(Map<String, dynamic> json) = _$ProfileImpl.fromJson;
 
@@ -266,6 +299,8 @@ abstract class _Profile implements Profile {
   String? get lastname;
   @override
   UploadFile? get avatar;
+  @override
+  UploadFile? get banner;
   @override
   @JsonKey(ignore: true)
   _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>

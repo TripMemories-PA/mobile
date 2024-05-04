@@ -4,6 +4,7 @@ enum ProfileStatus {
   initial,
   loading,
   notLoading,
+  updated,
   error,
 }
 

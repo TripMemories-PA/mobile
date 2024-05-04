@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../../object/avatar/avatar.dart';
 import '../friend_request_response/friend_request_response.dart';
 
 part 'who_am_i_response.freezed.dart';
@@ -13,9 +14,8 @@ class WhoAmIResponse with _$WhoAmIResponse {
     required String username,
     String? firstname,
     String? lastname,
-    @JsonKey(name: 'createdAt') required String createdAt,
-    @JsonKey(name: 'updatedAt') required String updatedAt,
-    String? avatar,
+    UploadFile? avatar,
+    UploadFile? banner,
     List<FriendRequest>? sentFriendRequests,
     List<FriendRequest>? receivedFriendRequests,
     List<dynamic>? friends,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../bloc/profile/profile_bloc.dart';
+import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
 import '../../object/profile/profile.dart';
 import '../custom_card.dart';
@@ -19,40 +20,69 @@ class UserInfosFormPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      insetPadding: EdgeInsets.zero,
-      child: CustomCard(
-        width: MediaQuery.of(context).size.width * 0.90,
-        height: MediaQuery.of(context).size.height * 0.81,
-        content: _buildContent(context),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Builder(
+        builder: (context) {
+          return Dialog(
+            insetPadding: EdgeInsets.zero,
+            child: CustomCard(
+              width: MediaQuery.of(context).size.width * 0.90,
+              height: MediaQuery.of(context).size.height * 0.81,
+              content: _buildContent(context),
+            ),
+          );
+        },
       ),
     );
   }
 
   Widget _buildContent(BuildContext context) {
     final Profile profile = profileBloc.state.profile!;
+    final String? avatarUrl = profile.avatar?.url;
+    final String? bannerUrl = profile.banner?.url;
     return ListView(
       children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.26,
+          height: MediaQuery.of(context).size.height * 0.23,
           child: Stack(
             children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(15.0),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 180,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(14.0),
+                  child: bannerUrl != null
+                      ? Image.network(
+                          bannerUrl,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset('assets/images/louvre.png'),
                 ),
-                child: Image.asset('assets/images/louvre.png'),
               ),
               Positioned(
                 bottom: 0,
                 left: MediaQuery.of(context).size.width * 0.35,
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.20,
+                  width: 100,
+                  height: 100,
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(
                       Radius.circular(50.0),
                     ),
-                    child: Image.asset('assets/images/profileSample.png'),
+                    child: avatarUrl != null
+                        ? Image.network(
+                            avatarUrl,
+                            fit: BoxFit.cover,
+                          )
+                        : const CircleAvatar(
+                            backgroundColor: MyColors.lightGrey,
+                            child: Icon(
+                              Icons.person,
+                              size: 50,
+                              color: Colors.grey,
+                            ),
+                          ),
                   ),
                 ),
               ),
@@ -74,7 +104,7 @@ class UserInfosFormPopup extends StatelessWidget {
           child: Column(
             children: [
               ModifyUserInfosForm(
-                profile: profile,
+                profileBloc: profileBloc,
               ),
               15.ph,
               const UpdatePasswordForm(),
@@ -87,14 +117,14 @@ class UserInfosFormPopup extends StatelessWidget {
 }
 
 Future<bool> modifyUserInfosPopup(
-  BuildContext context, {
-  Color? color,
-}) async {
+    BuildContext context,) async {
   return await showDialog<bool>(
-        context: context,
-        builder: (_) => UserInfosFormPopup(
-          profileBloc: context.read<ProfileBloc>(),
-        ),
-      ) ??
+    context: context,
+    builder: (_) =>
+       UserInfosFormPopup(
+        profileBloc: context.read<ProfileBloc>(),
+      ),
+
+  ) ??
       false;
 }

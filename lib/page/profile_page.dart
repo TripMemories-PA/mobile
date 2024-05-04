@@ -5,10 +5,16 @@ import 'package:go_router/go_router.dart';
 import '../api/profile/profile_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
+import '../bloc/notifier_bloc/notification_type.dart';
+import '../bloc/notifier_bloc/notifier_bloc.dart';
+import '../bloc/notifier_bloc/notifier_event.dart';
 import '../bloc/profile/profile_bloc.dart';
+import '../component/banner_picture.dart';
 import '../component/custom_card.dart';
 import '../component/my_friends_my_posts_menu.dart';
 import '../component/profile_banner.dart';
+import '../constants/string_constants.dart';
+import '../num_extensions.dart';
 import '../repository/profile_repository.dart';
 import '../service/profile_remote_data_source.dart';
 import 'login_page.dart';
@@ -79,6 +85,32 @@ class ProfilePage extends StatelessWidget {
                         ],
                       ),
                     ),
+                    BlocListener<ProfileBloc, ProfileState>(
+                      listener: (context, state) {
+                        final NotifierBloc notifierBloc =
+                            context.read<NotifierBloc>();
+
+                        if (state.status == ProfileStatus.error) {
+                          notifierBloc.add(
+                            AppendNotification(
+                              notification: state.error?.getDescription() ??
+                                  StringConstants().errorWhilePostingComment,
+                              type: NotificationType.error,
+                            ),
+                          );
+                        }
+
+                        if (state.status == ProfileStatus.updated) {
+                          notifierBloc.add(
+                            AppendNotification(
+                              notification: StringConstants().profileUpdated,
+                              type: NotificationType.success,
+                            ),
+                          );
+                        }
+                      },
+                      child: 0.ph,
+                    ),
                   ],
                 ),
               ),
@@ -90,19 +122,15 @@ class ProfilePage extends StatelessWidget {
   }
 
   SizedBox _buildProfileInfos(BuildContext context) {
+    final String? bannerUrl =
+        context.read<ProfileBloc>().state.profile?.banner?.url;
     return SizedBox(
       height: 280,
       width: MediaQuery.of(context).size.width,
-      child: Stack(
+      child: const Stack(
         children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(20.0),
-              bottomRight: Radius.circular(20.0),
-            ),
-            child: Image.asset('assets/images/louvre.png'),
-          ),
-          const Positioned(bottom: 0, child: ProfileBanner()),
+          BannerPicture(),
+          Positioned(bottom: 0, child: ProfileBanner()),
         ],
       ),
     );

@@ -45,6 +45,8 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   shared_preferences: ^2.2.2
   toastification: ^1.2.1
+  cached_network_image: ^3.3.1
+  image_picker: ^1.1.1
 
 
 dev_dependencies:

@@ -7,27 +7,28 @@ import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
 import '../../object/profile/profile.dart';
 import '../../utils/field_validator.dart';
+import '../bouncing_widget.dart';
 
 class ModifyUserInfosForm extends HookWidget {
-  const ModifyUserInfosForm({
+  ModifyUserInfosForm({
     super.key,
-    required this.profile,
+    required this.profileBloc,
   });
 
-final Profile profile;
+  final ProfileBloc profileBloc;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController usernameController = useTextEditingController();
-    usernameController.text = profile.username;
+    usernameController.text = profileBloc.state.profile!.username;
     final TextEditingController lastName = useTextEditingController();
-    lastName.text = profile.lastname ?? '';
+    lastName.text = profileBloc.state.profile?.lastname ?? '';
     final TextEditingController firstNameController =
         useTextEditingController();
-    firstNameController.text = profile.firstname ?? '';
+    firstNameController.text = profileBloc.state.profile?.firstname ?? '';
     final TextEditingController emailController = useTextEditingController();
-    emailController.text = profile.email;
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    emailController.text = profileBloc.state.profile!.email;
     return Form(
       key: formKey,
       child: Column(
@@ -108,17 +109,19 @@ final Profile profile;
             ),
           ),
           15.ph,
-          InkWell(
+          BouncingWidget(
             onTap: () async {
               if (formKey.currentState!.validate()) {
-                context.read<ProfileBloc>().add(
-                  UpdateProfileEvent(
-                    username: usernameController.text,
-                    lastName: lastName.text,
-                    firstName: firstNameController.text,
-                    email: emailController.text,
-                  ),
-                );              }
+                FocusManager.instance.primaryFocus?.unfocus();
+                profileBloc.add(
+                      UpdateProfileEvent(
+                        username: usernameController.text,
+                        lastName: lastName.text,
+                        firstName: firstNameController.text,
+                        email: emailController.text,
+                      ),
+                    );
+              }
             },
             child: Container(
               height: 45,

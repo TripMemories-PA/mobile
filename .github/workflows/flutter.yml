@@ -31,21 +31,28 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release --split-per-abi
+        run: flutter build apk --release
 
-      - name: Get latest tag version
-        id: get_tag
-        run: echo "{tag_version}={$(git describe --tags --abbrev=0)}"
-
-      - name: Increment tag version
-        id: increment_tag
-        run: $(echo "${{ steps.get_tag.outputs.tag_version }}" | awk -F. '{$NF = $NF + 1;} 1' OFS=. )"
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
+          #workingDirectory: another/path/where/a/git/repo/is/checked/out # Optional alternative working directory
+      - name: 'Get next minor version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
 
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/apk/release/*"
-          tag: ${{ steps.increment_tag.outputs.new_tag }}
+          tag: ${{ steps.semvers.outputs.patch }}
           token: ${{ secrets.TOKEN }}
 
 

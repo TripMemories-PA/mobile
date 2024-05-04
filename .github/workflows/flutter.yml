@@ -11,6 +11,7 @@ jobs:
   build_and_release:
     name: Build and Release new apk
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

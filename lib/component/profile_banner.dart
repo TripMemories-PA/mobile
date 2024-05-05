@@ -12,7 +12,12 @@ import 'popup/modify_user_infos_popup.dart';
 import 'profile_picture.dart';
 
 class ProfileBanner extends StatelessWidget {
-  const ProfileBanner({super.key});
+  const ProfileBanner({
+    super.key,
+    this.isMyProfile = false,
+  });
+
+  final bool isMyProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,9 @@ class ProfileBanner extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const ProfilePicture(),
+              ProfilePicture(
+                isMyProfile: isMyProfile,
+              ),
               Column(
                 children: [
                   const SizedBox(height: 30, width: 25),
@@ -48,58 +55,59 @@ class ProfileBanner extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(width: 10),
-                      Column(
-                        children: [
-                          BouncingWidget(
-                            onTap: () async {
-                              final bool result = await confirmationLogout(
-                                context,
-                                title:
-                                'Etes-vous sûr de vouloir vous déconnecter ?',
-                              );
-                              if (!result) {
-                                return;
-                              } else {
-                                if (context.mounted) {
-                                  context.read<AuthBloc>().add(
-                                    const ChangeToLoggedOutStatus(),
-                                  );
+                      if (isMyProfile)
+                        Column(
+                          children: [
+                            BouncingWidget(
+                              onTap: () async {
+                                final bool result = await confirmationLogout(
+                                  context,
+                                  title:
+                                      'Etes-vous sûr de vouloir vous déconnecter ?',
+                                );
+                                if (!result) {
+                                  return;
+                                } else {
+                                  if (context.mounted) {
+                                    context.read<AuthBloc>().add(
+                                          const ChangeToLoggedOutStatus(),
+                                        );
+                                  }
                                 }
-                              }
-                            },
-                            child: const CustomCard(
-                              width: 50,
-                              height: 25,
-                              backgroundColor: Colors.red,
-                              content: Icon(
-                                Icons.logout,
-                                color: Colors.white,
-                                size: 15,
-                              ),
-                              borderColor: Colors.transparent,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          BouncingWidget(
-                            onTap: () async {
-                              await modifyUserInfosPopup(context);
-                            },
-                            child: const CustomCard(
-                              width: 100,
-                              height: 25,
-                              content: Text(
-                                'Editer',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
+                              },
+                              child: const CustomCard(
+                                width: 50,
+                                height: 25,
+                                backgroundColor: Colors.red,
+                                content: Icon(
+                                  Icons.logout,
                                   color: Colors.white,
+                                  size: 15,
                                 ),
+                                borderColor: Colors.transparent,
                               ),
-                              borderColor: Colors.transparent,
-                              backgroundColor: MyColors.purple,
                             ),
-                          ),
-                        ],
-                      ),
+                            const SizedBox(height: 10),
+                            BouncingWidget(
+                              onTap: () async {
+                                await modifyUserInfosPopup(context);
+                              },
+                              child: const CustomCard(
+                                width: 100,
+                                height: 25,
+                                content: Text(
+                                  'Editer',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                borderColor: Colors.transparent,
+                                backgroundColor: MyColors.purple,
+                              ),
+                            ),
+                          ],
+                        ),
                     ],
                   ),
                 ],

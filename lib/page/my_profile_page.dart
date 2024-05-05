@@ -16,14 +16,12 @@ import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../repository/profile_repository.dart';
 import '../service/profile_remote_data_source.dart';
+import 'login_page.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({
-    required this.userId,
+class MyProfilePage extends StatelessWidget {
+  const MyProfilePage({
     Key? key,
   }) : super(key: key ?? const ValueKey<String>('ScaffoldWithNavBar'));
-
-  final String userId;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +31,11 @@ class ProfilePage extends StatelessWidget {
   BlocBuilder<AuthBloc, AuthState> _buildMyProfilePage() {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        return _buildProfilePage();
+        if (context.read<AuthBloc>().state.status == AuthStatus.authenticated) {
+          return _buildProfilePage();
+        } else {
+          return const LoginPage();
+        }
       },
     );
   }
@@ -49,49 +51,52 @@ class ProfilePage extends StatelessWidget {
         create: (context) => ProfileBloc(
           profileRepository: RepositoryProvider.of<ProfileRepository>(context),
           profileService: ProfileService(),
-        )..add(GetProfileEvent(userId: userId)),
+        )..add(GetProfileEvent()),
         child: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
             return Scaffold(
               resizeToAvoidBottomInset: false,
-              body: ListView(
-                children: [
-                  _buildProfileInfos(context),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  _buildSubsAndVisitedPlaces(context),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const MyFriendsMyPosts(),
-                  BlocListener<ProfileBloc, ProfileState>(
-                    listener: (context, state) {
-                      final NotifierBloc notifierBloc =
-                          context.read<NotifierBloc>();
+              body: RefreshIndicator(
+                onRefresh: () async => _updateProfilePage(context),
+                child: ListView(
+                  children: [
+                    _buildProfileInfos(context),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    _buildSubsAndVisitedPlaces(context),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const MyFriendsMyPosts(),
+                    BlocListener<ProfileBloc, ProfileState>(
+                      listener: (context, state) {
+                        final NotifierBloc notifierBloc =
+                            context.read<NotifierBloc>();
 
-                      if (state.status == ProfileStatus.error) {
-                        notifierBloc.add(
-                          AppendNotification(
-                            notification: state.error?.getDescription() ??
-                                StringConstants().errorWhilePostingComment,
-                            type: NotificationType.error,
-                          ),
-                        );
-                      }
+                        if (state.status == ProfileStatus.error) {
+                          notifierBloc.add(
+                            AppendNotification(
+                              notification: state.error?.getDescription() ??
+                                  StringConstants().errorWhilePostingComment,
+                              type: NotificationType.error,
+                            ),
+                          );
+                        }
 
-                      if (state.status == ProfileStatus.updated) {
-                        notifierBloc.add(
-                          AppendNotification(
-                            notification: StringConstants().profileUpdated,
-                            type: NotificationType.success,
-                          ),
-                        );
-                      }
-                    },
-                    child: 0.ph,
-                  ),
-                ],
+                        if (state.status == ProfileStatus.updated) {
+                          notifierBloc.add(
+                            AppendNotification(
+                              notification: StringConstants().profileUpdated,
+                              type: NotificationType.success,
+                            ),
+                          );
+                        }
+                      },
+                      child: 0.ph,
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -100,14 +105,25 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  Future<void> _updateProfilePage(BuildContext context) async {
+    BlocProvider.of<ProfileBloc>(context)
+        .add(GetProfileEvent());
+  }
+
   SizedBox _buildProfileInfos(BuildContext context) {
     return SizedBox(
       height: 220,
       width: MediaQuery.of(context).size.width,
       child: const Stack(
         children: [
-          BannerPicture(),
-          Positioned(bottom: 0, child: ProfileBanner()),
+          BannerPicture(
+            isMyProfile: true,
+          ),
+          Positioned(
+              bottom: 0,
+              child: ProfileBanner(
+                isMyProfile: true,
+              )),
         ],
       ),
     );

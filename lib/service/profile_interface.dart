@@ -4,8 +4,9 @@ import '../object/profile/profile.dart';
 abstract class ProfileDataSourceInterface {
   Future<Profile> getProfile(String id);
 
-  Future<GetFriendsPaginationResponse> getFriends({
-    required String id,
+  Future<Profile> whoAmI();
+
+  Future<GetFriendsPaginationResponse> getMyFriends({
     required int page,
     required int perPage,
   });

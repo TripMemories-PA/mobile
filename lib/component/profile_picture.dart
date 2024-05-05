@@ -8,9 +8,15 @@ import '../bloc/profile/profile_bloc.dart';
 class ProfilePicture extends StatelessWidget {
   const ProfilePicture({
     super.key,
+    this.isMyProfile = false,
   });
 
+  final bool isMyProfile;
+
   Future<void> _selectImage(BuildContext context) async {
+    if(!isMyProfile){
+      return;
+    }
     final picker = ImagePicker();
     await picker.pickImage(source: ImageSource.gallery,).then(
           (pickedImage) => {

@@ -13,18 +13,37 @@ import 'i_profile_service.dart';
 import 'response/friends/get_friends_pagination_response.dart';
 
 class ProfileService implements IProfileService {
-  static const String apiProfileUrl = '${AppConfig.apiUrl}/me';
-  static const String apiAvatarUrl = '$apiProfileUrl/avatar';
-  static const String apiBannerUrl = '$apiProfileUrl/banner';
-  static const String apiFriendsUrl =
-      '$apiProfileUrl/friends?page=[nb_page]&perPage=[per_page]';
+  static const String apiMeUrl = '${AppConfig.apiUrl}/me';
+  static const String apiMyAvatarUrl = '$apiMeUrl/avatar';
+  static const String apiMyBannerUrl = '$apiMeUrl/banner';
+  static const String apiMyFriendsUrl = '$apiMeUrl/friends?page=[nb_page]&perPage=[per_page]';
+  static const String apiUserUrl = '${AppConfig.apiUrl}/users';
 
   @override
   Future<Profile> getProfile({required String id}) async {
     Response response;
     try {
       response = await DioClient.instance.get(
-        apiProfileUrl,
+        '$apiUserUrl/$id',
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      return Profile.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
+    }
+  }
+
+  @override
+  Future<Profile> whoAmI() async {
+    Response response;
+    try {
+      response = await DioClient.instance.get(
+        apiMeUrl,
       );
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());
@@ -52,7 +71,7 @@ class ProfileService implements IProfileService {
     String? email,
   }) async {
     await DioClient.instance.put(
-      apiProfileUrl,
+      apiMeUrl,
       data: {
         'username': username,
         'lastname': lastName,
@@ -63,13 +82,12 @@ class ProfileService implements IProfileService {
   }
 
   @override
-  Future<GetFriendsPaginationResponse> getFriends({
-    required String id,
+  Future<GetFriendsPaginationResponse> getMyFriends({
     required int page,
     required int perPage,
   }) async {
     Response response;
-    final String url = apiFriendsUrl
+    final String url = apiMyFriendsUrl
         .replaceAll('[nb_page]', page.toString())
         .replaceAll('[per_page]', perPage.toString());
     try {
@@ -95,7 +113,7 @@ class ProfileService implements IProfileService {
     Response response;
     try {
       response = await DioClient.instance.post(
-        apiAvatarUrl,
+        apiMyAvatarUrl,
         data: FormData.fromMap({
           'file': await MultipartFile.fromFile(image.path),
         }),
@@ -119,7 +137,7 @@ class ProfileService implements IProfileService {
     Response response;
     try {
       response = await DioClient.instance.post(
-        apiBannerUrl,
+        apiMyBannerUrl,
         data: FormData.fromMap({
           'file': await MultipartFile.fromFile(image.path),
         }),

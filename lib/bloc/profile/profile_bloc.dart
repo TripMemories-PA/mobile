@@ -24,24 +24,36 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       (event, emit) async {
         emit(state.copyWith(status: ProfileStatus.loading));
         try {
-          final String? authToken = await AuthTokenHandler().getAuthToken();
-          if (authToken == null) {
+          if (event.userId != null) {
+            final Profile profile =
+                await profileRepository.getProfile(event.userId!);
             emit(
               state.copyWith(
-                status: ProfileStatus.error,
-                error: AuthError.notAuthenticated(),
+                profile: profile,
+                status: ProfileStatus.notLoading,
               ),
             );
-            return;
+            add(GetFriendsEvent(page: 1, perPage: 10));
+          } else {
+            final String? authToken = await AuthTokenHandler().getAuthToken();
+            if (authToken == null) {
+              emit(
+                state.copyWith(
+                  status: ProfileStatus.error,
+                  error: AuthError.notAuthenticated(),
+                ),
+              );
+              return;
+            }
+            final Profile profile = await profileRepository.whoAmI();
+            emit(
+              state.copyWith(
+                profile: profile,
+                status: ProfileStatus.notLoading,
+              ),
+            );
+            add(GetFriendsEvent(page: 1, perPage: 10));
           }
-          final Profile profile = await profileRepository.getProfile(authToken);
-          emit(
-            state.copyWith(
-              profile: profile,
-              status: ProfileStatus.notLoading,
-            ),
-          );
-          add(GetFriendsEvent(page: 1, perPage: 10));
         } catch (e) {
           // TODO(nono): implement profileLocalDataSource
           /* try {
@@ -108,18 +120,21 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             );
             return;
           }
-          final GetFriendsPaginationResponse friends =
-              await profileRepository.getFriends(
-            id: authToken,
-            page: event.page,
-            perPage: event.perPage,
-          );
-          emit(
-            state.copyWith(
-              friends: friends,
-              status: ProfileStatus.notLoading,
-            ),
-          );
+          final Profile? tmpProfile = state.profile;
+          if (tmpProfile != null) {
+            final GetFriendsPaginationResponse friends =
+                await profileRepository.getMyFriends(
+              page: event.page,
+              perPage: event.perPage,
+            );
+
+            emit(
+              state.copyWith(
+                friends: friends,
+                status: ProfileStatus.notLoading,
+              ),
+            );
+          }
         } catch (e) {
           emit(
             state.copyWith(

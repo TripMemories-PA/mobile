@@ -36,7 +36,7 @@ class BannerPicture extends StatelessWidget {
       onTap: () => _selectImage(context),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: 210,
+        height: 150,
         child: bannerUrl != null
             ? CachedNetworkImage(
                 imageUrl: bannerUrl,

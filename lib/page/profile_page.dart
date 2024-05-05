@@ -104,7 +104,7 @@ class ProfilePage extends StatelessWidget {
 
   SizedBox _buildProfileInfos(BuildContext context) {
     return SizedBox(
-      height: 280,
+      height: 220,
       width: MediaQuery.of(context).size.width,
       child: const Stack(
         children: [
@@ -122,7 +122,7 @@ class ProfilePage extends StatelessWidget {
         children: [
           CustomCard(
             width: MediaQuery.of(context).size.width * 0.45,
-            height: 80,
+            height: 50,
             content: _buildFriendsCard(context),
           ),
           const SizedBox(
@@ -130,7 +130,7 @@ class ProfilePage extends StatelessWidget {
           ),
           CustomCard(
             width: MediaQuery.of(context).size.width * 0.45,
-            height: 80,
+            height: 50,
             content: _buildVisitedBuildingCard(context),
           ),
         ],

@@ -27,26 +27,25 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Build APK
-        run: flutter build apk --release
-
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+          fetch-depth: 0
       - name: 'Get Previous tag'
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
-          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
-          #workingDirectory: another/path/where/a/git/repo/is/checked/out # Optional alternative working directory
+          fallback: 1.0.0
       - name: 'Get next minor version'
         id: semvers
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
           version: ${{ steps.previoustag.outputs.tag }}
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
 
       - name: Push to Releases
         uses: ncipollo/release-action@v1
@@ -70,6 +69,5 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
         run: flutter analyze

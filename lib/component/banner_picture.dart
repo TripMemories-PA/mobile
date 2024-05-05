@@ -59,7 +59,10 @@ class BannerPicture extends StatelessWidget {
                     errorWidget: (context, url, error) =>
                         const Icon(Icons.error),
                   )
-                : Image.asset('assets/images/louvre.png'),
+                : Image.asset(
+                    'assets/images/louvre.png',
+                    fit: BoxFit.cover,
+                  ),
           ),
         );
       },

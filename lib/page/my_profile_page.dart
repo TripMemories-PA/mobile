@@ -61,13 +61,9 @@ class MyProfilePage extends StatelessWidget {
                 child: ListView(
                   children: [
                     _buildProfileInfos(context),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    20.ph,
                     _buildSubsAndVisitedPlaces(context),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    10.ph,
                     const MyFriendsMyPosts(),
                     BlocListener<ProfileBloc, ProfileState>(
                       listener: (context, state) {
@@ -139,9 +135,7 @@ class MyProfilePage extends StatelessWidget {
             height: 50,
             content: _buildFriendsCard(context),
           ),
-          const SizedBox(
-            width: 20,
-          ),
+          20.pw,
           CustomCard(
             width: MediaQuery.of(context).size.width * 0.45,
             height: 50,

@@ -81,6 +81,15 @@ class MyApp extends StatelessWidget {
                   return const ProfilePage();
                 },
               ),
+              GoRoute(
+                path: '${RouteName.profilePage}/:userId',
+                builder: (BuildContext context, GoRouterState state) {
+                  final Map<String, String> queryParameters =
+                      GoRouterState.of(context).pathParameters;
+                  final String? userId = queryParameters['userId'];
+                  return ProfilePage(userId: userId);
+                },
+              ),
             ],
           ),
         ],

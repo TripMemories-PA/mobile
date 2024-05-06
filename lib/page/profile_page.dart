@@ -46,13 +46,17 @@ class _ProfilePageState extends State<ProfilePage>
 
   @override
   Widget build(BuildContext context) {
-    // if user is null i will try to display my own profile
-    // that is why i check if the user is authenticated
-    if (widget.userId == null &&
-        context.read<AuthBloc>().state.status != AuthStatus.authenticated) {
-      return const LoginPage();
-    } else {}
-    return _buildProfilePage();
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        // if user is null i will try to display my own profile
+        // that is why i check if the user is authenticated
+        if (widget.userId == null &&
+            context.read<AuthBloc>().state.status != AuthStatus.authenticated) {
+          return const LoginPage();
+        }
+        return _buildProfilePage();
+      },
+    );
   }
 
   RepositoryProvider<ProfileRepository> _buildProfilePage() {

@@ -7,6 +7,8 @@ import 'response/friends/get_friends_pagination_response.dart';
 abstract class IProfileService {
   Future<Profile> getProfile({required String id});
 
+  Future<Profile> whoAmI();
+
   Future<void> updateProfile({
     String? username,
     String? email,
@@ -18,7 +20,7 @@ abstract class IProfileService {
     required String password,
   });
 
-  Future<GetFriendsPaginationResponse> getFriends({required String id, required int page, required int perPage});
+  Future<GetFriendsPaginationResponse> getMyFriends({required int page, required int perPage});
 
   Future<UploadFile> updateProfilePicture({
     required XFile image,

@@ -17,6 +17,10 @@ class ProfileRepository {
     return profileRemoteDataSource.getProfile(id);
   }
 
+  Future<Profile> whoAmI() async {
+    return profileRemoteDataSource.whoAmI();
+  }
+
   /*Future<Profile> getLocalProfile(String id) async {
     return profilelocalDataSource.getProfile(id);
   }*/
@@ -25,11 +29,10 @@ class ProfileRepository {
 
   Future<void> updatePassword(String password) async {}
 
-  Future<GetFriendsPaginationResponse> getFriends({
-    required String id,
+  Future<GetFriendsPaginationResponse> getMyFriends({
     required int page,
     required int perPage,
   }) async {
-    return profileRemoteDataSource.getFriends(id: id, page: page, perPage: perPage);
+    return profileRemoteDataSource.getMyFriends(page: page, perPage: perPage);
   }
 }

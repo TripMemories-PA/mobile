@@ -8,9 +8,15 @@ import '../bloc/profile/profile_bloc.dart';
 class BannerPicture extends StatelessWidget {
   const BannerPicture({
     super.key,
+    this.isMyProfile = false,
   });
 
+  final bool isMyProfile;
+
   Future<void> _selectImage(BuildContext context) async {
+    if (!isMyProfile) {
+      return;
+    }
     final picker = ImagePicker();
     await picker.pickImage(source: ImageSource.gallery).then(
           (pickedImage) => {
@@ -29,33 +35,37 @@ class BannerPicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
-  builder: (context, state) {
-    final String? bannerUrl =
-        context.read<ProfileBloc>().state.profile?.banner?.url;
-    return GestureDetector(
-      onTap: () => _selectImage(context),
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: 150,
-        child: bannerUrl != null
-            ? CachedNetworkImage(
-                imageUrl: bannerUrl,
-                fit: BoxFit.cover,
-                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    Center(
-                  child: CircularProgressIndicator(
-                    value: downloadProgress.progress,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).colorScheme.error,
+      builder: (context, state) {
+        final String? bannerUrl =
+            context.read<ProfileBloc>().state.profile?.banner?.url;
+        return GestureDetector(
+          onTap: () => _selectImage(context),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 150,
+            child: bannerUrl != null
+                ? CachedNetworkImage(
+                    imageUrl: bannerUrl,
+                    fit: BoxFit.cover,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Center(
+                      child: CircularProgressIndicator(
+                        value: downloadProgress.progress,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).colorScheme.error,
+                        ),
+                      ),
                     ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  )
+                : Image.asset(
+                    'assets/images/louvre.png',
+                    fit: BoxFit.cover,
                   ),
-                ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              )
-            : Image.asset('assets/images/louvre.png'),
-      ),
+          ),
+        );
+      },
     );
-  },
-);
   }
 }

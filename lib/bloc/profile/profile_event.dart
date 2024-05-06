@@ -3,7 +3,9 @@ part of 'profile_bloc.dart';
 sealed class ProfileEvent {}
 
 class GetProfileEvent extends ProfileEvent {
-  GetProfileEvent();
+  GetProfileEvent({this.userId});
+
+  String? userId;
 }
 
 class UpdateProfileEvent extends ProfileEvent {

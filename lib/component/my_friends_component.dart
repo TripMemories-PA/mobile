@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../bloc/profile/profile_bloc.dart';
 import '../constants/my_colors.dart';
+import '../constants/route_name.dart';
 import '../object/profile/profile.dart';
 import 'custom_card.dart';
 
@@ -172,7 +174,7 @@ class MyFriendsComponent extends StatelessWidget {
                     backgroundColor:
                         MaterialStateProperty.all<Color>(MyColors.purple),
                   ),
-                  onPressed: () {},
+                  onPressed: () => context.push('${RouteName.profilePage}/${friend.id}'),
                 ),
               ),
               const SizedBox(width: 30),

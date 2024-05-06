@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../api/profile/profile_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
@@ -19,47 +20,29 @@ import '../repository/profile_repository.dart';
 import '../service/profile_remote_data_source.dart';
 import 'login_page.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends HookWidget {
   const ProfilePage({super.key, this.userId});
 
   final String? userId;
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _tabController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final TabController tabController = useTabController(initialLength: 2);
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         // if user is null i will try to display my own profile
         // that is why i check if the user is authenticated
-        if (widget.userId == null &&
+        if (userId == null &&
             context.read<AuthBloc>().state.status != AuthStatus.authenticated) {
           return const LoginPage();
         }
-        return _buildProfilePage();
+        return _buildProfilePage(tabController);
       },
     );
   }
 
-  RepositoryProvider<ProfileRepository> _buildProfilePage() {
+  RepositoryProvider<ProfileRepository> _buildProfilePage(
+      TabController tabController) {
     return RepositoryProvider<ProfileRepository>(
       create: (context) => ProfileRepository(
         profileRemoteDataSource: ProfileRemoteDataSource(),
@@ -70,17 +53,17 @@ class _ProfilePageState extends State<ProfilePage>
         create: (context) => ProfileBloc(
           profileRepository: RepositoryProvider.of<ProfileRepository>(context),
           profileService: ProfileService(),
-        )..add(GetProfileEvent(userId: widget.userId)),
+        )..add(GetProfileEvent(userId: userId)),
         child: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
-            return _buildScaffold();
+            return _buildScaffold(tabController);
           },
         ),
       ),
     );
   }
 
-  Scaffold _buildScaffold() {
+  Scaffold _buildScaffold(TabController tabController) {
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
@@ -93,11 +76,11 @@ class _ProfilePageState extends State<ProfilePage>
                 headerSliverBuilder: (context, value) {
                   return [
                     _buildUserProfileInfosSliverAppBar(),
-                    if (widget.userId == null)
-                      _buildSliverMenuForPostsAndFriends(),
+                    if (userId == null)
+                      _buildSliverMenuForPostsAndFriends(tabController),
                   ];
                 },
-                body: _buildMyPostsAndMyFriends(),
+                body: _buildMyPostsAndMyFriends(tabController),
               ),
             ),
           ],
@@ -106,12 +89,12 @@ class _ProfilePageState extends State<ProfilePage>
     );
   }
 
-  Padding _buildMyPostsAndMyFriends() {
+  Padding _buildMyPostsAndMyFriends(TabController tabController) {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
-      child: widget.userId == null
+      child: userId == null
           ? TabBarView(
-              controller: _tabController,
+              controller: tabController,
               children: const [
                 SingleChildScrollView(
                   child: MyFriendsComponent(),
@@ -129,7 +112,9 @@ class _ProfilePageState extends State<ProfilePage>
     );
   }
 
-  SliverPersistentHeader _buildSliverMenuForPostsAndFriends() {
+  SliverPersistentHeader _buildSliverMenuForPostsAndFriends(
+    TabController tabController,
+  ) {
     return SliverPersistentHeader(
       pinned: true,
       delegate: _SliverAppBarDelegate(
@@ -138,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage>
         child: ColoredBox(
           color: Colors.white,
           child: TabBar(
-            controller: _tabController,
+            controller: tabController,
             indicatorSize: TabBarIndicatorSize.tab,
             tabs: const [
               Tab(text: 'Mes amis'),
@@ -158,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage>
         background: ListView(
           children: [
             ProfileInfos(
-              isMyProfile: widget.userId == null,
+              isMyProfile: userId == null,
             ),
             const SizedBox(height: 20),
             const FriendsAndVisitedWidget(),

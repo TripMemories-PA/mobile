@@ -10,7 +10,6 @@ import 'constants/route_name.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
-import 'page/my_profile_page.dart';
 import 'page/profile_page.dart';
 import 'page/search_page.dart';
 import 'page/shop_page.dart';
@@ -79,22 +78,18 @@ class MyApp extends StatelessWidget {
               GoRoute(
                 path: RouteName.profilePage,
                 builder: (BuildContext context, GoRouterState state) {
-                  return const MyProfilePage();
+                  return const ProfilePage();
                 },
               ),
               GoRoute(
                 path: '${RouteName.profilePage}/:userId',
                 builder: (BuildContext context, GoRouterState state) {
-                  final Map<String, String> queryParameters = GoRouterState.of(context).pathParameters;
+                  final Map<String, String> queryParameters =
+                      GoRouterState.of(context).pathParameters;
                   final String? userId = queryParameters['userId'];
-                  if(userId != null) {
-                    return ProfilePage(userId: userId);
-                  } else {
-                    return const MyProfilePage();
-                  }
+                  return ProfilePage(userId: userId);
                 },
               ),
-
             ],
           ),
         ],

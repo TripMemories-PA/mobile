@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,32 +11,52 @@ import '../bloc/notifier_bloc/notifier_bloc.dart';
 import '../bloc/notifier_bloc/notifier_event.dart';
 import '../bloc/profile/profile_bloc.dart';
 import '../component/friends_and_visited_widget.dart';
-import '../component/my_friends_my_posts.dart';
+import '../component/my_friends_component.dart';
+import '../component/my_post_component.dart';
 import '../component/profile_infos.dart';
 import '../constants/string_constants.dart';
-import '../num_extensions.dart';
 import '../repository/profile_repository.dart';
 import '../service/profile_remote_data_source.dart';
+import 'login_page.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({
-    required this.userId,
-    Key? key,
-  }) : super(key: key ?? const ValueKey<String>('ScaffoldWithNavBar'));
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key, this.userId});
 
-  final String userId;
+  final String? userId;
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
+  double getHeight() {
+    return 800;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return _buildMyProfilePage();
-  }
-
-  BlocBuilder<AuthBloc, AuthState> _buildMyProfilePage() {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        return _buildProfilePage();
-      },
-    );
+    // if user is null i will try to display my own profile
+    // that is why i check if the user is authenticated
+    if (widget.userId == null &&
+        context.read<AuthBloc>().state.status != AuthStatus.authenticated) {
+      return const LoginPage();
+    } else {}
+    return _buildProfilePage();
   }
 
   RepositoryProvider<ProfileRepository> _buildProfilePage() {
@@ -48,54 +70,151 @@ class ProfilePage extends StatelessWidget {
         create: (context) => ProfileBloc(
           profileRepository: RepositoryProvider.of<ProfileRepository>(context),
           profileService: ProfileService(),
-        )..add(GetProfileEvent(userId: userId)),
+        )..add(GetProfileEvent(userId: widget.userId)),
         child: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
             return Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: ListView(
-                children: [
-                  const ProfileInfos(),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const FriendsAndVisitedWidget(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const MyFriendsMyPosts(),
-                  BlocListener<ProfileBloc, ProfileState>(
-                    listener: (context, state) {
-                      final NotifierBloc notifierBloc =
-                          context.read<NotifierBloc>();
+              backgroundColor: Colors.white,
+              extendBodyBehindAppBar: true,
+              body: SafeArea(
+                child: Stack(
+                  children: [
+                    DefaultTabController(
+                      length: 2,
+                      child: NestedScrollView(
+                        headerSliverBuilder: (context, value) {
+                          return [
+                            SliverAppBar(
+                              expandedHeight: 300,
+                              leading: const SizedBox.shrink(),
+                              flexibleSpace: FlexibleSpaceBar(
+                                background: ListView(
+                                  children: [
+                                    ProfileInfos(
+                                      isMyProfile: widget.userId == null,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    const FriendsAndVisitedWidget(),
+                                    const SizedBox(height: 10),
+                                    BlocListener<ProfileBloc, ProfileState>(
+                                      listener: (context, state) {
+                                        final NotifierBloc notifierBloc =
+                                            context.read<NotifierBloc>();
 
-                      if (state.status == ProfileStatus.error) {
-                        notifierBloc.add(
-                          AppendNotification(
-                            notification: state.error?.getDescription() ??
-                                StringConstants().errorWhilePostingComment,
-                            type: NotificationType.error,
-                          ),
-                        );
-                      }
+                                        if (state.status ==
+                                            ProfileStatus.error) {
+                                          notifierBloc.add(
+                                            AppendNotification(
+                                              notification: state.error
+                                                      ?.getDescription() ??
+                                                  StringConstants()
+                                                      .errorWhilePostingComment,
+                                              type: NotificationType.error,
+                                            ),
+                                          );
+                                        }
 
-                      if (state.status == ProfileStatus.updated) {
-                        notifierBloc.add(
-                          AppendNotification(
-                            notification: StringConstants().profileUpdated,
-                            type: NotificationType.success,
-                          ),
-                        );
-                      }
-                    },
-                    child: 0.ph,
-                  ),
-                ],
+                                        if (state.status ==
+                                            ProfileStatus.updated) {
+                                          notifierBloc.add(
+                                            AppendNotification(
+                                              notification: StringConstants()
+                                                  .profileUpdated,
+                                              type: NotificationType.success,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      child: const SizedBox.shrink(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            if (widget.userId == null)
+                              SliverPersistentHeader(
+                                pinned: true,
+                                delegate: _SliverAppBarDelegate(
+                                  minHeight: 50,
+                                  maxHeight: 50,
+                                  child: ColoredBox(
+                                    color: Colors.white,
+                                    child: TabBar(
+                                      controller: _tabController,
+                                      indicatorSize: TabBarIndicatorSize.tab,
+                                      tabs: const [
+                                        Tab(text: 'Mes amis'),
+                                        Tab(text: 'Mes posts'),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ];
+                        },
+                        body: Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: widget.userId == null
+                              ? TabBarView(
+                                  controller: _tabController,
+                                  children: const [
+                                    SingleChildScrollView(
+                                      child: MyFriendsComponent(),
+                                    ),
+                                    SingleChildScrollView(
+                                      child: MyPostsComponents(),
+                                    ),
+                                  ],
+                                )
+                              : const Center(
+                                  child: Text(
+                                    'NO DATA TO DISPLAY FOR NOW: SCREEN INC',
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },
         ),
       ),
     );
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
+
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+
+  @override
+  double get minExtent => minHeight;
+
+  @override
+  double get maxExtent => math.max(maxHeight, minHeight);
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return SizedBox.expand(child: child);
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
   }
 }

@@ -118,7 +118,7 @@ class ProfilePage extends HookWidget {
   ) {
     return SliverPersistentHeader(
       pinned: true,
-      delegate: _SliverAppBarDelegate(
+      delegate: _CustomSliverAppBarDelegate(
         minHeight: 50,
         maxHeight: 50,
         child: ColoredBox(
@@ -181,8 +181,8 @@ class ProfilePage extends HookWidget {
   }
 }
 
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate({
+class _CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _CustomSliverAppBarDelegate({
     required this.minHeight,
     required this.maxHeight,
     required this.child,
@@ -208,7 +208,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+  bool shouldRebuild(_CustomSliverAppBarDelegate oldDelegate) {
     return maxHeight != oldDelegate.maxHeight ||
         minHeight != oldDelegate.minHeight ||
         child != oldDelegate.child;

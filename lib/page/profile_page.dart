@@ -44,10 +44,6 @@ class _ProfilePageState extends State<ProfilePage>
     _tabController.dispose();
   }
 
-  double getHeight() {
-    return 800;
-  }
-
   @override
   Widget build(BuildContext context) {
     // if user is null i will try to display my own profile
@@ -73,112 +69,122 @@ class _ProfilePageState extends State<ProfilePage>
         )..add(GetProfileEvent(userId: widget.userId)),
         child: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
-            return Scaffold(
-              backgroundColor: Colors.white,
-              extendBodyBehindAppBar: true,
-              body: SafeArea(
-                child: Stack(
-                  children: [
-                    DefaultTabController(
-                      length: 2,
-                      child: NestedScrollView(
-                        headerSliverBuilder: (context, value) {
-                          return [
-                            SliverAppBar(
-                              expandedHeight: 300,
-                              leading: const SizedBox.shrink(),
-                              flexibleSpace: FlexibleSpaceBar(
-                                background: ListView(
-                                  children: [
-                                    ProfileInfos(
-                                      isMyProfile: widget.userId == null,
-                                    ),
-                                    const SizedBox(height: 20),
-                                    const FriendsAndVisitedWidget(),
-                                    const SizedBox(height: 10),
-                                    BlocListener<ProfileBloc, ProfileState>(
-                                      listener: (context, state) {
-                                        final NotifierBloc notifierBloc =
-                                            context.read<NotifierBloc>();
-
-                                        if (state.status ==
-                                            ProfileStatus.error) {
-                                          notifierBloc.add(
-                                            AppendNotification(
-                                              notification: state.error
-                                                      ?.getDescription() ??
-                                                  StringConstants()
-                                                      .errorWhilePostingComment,
-                                              type: NotificationType.error,
-                                            ),
-                                          );
-                                        }
-
-                                        if (state.status ==
-                                            ProfileStatus.updated) {
-                                          notifierBloc.add(
-                                            AppendNotification(
-                                              notification: StringConstants()
-                                                  .profileUpdated,
-                                              type: NotificationType.success,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      child: const SizedBox.shrink(),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            if (widget.userId == null)
-                              SliverPersistentHeader(
-                                pinned: true,
-                                delegate: _SliverAppBarDelegate(
-                                  minHeight: 50,
-                                  maxHeight: 50,
-                                  child: ColoredBox(
-                                    color: Colors.white,
-                                    child: TabBar(
-                                      controller: _tabController,
-                                      indicatorSize: TabBarIndicatorSize.tab,
-                                      tabs: const [
-                                        Tab(text: 'Mes amis'),
-                                        Tab(text: 'Mes posts'),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                          ];
-                        },
-                        body: Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: widget.userId == null
-                              ? TabBarView(
-                                  controller: _tabController,
-                                  children: const [
-                                    SingleChildScrollView(
-                                      child: MyFriendsComponent(),
-                                    ),
-                                    SingleChildScrollView(
-                                      child: MyPostsComponents(),
-                                    ),
-                                  ],
-                                )
-                              : const Center(
-                                  child: Text(
-                                    'NO DATA TO DISPLAY FOR NOW: SCREEN INC',
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
+            return _buildScaffold();
           },
+        ),
+      ),
+    );
+  }
+
+  Scaffold _buildScaffold() {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            DefaultTabController(
+              length: 2,
+              child: NestedScrollView(
+                headerSliverBuilder: (context, value) {
+                  return [
+                    _buildUserProfileInfosSliverAppBar(),
+                    if (widget.userId == null)
+                      _buildSliverMenuForPostsAndFriends(),
+                  ];
+                },
+                body: _buildMyPostsAndMyFriends(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding _buildMyPostsAndMyFriends() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: widget.userId == null
+          ? TabBarView(
+              controller: _tabController,
+              children: const [
+                SingleChildScrollView(
+                  child: MyFriendsComponent(),
+                ),
+                SingleChildScrollView(
+                  child: MyPostsComponents(),
+                ),
+              ],
+            )
+          : const Center(
+              child: Text(
+                'NO DATA TO DISPLAY FOR NOW: SCREEN INC',
+              ),
+            ),
+    );
+  }
+
+  SliverPersistentHeader _buildSliverMenuForPostsAndFriends() {
+    return SliverPersistentHeader(
+      pinned: true,
+      delegate: _SliverAppBarDelegate(
+        minHeight: 50,
+        maxHeight: 50,
+        child: ColoredBox(
+          color: Colors.white,
+          child: TabBar(
+            controller: _tabController,
+            indicatorSize: TabBarIndicatorSize.tab,
+            tabs: const [
+              Tab(text: 'Mes amis'),
+              Tab(text: 'Mes posts'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  SliverAppBar _buildUserProfileInfosSliverAppBar() {
+    return SliverAppBar(
+      expandedHeight: 300,
+      leading: const SizedBox.shrink(),
+      flexibleSpace: FlexibleSpaceBar(
+        background: ListView(
+          children: [
+            ProfileInfos(
+              isMyProfile: widget.userId == null,
+            ),
+            const SizedBox(height: 20),
+            const FriendsAndVisitedWidget(),
+            const SizedBox(height: 10),
+            BlocListener<ProfileBloc, ProfileState>(
+              listener: (context, state) {
+                final NotifierBloc notifierBloc = context.read<NotifierBloc>();
+
+                if (state.status == ProfileStatus.error) {
+                  notifierBloc.add(
+                    AppendNotification(
+                      notification: state.error?.getDescription() ??
+                          StringConstants().errorWhilePostingComment,
+                      type: NotificationType.error,
+                    ),
+                  );
+                }
+
+                if (state.status == ProfileStatus.updated) {
+                  notifierBloc.add(
+                    AppendNotification(
+                      notification: StringConstants().profileUpdated,
+                      type: NotificationType.success,
+                    ),
+                  );
+                }
+              },
+              child: const SizedBox.shrink(),
+            ),
+          ],
         ),
       ),
     );

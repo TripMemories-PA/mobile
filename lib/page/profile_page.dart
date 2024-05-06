@@ -42,7 +42,8 @@ class ProfilePage extends HookWidget {
   }
 
   RepositoryProvider<ProfileRepository> _buildProfilePage(
-      TabController tabController) {
+    TabController tabController,
+  ) {
     return RepositoryProvider<ProfileRepository>(
       create: (context) => ProfileRepository(
         profileRemoteDataSource: ProfileRemoteDataSource(),

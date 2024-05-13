@@ -10,6 +10,8 @@ class FriendsAndVisitedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<ProfileBloc, ProfileState>(
+  builder: (context, state) {
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -28,6 +30,8 @@ class FriendsAndVisitedWidget extends StatelessWidget {
         ],
       ),
     );
+  },
+);
   }
 
   Widget _buildFriendsCard(BuildContext context) {

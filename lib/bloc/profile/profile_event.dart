@@ -30,12 +30,10 @@ class UpdatePasswordEvent extends ProfileEvent {
 
 class GetFriendsEvent extends ProfileEvent {
   GetFriendsEvent({
-    required this.page,
-    required this.perPage,
+    this.isRefresh = false,
   });
 
-  final int page;
-  final int perPage;
+final bool isRefresh;
 }
 
 class UpdateProfilePictureEvent extends ProfileEvent {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/profile/profile_bloc.dart';
 import 'my_friends_component.dart';
 import 'my_post_component.dart';
 
@@ -14,12 +16,14 @@ class _MyFriendsMyPostsState extends State<MyFriendsMyPosts>
     with TickerProviderStateMixin {
   late PageController _pageViewController;
   late TabController _tabController;
+  late ScrollController _friendsScrollController;
 
   @override
   void initState() {
     super.initState();
     _pageViewController = PageController();
     _tabController = TabController(length: 2, vsync: this);
+    _friendsScrollController = ScrollController();
   }
 
   @override
@@ -27,10 +31,18 @@ class _MyFriendsMyPostsState extends State<MyFriendsMyPosts>
     super.dispose();
     _pageViewController.dispose();
     _tabController.dispose();
+    _friendsScrollController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    _friendsScrollController.addListener(() {
+      if (_friendsScrollController.position.atEdge) {
+        if (_friendsScrollController.position.pixels != 0) {
+          _getNextFriends(context);
+        }
+      }
+    });
     return Column(
       children: <Widget>[
         TabBar(
@@ -51,9 +63,9 @@ class _MyFriendsMyPostsState extends State<MyFriendsMyPosts>
           child: PageView(
             controller: _pageViewController,
             onPageChanged: _handlePageViewChanged,
-            children: const <Widget>[
-              SingleChildScrollView(child: MyFriendsComponent()),
-              SingleChildScrollView(child: MyPostsComponents()),
+            children: <Widget>[
+              const MyFriendsComponent(),
+              const SingleChildScrollView(child: MyPostsComponents()),
             ],
           ),
         ),
@@ -72,5 +84,16 @@ class _MyFriendsMyPostsState extends State<MyFriendsMyPosts>
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeInOut,
     );
+  }
+
+  void _getNextFriends(BuildContext context) {
+    print("GET NEXT FRIENDS");
+    final tweetBloc = context.read<ProfileBloc>();
+
+    if (tweetBloc.state.status != ProfileStatus.loading) {
+      tweetBloc.add(
+        GetFriendsEvent(),
+      );
+    }
   }
 }

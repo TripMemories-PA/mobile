@@ -195,7 +195,6 @@ class MyFriendsComponentScrollable extends StatelessWidget {
   final ScrollController friendsScrollController = ScrollController();
 
   void _getNextFriends(BuildContext context) {
-    print('GET NEXT FRIENDS');
     final tweetBloc = context.read<ProfileBloc>();
 
     if (tweetBloc.state.status != ProfileStatus.loading) {
@@ -209,7 +208,6 @@ class MyFriendsComponentScrollable extends StatelessWidget {
   Widget build(BuildContext context) {
     friendsScrollController.addListener(() {
       if (friendsScrollController.position.atEdge) {
-        print('at edge');
         if (friendsScrollController.position.pixels != 0) {
           _getNextFriends(context);
         }

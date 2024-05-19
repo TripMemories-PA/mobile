@@ -38,7 +38,6 @@ class _MyFriendsMyPostsState extends State<MyFriendsMyPosts>
   Widget build(BuildContext context) {
     _friendsScrollController.addListener(() {
       if (_friendsScrollController.position.atEdge) {
-        print('at edge');
         if (_friendsScrollController.position.pixels != 0) {
           _getNextFriends(context);
         }
@@ -91,7 +90,6 @@ class _MyFriendsMyPostsState extends State<MyFriendsMyPosts>
   }
 
   void _getNextFriends(BuildContext context) {
-    print('GET NEXT FRIENDS');
     final tweetBloc = context.read<ProfileBloc>();
 
     if (tweetBloc.state.status != ProfileStatus.loading) {

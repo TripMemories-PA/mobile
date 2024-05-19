@@ -13,7 +13,6 @@ import '../../object/profile/profile.dart';
 import '../../repository/profile_repository.dart';
 
 part 'profile_event.dart';
-
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
@@ -113,7 +112,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     on<GetFriendsEvent>(
       (event, emit) async {
-        emit(state.copyWith(status: ProfileStatus.loading));
+        if (event.isRefresh) {
+          emit(state.copyWith(status: ProfileStatus.loading));
+        }
         try {
           final String? authToken = await AuthTokenHandler().getAuthToken();
           if (authToken == null) {

@@ -57,14 +57,18 @@ class ProfilePage extends HookWidget {
         )..add(GetProfileEvent(userId: userId)),
         child: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
-            return _buildScaffold(tabController);
+            return _buildScaffold(
+              tabController,
+            );
           },
         ),
       ),
     );
   }
 
-  Scaffold _buildScaffold(TabController tabController) {
+  Scaffold _buildScaffold(
+    TabController tabController,
+  ) {
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
@@ -81,7 +85,9 @@ class ProfilePage extends HookWidget {
                       _buildSliverMenuForPostsAndFriends(tabController),
                   ];
                 },
-                body: _buildMyPostsAndMyFriends(tabController),
+                body: _buildMyPostsAndMyFriends(
+                  tabController,
+                ),
               ),
             ),
           ],
@@ -90,17 +96,17 @@ class ProfilePage extends HookWidget {
     );
   }
 
-  Padding _buildMyPostsAndMyFriends(TabController tabController) {
+  Padding _buildMyPostsAndMyFriends(
+    TabController tabController,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: userId == null
           ? TabBarView(
               controller: tabController,
-              children: const [
-                SingleChildScrollView(
-                  child: MyFriendsComponent(),
-                ),
-                SingleChildScrollView(
+              children: [
+                MyFriendsComponentScrollable(),
+                const SingleChildScrollView(
                   child: MyPostsComponents(),
                 ),
               ],
@@ -177,6 +183,41 @@ class ProfilePage extends HookWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class MyFriendsComponentScrollable extends StatelessWidget {
+  MyFriendsComponentScrollable({
+    super.key,
+  });
+
+  final ScrollController friendsScrollController = ScrollController();
+
+  void _getNextFriends(BuildContext context) {
+    print('GET NEXT FRIENDS');
+    final tweetBloc = context.read<ProfileBloc>();
+
+    if (tweetBloc.state.status != ProfileStatus.loading) {
+      tweetBloc.add(
+        GetFriendsEvent(),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    friendsScrollController.addListener(() {
+      if (friendsScrollController.position.atEdge) {
+        print('at edge');
+        if (friendsScrollController.position.pixels != 0) {
+          _getNextFriends(context);
+        }
+      }
+    });
+    return SingleChildScrollView(
+      controller: friendsScrollController,
+      child: const MyFriendsComponent(),
     );
   }
 }

@@ -153,7 +153,9 @@ class ProfilePage extends HookWidget {
               isMyProfile: userId == null,
             ),
             const SizedBox(height: 20),
-            const FriendsAndVisitedWidget(),
+            FriendsAndVisitedWidget(
+              itIsMe: userId == null,
+            ),
             const SizedBox(height: 10),
             BlocListener<ProfileBloc, ProfileState>(
               listener: (context, state) {

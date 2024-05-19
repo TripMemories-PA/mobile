@@ -190,32 +190,32 @@ class MyFriendsComponent extends StatelessWidget {
                 ],
               ),
               const Expanded(child: SizedBox()),
-              SizedBox(
+              Container(
                 width: 30,
                 height: 30,
+                decoration: const BoxDecoration(
+                  color: MyColors.purple,
+                  shape: BoxShape.circle,
+                ),
                 child: IconButton(
                   iconSize: 15,
                   icon: const Icon(Icons.chat),
                   color: Colors.white,
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(MyColors.purple),
-                  ),
                   onPressed: () {},
                 ),
               ),
-              const SizedBox(width: 15),
-              SizedBox(
+              15.pw,
+              Container(
                 width: 30,
                 height: 30,
+                decoration: const BoxDecoration(
+                  color: MyColors.purple,
+                  shape: BoxShape.circle,
+                ),
                 child: IconButton(
                   iconSize: 15,
                   icon: const Icon(Icons.remove_red_eye),
                   color: Colors.white,
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(MyColors.purple),
-                  ),
                   onPressed: () =>
                       context.push('${RouteName.profilePage}/${friend.id}'),
                 ),

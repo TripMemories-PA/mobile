@@ -47,5 +47,8 @@ class StringConstants {
   String get confirmAction => 'Etes-vous sûr ?';
 
   String get profileUpdated => 'Profil modifié !';
+  
+  String get noMoreFriends => "Plus d'amis à afficher.";
+  String get retry => 'Réessayer';
 
 }

@@ -16,7 +16,7 @@ class ProfileService implements IProfileService {
   static const String apiMeUrl = '${AppConfig.apiUrl}/me';
   static const String apiMyAvatarUrl = '$apiMeUrl/avatar';
   static const String apiMyBannerUrl = '$apiMeUrl/banner';
-  static const String apiMyFriendsUrl = '$apiMeUrl/friends?page=[nb_page]&perPage=[per_page]';
+  static const String apiMyFriendsUrl = '$apiMeUrl/friends/?page=[nb_page]&perPage=[per_page]';
   static const String apiUserUrl = '${AppConfig.apiUrl}/users';
 
   @override

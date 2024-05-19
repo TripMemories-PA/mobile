@@ -6,27 +6,34 @@ import '../num_extensions.dart';
 import 'custom_card.dart';
 
 class FriendsAndVisitedWidget extends StatelessWidget {
-  const FriendsAndVisitedWidget({super.key});
+  const FriendsAndVisitedWidget({super.key, this.itIsMe = false});
+
+  final bool itIsMe;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CustomCard(
-            width: MediaQuery.of(context).size.width * 0.45,
-            height: 50,
-            content: _buildFriendsCard(context),
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        return Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (itIsMe)
+                CustomCard(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: 50,
+                  content: _buildFriendsCard(context),
+                ),
+              20.pw,
+              CustomCard(
+                width: MediaQuery.of(context).size.width * 0.45,
+                height: 50,
+                content: _buildVisitedBuildingCard(context),
+              ),
+            ],
           ),
-          20.pw,
-          CustomCard(
-            width: MediaQuery.of(context).size.width * 0.45,
-            height: 50,
-            content: _buildVisitedBuildingCard(context),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

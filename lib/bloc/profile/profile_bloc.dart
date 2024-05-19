@@ -33,7 +33,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                 status: ProfileStatus.notLoading,
               ),
             );
-            add(GetFriendsEvent(page: 1, perPage: 10));
+            add(
+              GetFriendsEvent(isRefresh: true),
+            );
           } else {
             final String? authToken = await AuthTokenHandler().getAuthToken();
             if (authToken == null) {
@@ -52,7 +54,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                 status: ProfileStatus.notLoading,
               ),
             );
-            add(GetFriendsEvent(page: 1, perPage: 10));
+            add(
+              GetFriendsEvent(isRefresh: true),
+            );
           }
         } catch (e) {
           // TODO(nono): implement profileLocalDataSource
@@ -108,7 +112,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     on<GetFriendsEvent>(
       (event, emit) async {
-        emit(state.copyWith(status: ProfileStatus.loading));
+        if (event.isRefresh) {
+          emit(state.copyWith(status: ProfileStatus.loading));
+        }
         try {
           final String? authToken = await AuthTokenHandler().getAuthToken();
           if (authToken == null) {
@@ -124,14 +130,23 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           if (tmpProfile != null) {
             final GetFriendsPaginationResponse friends =
                 await profileRepository.getMyFriends(
-              page: event.page,
-              perPage: event.perPage,
+              page: event.isRefresh ? 1 : state.friendsPage + 1,
+              perPage: state.friendsPerPage,
             );
 
             emit(
               state.copyWith(
-                friends: friends,
+                friends: event.isRefresh
+                    ? friends
+                    : state.friends?.copyWith(
+                        data: [
+                          ...state.friends!.data,
+                          ...friends.data,
+                        ],
+                      ),
                 status: ProfileStatus.notLoading,
+                friendsPage: event.isRefresh ? 1 : state.friendsPage + 1,
+                hasMoreTweets: friends.data.length == state.friendsPerPage,
               ),
             );
           }

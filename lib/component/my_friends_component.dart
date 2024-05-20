@@ -11,6 +11,7 @@ import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/profile/profile.dart';
 import 'custom_card.dart';
+import 'popup/my_friends_requests.dart';
 
 class MyFriendsComponentScrollable extends HookWidget {
   const MyFriendsComponentScrollable({
@@ -83,14 +84,19 @@ class MyFriendsComponent extends StatelessWidget {
               ),
               borderColor: MyColors.purple,
             ),
-            CustomCard(
-              width: MediaQuery.of(context).size.width * 0.40,
-              height: 40,
-              content: const Text(
-                'Gérer les demandes',
-                textAlign: TextAlign.center,
+            InkWell(
+              onTap: () async {
+                await myFriendsRequestsPopup(context);
+              },
+              child: CustomCard(
+                width: MediaQuery.of(context).size.width * 0.40,
+                height: 40,
+                content: const Text(
+                  'Gérer les demandes',
+                  textAlign: TextAlign.center,
+                ),
+                borderColor: MyColors.purple,
               ),
-              borderColor: MyColors.purple,
             ),
           ],
         ),

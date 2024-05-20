@@ -10,6 +10,7 @@ import '../error/specific_error/auth_error.dart';
 import '../exception/bad_request_exception.dart';
 import '../exception/parsing_response_exception.dart';
 import 'i_profile_service.dart';
+import 'response/friend_request/friend_request_response.dart';
 import 'response/friends/get_friends_pagination_response.dart';
 
 class ProfileService implements IProfileService {
@@ -17,6 +18,7 @@ class ProfileService implements IProfileService {
   static const String apiMyAvatarUrl = '$apiMeUrl/avatar';
   static const String apiMyBannerUrl = '$apiMeUrl/banner';
   static const String apiMyFriendsUrl = '$apiMeUrl/friends/?page=[nb_page]&perPage=[per_page]';
+  static const String apiMyFriendRequestsUrl = '$apiMeUrl/friend-requests/?page=[nb_page]&perPage=[per_page]';
   static const String apiUserUrl = '${AppConfig.apiUrl}/users';
 
   @override
@@ -99,6 +101,31 @@ class ProfileService implements IProfileService {
     }
     try {
       return GetFriendsPaginationResponse.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
+    }
+  }
+
+  @override
+  Future<GetFriendRequestResponse> getMyFriendRequests({
+    required int page,
+    required int perPage,
+  }) async {
+    Response response;
+    final String url = apiMyFriendRequestsUrl
+        .replaceAll('[nb_page]', page.toString())
+        .replaceAll('[per_page]', perPage.toString());
+    try {
+      response = await DioClient.instance.get(
+        url,
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      return GetFriendRequestResponse.fromJson(response.data);
     } catch (e) {
       throw ParsingResponseException(
         ApiError.errorOccurredWhileParsingResponse(),

@@ -1,3 +1,4 @@
+import '../api/profile/response/friend_request/friend_request_response.dart';
 import '../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../object/profile/profile.dart';
 import '../service/profile_remote_data_source.dart';
@@ -34,5 +35,12 @@ class ProfileRepository {
     required int perPage,
   }) async {
     return profileRemoteDataSource.getMyFriends(page: page, perPage: perPage);
+  }
+
+  Future<GetFriendRequestResponse> getMyFriendRequests({
+    required int page,
+    required int perPage,
+  }) async {
+    return profileRemoteDataSource.getMyFriendRequests(page: page, perPage: perPage);
   }
 }

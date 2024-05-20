@@ -104,9 +104,9 @@ class ProfilePage extends HookWidget {
       child: userId == null
           ? TabBarView(
               controller: tabController,
-              children: [
+              children: const [
                 MyFriendsComponentScrollable(),
-                const SingleChildScrollView(
+                SingleChildScrollView(
                   child: MyPostsComponents(),
                 ),
               ],
@@ -185,39 +185,6 @@ class ProfilePage extends HookWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class MyFriendsComponentScrollable extends StatelessWidget {
-  MyFriendsComponentScrollable({
-    super.key,
-  });
-
-  final ScrollController friendsScrollController = ScrollController();
-
-  void _getNextFriends(BuildContext context) {
-    final tweetBloc = context.read<ProfileBloc>();
-
-    if (tweetBloc.state.status != ProfileStatus.loading) {
-      tweetBloc.add(
-        GetFriendsEvent(),
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    friendsScrollController.addListener(() {
-      if (friendsScrollController.position.atEdge) {
-        if (friendsScrollController.position.pixels != 0) {
-          _getNextFriends(context);
-        }
-      }
-    });
-    return SingleChildScrollView(
-      controller: friendsScrollController,
-      child: const MyFriendsComponent(),
     );
   }
 }

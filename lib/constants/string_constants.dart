@@ -51,4 +51,7 @@ class StringConstants {
   String get noMoreFriends => "Plus d'amis à afficher.";
   String get retry => 'Réessayer';
 
+  String get friendRequestAccepted => "Demande d'ami acceptée";
+  String get friendRequestRefused => "Demande d'ami refusée";
+
 }

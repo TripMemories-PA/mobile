@@ -3,6 +3,8 @@ part of 'friend_request_bloc.dart';
 enum FriendRequestStatus {
   loading,
   notLoading,
+  accepted,
+  refused,
   error,
 }
 

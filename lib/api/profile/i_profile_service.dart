@@ -21,9 +21,15 @@ abstract class IProfileService {
     required String password,
   });
 
-  Future<GetFriendsPaginationResponse> getMyFriends({required int page, required int perPage});
+  Future<GetFriendsPaginationResponse> getMyFriends({
+    required int page,
+    required int perPage,
+  });
 
-  Future<GetFriendRequestResponse> getMyFriendRequests({required int page, required int perPage});
+  Future<GetFriendRequestResponse> getMyFriendRequests({
+    required int page,
+    required int perPage,
+  });
 
   Future<UploadFile> updateProfilePicture({
     required XFile image,
@@ -32,4 +38,8 @@ abstract class IProfileService {
   Future<UploadFile> updateProfileBanner({
     required XFile image,
   });
+
+  Future<void> acceptFriendRequest({required String friendRequestId});
+
+  Future<void> rejectFriendRequest({required String friendRequestId});
 }

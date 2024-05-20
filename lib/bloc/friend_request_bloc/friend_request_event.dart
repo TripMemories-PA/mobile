@@ -9,3 +9,19 @@ class GetFriendRequestEvent extends FriendRequestEvent {
 
   final bool isRefresh;
 }
+
+class AcceptFriendRequestEvent extends FriendRequestEvent {
+  AcceptFriendRequestEvent({
+    required this.friendRequestId,
+  });
+
+  final String friendRequestId;
+}
+
+class RejectFriendRequestEvent extends FriendRequestEvent {
+  RejectFriendRequestEvent({
+    required this.friendRequestId,
+  });
+
+  final String friendRequestId;
+}

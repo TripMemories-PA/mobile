@@ -4,7 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../api/auth/model/response/friend_request_response/friend_request_response.dart';
+import '../../api/profile/profile_service.dart';
 import '../../bloc/friend_request_bloc/friend_request_bloc.dart';
+import '../../bloc/notifier_bloc/notification_type.dart';
+import '../../bloc/notifier_bloc/notifier_bloc.dart';
+import '../../bloc/notifier_bloc/notifier_event.dart';
 import '../../constants/my_colors.dart';
 import '../../constants/route_name.dart';
 import '../../constants/string_constants.dart';
@@ -12,6 +16,7 @@ import '../../num_extensions.dart';
 import '../../repository/profile_repository.dart';
 import '../../service/profile_remote_data_source.dart';
 import '../custom_card.dart';
+import '../notifier_widget.dart';
 
 class MyFriendsRequests extends StatelessWidget {
   const MyFriendsRequests({
@@ -80,6 +85,7 @@ class MyFriendsRequests extends StatelessWidget {
       child: BlocProvider(
         create: (context) => FriendRequestBloc(
           profileRepository: RepositoryProvider.of<ProfileRepository>(context),
+          profileService: ProfileService(),
         )..add(GetFriendRequestEvent(isRefresh: true)),
         child: BlocBuilder<FriendRequestBloc, FriendRequestState>(
           builder: (context, state) {
@@ -114,6 +120,23 @@ class MyFriendsRequests extends StatelessWidget {
                             : _buildErrorWidget(context))
                         : Text(StringConstants().noMoreFriends),
                   ),
+                  BlocListener<FriendRequestBloc, FriendRequestState>(
+                    listener: (context, state) {
+                      if (state.status == FriendRequestStatus.accepted ||
+                          state.status == FriendRequestStatus.refused) {
+                        context.read<NotifierBloc>().add(
+                              AppendNotification(
+                                notification: state.status ==
+                                        FriendRequestStatus.accepted
+                                    ? StringConstants().friendRequestAccepted
+                                    : StringConstants().friendRequestRefused,
+                                type: NotificationType.info,
+                              ),
+                            );
+                      }
+                    },
+                    child: const SizedBox.shrink(),
+                  ),
                 ],
               ),
             );
@@ -123,7 +146,10 @@ class MyFriendsRequests extends StatelessWidget {
     );
   }
 
-  CustomCard _buildFriendCard(BuildContext context, FriendRequest friendRequest) {
+  CustomCard _buildFriendCard(
+    BuildContext context,
+    FriendRequest friendRequest,
+  ) {
     final String? avatarUrl = friendRequest.sender.avatar?.url;
     return CustomCard(
       width: MediaQuery.of(context).size.width * 0.90,
@@ -142,7 +168,8 @@ class MyFriendsRequests extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    '${friendRequest.sender.firstname} ' '${friendRequest.sender.lastname}',
+                    '${friendRequest.sender.firstname} '
+                    '${friendRequest.sender.lastname}',
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
@@ -169,7 +196,13 @@ class MyFriendsRequests extends StatelessWidget {
                   iconSize: 15,
                   icon: const Icon(Icons.check),
                   color: Colors.white,
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<FriendRequestBloc>().add(
+                          AcceptFriendRequestEvent(
+                            friendRequestId: friendRequest.id.toString(),
+                          ),
+                        );
+                  },
                 ),
               ),
               10.pw,
@@ -184,8 +217,13 @@ class MyFriendsRequests extends StatelessWidget {
                   iconSize: 15,
                   icon: const Icon(Icons.close),
                   color: Colors.white,
-                  onPressed: () =>
-                      context.push('${RouteName.profilePage}/${friendRequest.id}'),
+                  onPressed: () {
+                    context.read<FriendRequestBloc>().add(
+                          RejectFriendRequestEvent(
+                            friendRequestId: friendRequest.id.toString(),
+                          ),
+                        );
+                  },
                 ),
               ),
               10.pw,
@@ -200,8 +238,8 @@ class MyFriendsRequests extends StatelessWidget {
                   iconSize: 15,
                   icon: const Icon(Icons.remove_red_eye),
                   color: Colors.white,
-                  onPressed: () =>
-                      context.push('${RouteName.profilePage}/${friendRequest.id}'),
+                  onPressed: () => context
+                      .push('${RouteName.profilePage}/${friendRequest.id}'),
                 ),
               ),
               const SizedBox(width: 10),

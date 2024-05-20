@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../api/auth/model/response/friend_request_response/friend_request_response.dart';
 import '../../api/error/api_error.dart';
 import '../../api/error/specific_error/auth_error.dart';
 import '../../api/exception/custom_exception.dart';
+import '../../api/profile/i_profile_service.dart';
 import '../../api/profile/response/friend_request/friend_request_response.dart';
 import '../../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../../local_storage/secure_storage/auth_token_handler.dart';
@@ -15,6 +17,7 @@ part 'friend_request_state.dart';
 class FriendRequestBloc extends Bloc<FriendRequestEvent, FriendRequestState> {
   FriendRequestBloc({
     required ProfileRepository profileRepository,
+    required this.profileService,
   }) : super(const FriendRequestState()) {
     on<GetFriendRequestEvent>((event, emit) async {
       if (event.isRefresh) {
@@ -60,5 +63,79 @@ class FriendRequestBloc extends Bloc<FriendRequestEvent, FriendRequestState> {
         );
       }
     });
+
+    on<AcceptFriendRequestEvent>((event, emit) async {
+      try {
+        await profileService.acceptFriendRequest(
+          friendRequestId: event.friendRequestId,
+        );
+        List<FriendRequest>? friendRequests = state.friendRequests?.data;
+
+        if (friendRequests != null) {
+          friendRequests = List<FriendRequest>.from(friendRequests);
+
+          friendRequests.removeWhere(
+                (element) => element.id.toString() == event.friendRequestId,
+          );
+        }
+        GetFriendRequestResponse? friendRequestsResponse = state.friendRequests;
+        if (friendRequests != null && friendRequestsResponse != null) {
+          friendRequestsResponse =
+              friendRequestsResponse.copyWith(data: friendRequests);
+        }
+        emit(
+          state.copyWith(
+            status: FriendRequestStatus.accepted,
+            friendRequests: friendRequestsResponse,
+          ),
+        );
+        add(GetFriendRequestEvent(isRefresh: true));
+      } catch (e) {
+        emit(
+          state.copyWith(
+            status: FriendRequestStatus.error,
+            error: e is CustomException ? e.apiError : ApiError.unknown(),
+          ),
+        );
+      }
+    });
+
+    on<RejectFriendRequestEvent>((event, emit) async {
+      try {
+        await profileService.rejectFriendRequest(
+          friendRequestId: event.friendRequestId,
+        );
+        List<FriendRequest>? friendRequests = state.friendRequests?.data;
+
+        if (friendRequests != null) {
+          friendRequests = List<FriendRequest>.from(friendRequests);
+
+          friendRequests.removeWhere(
+            (element) => element.id.toString() == event.friendRequestId,
+          );
+        }
+        GetFriendRequestResponse? friendRequestsResponse = state.friendRequests;
+        if (friendRequests != null && friendRequestsResponse != null) {
+          friendRequestsResponse =
+              friendRequestsResponse.copyWith(data: friendRequests);
+        }
+        emit(
+          state.copyWith(
+            status: FriendRequestStatus.refused,
+            friendRequests: friendRequestsResponse,
+          ),
+        );
+        add(GetFriendRequestEvent(isRefresh: true));
+      } catch (e) {
+        emit(
+          state.copyWith(
+            status: FriendRequestStatus.error,
+            error: e is CustomException ? e.apiError : ApiError.unknown(),
+          ),
+        );
+      }
+    });
   }
+
+  final IProfileService profileService;
 }

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
 import '../bloc/profile/profile_bloc.dart';
@@ -10,6 +11,47 @@ import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/profile/profile.dart';
 import 'custom_card.dart';
+
+class MyFriendsComponentScrollable extends HookWidget {
+  const MyFriendsComponentScrollable({
+    super.key,
+  });
+
+  void _getNextFriends(BuildContext context) {
+    final tweetBloc = context.read<ProfileBloc>();
+
+    if (tweetBloc.state.status != ProfileStatus.loading) {
+      tweetBloc.add(
+        GetFriendsEvent(),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ScrollController friendsScrollController = useScrollController();
+    useEffect(
+          () {
+        void createScrollListener() {
+          if (friendsScrollController.position.atEdge) {
+            if (friendsScrollController.position.pixels != 0) {
+              _getNextFriends(context);
+            }
+          }
+        }
+
+        friendsScrollController.addListener(createScrollListener);
+        return () =>
+            friendsScrollController.removeListener(createScrollListener);
+      },
+      const [],
+    );
+    return SingleChildScrollView(
+      controller: friendsScrollController,
+      child: const MyFriendsComponent(),
+    );
+  }
+}
 
 class MyFriendsComponent extends StatelessWidget {
   const MyFriendsComponent({
@@ -94,12 +136,10 @@ class MyFriendsComponent extends StatelessWidget {
                     )
                     .toList() ??
                 [],
-            if (context.read<ProfileBloc>().state.status ==
-                ProfileStatus.loading)
               Center(
                 child: context.read<ProfileBloc>().state.hasMoreTweets
                     ? (context.read<ProfileBloc>().state.status !=
-                            ProfileStatus.loading
+                            ProfileStatus.error
                         ? const Text('SHIMMER HERe')
                         // TODO(nono): SHIMMER
                         : _buildErrorWidget(context))
@@ -137,39 +177,7 @@ class MyFriendsComponent extends StatelessWidget {
               const SizedBox(
                 width: 12,
               ),
-              SizedBox(
-                width: 40,
-                height: 40,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(50.0),
-                  ),
-                  child: avatarUrl != null
-                      ? CachedNetworkImage(
-                          imageUrl: avatarUrl,
-                          fit: BoxFit.cover,
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) => Center(
-                            child: CircularProgressIndicator(
-                              value: downloadProgress.progress,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                Theme.of(context).colorScheme.error,
-                              ),
-                            ),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                        )
-                      : const CircleAvatar(
-                          backgroundColor: MyColors.lightGrey,
-                          child: Icon(
-                            Icons.person,
-                            size: 50,
-                            color: Colors.grey,
-                          ),
-                        ),
-                ),
-              ),
+              _buildUserPhoto(avatarUrl),
               const SizedBox(width: 10),
               Column(
                 children: [
@@ -226,5 +234,41 @@ class MyFriendsComponent extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  SizedBox _buildUserPhoto(String? avatarUrl) {
+    return SizedBox(
+              width: 40,
+              height: 40,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(50.0),
+                ),
+                child: avatarUrl != null
+                    ? CachedNetworkImage(
+                        imageUrl: avatarUrl,
+                        fit: BoxFit.cover,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) => Center(
+                          child: CircularProgressIndicator(
+                            value: downloadProgress.progress,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Theme.of(context).colorScheme.error,
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      )
+                    : const CircleAvatar(
+                        backgroundColor: MyColors.lightGrey,
+                        child: Icon(
+                          Icons.person,
+                          size: 50,
+                          color: Colors.grey,
+                        ),
+                      ),
+              ),
+            );
   }
 }

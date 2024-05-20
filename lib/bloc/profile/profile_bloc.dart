@@ -133,7 +133,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               page: event.isRefresh ? 1 : state.friendsPage + 1,
               perPage: state.friendsPerPage,
             );
-
             emit(
               state.copyWith(
                 friends: event.isRefresh

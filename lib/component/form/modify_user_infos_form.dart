@@ -18,15 +18,11 @@ class ModifyUserInfosForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController usernameController = useTextEditingController();
-    usernameController.text = profileBloc.state.profile!.username;
-    final TextEditingController lastName = useTextEditingController();
-    lastName.text = profileBloc.state.profile?.lastname ?? '';
+    final TextEditingController usernameController = useTextEditingController(text: profileBloc.state.profile!.username);
+    final TextEditingController lastName = useTextEditingController(text: profileBloc.state.profile?.lastname ?? '');
     final TextEditingController firstNameController =
-        useTextEditingController();
-    firstNameController.text = profileBloc.state.profile?.firstname ?? '';
-    final TextEditingController emailController = useTextEditingController();
-    emailController.text = profileBloc.state.profile!.email;
+        useTextEditingController(text: profileBloc.state.profile?.firstname ?? '');
+    final TextEditingController emailController = useTextEditingController(text: profileBloc.state.profile!.email);
     return Form(
       key: formKey,
       child: Column(

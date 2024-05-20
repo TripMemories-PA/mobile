@@ -126,6 +126,7 @@ class MyFriendsComponent extends StatelessWidget {
                     ?.data
                     .map(
                       (friend) => Column(
+                        key: ObjectKey(friend),
                         children: [
                           _buildFriendCard(context, friend),
                           const SizedBox(

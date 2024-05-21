@@ -16,7 +16,6 @@ import '../../num_extensions.dart';
 import '../../repository/profile_repository.dart';
 import '../../service/profile_remote_data_source.dart';
 import '../custom_card.dart';
-import '../notifier_widget.dart';
 
 class MyFriendsRequests extends StatelessWidget {
   const MyFriendsRequests({

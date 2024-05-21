@@ -19,8 +19,7 @@ class ProfileService implements IProfileService {
   static const String apiMyBannerUrl = '$apiMeUrl/banner';
   static const String apiMyFriendsUrl =
       '$apiMeUrl/friends/?page=[nb_page]&perPage=[per_page]';
-  static const String apiMyFriendRequestsBaseUrl =
-      '$apiMeUrl/friend-requests';
+  static const String apiMyFriendRequestsBaseUrl = '$apiMeUrl/friend-requests';
   static const String apiMyFriendRequestsUrl =
       '$apiMyFriendRequestsBaseUrl/?page=[nb_page]&perPage=[per_page]';
   static const String apiUserUrl = '${AppConfig.apiUrl}/users';
@@ -206,12 +205,11 @@ class ProfileService implements IProfileService {
   Future<void> rejectFriendRequest({required String friendRequestId}) async {
     try {
       final String url = '$apiMyFriendRequestsBaseUrl/$friendRequestId';
-      Response response = await DioClient.instance.delete(
+      await DioClient.instance.delete(
         url,
       );
-      print(response);
-    } catch(e) {
-      print(e);
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
     }
   }
 }

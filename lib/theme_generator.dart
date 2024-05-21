@@ -9,8 +9,6 @@ class ThemeGenerator {
 
   static final Color _hintColor = Colors.grey.shade500;
 
-  static final Color _labelColor = Colors.grey.shade600;
-
   static CheckboxThemeData get _checkBoxTheme => CheckboxThemeData(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),

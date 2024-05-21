@@ -22,8 +22,8 @@ class LoginForm extends HookWidget {
     final TextEditingController passwordController =
         useTextEditingController(text: 'Test1234!');
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    var rememberMe = useState(false);
-    var hidePassword = useState(true);
+    final rememberMe = useState(false);
+    final hidePassword = useState(true);
     return BlocProvider(
       create: (context) => LoginBloc(
         context.read<AuthBloc>(),

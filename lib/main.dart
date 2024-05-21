@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:trip_memories_mobile/theme_generator.dart';
 
 import 'api/auth/auth_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
@@ -114,6 +115,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'Flutter PA',
         routerConfig: _router,
+        theme: ThemeGenerator.generate(),
       ),
     );
   }

@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'get_friends_pagination_response.dart';
+part of 'friend_request_response.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,40 +14,38 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-GetFriendsPaginationResponse _$GetFriendsPaginationResponseFromJson(
+GetFriendRequestResponse _$GetFriendRequestResponseFromJson(
     Map<String, dynamic> json) {
   return _GetFriendsPaginationResponse.fromJson(json);
 }
 
 /// @nodoc
-mixin _$GetFriendsPaginationResponse {
+mixin _$GetFriendRequestResponse {
   Meta get meta => throw _privateConstructorUsedError;
-  List<Profile> get data => throw _privateConstructorUsedError;
+  List<FriendRequest> get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $GetFriendsPaginationResponseCopyWith<GetFriendsPaginationResponse>
-      get copyWith => throw _privateConstructorUsedError;
+  $GetFriendRequestResponseCopyWith<GetFriendRequestResponse> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $GetFriendsPaginationResponseCopyWith<$Res> {
-  factory $GetFriendsPaginationResponseCopyWith(
-          GetFriendsPaginationResponse value,
-          $Res Function(GetFriendsPaginationResponse) then) =
-      _$GetFriendsPaginationResponseCopyWithImpl<$Res,
-          GetFriendsPaginationResponse>;
+abstract class $GetFriendRequestResponseCopyWith<$Res> {
+  factory $GetFriendRequestResponseCopyWith(GetFriendRequestResponse value,
+          $Res Function(GetFriendRequestResponse) then) =
+      _$GetFriendRequestResponseCopyWithImpl<$Res, GetFriendRequestResponse>;
   @useResult
-  $Res call({Meta meta, List<Profile> data});
+  $Res call({Meta meta, List<FriendRequest> data});
 
   $MetaCopyWith<$Res> get meta;
 }
 
 /// @nodoc
-class _$GetFriendsPaginationResponseCopyWithImpl<$Res,
-        $Val extends GetFriendsPaginationResponse>
-    implements $GetFriendsPaginationResponseCopyWith<$Res> {
-  _$GetFriendsPaginationResponseCopyWithImpl(this._value, this._then);
+class _$GetFriendRequestResponseCopyWithImpl<$Res,
+        $Val extends GetFriendRequestResponse>
+    implements $GetFriendRequestResponseCopyWith<$Res> {
+  _$GetFriendRequestResponseCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -68,7 +66,7 @@ class _$GetFriendsPaginationResponseCopyWithImpl<$Res,
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<Profile>,
+              as List<FriendRequest>,
     ) as $Val);
   }
 
@@ -83,14 +81,14 @@ class _$GetFriendsPaginationResponseCopyWithImpl<$Res,
 
 /// @nodoc
 abstract class _$$GetFriendsPaginationResponseImplCopyWith<$Res>
-    implements $GetFriendsPaginationResponseCopyWith<$Res> {
+    implements $GetFriendRequestResponseCopyWith<$Res> {
   factory _$$GetFriendsPaginationResponseImplCopyWith(
           _$GetFriendsPaginationResponseImpl value,
           $Res Function(_$GetFriendsPaginationResponseImpl) then) =
       __$$GetFriendsPaginationResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Meta meta, List<Profile> data});
+  $Res call({Meta meta, List<FriendRequest> data});
 
   @override
   $MetaCopyWith<$Res> get meta;
@@ -98,7 +96,7 @@ abstract class _$$GetFriendsPaginationResponseImplCopyWith<$Res>
 
 /// @nodoc
 class __$$GetFriendsPaginationResponseImplCopyWithImpl<$Res>
-    extends _$GetFriendsPaginationResponseCopyWithImpl<$Res,
+    extends _$GetFriendRequestResponseCopyWithImpl<$Res,
         _$GetFriendsPaginationResponseImpl>
     implements _$$GetFriendsPaginationResponseImplCopyWith<$Res> {
   __$$GetFriendsPaginationResponseImplCopyWithImpl(
@@ -120,7 +118,7 @@ class __$$GetFriendsPaginationResponseImplCopyWithImpl<$Res>
       data: null == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<Profile>,
+              as List<FriendRequest>,
     ));
   }
 }
@@ -130,7 +128,7 @@ class __$$GetFriendsPaginationResponseImplCopyWithImpl<$Res>
 class _$GetFriendsPaginationResponseImpl
     implements _GetFriendsPaginationResponse {
   const _$GetFriendsPaginationResponseImpl(
-      {required this.meta, required final List<Profile> data})
+      {required this.meta, required final List<FriendRequest> data})
       : _data = data;
 
   factory _$GetFriendsPaginationResponseImpl.fromJson(
@@ -139,9 +137,9 @@ class _$GetFriendsPaginationResponseImpl
 
   @override
   final Meta meta;
-  final List<Profile> _data;
+  final List<FriendRequest> _data;
   @override
-  List<Profile> get data {
+  List<FriendRequest> get data {
     if (_data is EqualUnmodifiableListView) return _data;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_data);
@@ -149,7 +147,7 @@ class _$GetFriendsPaginationResponseImpl
 
   @override
   String toString() {
-    return 'GetFriendsPaginationResponse(meta: $meta, data: $data)';
+    return 'GetFriendRequestResponse(meta: $meta, data: $data)';
   }
 
   @override
@@ -183,10 +181,10 @@ class _$GetFriendsPaginationResponseImpl
 }
 
 abstract class _GetFriendsPaginationResponse
-    implements GetFriendsPaginationResponse {
+    implements GetFriendRequestResponse {
   const factory _GetFriendsPaginationResponse(
-      {required final Meta meta,
-      required final List<Profile> data}) = _$GetFriendsPaginationResponseImpl;
+          {required final Meta meta, required final List<FriendRequest> data}) =
+      _$GetFriendsPaginationResponseImpl;
 
   factory _GetFriendsPaginationResponse.fromJson(Map<String, dynamic> json) =
       _$GetFriendsPaginationResponseImpl.fromJson;
@@ -194,7 +192,7 @@ abstract class _GetFriendsPaginationResponse
   @override
   Meta get meta;
   @override
-  List<Profile> get data;
+  List<FriendRequest> get data;
   @override
   @JsonKey(ignore: true)
   _$$GetFriendsPaginationResponseImplCopyWith<

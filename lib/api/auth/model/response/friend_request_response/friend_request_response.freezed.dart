@@ -21,14 +21,11 @@ FriendRequest _$FriendRequestFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$FriendRequest {
   int get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'senderId')
   int get senderId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'receiverId')
   int get receiverId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'createdAt')
-  String get createdAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'updatedAt')
-  String get updatedAt => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt => throw _privateConstructorUsedError;
+  Profile get sender => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,10 +41,13 @@ abstract class $FriendRequestCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      @JsonKey(name: 'senderId') int senderId,
-      @JsonKey(name: 'receiverId') int receiverId,
-      @JsonKey(name: 'createdAt') String createdAt,
-      @JsonKey(name: 'updatedAt') String updatedAt});
+      int senderId,
+      int receiverId,
+      DateTime createdAt,
+      DateTime updatedAt,
+      Profile sender});
+
+  $ProfileCopyWith<$Res> get sender;
 }
 
 /// @nodoc
@@ -68,6 +68,7 @@ class _$FriendRequestCopyWithImpl<$Res, $Val extends FriendRequest>
     Object? receiverId = null,
     Object? createdAt = null,
     Object? updatedAt = null,
+    Object? sender = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -85,12 +86,24 @@ class _$FriendRequestCopyWithImpl<$Res, $Val extends FriendRequest>
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
+      sender: null == sender
+          ? _value.sender
+          : sender // ignore: cast_nullable_to_non_nullable
+              as Profile,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ProfileCopyWith<$Res> get sender {
+    return $ProfileCopyWith<$Res>(_value.sender, (value) {
+      return _then(_value.copyWith(sender: value) as $Val);
+    });
   }
 }
 
@@ -104,10 +117,14 @@ abstract class _$$FriendRequestImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
-      @JsonKey(name: 'senderId') int senderId,
-      @JsonKey(name: 'receiverId') int receiverId,
-      @JsonKey(name: 'createdAt') String createdAt,
-      @JsonKey(name: 'updatedAt') String updatedAt});
+      int senderId,
+      int receiverId,
+      DateTime createdAt,
+      DateTime updatedAt,
+      Profile sender});
+
+  @override
+  $ProfileCopyWith<$Res> get sender;
 }
 
 /// @nodoc
@@ -126,6 +143,7 @@ class __$$FriendRequestImplCopyWithImpl<$Res>
     Object? receiverId = null,
     Object? createdAt = null,
     Object? updatedAt = null,
+    Object? sender = null,
   }) {
     return _then(_$FriendRequestImpl(
       id: null == id
@@ -143,11 +161,15 @@ class __$$FriendRequestImplCopyWithImpl<$Res>
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
+      sender: null == sender
+          ? _value.sender
+          : sender // ignore: cast_nullable_to_non_nullable
+              as Profile,
     ));
   }
 }
@@ -157,10 +179,11 @@ class __$$FriendRequestImplCopyWithImpl<$Res>
 class _$FriendRequestImpl implements _FriendRequest {
   const _$FriendRequestImpl(
       {required this.id,
-      @JsonKey(name: 'senderId') required this.senderId,
-      @JsonKey(name: 'receiverId') required this.receiverId,
-      @JsonKey(name: 'createdAt') required this.createdAt,
-      @JsonKey(name: 'updatedAt') required this.updatedAt});
+      required this.senderId,
+      required this.receiverId,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.sender});
 
   factory _$FriendRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$FriendRequestImplFromJson(json);
@@ -168,21 +191,19 @@ class _$FriendRequestImpl implements _FriendRequest {
   @override
   final int id;
   @override
-  @JsonKey(name: 'senderId')
   final int senderId;
   @override
-  @JsonKey(name: 'receiverId')
   final int receiverId;
   @override
-  @JsonKey(name: 'createdAt')
-  final String createdAt;
+  final DateTime createdAt;
   @override
-  @JsonKey(name: 'updatedAt')
-  final String updatedAt;
+  final DateTime updatedAt;
+  @override
+  final Profile sender;
 
   @override
   String toString() {
-    return 'FriendRequest(id: $id, senderId: $senderId, receiverId: $receiverId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'FriendRequest(id: $id, senderId: $senderId, receiverId: $receiverId, createdAt: $createdAt, updatedAt: $updatedAt, sender: $sender)';
   }
 
   @override
@@ -198,13 +219,14 @@ class _$FriendRequestImpl implements _FriendRequest {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+                other.updatedAt == updatedAt) &&
+            (identical(other.sender, sender) || other.sender == sender));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, senderId, receiverId, createdAt, updatedAt);
+  int get hashCode => Object.hash(
+      runtimeType, id, senderId, receiverId, createdAt, updatedAt, sender);
 
   @JsonKey(ignore: true)
   @override
@@ -222,12 +244,12 @@ class _$FriendRequestImpl implements _FriendRequest {
 
 abstract class _FriendRequest implements FriendRequest {
   const factory _FriendRequest(
-          {required final int id,
-          @JsonKey(name: 'senderId') required final int senderId,
-          @JsonKey(name: 'receiverId') required final int receiverId,
-          @JsonKey(name: 'createdAt') required final String createdAt,
-          @JsonKey(name: 'updatedAt') required final String updatedAt}) =
-      _$FriendRequestImpl;
+      {required final int id,
+      required final int senderId,
+      required final int receiverId,
+      required final DateTime createdAt,
+      required final DateTime updatedAt,
+      required final Profile sender}) = _$FriendRequestImpl;
 
   factory _FriendRequest.fromJson(Map<String, dynamic> json) =
       _$FriendRequestImpl.fromJson;
@@ -235,17 +257,15 @@ abstract class _FriendRequest implements FriendRequest {
   @override
   int get id;
   @override
-  @JsonKey(name: 'senderId')
   int get senderId;
   @override
-  @JsonKey(name: 'receiverId')
   int get receiverId;
   @override
-  @JsonKey(name: 'createdAt')
-  String get createdAt;
+  DateTime get createdAt;
   @override
-  @JsonKey(name: 'updatedAt')
-  String get updatedAt;
+  DateTime get updatedAt;
+  @override
+  Profile get sender;
   @override
   @JsonKey(ignore: true)
   _$$FriendRequestImplCopyWith<_$FriendRequestImpl> get copyWith =>

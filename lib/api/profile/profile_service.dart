@@ -10,14 +10,21 @@ import '../error/specific_error/auth_error.dart';
 import '../exception/bad_request_exception.dart';
 import '../exception/parsing_response_exception.dart';
 import 'i_profile_service.dart';
+import 'response/friend_request/friend_request_response.dart';
 import 'response/friends/get_friends_pagination_response.dart';
 
 class ProfileService implements IProfileService {
   static const String apiMeUrl = '${AppConfig.apiUrl}/me';
   static const String apiMyAvatarUrl = '$apiMeUrl/avatar';
   static const String apiMyBannerUrl = '$apiMeUrl/banner';
-  static const String apiMyFriendsUrl = '$apiMeUrl/friends/?page=[nb_page]&perPage=[per_page]';
+  static const String apiMyFriendsUrl =
+      '$apiMeUrl/friends/?page=[nb_page]&perPage=[per_page]';
+  static const String apiMyFriendRequestsBaseUrl = '$apiMeUrl/friend-requests';
+  static const String apiMyFriendRequestsUrl =
+      '$apiMyFriendRequestsBaseUrl/?page=[nb_page]&perPage=[per_page]';
   static const String apiUserUrl = '${AppConfig.apiUrl}/users';
+  static const String apiAcceptFriendRequestUrl =
+      '$apiMyFriendRequestsBaseUrl/[friend_request_id]/accept';
 
   @override
   Future<Profile> getProfile({required String id}) async {
@@ -107,6 +114,31 @@ class ProfileService implements IProfileService {
   }
 
   @override
+  Future<GetFriendRequestResponse> getMyFriendRequests({
+    required int page,
+    required int perPage,
+  }) async {
+    Response response;
+    final String url = apiMyFriendRequestsUrl
+        .replaceAll('[nb_page]', page.toString())
+        .replaceAll('[per_page]', perPage.toString());
+    try {
+      response = await DioClient.instance.get(
+        url,
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      return GetFriendRequestResponse.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
+    }
+  }
+
+  @override
   Future<UploadFile> updateProfilePicture({
     required XFile image,
   }) async {
@@ -151,6 +183,33 @@ class ProfileService implements IProfileService {
       throw ParsingResponseException(
         ApiError.errorOccurredWhileParsingResponse(),
       );
+    }
+  }
+
+  @override
+  Future<void> acceptFriendRequest({required String friendRequestId}) async {
+    try {
+      final String url = apiAcceptFriendRequestUrl.replaceAll(
+        '[friend_request_id]',
+        friendRequestId,
+      );
+      await DioClient.instance.put(
+        url,
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+  }
+
+  @override
+  Future<void> rejectFriendRequest({required String friendRequestId}) async {
+    try {
+      final String url = '$apiMyFriendRequestsBaseUrl/$friendRequestId';
+      await DioClient.instance.delete(
+        url,
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
     }
   }
 }

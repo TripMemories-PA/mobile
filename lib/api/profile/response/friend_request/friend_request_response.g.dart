@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
 
-part of 'get_friends_pagination_response.dart';
+part of 'friend_request_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -12,7 +12,7 @@ _$GetFriendsPaginationResponseImpl _$$GetFriendsPaginationResponseImplFromJson(
     _$GetFriendsPaginationResponseImpl(
       meta: Meta.fromJson(json['meta'] as Map<String, dynamic>),
       data: (json['data'] as List<dynamic>)
-          .map((e) => Profile.fromJson(e as Map<String, dynamic>))
+          .map((e) => FriendRequest.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

@@ -13,6 +13,7 @@ import 'page/map_page.dart';
 import 'page/profile_page.dart';
 import 'page/search_page.dart';
 import 'page/shop_page.dart';
+import 'theme_generator.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -114,6 +115,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'Flutter PA',
         routerConfig: _router,
+        theme: ThemeGenerator.generate(),
       ),
     );
   }

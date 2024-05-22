@@ -19,10 +19,8 @@ class SubscribeForm extends HookWidget {
   Widget build(BuildContext context) {
     final TextEditingController firstNameController =
         useTextEditingController();
-    final TextEditingController lastNameController =
-        useTextEditingController();
-    final TextEditingController userNameController =
-        useTextEditingController();
+    final TextEditingController lastNameController = useTextEditingController();
+    final TextEditingController userNameController = useTextEditingController();
     final TextEditingController emailController =
         useTextEditingController(text: 'test@mail.com');
     final TextEditingController passwordController =
@@ -42,32 +40,10 @@ class SubscribeForm extends HookWidget {
               key: formKey,
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: TextFormField(
-                          readOnly: context.read<LoginBloc>().state.loading,
-                          decoration: const InputDecoration(
-                            hintText: 'Prénom',
-                          ),
-                          validator: (value) => FieldValidator.validateRequired(value),
-                          controller: firstNameController,
-                        ),
-                      ),
-                      15.pw,
-                      Expanded(
-                        flex: 3,
-                        child: TextFormField(
-                          readOnly: context.read<LoginBloc>().state.loading,
-                          decoration: const InputDecoration(
-                            hintText: 'Nom',
-                          ),
-                          validator: (value) => FieldValidator.validateRequired(value),
-                          controller: lastNameController,
-                        ),
-                      ),
-                    ],
+                  _buildFirstNameLastNameTextFields(
+                    context,
+                    firstNameController,
+                    lastNameController,
                   ),
                   12.ph,
                   TextFormField(
@@ -75,7 +51,8 @@ class SubscribeForm extends HookWidget {
                     decoration: const InputDecoration(
                       hintText: "Nom d'utilisateur",
                     ),
-                    validator: (value) => FieldValidator.validateRequired(value),
+                    validator: (value) =>
+                        FieldValidator.validateRequired(value),
                     controller: userNameController,
                   ),
                   12.ph,
@@ -88,88 +65,24 @@ class SubscribeForm extends HookWidget {
                     controller: emailController,
                   ),
                   12.ph,
-                  TextFormField(
-                    readOnly: context.read<LoginBloc>().state.loading,
-                    obscureText: hidePassword.value,
-                    decoration: InputDecoration(
-                      errorMaxLines: 4,
-                      hintText: 'Mot de passe',
-                      suffixIcon: InkWell(
-                        child: Icon(
-                          hidePassword.value
-                              ? Icons.remove_red_eye
-                              : Icons.visibility_off,
-                          size: 20,
-                          color: MyColors.darkGrey,
-                        ),
-                        onTap: () {
-                          hidePassword.value = !hidePassword.value;
-                        },
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: 10.0,
-                        horizontal: 8.0,
-                      ),
-                    ),
-                    validator: (value) =>
-                        FieldValidator.validatePassword(value),
-                    controller: passwordController,
+                  _buildPasswordFormField(
+                    context,
+                    hidePassword,
+                    passwordController,
                   ),
                   12.ph,
-                  TextFormField(
-                    readOnly: context.read<LoginBloc>().state.loading,
-                    obscureText: hidePassword.value,
-                    decoration: InputDecoration(
-                      errorMaxLines: 4,
-                      hintText: 'Confirmer le mot de passe',
-                      suffixIcon: InkWell(
-                        child: Icon(
-                          hideConfirmPassword.value
-                              ? Icons.remove_red_eye
-                              : Icons.visibility_off,
-                          size: 20,
-                          color: MyColors.darkGrey,
-                        ),
-                        onTap: () {
-                          hideConfirmPassword.value = !hideConfirmPassword.value;
-                        },
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: 10.0,
-                        horizontal: 8.0,
-                      ),
-                    ),
-                    validator: (value) =>
-                        FieldValidator.validatePassword(value),
-                    controller: passwordController,
+                  _buildConfirmPasswordTextFormField(
+                    context,
+                    hidePassword,
+                    hideConfirmPassword,
+                    passwordController,
                   ),
                   22.ph,
-                  SizedBox(
-                    height: 50,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(35),
-                        ),
-                      ),
-                      onPressed: context.read<LoginBloc>().state.loading ? null : () {
-                        if (formKey.currentState!.validate()) {
-                          context.read<LoginBloc>().add(
-                            LoginRequested(
-                              email: emailController.text,
-                              password: passwordController.text,
-                            ),
-                          );
-                        }
-                      },
-                      child: const Center(
-                        child: Text(
-                          "S'inscrire",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
+                  _buildSubscribeButton(
+                    context,
+                    formKey,
+                    emailController,
+                    passwordController,
                   ),
                   if (context.read<LoginBloc>().state.loading)
                     SizedBox(
@@ -179,8 +92,9 @@ class SubscribeForm extends HookWidget {
                           10.ph,
                           const SizedBox(
                             height: 30,
-                              width: 30,
-                              child: CircularProgressIndicator(),),
+                            width: 30,
+                            child: CircularProgressIndicator(),
+                          ),
                           10.ph,
                         ],
                       ),
@@ -191,6 +105,142 @@ class SubscribeForm extends HookWidget {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Row _buildFirstNameLastNameTextFields(
+    BuildContext context,
+    TextEditingController firstNameController,
+    TextEditingController lastNameController,
+  ) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: TextFormField(
+            readOnly: context.read<LoginBloc>().state.loading,
+            decoration: const InputDecoration(
+              hintText: 'Prénom',
+            ),
+            validator: (value) => FieldValidator.validateRequired(value),
+            controller: firstNameController,
+          ),
+        ),
+        15.pw,
+        Expanded(
+          flex: 3,
+          child: TextFormField(
+            readOnly: context.read<LoginBloc>().state.loading,
+            decoration: const InputDecoration(
+              hintText: 'Nom',
+            ),
+            validator: (value) => FieldValidator.validateRequired(value),
+            controller: lastNameController,
+          ),
+        ),
+      ],
+    );
+  }
+
+  TextFormField _buildPasswordFormField(
+    BuildContext context,
+    ValueNotifier<bool> hidePassword,
+    TextEditingController passwordController,
+  ) {
+    return TextFormField(
+      readOnly: context.read<LoginBloc>().state.loading,
+      obscureText: hidePassword.value,
+      decoration: InputDecoration(
+        errorMaxLines: 4,
+        hintText: 'Mot de passe',
+        suffixIcon: InkWell(
+          child: Icon(
+            hidePassword.value ? Icons.remove_red_eye : Icons.visibility_off,
+            size: 20,
+            color: MyColors.darkGrey,
+          ),
+          onTap: () {
+            hidePassword.value = !hidePassword.value;
+          },
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 10.0,
+          horizontal: 8.0,
+        ),
+      ),
+      validator: (value) => FieldValidator.validatePassword(value),
+      controller: passwordController,
+    );
+  }
+
+  TextFormField _buildConfirmPasswordTextFormField(
+    BuildContext context,
+    ValueNotifier<bool> hidePassword,
+    ValueNotifier<bool> hideConfirmPassword,
+    TextEditingController passwordController,
+  ) {
+    return TextFormField(
+      readOnly: context.read<LoginBloc>().state.loading,
+      obscureText: hidePassword.value,
+      decoration: InputDecoration(
+        errorMaxLines: 4,
+        hintText: 'Confirmer le mot de passe',
+        suffixIcon: InkWell(
+          child: Icon(
+            hideConfirmPassword.value
+                ? Icons.remove_red_eye
+                : Icons.visibility_off,
+            size: 20,
+            color: MyColors.darkGrey,
+          ),
+          onTap: () {
+            hideConfirmPassword.value = !hideConfirmPassword.value;
+          },
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 10.0,
+          horizontal: 8.0,
+        ),
+      ),
+      validator: (value) => FieldValidator.validatePassword(value),
+      controller: passwordController,
+    );
+  }
+
+  SizedBox _buildSubscribeButton(
+    BuildContext context,
+    GlobalKey<FormState> formKey,
+    TextEditingController emailController,
+    TextEditingController passwordController,
+  ) {
+    return SizedBox(
+      height: 50,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(35),
+          ),
+        ),
+        onPressed: context.read<LoginBloc>().state.loading
+            ? null
+            : () {
+                if (formKey.currentState!.validate()) {
+                  context.read<LoginBloc>().add(
+                        LoginRequested(
+                          email: emailController.text,
+                          password: passwordController.text,
+                        ),
+                      );
+                }
+              },
+        child: const Center(
+          child: Text(
+            "S'inscrire",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
       ),
     );
   }

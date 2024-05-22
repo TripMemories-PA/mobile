@@ -16,23 +16,7 @@ class LoginPage extends StatelessWidget {
       child: Scaffold(
         body: Column(
           children: [
-            Stack(
-              children: [
-                Image.asset(
-                  'assets/images/login_logo.jpg',
-                  height: 180,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                ),
-                Center(
-                  child: Image.asset(
-                    'assets/images/tripmemories_white_logo.png',
-                    width: 200,
-                    height: 180,
-                  ),
-                ),
-              ],
-            ),
+            _buildHeader(),
             const SizedBox(
               height: 60,
               child: TabBar(
@@ -54,6 +38,26 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Stack _buildHeader() {
+    return Stack(
+            children: [
+              Image.asset(
+                'assets/images/login_logo.jpg',
+                height: 180,
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
+              Center(
+                child: Image.asset(
+                  'assets/images/tripmemories_white_logo.png',
+                  width: 200,
+                  height: 180,
+                ),
+              ),
+            ],
+          );
   }
 
   Widget _buildLoginContent(BuildContext context) {

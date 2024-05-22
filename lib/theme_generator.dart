@@ -34,8 +34,7 @@ class ThemeGenerator {
   static TextTheme get _textTheme => Typography.blackCupertino;
 
   static ColorScheme get _colorScheme => const ColorScheme(
-        background: Color.fromARGB(255, 245, 245, 245),
-        // background: Colors.white,
+        background: Colors.white,
         onBackground: Colors.black,
         primary: Color(0xFF4169E1),
         onPrimary: Colors.white,

@@ -37,6 +37,7 @@ class LoginForm extends HookWidget {
               child: Column(
                 children: [
                   TextFormField(
+                    readOnly: context.read<LoginBloc>().state.loading,
                     decoration: const InputDecoration(
                       hintText: 'Adresse e-mail',
                     ),
@@ -45,8 +46,10 @@ class LoginForm extends HookWidget {
                   ),
                   15.ph,
                   TextFormField(
+                    readOnly: context.read<LoginBloc>().state.loading,
                     obscureText: hidePassword.value,
                     decoration: InputDecoration(
+                      errorMaxLines: 4,
                       hintText: 'Mot de passe',
                       suffixIcon: InkWell(
                         child: Icon(
@@ -74,7 +77,7 @@ class LoginForm extends HookWidget {
                     children: [
                       Checkbox(
                         value: rememberMe.value,
-                        onChanged: (bool? value) {
+                        onChanged: context.read<LoginBloc>().state.loading ? null : (bool? value) {
                           rememberMe.value = value!;
                         },
                         checkColor: Colors.black,
@@ -102,35 +105,35 @@ class LoginForm extends HookWidget {
                   ),
                   if (context.read<LoginBloc>().state.loading)
                     SizedBox(
-                      height: 100,
+                      height: 80,
                       child: Column(
                         children: [
-                          30.ph,
+                          20.ph,
                           const CircularProgressIndicator(),
-                          30.ph,
+                          20.ph,
                         ],
                       ),
                     ),
-                  if (!context.read<LoginBloc>().state.loading) 100.ph,
-                  InkWell(
-                    onTap: () async {
-                      if (formKey.currentState!.validate()) {
-                        context.read<LoginBloc>().add(
-                              LoginRequested(
-                                email: emailController.text,
-                                password: passwordController.text,
-                              ),
-                            );
-                      }
-                    },
-                    child: Container(
-                      height: 50,
-                      decoration: ShapeDecoration(
-                        color: Theme.of(context).colorScheme.primary,
+                  if (!context.read<LoginBloc>().state.loading) 80.ph,
+                  SizedBox(
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(35),
                         ),
                       ),
+                      onPressed: context.read<LoginBloc>().state.loading ? null : () {
+                        if (formKey.currentState!.validate()) {
+                          context.read<LoginBloc>().add(
+                            LoginRequested(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            ),
+                          );
+                        }
+                      },
                       child: const Center(
                         child: Text(
                           'Se connecter',

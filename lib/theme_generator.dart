@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// ignore_for_file: type=lint
+
 import 'constants/my_colors.dart';
 
 class ThemeGenerator {

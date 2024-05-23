@@ -158,12 +158,15 @@ class ProfilePage extends HookWidget {
             BlocListener<ProfileBloc, ProfileState>(
               listener: (context, state) {
                 if (state.status == ProfileStatus.error) {
-                  Messenger.showSnackBarError(state.error?.getDescription() ??
-                      StringConstants().errorWhilePostingComment);
+                  Messenger.showSnackBarError(
+                    state.error?.getDescription() ??
+                        StringConstants().errorWhilePostingComment,
+                  );
                 }
                 if (state.status == ProfileStatus.updated) {
                   Messenger.showSnackBarSuccess(
-                      StringConstants().profileUpdated);
+                    StringConstants().profileUpdated,
+                  );
                 }
               },
               child: const SizedBox.shrink(),

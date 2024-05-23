@@ -10,6 +10,7 @@ import 'i_auth_service.dart';
 import 'model/query/login_model.dart';
 import 'model/query/subscribe_model.dart';
 import 'model/response/auth_success_response/auth_success_response.dart';
+import 'model/response/subscribe_success_response/subscribe_success_response.dart';
 import 'model/response/who_am_i_response/who_am_i_response.dart';
 
 class AuthService implements IAuthService {
@@ -22,17 +23,19 @@ class AuthService implements IAuthService {
   static const String apiMeUrl = '${AppConfig.apiUrl}/me';
 
   @override
-  Future<AuthSuccessResponse> subscribe({
+  Future<SubscribeSuccessResponse> subscribe({
+    required String firstName,
+    required String lastName,
     required String username,
     required String email,
     required String password,
-    required String confirmPassword,
   }) async {
     final body = SubscribeModel.createJson(
+      firstName: firstName,
+      lastName: lastName,
       username: username,
       email: email,
       password: password,
-      confirmPassword: confirmPassword,
     );
 
     Response response;
@@ -45,7 +48,7 @@ class AuthService implements IAuthService {
       throw BadRequestException(AuthError.alreadyExists());
     }
     try {
-      return AuthSuccessResponse.fromJson(response.data);
+      return SubscribeSuccessResponse.fromJson(response.data);
     } catch (e) {
       throw ParsingResponseException(
         ApiError.errorOccurredWhileParsingResponse(),

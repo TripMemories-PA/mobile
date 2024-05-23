@@ -1,4 +1,5 @@
 import 'model/response/auth_success_response/auth_success_response.dart';
+import 'model/response/subscribe_success_response/subscribe_success_response.dart';
 import 'model/response/who_am_i_response/who_am_i_response.dart';
 
 abstract class IAuthService {
@@ -7,11 +8,12 @@ abstract class IAuthService {
     required String password,
   });
 
-  Future<AuthSuccessResponse> subscribe({
+  Future<SubscribeSuccessResponse> subscribe({
+    required String firstName,
+    required String lastName,
     required String username,
     required String email,
     required String password,
-    required String confirmPassword,
   });
 
   Future<WhoAmIResponse> whoAmI({required String token});

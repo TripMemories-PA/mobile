@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../component/notifier_widget.dart';
-
 class ScaffoldWithNavBar extends StatelessWidget {
   const ScaffoldWithNavBar({
     required this.navigationShell,
@@ -16,7 +14,6 @@ class ScaffoldWithNavBar extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          const NotifierWidget(),
           navigationShell,
         ],
       ),

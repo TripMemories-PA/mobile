@@ -7,9 +7,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../api/profile/profile_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
-import '../bloc/notifier_bloc/notification_type.dart';
-import '../bloc/notifier_bloc/notifier_bloc.dart';
-import '../bloc/notifier_bloc/notifier_event.dart';
 import '../bloc/profile/profile_bloc.dart';
 import '../component/friends_and_visited_widget.dart';
 import '../component/my_friends_component.dart';
@@ -18,6 +15,7 @@ import '../component/profile_infos.dart';
 import '../constants/string_constants.dart';
 import '../repository/profile_repository.dart';
 import '../service/profile_remote_data_source.dart';
+import '../utils/messenger.dart';
 import 'login_page.dart';
 
 class ProfilePage extends HookWidget {
@@ -159,25 +157,13 @@ class ProfilePage extends HookWidget {
             const SizedBox(height: 10),
             BlocListener<ProfileBloc, ProfileState>(
               listener: (context, state) {
-                final NotifierBloc notifierBloc = context.read<NotifierBloc>();
-
                 if (state.status == ProfileStatus.error) {
-                  notifierBloc.add(
-                    AppendNotification(
-                      notification: state.error?.getDescription() ??
-                          StringConstants().errorWhilePostingComment,
-                      type: NotificationType.error,
-                    ),
-                  );
+                  Messenger.showSnackBarError(state.error?.getDescription() ??
+                      StringConstants().errorWhilePostingComment);
                 }
-
                 if (state.status == ProfileStatus.updated) {
-                  notifierBloc.add(
-                    AppendNotification(
-                      notification: StringConstants().profileUpdated,
-                      type: NotificationType.success,
-                    ),
-                  );
+                  Messenger.showSnackBarSuccess(
+                      StringConstants().profileUpdated);
                 }
               },
               child: const SizedBox.shrink(),

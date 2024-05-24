@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../bloc/auth_bloc/auth_bloc.dart';
-import '../../bloc/notifier_bloc/notifier_bloc.dart';
 import '../../bloc/subscribe_bloc/subscribe_bloc.dart';
 import '../../bloc/subscribe_bloc/subscribe_event.dart';
 import '../../bloc/subscribe_bloc/subscribe_state.dart';

@@ -3,9 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api/auth/i_auth_service.dart';
 import '../../api/error/api_error.dart';
 import '../../api/exception/custom_exception.dart';
-import '../notifier_bloc/notification_type.dart';
-import '../notifier_bloc/notifier_bloc.dart';
-import '../notifier_bloc/notifier_event.dart';
 import 'subscribe_event.dart';
 import 'subscribe_state.dart';
 

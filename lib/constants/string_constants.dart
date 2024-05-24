@@ -1,5 +1,4 @@
 class StringConstants {
-
   // Basic
   String get yes => 'Yes';
   String get no => 'No';
@@ -7,7 +6,7 @@ class StringConstants {
   // Authentication
   String get notAuthenticated => 'Not authenticated';
   String get wrongEmailOrPassword => 'Wrong email or password';
-  String get emailOrPasswordAlreadyExists => 'Email or username already used';
+  String get emailOrUsernameAlreadyExists => 'Email or username already used';
   String get invalidEmail => 'Invalid email';
   String get invalidPassword => 'Invalid password';
   String get passwordNotMatch => 'The passwords do not match';
@@ -42,16 +41,16 @@ class StringConstants {
   String get unauthorized => 'Unauthorized';
   String get cannotGetUserDetails => 'Cannot get user details';
   String get cannotGetUserPosts => 'Cannot get user posts';
-  String get badImageFormat => "Mauvaise format d'image: seulement jpg, jpeg et png sont autorisés";
+  String get badImageFormat =>
+      "Mauvaise format d'image: seulement jpg, jpeg et png sont autorisés";
 
   String get confirmAction => 'Etes-vous sûr ?';
 
   String get profileUpdated => 'Profil modifié !';
-  
+
   String get noMoreFriends => "Plus d'amis à afficher.";
   String get retry => 'Réessayer';
 
   String get friendRequestAccepted => "Demande d'ami acceptée";
   String get friendRequestRefused => "Demande d'ami refusée";
-
 }

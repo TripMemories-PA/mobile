@@ -41,6 +41,21 @@ class ProfileRepository {
     required int page,
     required int perPage,
   }) async {
-    return profileRemoteDataSource.getMyFriendRequests(page: page, perPage: perPage);
+    return profileRemoteDataSource.getMyFriendRequests(
+      page: page,
+      perPage: perPage,
+    );
+  }
+
+  Future<GetFriendsPaginationResponse> getUsers({
+    required int page,
+    required int perPage,
+    String? searchName,
+  }) async {
+    return profileRemoteDataSource.getUsers(
+      page: page,
+      perPage: perPage,
+      searchName: searchName,
+    );
   }
 }

@@ -31,6 +31,12 @@ abstract class IProfileService {
     required int perPage,
   });
 
+  Future<GetFriendsPaginationResponse> getUsers({
+    required int page,
+    required int perPage,
+    String? searchName,
+  });
+
   Future<UploadFile> updateProfilePicture({
     required XFile image,
   });

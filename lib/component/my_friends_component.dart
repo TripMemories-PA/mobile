@@ -12,6 +12,7 @@ import '../num_extensions.dart';
 import '../object/profile/profile.dart';
 import 'custom_card.dart';
 import 'popup/my_friends_requests.dart';
+import 'popup/user_searching.dart';
 
 class MyFriendsComponentScrollable extends HookWidget {
   const MyFriendsComponentScrollable({
@@ -32,7 +33,7 @@ class MyFriendsComponentScrollable extends HookWidget {
   Widget build(BuildContext context) {
     final ScrollController friendsScrollController = useScrollController();
     useEffect(
-          () {
+      () {
         void createScrollListener() {
           if (friendsScrollController.position.atEdge) {
             if (friendsScrollController.position.pixels != 0) {
@@ -75,14 +76,19 @@ class MyFriendsComponent extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            CustomCard(
-              width: MediaQuery.of(context).size.width * 0.40,
-              height: 40,
-              content: const Text(
-                'Ajouter un amis',
-                textAlign: TextAlign.center,
+            InkWell(
+              onTap: () async {
+                await userSearchingPopup(context);
+              },
+              child: CustomCard(
+                width: MediaQuery.of(context).size.width * 0.40,
+                height: 40,
+                content: const Text(
+                  'Ajouter un amis',
+                  textAlign: TextAlign.center,
+                ),
+                borderColor: MyColors.purple,
               ),
-              borderColor: MyColors.purple,
             ),
             InkWell(
               onTap: () async {
@@ -143,15 +149,15 @@ class MyFriendsComponent extends StatelessWidget {
                     )
                     .toList() ??
                 [],
-              Center(
-                child: context.read<ProfileBloc>().state.hasMoreTweets
-                    ? (context.read<ProfileBloc>().state.status !=
-                            ProfileStatus.error
-                        ? const Text('SHIMMER HERe')
-                        // TODO(nono): SHIMMER
-                        : _buildErrorWidget(context))
-                    : Text(StringConstants().noMoreFriends),
-              ),
+            Center(
+              child: context.read<ProfileBloc>().state.hasMoreTweets
+                  ? (context.read<ProfileBloc>().state.status !=
+                          ProfileStatus.error
+                      ? const Text('SHIMMER HERe')
+                      // TODO(nono): SHIMMER
+                      : _buildErrorWidget(context))
+                  : Text(StringConstants().noMoreFriends),
+            ),
           ],
         );
       },
@@ -245,37 +251,36 @@ class MyFriendsComponent extends StatelessWidget {
 
   SizedBox _buildUserPhoto(String? avatarUrl) {
     return SizedBox(
-              width: 40,
-              height: 40,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(50.0),
+      width: 40,
+      height: 40,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(50.0),
+        ),
+        child: avatarUrl != null
+            ? CachedNetworkImage(
+                imageUrl: avatarUrl,
+                fit: BoxFit.cover,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    Center(
+                  child: CircularProgressIndicator(
+                    value: downloadProgress.progress,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).colorScheme.error,
+                    ),
+                  ),
                 ),
-                child: avatarUrl != null
-                    ? CachedNetworkImage(
-                        imageUrl: avatarUrl,
-                        fit: BoxFit.cover,
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) => Center(
-                          child: CircularProgressIndicator(
-                            value: downloadProgress.progress,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Theme.of(context).colorScheme.error,
-                            ),
-                          ),
-                        ),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      )
-                    : const CircleAvatar(
-                        backgroundColor: MyColors.lightGrey,
-                        child: Icon(
-                          Icons.person,
-                          size: 50,
-                          color: Colors.grey,
-                        ),
-                      ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              )
+            : const CircleAvatar(
+                backgroundColor: MyColors.lightGrey,
+                child: Icon(
+                  Icons.person,
+                  size: 50,
+                  color: Colors.grey,
+                ),
               ),
-            );
+      ),
+    );
   }
 }

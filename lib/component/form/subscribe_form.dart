@@ -249,6 +249,7 @@ class SubscribeForm extends HookWidget {
                 }
               },
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             BlocListener<SubscribeBloc, SubscribeState>(
               listener: (context, state) {

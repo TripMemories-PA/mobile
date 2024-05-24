@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../component/form/login_form.dart';
 import '../component/form/subscribe_form.dart';
@@ -6,11 +7,13 @@ import '../component/no_indicator_scroll.dart';
 import '../constants/my_colors.dart';
 import '../num_extensions.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends HookWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final TabController tabController = useTabController(initialLength: 2);
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -30,7 +33,7 @@ class LoginPage extends StatelessWidget {
               child: TabBarView(
                 children: [
                   _buildLoginContent(context),
-                  _buildSubscribeContent(context),
+                  _buildSubscribeContent(context, tabController),
                 ],
               ),
             ),
@@ -42,22 +45,22 @@ class LoginPage extends StatelessWidget {
 
   Stack _buildHeader() {
     return Stack(
-            children: [
-              Image.asset(
-                'assets/images/login_logo.jpg',
-                height: 180,
-                fit: BoxFit.cover,
-                width: double.infinity,
-              ),
-              Center(
-                child: Image.asset(
-                  'assets/images/tripmemories_white_logo.png',
-                  width: 200,
-                  height: 180,
-                ),
-              ),
-            ],
-          );
+      children: [
+        Image.asset(
+          'assets/images/login_logo.jpg',
+          height: 180,
+          fit: BoxFit.cover,
+          width: double.infinity,
+        ),
+        Center(
+          child: Image.asset(
+            'assets/images/tripmemories_white_logo.png',
+            width: 200,
+            height: 180,
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildLoginContent(BuildContext context) {
@@ -131,7 +134,10 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSubscribeContent(BuildContext context) {
+  Widget _buildSubscribeContent(
+    BuildContext context,
+    TabController tabController,
+  ) {
     return NoIndicatorScroll(
       child: ListView(
         padding: const EdgeInsets.only(top: 20),
@@ -197,7 +203,9 @@ class LoginPage extends StatelessWidget {
             ],
           ),
           5.ph,
-          const SubscribeForm(),
+          SubscribeForm(
+            tabController: tabController,
+          ),
         ],
       ),
     );

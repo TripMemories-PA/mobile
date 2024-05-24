@@ -9,11 +9,15 @@ import '../../bloc/subscribe_bloc/subscribe_state.dart';
 import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
 import '../../utils/field_validator.dart';
+import '../../utils/messenger.dart';
 
 class SubscribeForm extends HookWidget {
-  const SubscribeForm({
+  const SubscribeForm( {
     super.key,
+    required this.tabController,
   });
+
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -244,11 +248,27 @@ class SubscribeForm extends HookWidget {
                       );
                 }
               },
-        child: const Center(
-          child: Text(
-            "S'inscrire",
-            style: TextStyle(color: Colors.white),
-          ),
+        child: Column(
+          children: [
+            BlocListener<SubscribeBloc, SubscribeState>(
+              listener: (context, state) {
+                if (state.error != null) {
+                  Messenger.showSnackBarError(state.error!.getDescription());
+                }
+                if (state.subscribed) {
+                  Messenger.showSnackBarSuccess('Inscription réussie ✅');
+                  DefaultTabController.of(context).animateTo(0);
+                }
+              },
+              child: const SizedBox.shrink(),
+            ),
+            const Center(
+              child: Text(
+                "S'inscrire",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -3,17 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../bloc/auth_bloc/auth_bloc.dart';
-import '../../bloc/login_bloc/login_bloc.dart';
-import '../../bloc/login_bloc/login_event.dart';
-import '../../bloc/login_bloc/login_state.dart';
+import '../../bloc/subscribe_bloc/subscribe_bloc.dart';
+import '../../bloc/subscribe_bloc/subscribe_event.dart';
+import '../../bloc/subscribe_bloc/subscribe_state.dart';
 import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
 import '../../utils/field_validator.dart';
+import '../../utils/messenger.dart';
 
 class SubscribeForm extends HookWidget {
   const SubscribeForm({
     super.key,
+    required this.tabController,
   });
+
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +33,10 @@ class SubscribeForm extends HookWidget {
     final hidePassword = useState(true);
     final hideConfirmPassword = useState(true);
     return BlocProvider(
-      create: (context) => LoginBloc(
+      create: (context) => SubscribeBloc(
         context.read<AuthBloc>(),
       ),
-      child: BlocBuilder<LoginBloc, LoginState>(
+      child: BlocBuilder<SubscribeBloc, SubscribeState>(
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -47,7 +51,7 @@ class SubscribeForm extends HookWidget {
                   ),
                   12.ph,
                   TextFormField(
-                    readOnly: context.read<LoginBloc>().state.loading,
+                    readOnly: context.read<SubscribeBloc>().state.loading,
                     decoration: const InputDecoration(
                       hintText: "Nom d'utilisateur",
                     ),
@@ -57,7 +61,7 @@ class SubscribeForm extends HookWidget {
                   ),
                   12.ph,
                   TextFormField(
-                    readOnly: context.read<LoginBloc>().state.loading,
+                    readOnly: context.read<SubscribeBloc>().state.loading,
                     decoration: const InputDecoration(
                       hintText: 'Adresse e-mail',
                     ),
@@ -78,13 +82,7 @@ class SubscribeForm extends HookWidget {
                     passwordController,
                   ),
                   22.ph,
-                  _buildSubscribeButton(
-                    context,
-                    formKey,
-                    emailController,
-                    passwordController,
-                  ),
-                  if (context.read<LoginBloc>().state.loading)
+                  if (context.read<SubscribeBloc>().state.loading)
                     SizedBox(
                       height: 50,
                       child: Column(
@@ -99,7 +97,16 @@ class SubscribeForm extends HookWidget {
                         ],
                       ),
                     ),
-                  if (!context.read<LoginBloc>().state.loading) 50.ph,
+                  if (!context.read<SubscribeBloc>().state.loading) 50.ph,
+                  _buildSubscribeButton(
+                    context: context,
+                    formKey: formKey,
+                    emailController: emailController,
+                    passwordController: passwordController,
+                    firstNameController: firstNameController,
+                    lastNameController: lastNameController,
+                    userNameController: userNameController,
+                  ),
                 ],
               ),
             ),
@@ -119,7 +126,7 @@ class SubscribeForm extends HookWidget {
         Expanded(
           flex: 2,
           child: TextFormField(
-            readOnly: context.read<LoginBloc>().state.loading,
+            readOnly: context.read<SubscribeBloc>().state.loading,
             decoration: const InputDecoration(
               hintText: 'Prénom',
             ),
@@ -131,7 +138,7 @@ class SubscribeForm extends HookWidget {
         Expanded(
           flex: 3,
           child: TextFormField(
-            readOnly: context.read<LoginBloc>().state.loading,
+            readOnly: context.read<SubscribeBloc>().state.loading,
             decoration: const InputDecoration(
               hintText: 'Nom',
             ),
@@ -149,7 +156,7 @@ class SubscribeForm extends HookWidget {
     TextEditingController passwordController,
   ) {
     return TextFormField(
-      readOnly: context.read<LoginBloc>().state.loading,
+      readOnly: context.read<SubscribeBloc>().state.loading,
       obscureText: hidePassword.value,
       decoration: InputDecoration(
         errorMaxLines: 4,
@@ -181,7 +188,7 @@ class SubscribeForm extends HookWidget {
     TextEditingController passwordController,
   ) {
     return TextFormField(
-      readOnly: context.read<LoginBloc>().state.loading,
+      readOnly: context.read<SubscribeBloc>().state.loading,
       obscureText: hidePassword.value,
       decoration: InputDecoration(
         errorMaxLines: 4,
@@ -208,12 +215,15 @@ class SubscribeForm extends HookWidget {
     );
   }
 
-  SizedBox _buildSubscribeButton(
-    BuildContext context,
-    GlobalKey<FormState> formKey,
-    TextEditingController emailController,
-    TextEditingController passwordController,
-  ) {
+  SizedBox _buildSubscribeButton({
+    required BuildContext context,
+    required GlobalKey<FormState> formKey,
+    required TextEditingController emailController,
+    required TextEditingController passwordController,
+    required TextEditingController firstNameController,
+    required TextEditingController lastNameController,
+    required TextEditingController userNameController,
+  }) {
     return SizedBox(
       height: 50,
       child: ElevatedButton(
@@ -223,23 +233,41 @@ class SubscribeForm extends HookWidget {
             borderRadius: BorderRadius.circular(35),
           ),
         ),
-        onPressed: context.read<LoginBloc>().state.loading
+        onPressed: context.read<SubscribeBloc>().state.loading
             ? null
             : () {
                 if (formKey.currentState!.validate()) {
-                  context.read<LoginBloc>().add(
-                        LoginRequested(
+                  context.read<SubscribeBloc>().add(
+                        SubscribeRequested(
+                          firstName: firstNameController.text,
+                          lastName: lastNameController.text,
+                          username: userNameController.text,
                           email: emailController.text,
                           password: passwordController.text,
                         ),
                       );
                 }
               },
-        child: const Center(
-          child: Text(
-            "S'inscrire",
-            style: TextStyle(color: Colors.white),
-          ),
+        child: Column(
+          children: [
+            BlocListener<SubscribeBloc, SubscribeState>(
+              listener: (context, state) {
+                if (state.error != null) {
+                  Messenger.showSnackBarError(state.error!.getDescription());
+                }
+                if (state.subscribed) {
+                  Messenger.showSnackBarSuccess('Inscription réussie ✅');
+                }
+              },
+              child: const SizedBox.shrink(),
+            ),
+            const Center(
+              child: Text(
+                "S'inscrire",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
         ),
       ),
     );

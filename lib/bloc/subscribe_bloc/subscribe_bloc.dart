@@ -5,36 +5,42 @@ import '../../api/error/api_error.dart';
 import '../../api/exception/custom_exception.dart';
 import '../auth_bloc/auth_bloc.dart';
 import '../auth_bloc/auth_event.dart';
-import 'login_event.dart';
-import 'login_state.dart';
+import 'subscribe_event.dart';
+import 'subscribe_state.dart';
 
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc(this.authBloc) : super(const LoginState.notLoading()) {
-    on<LoginRequested>(
+class SubscribeBloc extends Bloc<SubscribeEvent, SubscribeState> {
+  SubscribeBloc(this.authBloc) : super(const SubscribeState.notLoading()) {
+    on<SubscribeRequested>(
       (event, emit) async {
-        emit(const LoginState.loading());
+        emit(const SubscribeState.loading());
         try {
-          final AuthSuccessResponse authResponse =
-              await authBloc.authService.login(
+          await authBloc.authService.subscribe(
+            firstName: event.firstName,
+            lastName: event.lastName,
+            username: event.username,
+            email: event.email,
+            password: event.password,
+          );
+          emit(const SubscribeState.subscribed());
+          final AuthSuccessResponse response = await authBloc.authService.login(
             email: event.email,
             password: event.password,
           );
           authBloc.add(
             ChangeToLoggedInStatus(
-              authToken: authResponse.token,
+              authToken: response.token,
             ),
           );
-          emit(const LoginState.notLoading());
         } catch (exception) {
           if (exception is CustomException) {
             emit(
-              LoginState.error(
+              SubscribeState.error(
                 error: exception.apiError,
               ),
             );
           } else {
             emit(
-              LoginState.error(
+              SubscribeState.error(
                 error: ApiError.errorOccurred(),
               ),
             );
@@ -42,15 +48,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       },
     );
-
-    on<LogoutRequested>((event, emit) async {
-      try {
-        await authBloc.authTokenHandler.logout();
-        authBloc.add(const ChangeToLoggedOutStatus());
-      } catch (_) {
-        emit(LoginState.error(error: ApiError.errorOccurred()));
-      }
-    });
   }
 
   final AuthBloc authBloc;

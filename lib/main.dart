@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
 import 'api/auth/auth_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
-import 'bloc/notifier_bloc/notifier_bloc.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
@@ -14,6 +14,7 @@ import 'page/profile_page.dart';
 import 'page/search_page.dart';
 import 'page/shop_page.dart';
 import 'theme_generator.dart';
+import 'utils/messenger.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -22,7 +23,7 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends HookWidget {
   MyApp({super.key});
 
   final GoRouter _router = GoRouter(
@@ -100,19 +101,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => AuthBloc(
-            authService: AuthService(),
-            authTokenHandler: AuthTokenHandler(),
-          ),
-        ),
-        BlocProvider<NotifierBloc>(
-          create: (_) => NotifierBloc(),
-        ),
-      ],
+    final GlobalKey<ScaffoldMessengerState> messengerKey =
+        useMemoized(GlobalKey<ScaffoldMessengerState>.new, <Object?>[]);
+
+    useEffect(
+      () {
+        Messenger.setMessengerKey(messengerKey);
+        return null;
+      },
+      <Object?>[],
+    );
+
+    return BlocProvider(
+      create: (context) => AuthBloc(
+        authService: AuthService(),
+        authTokenHandler: AuthTokenHandler(),
+      ),
       child: MaterialApp.router(
+        scaffoldMessengerKey: messengerKey,
         title: 'Flutter PA',
         routerConfig: _router,
         theme: ThemeGenerator.generate(),

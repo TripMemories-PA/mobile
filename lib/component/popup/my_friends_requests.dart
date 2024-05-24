@@ -6,15 +6,13 @@ import 'package:go_router/go_router.dart';
 import '../../api/auth/model/response/friend_request_response/friend_request_response.dart';
 import '../../api/profile/profile_service.dart';
 import '../../bloc/friend_request_bloc/friend_request_bloc.dart';
-import '../../bloc/notifier_bloc/notification_type.dart';
-import '../../bloc/notifier_bloc/notifier_bloc.dart';
-import '../../bloc/notifier_bloc/notifier_event.dart';
 import '../../constants/my_colors.dart';
 import '../../constants/route_name.dart';
 import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
 import '../../repository/profile_repository.dart';
 import '../../service/profile_remote_data_source.dart';
+import '../../utils/messenger.dart';
 import '../custom_card.dart';
 
 class MyFriendsRequests extends StatelessWidget {
@@ -123,15 +121,12 @@ class MyFriendsRequests extends StatelessWidget {
                     listener: (context, state) {
                       if (state.status == FriendRequestStatus.accepted ||
                           state.status == FriendRequestStatus.refused) {
-                        context.read<NotifierBloc>().add(
-                              AppendNotification(
-                                notification: state.status ==
-                                        FriendRequestStatus.accepted
-                                    ? StringConstants().friendRequestAccepted
-                                    : StringConstants().friendRequestRefused,
-                                type: NotificationType.info,
-                              ),
-                            );
+                        Messenger.showSnackBarQuickInfo(
+                          state.status == FriendRequestStatus.accepted
+                              ? StringConstants().friendRequestAccepted
+                              : StringConstants().friendRequestRefused,
+                          context,
+                        );
                       }
                     },
                     child: const SizedBox.shrink(),

@@ -1,3 +1,3 @@
 class AppConfig {
-  static const String apiUrl = 'https://api-fcvt.onrender.com';
+  static const String apiUrl = 'http://89.168.46.217';
 }

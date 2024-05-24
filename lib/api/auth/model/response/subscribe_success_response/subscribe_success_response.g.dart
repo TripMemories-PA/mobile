@@ -1,5 +1,4 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
 
 part of 'subscribe_success_response.dart';
 
@@ -12,9 +11,9 @@ _$SubscribeSuccessResponseImpl _$$SubscribeSuccessResponseImplFromJson(
     _$SubscribeSuccessResponseImpl(
       username: json['username'] as String,
       email: json['email'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
-      id: json['id'] as String,
+      firstname: json['firstname'] as String,
+      lastname: json['lastname'] as String,
+      id: (json['id'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$SubscribeSuccessResponseImplToJson(
@@ -22,7 +21,7 @@ Map<String, dynamic> _$$SubscribeSuccessResponseImplToJson(
     <String, dynamic>{
       'username': instance.username,
       'email': instance.email,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
+      'firstname': instance.firstname,
+      'lastname': instance.lastname,
       'id': instance.id,
     };

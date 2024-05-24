@@ -23,9 +23,9 @@ SubscribeSuccessResponse _$SubscribeSuccessResponseFromJson(
 mixin _$SubscribeSuccessResponse {
   String get username => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  String get firstName => throw _privateConstructorUsedError;
-  String get lastName => throw _privateConstructorUsedError;
-  String get id => throw _privateConstructorUsedError;
+  String get firstname => throw _privateConstructorUsedError;
+  String get lastname => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,9 +42,9 @@ abstract class $SubscribeSuccessResponseCopyWith<$Res> {
   $Res call(
       {String username,
       String email,
-      String firstName,
-      String lastName,
-      String id});
+      String firstname,
+      String lastname,
+      int id});
 }
 
 /// @nodoc
@@ -63,8 +63,8 @@ class _$SubscribeSuccessResponseCopyWithImpl<$Res,
   $Res call({
     Object? username = null,
     Object? email = null,
-    Object? firstName = null,
-    Object? lastName = null,
+    Object? firstname = null,
+    Object? lastname = null,
     Object? id = null,
   }) {
     return _then(_value.copyWith(
@@ -76,18 +76,18 @@ class _$SubscribeSuccessResponseCopyWithImpl<$Res,
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      firstName: null == firstName
-          ? _value.firstName
-          : firstName // ignore: cast_nullable_to_non_nullable
+      firstname: null == firstname
+          ? _value.firstname
+          : firstname // ignore: cast_nullable_to_non_nullable
               as String,
-      lastName: null == lastName
-          ? _value.lastName
-          : lastName // ignore: cast_nullable_to_non_nullable
+      lastname: null == lastname
+          ? _value.lastname
+          : lastname // ignore: cast_nullable_to_non_nullable
               as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
     ) as $Val);
   }
 }
@@ -104,9 +104,9 @@ abstract class _$$SubscribeSuccessResponseImplCopyWith<$Res>
   $Res call(
       {String username,
       String email,
-      String firstName,
-      String lastName,
-      String id});
+      String firstname,
+      String lastname,
+      int id});
 }
 
 /// @nodoc
@@ -124,8 +124,8 @@ class __$$SubscribeSuccessResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? username = null,
     Object? email = null,
-    Object? firstName = null,
-    Object? lastName = null,
+    Object? firstname = null,
+    Object? lastname = null,
     Object? id = null,
   }) {
     return _then(_$SubscribeSuccessResponseImpl(
@@ -137,18 +137,18 @@ class __$$SubscribeSuccessResponseImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      firstName: null == firstName
-          ? _value.firstName
-          : firstName // ignore: cast_nullable_to_non_nullable
+      firstname: null == firstname
+          ? _value.firstname
+          : firstname // ignore: cast_nullable_to_non_nullable
               as String,
-      lastName: null == lastName
-          ? _value.lastName
-          : lastName // ignore: cast_nullable_to_non_nullable
+      lastname: null == lastname
+          ? _value.lastname
+          : lastname // ignore: cast_nullable_to_non_nullable
               as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
     ));
   }
 }
@@ -159,8 +159,8 @@ class _$SubscribeSuccessResponseImpl implements _SubscribeSuccessResponse {
   const _$SubscribeSuccessResponseImpl(
       {required this.username,
       required this.email,
-      required this.firstName,
-      required this.lastName,
+      required this.firstname,
+      required this.lastname,
       required this.id});
 
   factory _$SubscribeSuccessResponseImpl.fromJson(Map<String, dynamic> json) =>
@@ -171,15 +171,15 @@ class _$SubscribeSuccessResponseImpl implements _SubscribeSuccessResponse {
   @override
   final String email;
   @override
-  final String firstName;
+  final String firstname;
   @override
-  final String lastName;
+  final String lastname;
   @override
-  final String id;
+  final int id;
 
   @override
   String toString() {
-    return 'SubscribeSuccessResponse(username: $username, email: $email, firstName: $firstName, lastName: $lastName, id: $id)';
+    return 'SubscribeSuccessResponse(username: $username, email: $email, firstname: $firstname, lastname: $lastname, id: $id)';
   }
 
   @override
@@ -190,17 +190,17 @@ class _$SubscribeSuccessResponseImpl implements _SubscribeSuccessResponse {
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.firstName, firstName) ||
-                other.firstName == firstName) &&
-            (identical(other.lastName, lastName) ||
-                other.lastName == lastName) &&
+            (identical(other.firstname, firstname) ||
+                other.firstname == firstname) &&
+            (identical(other.lastname, lastname) ||
+                other.lastname == lastname) &&
             (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, username, email, firstName, lastName, id);
+      Object.hash(runtimeType, username, email, firstname, lastname, id);
 
   @JsonKey(ignore: true)
   @override
@@ -221,9 +221,9 @@ abstract class _SubscribeSuccessResponse implements SubscribeSuccessResponse {
   const factory _SubscribeSuccessResponse(
       {required final String username,
       required final String email,
-      required final String firstName,
-      required final String lastName,
-      required final String id}) = _$SubscribeSuccessResponseImpl;
+      required final String firstname,
+      required final String lastname,
+      required final int id}) = _$SubscribeSuccessResponseImpl;
 
   factory _SubscribeSuccessResponse.fromJson(Map<String, dynamic> json) =
       _$SubscribeSuccessResponseImpl.fromJson;
@@ -233,11 +233,11 @@ abstract class _SubscribeSuccessResponse implements SubscribeSuccessResponse {
   @override
   String get email;
   @override
-  String get firstName;
+  String get firstname;
   @override
-  String get lastName;
+  String get lastname;
   @override
-  String get id;
+  int get id;
   @override
   @JsonKey(ignore: true)
   _$$SubscribeSuccessResponseImplCopyWith<_$SubscribeSuccessResponseImpl>

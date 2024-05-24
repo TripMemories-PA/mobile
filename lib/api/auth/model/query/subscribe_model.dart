@@ -7,8 +7,8 @@ class SubscribeModel {
     required String password,
   }) {
     return {
-      'firstName': firstName,
-      'lastName': lastName,
+      'firstname': firstName,
+      'lastname': lastName,
       'username': username,
       'email': email,
       'password': password,

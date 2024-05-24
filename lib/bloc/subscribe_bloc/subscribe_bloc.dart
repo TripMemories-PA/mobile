@@ -7,8 +7,7 @@ import 'subscribe_event.dart';
 import 'subscribe_state.dart';
 
 class SubscribeBloc extends Bloc<SubscribeEvent, SubscribeState> {
-  SubscribeBloc(this.authService)
-      : super(const SubscribeState.notLoading()) {
+  SubscribeBloc(this.authService) : super(const SubscribeState.notLoading()) {
     on<SubscribeRequested>(
       (event, emit) async {
         emit(const SubscribeState.loading());
@@ -20,7 +19,7 @@ class SubscribeBloc extends Bloc<SubscribeEvent, SubscribeState> {
             email: event.email,
             password: event.password,
           );
-          emit(const SubscribeState.notLoading());
+          emit(const SubscribeState.subscribed());
         } catch (exception) {
           if (exception is CustomException) {
             emit(

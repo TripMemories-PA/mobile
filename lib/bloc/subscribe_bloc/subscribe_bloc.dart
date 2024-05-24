@@ -1,18 +1,20 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../api/auth/i_auth_service.dart';
+import '../../api/auth/model/response/auth_success_response/auth_success_response.dart';
 import '../../api/error/api_error.dart';
 import '../../api/exception/custom_exception.dart';
+import '../auth_bloc/auth_bloc.dart';
+import '../auth_bloc/auth_event.dart';
 import 'subscribe_event.dart';
 import 'subscribe_state.dart';
 
 class SubscribeBloc extends Bloc<SubscribeEvent, SubscribeState> {
-  SubscribeBloc(this.authService) : super(const SubscribeState.notLoading()) {
+  SubscribeBloc(this.authBloc) : super(const SubscribeState.notLoading()) {
     on<SubscribeRequested>(
       (event, emit) async {
         emit(const SubscribeState.loading());
         try {
-          await authService.subscribe(
+          await authBloc.authService.subscribe(
             firstName: event.firstName,
             lastName: event.lastName,
             username: event.username,
@@ -20,6 +22,15 @@ class SubscribeBloc extends Bloc<SubscribeEvent, SubscribeState> {
             password: event.password,
           );
           emit(const SubscribeState.subscribed());
+          final AuthSuccessResponse response = await authBloc.authService.login(
+            email: event.email,
+            password: event.password,
+          );
+          authBloc.add(
+            ChangeToLoggedInStatus(
+              authToken: response.token,
+            ),
+          );
         } catch (exception) {
           if (exception is CustomException) {
             emit(
@@ -39,5 +50,5 @@ class SubscribeBloc extends Bloc<SubscribeEvent, SubscribeState> {
     );
   }
 
-  final IAuthService authService;
+  final AuthBloc authBloc;
 }

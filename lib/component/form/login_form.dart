@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../bloc/auth_bloc/auth_bloc.dart';
+import '../../bloc/auth_bloc/auth_state.dart';
 import '../../bloc/login_bloc/login_bloc.dart';
 import '../../bloc/login_bloc/login_event.dart';
 import '../../bloc/login_bloc/login_state.dart';
 import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
 import '../../utils/field_validator.dart';
+import '../../utils/messenger.dart';
 
 class LoginForm extends HookWidget {
   const LoginForm({
@@ -75,11 +77,33 @@ class LoginForm extends HookWidget {
                   15.ph,
                   Row(
                     children: [
+                      BlocListener<LoginBloc, LoginState>(
+                        listener: (context, state) {
+                          if (state.error != null) {
+                            Messenger.showSnackBarError(
+                              state.error!.getDescription(),
+                            );
+                          }
+                        },
+                        child: const SizedBox.shrink(),
+                      ),
+                      BlocListener<AuthBloc, AuthState>(
+                        listener: (context, state) {
+                          if (state.status == AuthStatus.authenticated) {
+                            Messenger.showSnackBarSuccess(
+                              'Bon retour parmi nous !',
+                            );
+                          }
+                        },
+                        child: const SizedBox.shrink(),
+                      ),
                       Checkbox(
                         value: rememberMe.value,
-                        onChanged: context.read<LoginBloc>().state.loading ? null : (bool? value) {
-                          rememberMe.value = value!;
-                        },
+                        onChanged: context.read<LoginBloc>().state.loading
+                            ? null
+                            : (bool? value) {
+                                rememberMe.value = value!;
+                              },
                         checkColor: Colors.black,
                       ),
                       Text(
@@ -124,16 +148,18 @@ class LoginForm extends HookWidget {
                           borderRadius: BorderRadius.circular(35),
                         ),
                       ),
-                      onPressed: context.read<LoginBloc>().state.loading ? null : () {
-                        if (formKey.currentState!.validate()) {
-                          context.read<LoginBloc>().add(
-                            LoginRequested(
-                              email: emailController.text,
-                              password: passwordController.text,
-                            ),
-                          );
-                        }
-                      },
+                      onPressed: context.read<LoginBloc>().state.loading
+                          ? null
+                          : () {
+                              if (formKey.currentState!.validate()) {
+                                context.read<LoginBloc>().add(
+                                      LoginRequested(
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                      ),
+                                    );
+                              }
+                            },
                       child: const Center(
                         child: Text(
                           'Se connecter',

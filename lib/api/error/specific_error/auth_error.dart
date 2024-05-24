@@ -9,7 +9,7 @@ class AuthError extends ApiError {
   }
 
   static AuthError alreadyExists() {
-    return AuthError(StringConstants().emailOrPasswordAlreadyExists);
+    return AuthError(StringConstants().emailOrUsernameAlreadyExists);
   }
 
   static AuthError notAuthenticated() {

@@ -31,8 +31,10 @@ class Messenger {
   }
 
   static void showSnackBarSuccess(final String content) {
-    assert(_messengerKey.currentState != null,
-        'Navigator key must be initialized.');
+    assert(
+      _messengerKey.currentState != null,
+      'Navigator key must be initialized.',
+    );
 
     _messengerKey.currentState!.showSnackBar(
       SnackBar(

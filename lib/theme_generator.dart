@@ -181,6 +181,5 @@ class ThemeGenerator {
         floatingActionButtonTheme: _floatingActionButtonTheme,
         tabBarTheme: _tabBarTheme,
         popupMenuTheme: _popupMenuTheme,
-        inputDecorationTheme: _inputDecorationTheme,
       );
 }

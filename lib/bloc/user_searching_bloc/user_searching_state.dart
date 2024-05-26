@@ -16,6 +16,13 @@ class UserSearchingState {
     this.friendsPage = 0,
     this.hasMoreUsers = true,
     this.isRefresh = false,
+    this.searchingUserByNameStatus = UserSearchingStatus.notLoading,
+    this.usersSearchByName,
+    this.searchUsersError,
+    this.searchUsersPerPage = 10,
+    this.searchUsersPage = 0,
+    this.searchUsersHasMoreUsers = true,
+    this.searchUsersIsRefresh = false,
   });
 
   UserSearchingState copyWith({
@@ -25,6 +32,13 @@ class UserSearchingState {
     GetFriendsPaginationResponse? friends,
     int? friendsPage,
     bool? hasMoreUsers,
+    UserSearchingStatus? searchingUserByNameStatus,
+    GetFriendsPaginationResponse? usersSearchByName,
+    int? searchUsersPerPage,
+    int? searchUsersPage,
+    bool? searchUsersHasMoreUsers,
+    bool? searchUsersIsRefresh,
+    ApiError? searchUsersError,
   }) {
     return UserSearchingState(
       users: users ?? this.users,
@@ -32,6 +46,15 @@ class UserSearchingState {
       error: error,
       friendsPage: friendsPage ?? this.friendsPage,
       hasMoreUsers: hasMoreUsers ?? this.hasMoreUsers,
+      searchingUserByNameStatus:
+          searchingUserByNameStatus ?? this.searchingUserByNameStatus,
+      usersSearchByName: usersSearchByName ?? this.usersSearchByName,
+      searchUsersPerPage: searchUsersPerPage ?? this.searchUsersPerPage,
+      searchUsersPage: searchUsersPage ?? this.searchUsersPage,
+      searchUsersHasMoreUsers:
+          searchUsersHasMoreUsers ?? this.searchUsersHasMoreUsers,
+      searchUsersIsRefresh: searchUsersIsRefresh ?? this.searchUsersIsRefresh,
+      searchUsersError: searchUsersError,
     );
   }
 
@@ -42,4 +65,11 @@ class UserSearchingState {
   final int friendsPage;
   final bool hasMoreUsers;
   final bool isRefresh;
+  final UserSearchingStatus searchingUserByNameStatus;
+  final GetFriendsPaginationResponse? usersSearchByName;
+  final int searchUsersPerPage;
+  final int searchUsersPage;
+  final bool searchUsersHasMoreUsers;
+  final bool searchUsersIsRefresh;
+  final ApiError? searchUsersError;
 }

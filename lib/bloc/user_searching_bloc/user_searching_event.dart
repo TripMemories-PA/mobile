@@ -17,3 +17,13 @@ class SendFriendRequestEvent extends UserSearchingEvent {
 
   final String userId;
 }
+
+class SearchUsersEvent extends UserSearchingEvent {
+  SearchUsersEvent({
+    required this.searchingCriteria,
+    required this.isRefresh,
+  });
+
+  final String searchingCriteria;
+  final bool isRefresh;
+}

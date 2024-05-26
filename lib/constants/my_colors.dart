@@ -6,4 +6,5 @@ class MyColors {
   static const darkGrey = Color(0xFFAAAAB6);
   static const success = Color(0xFF5CB85C);
   static const fail = Color(0xFFFF3333);
+  static const black = Color(0xFF000000);
 }

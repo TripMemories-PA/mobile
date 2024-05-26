@@ -80,6 +80,45 @@ class UserSearchingBloc extends Bloc<UserSearchingEvent, UserSearchingState> {
         );
       }
     });
+
+    on<SearchUsersEvent>((event, emit) async {
+      try {
+        emit(
+          state.copyWith(
+            searchingUserByNameStatus: UserSearchingStatus.loading,
+          ),
+        );
+        final GetFriendsPaginationResponse users =
+            await profileService.getUsers(
+          page: event.isRefresh ? 1 : state.searchUsersPage + 1,
+          perPage: state.searchUsersPerPage,
+          searchName: event.searchingCriteria,
+        );
+        emit(
+          state.copyWith(
+            searchingUserByNameStatus: UserSearchingStatus.notLoading,
+            usersSearchByName: event.isRefresh
+                ? users
+                : state.usersSearchByName?.copyWith(
+                    data: [
+                      ...state.usersSearchByName!.data,
+                      ...users.data,
+                    ],
+                  ),
+            searchUsersPage: event.isRefresh ? 1 : state.searchUsersPage + 1,
+            searchUsersHasMoreUsers:
+                users.data.length == state.searchUsersPerPage,
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            status: UserSearchingStatus.error,
+            error: e is CustomException ? e.apiError : ApiError.unknown(),
+          ),
+        );
+      }
+    });
   }
 
   final IProfileService profileService;

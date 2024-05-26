@@ -27,6 +27,7 @@ class ProfileService implements IProfileService {
       '$apiMyFriendRequestsBaseUrl/[friend_request_id]/accept';
   static const String apiUsersUrl =
       '${AppConfig.apiUrl}/users?page=[nb_page]&perPage=[per_page]';
+  static const String apiFriendRequestsUrl = '$apiMeUrl/friend-requests';
 
   @override
   Future<Profile> getProfile({required String id}) async {
@@ -215,6 +216,20 @@ class ProfileService implements IProfileService {
       throw ParsingResponseException(
         ApiError.errorOccurredWhileParsingResponse(),
       );
+    }
+  }
+
+  @override
+  Future<void> sendFriendRequest({required String userId}) async {
+    try {
+      await DioClient.instance.post(
+        apiFriendRequestsUrl,
+        data: {
+          'userId': int.parse(userId),
+        },
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
     }
   }
 

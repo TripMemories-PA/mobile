@@ -47,5 +47,7 @@ abstract class IProfileService {
 
   Future<void> acceptFriendRequest({required String friendRequestId});
 
+  Future<void> sendFriendRequest({required String userId});
+
   Future<void> rejectFriendRequest({required String friendRequestId});
 }

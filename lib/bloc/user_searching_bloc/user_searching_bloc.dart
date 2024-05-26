@@ -6,7 +6,6 @@ import '../../api/exception/custom_exception.dart';
 import '../../api/profile/i_profile_service.dart';
 import '../../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../../local_storage/secure_storage/auth_token_handler.dart';
-import '../../object/profile/profile.dart';
 import '../../repository/profile_repository.dart';
 
 part 'user_searching_event.dart';
@@ -64,29 +63,14 @@ class UserSearchingBloc extends Bloc<UserSearchingEvent, UserSearchingState> {
 
     on<SendFriendRequestEvent>((event, emit) async {
       try {
-        await profileService.acceptFriendRequest(
-          friendRequestId: event.userId,
+        await profileService.sendFriendRequest(
+          userId: event.userId,
         );
-        List<Profile>? users = state.users?.data;
-
-        if (users != null) {
-          users = List<Profile>.from(users);
-
-          users.removeWhere(
-            (element) => element.id.toString() == event.userId,
-          );
-        }
-        GetFriendsPaginationResponse? usersResponse = state.users;
-        if (users != null && usersResponse != null) {
-          usersResponse = usersResponse.copyWith(data: users);
-        }
         emit(
           state.copyWith(
             status: UserSearchingStatus.requestSent,
-            users: usersResponse,
           ),
         );
-        add(GetUsersRequestEvent(isRefresh: true));
       } catch (e) {
         emit(
           state.copyWith(

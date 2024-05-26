@@ -43,7 +43,7 @@ class UserSearching extends StatelessWidget {
     return Column(
       children: [
         _buildTitle(context),
-        _buildFriendsList(context),
+        Expanded(child: SingleChildScrollView(child: _buildUserList(context))),
       ],
     );
   }
@@ -66,7 +66,7 @@ class UserSearching extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.close),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  context.pop();
                 },
               ),
             ],
@@ -81,7 +81,7 @@ class UserSearching extends StatelessWidget {
     );
   }
 
-  Widget _buildFriendsList(BuildContext context) {
+  Widget _buildUserList(BuildContext context) {
     return RepositoryProvider<ProfileRepository>(
       create: (context) => ProfileRepository(
         profileRemoteDataSource: ProfileRemoteDataSource(),
@@ -108,7 +108,7 @@ class UserSearching extends StatelessWidget {
                             (friend) => Column(
                               key: ObjectKey(friend),
                               children: [
-                                _buildFriendCard(context, friend),
+                                _buildUserCard(context, friend),
                                 const SizedBox(
                                   height: 10,
                                 ),
@@ -146,7 +146,7 @@ class UserSearching extends StatelessWidget {
     );
   }
 
-  CustomCard _buildFriendCard(
+  CustomCard _buildUserCard(
     BuildContext context,
     Profile user,
   ) {
@@ -217,8 +217,10 @@ class UserSearching extends StatelessWidget {
                   iconSize: 15,
                   icon: const Icon(Icons.remove_red_eye),
                   color: Colors.white,
-                  onPressed: () =>
-                      context.push('${RouteName.profilePage}/${user.id}'),
+                  onPressed: () {
+                    context.push('${RouteName.profilePage}/${user.id}');
+                    context.pop();
+                  },
                 ),
               ),
               const SizedBox(width: 10),

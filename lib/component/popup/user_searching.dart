@@ -23,9 +23,6 @@ class UserSearching extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController searchController = useTextEditingController();
-    final searching = useState(false);
-    final searchContent = useState('');
     return RepositoryProvider<ProfileRepository>(
       create: (context) => ProfileRepository(
         profileRemoteDataSource: ProfileRemoteDataSource(),
@@ -47,33 +44,8 @@ class UserSearching extends HookWidget {
                   child: CustomCard(
                     width: MediaQuery.of(context).size.width * 0.90,
                     height: MediaQuery.of(context).size.height * 0.81,
-                    content: SizedBox.expand(
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Column(
-                            children: [
-                              _buildTitle(
-                                context,
-                                searching,
-                                searchController,
-                                searchContent,
-                              ),
-                              _buildSearchBar(
-                                searchController,
-                                context,
-                                searching,
-                                searchContent,
-                              ),
-                              10.ph,
-                              if (searching.value)
-                                _buildSearchUserList(searchContent),
-                              if (searching.value) 20.ph,
-                              _buildUserList(context),
-                            ],
-                          ),
-                        ),
-                      ),
+                    content: const SizedBox.expand(
+                      child: SearchingUsersBody(),
                     ),
                   ),
                 ),
@@ -84,10 +56,86 @@ class UserSearching extends HookWidget {
       ),
     );
   }
+}
+
+Future<bool> userSearchingPopup(
+  BuildContext context,
+) async {
+  return await showDialog<bool>(
+        context: context,
+        builder: (_) => const UserSearching(),
+      ) ??
+      false;
+}
+
+
+class SearchingUsersBody extends HookWidget {
+  const SearchingUsersBody({super.key});
+
+  void _getUsers(BuildContext context) {
+    final tweetBloc = context.read<UserSearchingBloc>();
+
+    if (tweetBloc.state.status != UserSearchingStatus.loading) {
+      tweetBloc.add(
+        GetUsersRequestEvent(isRefresh: false),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final TextEditingController searchController = useTextEditingController();
+    final searching = useState(false);
+    final searchContent = useState('');
+    final ScrollController usersScrollController = useScrollController();
+    useEffect(
+          () {
+        void createScrollListener() {
+          if (usersScrollController.position.atEdge) {
+            if (usersScrollController.position.pixels != 0) {
+              _getUsers(context);
+            }
+          }
+        }
+
+        usersScrollController.addListener(createScrollListener);
+        return () =>
+            usersScrollController.removeListener(createScrollListener);
+      },
+      const [],
+    );
+    return SingleChildScrollView(
+      controller: usersScrollController,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          children: [
+            _buildTitle(
+              context,
+              searching,
+              searchController,
+              searchContent,
+            ),
+            _buildSearchBar(
+              searchController,
+              context,
+              searching,
+              searchContent,
+            ),
+            10.ph,
+            if (searching.value)
+              _buildSearchUserList(searchContent),
+            if (searching.value) 20.ph,
+            _buildUserList(context),
+          ],
+        ),
+      ),
+    );
+  }
 
   BlocBuilder<UserSearchingBloc, UserSearchingState> _buildSearchUserList(
-    ValueNotifier<String> searchContent,
-  ) {
+      ValueNotifier<String> searchContent,
+      ) {
     return BlocBuilder<UserSearchingBloc, UserSearchingState>(
       builder: (context, state) {
         if (state.status == UserSearchingStatus.error) {
@@ -101,37 +149,37 @@ class UserSearching extends HookWidget {
           return Column(
             children: [
               ...state.usersSearchByName?.data
-                      .map(
-                        (friend) => Column(
-                          key: ObjectKey(friend),
-                          children: [
-                            _buildUserCard(context, friend),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
-                      )
-                      .toList() ??
+                  .map(
+                    (friend) => Column(
+                  key: ObjectKey(friend),
+                  children: [
+                    _buildUserCard(context, friend),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              )
+                  .toList() ??
                   [],
               Center(
                 child: state.searchUsersHasMoreUsers
                     ? (state.searchingUserByNameStatus !=
-                            UserSearchingStatus.error
-                        ? ElevatedButton(
-                            onPressed: () {
-                              context.read<UserSearchingBloc>().add(
-                                    SearchUsersEvent(
-                                      isRefresh: true,
-                                      searchingCriteria: searchContent.value,
-                                    ),
-                                  );
-                            },
-                            child: const Text('Voir plus de résultats'),
-                          )
+                    UserSearchingStatus.error
+                    ? ElevatedButton(
+                  onPressed: () {
+                    context.read<UserSearchingBloc>().add(
+                      SearchUsersEvent(
+                        isRefresh: false,
+                        searchingCriteria: searchContent.value,
+                      ),
+                    );
+                  },
+                  child: const Text('Voir plus de résultats'),
+                )
 
-                        // TODO(nono): SHIMMER
-                        : _buildErrorWidget(context))
+                // TODO(nono): SHIMMER
+                    : _buildErrorWidget(context))
                     : Text(StringConstants().noMoreUsers),
               ),
             ],
@@ -145,7 +193,7 @@ class UserSearching extends HookWidget {
       TextEditingController searchController,
       BuildContext context,
       ValueNotifier<bool> searching,
-      ValueNotifier<String> searchContent) {
+      ValueNotifier<String> searchContent,) {
     return Container(
       height: 30,
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -162,20 +210,21 @@ class UserSearching extends HookWidget {
               hintText: 'Rechercher des amis',
               suffixIcon: value.isEmpty
                   ? Icon(
-                      Icons.search,
-                      color: Theme.of(context).colorScheme.primary,
-                    )
+                Icons.search,
+                color: Theme.of(context).colorScheme.primary,
+              )
                   : IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        searchContent.value = '';
-                        searchController.clear();
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 20,
-                      ),
-                    ),
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  searchContent.value = '';
+                  searchController.clear();
+                  searching.value = false;
+                },
+                icon: const Icon(
+                  Icons.close,
+                  size: 20,
+                ),
+              ),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.all(8.0),
             ),
@@ -183,11 +232,11 @@ class UserSearching extends HookWidget {
               value.isEmpty ? searching.value = false : searching.value = true;
               searchContent.value = value;
               context.read<UserSearchingBloc>().add(
-                    SearchUsersEvent(
-                      isRefresh: true,
-                      searchingCriteria: value,
-                    ),
-                  );
+                SearchUsersEvent(
+                  isRefresh: true,
+                  searchingCriteria: value,
+                ),
+              );
             },
           );
         },
@@ -196,11 +245,11 @@ class UserSearching extends HookWidget {
   }
 
   Widget _buildTitle(
-    BuildContext context,
-    ValueNotifier<bool> searching,
-    TextEditingController searchController,
-    ValueNotifier<String> searchContent,
-  ) {
+      BuildContext context,
+      ValueNotifier<bool> searching,
+      TextEditingController searchController,
+      ValueNotifier<String> searchContent,
+      ) {
     return Padding(
       padding: const EdgeInsets.all(30.0),
       child: Column(
@@ -239,30 +288,30 @@ class UserSearching extends HookWidget {
           child: Column(
             children: [
               ...context
-                      .read<UserSearchingBloc>()
-                      .state
-                      .users
-                      ?.data
-                      .map(
-                        (friend) => Column(
-                          key: ObjectKey(friend),
-                          children: [
-                            _buildUserCard(context, friend),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
-                      )
-                      .toList() ??
+                  .read<UserSearchingBloc>()
+                  .state
+                  .users
+                  ?.data
+                  .map(
+                    (friend) => Column(
+                  key: ObjectKey(friend),
+                  children: [
+                    _buildUserCard(context, friend),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              )
+                  .toList() ??
                   [],
               Center(
                 child: context.read<UserSearchingBloc>().state.hasMoreUsers
                     ? (context.read<UserSearchingBloc>().state.status !=
-                            UserSearchingStatus.error
-                        ? const Text('SHIMMER HERe')
-                        // TODO(nono): SHIMMER
-                        : _buildErrorWidget(context))
+                    UserSearchingStatus.error
+                    ? const Text('SHIMMER HERe')
+                // TODO(nono): SHIMMER
+                    : _buildErrorWidget(context))
                     : Text(StringConstants().noMoreUsers),
               ),
               BlocListener<UserSearchingBloc, UserSearchingState>(
@@ -284,9 +333,9 @@ class UserSearching extends HookWidget {
   }
 
   CustomCard _buildUserCard(
-    BuildContext context,
-    Profile user,
-  ) {
+      BuildContext context,
+      Profile user,
+      ) {
     final String? avatarUrl = user.avatar?.url;
     return CustomCard(
       width: MediaQuery.of(context).size.width * 0.90,
@@ -306,7 +355,7 @@ class UserSearching extends HookWidget {
                 children: [
                   Text(
                     '${user.firstname} '
-                    '${user.lastname}',
+                        '${user.lastname}',
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
@@ -335,10 +384,10 @@ class UserSearching extends HookWidget {
                   color: Colors.white,
                   onPressed: () {
                     context.read<UserSearchingBloc>().add(
-                          SendFriendRequestEvent(
-                            userId: user.id.toString(),
-                          ),
-                        );
+                      SendFriendRequestEvent(
+                        userId: user.id.toString(),
+                      ),
+                    );
                   },
                 ),
               ),
@@ -378,27 +427,27 @@ class UserSearching extends HookWidget {
         ),
         child: avatarUrl != null
             ? CachedNetworkImage(
-                imageUrl: avatarUrl,
-                fit: BoxFit.cover,
-                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    Center(
-                  child: CircularProgressIndicator(
-                    value: downloadProgress.progress,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).colorScheme.error,
-                    ),
+          imageUrl: avatarUrl,
+          fit: BoxFit.cover,
+          progressIndicatorBuilder: (context, url, downloadProgress) =>
+              Center(
+                child: CircularProgressIndicator(
+                  value: downloadProgress.progress,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).colorScheme.error,
                   ),
                 ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              )
-            : const CircleAvatar(
-                backgroundColor: MyColors.lightGrey,
-                child: Icon(
-                  Icons.person,
-                  size: 40,
-                  color: Colors.grey,
-                ),
               ),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+        )
+            : const CircleAvatar(
+          backgroundColor: MyColors.lightGrey,
+          child: Icon(
+            Icons.person,
+            size: 40,
+            color: Colors.grey,
+          ),
+        ),
       ),
     );
   }
@@ -417,17 +466,7 @@ class UserSearching extends HookWidget {
 
   void _getUsersRequest(BuildContext context) {
     context.read<UserSearchingBloc>().add(
-          GetUsersRequestEvent(isRefresh: true),
-        );
+      GetUsersRequestEvent(isRefresh: true),
+    );
   }
-}
-
-Future<bool> userSearchingPopup(
-  BuildContext context,
-) async {
-  return await showDialog<bool>(
-        context: context,
-        builder: (_) => const UserSearching(),
-      ) ??
-      false;
 }

@@ -66,7 +66,6 @@ Future<bool> userSearchingPopup(
       false;
 }
 
-
 class SearchingUsersBody extends HookWidget {
   const SearchingUsersBody({super.key});
 
@@ -87,7 +86,7 @@ class SearchingUsersBody extends HookWidget {
     final searchContent = useState('');
     final ScrollController usersScrollController = useScrollController();
     useEffect(
-          () {
+      () {
         void createScrollListener() {
           if (usersScrollController.position.atEdge) {
             if (usersScrollController.position.pixels != 0) {
@@ -97,15 +96,14 @@ class SearchingUsersBody extends HookWidget {
         }
 
         usersScrollController.addListener(createScrollListener);
-        return () =>
-            usersScrollController.removeListener(createScrollListener);
+        return () => usersScrollController.removeListener(createScrollListener);
       },
       const [],
     );
     return SingleChildScrollView(
       controller: usersScrollController,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
           children: [
             _buildTitle(
@@ -121,9 +119,33 @@ class SearchingUsersBody extends HookWidget {
               searchContent,
             ),
             10.ph,
+            if (searching.value) _buildSearchUserList(searchContent),
             if (searching.value)
-              _buildSearchUserList(searchContent),
-            if (searching.value) 20.ph,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 3,
+                      width: MediaQuery.of(context).size.width * 0.30,
+                      decoration: const BoxDecoration(
+                        color: MyColors.lightGrey,
+                      ),
+                    ),
+                    15.pw,
+                    const Text('ou'),
+                    15.pw,
+                    Container(
+                      height: 3,
+                      width: MediaQuery.of(context).size.width * 0.30,
+                      decoration: const BoxDecoration(
+                        color: MyColors.lightGrey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             _buildUserList(context),
           ],
         ),
@@ -132,8 +154,8 @@ class SearchingUsersBody extends HookWidget {
   }
 
   BlocBuilder<UserSearchingBloc, UserSearchingState> _buildSearchUserList(
-      ValueNotifier<String> searchContent,
-      ) {
+    ValueNotifier<String> searchContent,
+  ) {
     return BlocBuilder<UserSearchingBloc, UserSearchingState>(
       builder: (context, state) {
         if (state.status == UserSearchingStatus.error) {
@@ -146,38 +168,56 @@ class SearchingUsersBody extends HookWidget {
         } else {
           return Column(
             children: [
-              ...state.usersSearchByName?.data
-                  .map(
-                    (friend) => Column(
-                  key: ObjectKey(friend),
-                  children: [
-                    _buildUserCard(context, friend),
-                    const SizedBox(
-                      height: 10,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '${state.usersSearchByName!.data.length} résultat${state.usersSearchByName!.data.length > 1 ? 's' : ''}',
+                    style: const TextStyle(
+                      color: MyColors.darkGrey,
                     ),
-                  ],
+                  ),
                 ),
-              )
-                  .toList() ??
-                  [],
+              ),
+              Wrap(
+                spacing: 10.0,
+                runSpacing: 10.0,
+                children: [
+                  ...state.usersSearchByName?.data
+                          .map(
+                            (friend) => Column(
+                              key: ObjectKey(friend),
+                              children: [
+                                _buildUserCard(context, friend),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                          )
+                          .toList() ??
+                      [],
+                ],
+              ),
               Center(
                 child: state.searchUsersHasMoreUsers
                     ? (state.searchingUserByNameStatus !=
-                    UserSearchingStatus.error
-                    ? ElevatedButton(
-                  onPressed: () {
-                    context.read<UserSearchingBloc>().add(
-                      SearchUsersEvent(
-                        isRefresh: false,
-                        searchingCriteria: searchContent.value,
-                      ),
-                    );
-                  },
-                  child: const Text('Voir plus de résultats'),
-                )
+                            UserSearchingStatus.error
+                        ? ElevatedButton(
+                            onPressed: () {
+                              context.read<UserSearchingBloc>().add(
+                                    SearchUsersEvent(
+                                      isRefresh: false,
+                                      searchingCriteria: searchContent.value,
+                                    ),
+                                  );
+                            },
+                            child: const Text('Voir plus de résultats'),
+                          )
 
-                // TODO(nono): SHIMMER
-                    : _buildErrorWidget(context))
+                        // TODO(nono): SHIMMER
+                        : _buildErrorWidget(context))
                     : Text(StringConstants().noMoreUsers),
               ),
             ],
@@ -188,16 +228,17 @@ class SearchingUsersBody extends HookWidget {
   }
 
   Container _buildSearchBar(
-      TextEditingController searchController,
-      BuildContext context,
-      ValueNotifier<bool> searching,
-      ValueNotifier<String> searchContent,) {
+    TextEditingController searchController,
+    BuildContext context,
+    ValueNotifier<bool> searching,
+    ValueNotifier<String> searchContent,
+  ) {
     return Container(
-      height: 30,
+      height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: MyColors.darkGrey),
       ),
       child: ValueListenableBuilder(
         valueListenable: searchContent,
@@ -208,33 +249,33 @@ class SearchingUsersBody extends HookWidget {
               hintText: 'Rechercher des amis',
               suffixIcon: value.isEmpty
                   ? Icon(
-                Icons.search,
-                color: Theme.of(context).colorScheme.primary,
-              )
+                      Icons.search,
+                      color: Theme.of(context).colorScheme.primary,
+                    )
                   : IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  searchContent.value = '';
-                  searchController.clear();
-                  searching.value = false;
-                },
-                icon: const Icon(
-                  Icons.close,
-                  size: 20,
-                ),
-              ),
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        searchContent.value = '';
+                        searchController.clear();
+                        searching.value = false;
+                      },
+                      icon: const Icon(
+                        Icons.close,
+                        size: 20,
+                      ),
+                    ),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.all(8.0),
+              contentPadding: const EdgeInsets.all(10.0),
             ),
             onChanged: (value) {
               value.isEmpty ? searching.value = false : searching.value = true;
               searchContent.value = value;
               context.read<UserSearchingBloc>().add(
-                SearchUsersEvent(
-                  isRefresh: true,
-                  searchingCriteria: value,
-                ),
-              );
+                    SearchUsersEvent(
+                      isRefresh: true,
+                      searchingCriteria: value,
+                    ),
+                  );
             },
           );
         },
@@ -243,13 +284,13 @@ class SearchingUsersBody extends HookWidget {
   }
 
   Widget _buildTitle(
-      BuildContext context,
-      ValueNotifier<bool> searching,
-      TextEditingController searchController,
-      ValueNotifier<String> searchContent,
-      ) {
+    BuildContext context,
+    ValueNotifier<bool> searching,
+    TextEditingController searchController,
+    ValueNotifier<String> searchContent,
+  ) {
     return Padding(
-      padding: const EdgeInsets.all(30.0),
+      padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
       child: Column(
         children: [
           Row(
@@ -263,7 +304,7 @@ class SearchingUsersBody extends HookWidget {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 25,
                 child: ElevatedButton(
                   onPressed: () {
                     context.pop();
@@ -281,172 +322,196 @@ class SearchingUsersBody extends HookWidget {
   Widget _buildUserList(BuildContext context) {
     return BlocBuilder<UserSearchingBloc, UserSearchingState>(
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Column(
-            children: [
-              ...context
-                  .read<UserSearchingBloc>()
-                  .state
-                  .users
-                  ?.data
-                  .map(
-                    (friend) => Column(
-                  key: ObjectKey(friend),
-                  children: [
-                    _buildUserCard(context, friend),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                ),
-              )
-                  .toList() ??
+        return Column(
+          children: [
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Vous pourriez connaître...',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 10.0,
+              runSpacing: 10.0,
+              children: context
+                      .read<UserSearchingBloc>()
+                      .state
+                      .users
+                      ?.data
+                      .map(
+                        (friend) => _buildUserCard(context, friend),
+                      )
+                      .toList() ??
                   [],
-              Center(
-                child: context.read<UserSearchingBloc>().state.hasMoreUsers
-                    ? (context.read<UserSearchingBloc>().state.status !=
-                    UserSearchingStatus.error
-                    ? const Text('SHIMMER HERe')
-                // TODO(nono): SHIMMER
-                    : _buildErrorWidget(context))
-                    : Text(StringConstants().noMoreUsers),
-              ),
-              BlocListener<UserSearchingBloc, UserSearchingState>(
-                listener: (context, state) {
-                  if (state.status == UserSearchingStatus.requestSent) {
-                    Messenger.showSnackBarQuickInfo(
-                      "Demande d'ami envoyée",
-                      context,
-                    );
-                  }
-                },
-                child: const SizedBox.shrink(),
-              ),
-            ],
-          ),
+            ),
+            Center(
+              child: context.read<UserSearchingBloc>().state.hasMoreUsers
+                  ? (context.read<UserSearchingBloc>().state.status !=
+                          UserSearchingStatus.error
+                      ? const Text('SHIMMER HERe')
+                      // TODO(nono): SHIMMER
+                      : _buildErrorWidget(context))
+                  : Text(StringConstants().noMoreUsers),
+            ),
+            BlocListener<UserSearchingBloc, UserSearchingState>(
+              listener: (context, state) {
+                if (state.status == UserSearchingStatus.requestSent) {
+                  Messenger.showSnackBarQuickInfo(
+                    "Demande d'ami envoyée",
+                    context,
+                  );
+                }
+              },
+              child: const SizedBox.shrink(),
+            ),
+          ],
         );
       },
     );
   }
 
   CustomCard _buildUserCard(
-      BuildContext context,
-      Profile user,
-      ) {
+    BuildContext context,
+    Profile user,
+  ) {
     final String? avatarUrl = user.avatar?.url;
     return CustomCard(
-      width: MediaQuery.of(context).size.width * 0.90,
-      height: 55,
+      width: 165,
+      height: 150,
       borderColor: MyColors.lightGrey,
-      content: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              const SizedBox(
-                width: 12,
-              ),
-              _buildUserPhoto(avatarUrl),
-              const SizedBox(width: 10),
-              Column(
-                children: [
-                  Text(
-                    '${user.firstname} '
+      content: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildUserPhoto(avatarUrl, context, user.id.toString()),
+            Row(
+              children: [
+                SizedBox(
+                  width: 115,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${user.firstname} '
                         '${user.lastname}',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    '@${user.username}',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-              const Expanded(child: SizedBox()),
-              Container(
-                width: 33,
-                height: 33,
-                decoration: const BoxDecoration(
-                  color: MyColors.success,
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  iconSize: 15,
-                  icon: const Icon(Icons.check),
-                  color: Colors.white,
-                  onPressed: () {
-                    context.read<UserSearchingBloc>().add(
-                      SendFriendRequestEvent(
-                        userId: user.id.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    );
-                  },
+                      Text(
+                        '@${user.username}',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              10.pw,
-              Container(
-                width: 33,
-                height: 33,
-                decoration: const BoxDecoration(
-                  color: MyColors.purple,
-                  shape: BoxShape.circle,
+                const Expanded(child: SizedBox()),
+                Container(
+                  width: 28,
+                  height: 28,
+                  decoration: const BoxDecoration(
+                    color: MyColors.purple,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    iconSize: 15,
+                    padding: EdgeInsets.zero,
+                    icon: const Icon(Icons.person_add_outlined),
+                    color: Colors.white,
+                    onPressed: () {
+                      context.read<UserSearchingBloc>().add(
+                            SendFriendRequestEvent(
+                              userId: user.id.toString(),
+                            ),
+                          );
+                    },
+                  ),
                 ),
-                child: IconButton(
-                  iconSize: 15,
-                  icon: const Icon(Icons.remove_red_eye),
-                  color: Colors.white,
-                  onPressed: () {
-                    context.push('${RouteName.profilePage}/${user.id}');
-                    context.pop();
-                  },
-                ),
-              ),
-              const SizedBox(width: 10),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  SizedBox _buildUserPhoto(String? avatarUrl) {
-    return SizedBox(
-      width: 40,
-      height: 40,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(50.0),
-        ),
-        child: avatarUrl != null
-            ? CachedNetworkImage(
-          imageUrl: avatarUrl,
-          fit: BoxFit.cover,
-          progressIndicatorBuilder: (context, url, downloadProgress) =>
-              Center(
-                child: CircularProgressIndicator(
-                  value: downloadProgress.progress,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).colorScheme.error,
+  Stack _buildUserPhoto(
+      String? avatarUrl, BuildContext context, String userId) {
+    return Stack(
+      children: [
+        Container(
+          width: 160,
+          height: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: avatarUrl != null
+              ? Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: avatarUrl,
+                    fit: BoxFit.cover,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Center(
+                      child: CircularProgressIndicator(
+                        value: downloadProgress.progress,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
+                )
+              : Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: MyColors.lightGrey,
+                  ),
+                  child: const Icon(
+                    Icons.person,
+                    size: 40,
+                    color: Colors.grey,
                   ),
                 ),
+        ),
+        Positioned(
+          top: 10,
+          left: 10,
+          child: Container(
+            width: 20,
+            height: 20,
+            decoration: const BoxDecoration(
+              color: Colors.transparent,
+              shape: BoxShape.circle,
+              border: Border.fromBorderSide(
+                BorderSide(),
               ),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
-        )
-            : const CircleAvatar(
-          backgroundColor: MyColors.lightGrey,
-          child: Icon(
-            Icons.person,
-            size: 40,
-            color: Colors.grey,
+            ),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              iconSize: 10,
+              icon: const Icon(Icons.remove_red_eye_outlined),
+              color: Colors.black,
+              onPressed: () {
+                context.push('${RouteName.profilePage}/$userId');
+                context.pop();
+              },
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 
@@ -464,7 +529,7 @@ class SearchingUsersBody extends HookWidget {
 
   void _getUsersRequest(BuildContext context) {
     context.read<UserSearchingBloc>().add(
-      GetUsersRequestEvent(isRefresh: true),
-    );
+          GetUsersRequestEvent(isRefresh: true),
+        );
   }
 }

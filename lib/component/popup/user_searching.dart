@@ -43,32 +43,36 @@ class UserSearching extends HookWidget {
             builder: (context) {
               return Dialog(
                 insetPadding: EdgeInsets.zero,
-                child: CustomCard(
-                  width: MediaQuery.of(context).size.width * 0.90,
-                  height: MediaQuery.of(context).size.height * 0.81,
-                  content: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        children: [
-                          _buildTitle(
-                            context,
-                            searching,
-                            searchController,
-                            searchContent,
+                child: Expanded(
+                  child: CustomCard(
+                    width: MediaQuery.of(context).size.width * 0.90,
+                    height: MediaQuery.of(context).size.height * 0.81,
+                    content: SizedBox.expand(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Column(
+                            children: [
+                              _buildTitle(
+                                context,
+                                searching,
+                                searchController,
+                                searchContent,
+                              ),
+                              _buildSearchBar(
+                                searchController,
+                                context,
+                                searching,
+                                searchContent,
+                              ),
+                              10.ph,
+                              if (searching.value)
+                                _buildSearchUserList(searchContent),
+                              if (searching.value) 20.ph,
+                              _buildUserList(context),
+                            ],
                           ),
-                          _buildSearchBar(
-                            searchController,
-                            context,
-                            searching,
-                            searchContent,
-                          ),
-                          10.ph,
-                          if (searching.value)
-                            _buildSearchUserList(searchContent),
-                          if (searching.value) 20.ph,
-                          _buildUserList(context),
-                        ],
+                        ),
                       ),
                     ),
                   ),

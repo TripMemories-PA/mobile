@@ -40,13 +40,11 @@ class UserSearching extends HookWidget {
             builder: (context) {
               return Dialog(
                 insetPadding: EdgeInsets.zero,
-                child: Expanded(
-                  child: CustomCard(
-                    width: MediaQuery.of(context).size.width * 0.90,
-                    height: MediaQuery.of(context).size.height * 0.81,
-                    content: const SizedBox.expand(
-                      child: SearchingUsersBody(),
-                    ),
+                child: CustomCard(
+                  width: MediaQuery.of(context).size.width * 0.90,
+                  height: MediaQuery.of(context).size.height * 0.81,
+                  content: const SizedBox.expand(
+                    child: SearchingUsersBody(),
                   ),
                 ),
               );

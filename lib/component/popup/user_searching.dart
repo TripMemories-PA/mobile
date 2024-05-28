@@ -405,6 +405,7 @@ class SearchingUsersBody extends HookWidget {
                       ),
                       Text(
                         '@${user.username}',
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 15,
                           color: Colors.grey,

@@ -31,6 +31,12 @@ abstract class IProfileService {
     required int perPage,
   });
 
+  Future<GetFriendsPaginationResponse> getUsers({
+    required int page,
+    required int perPage,
+    String? searchName,
+  });
+
   Future<UploadFile> updateProfilePicture({
     required XFile image,
   });
@@ -40,6 +46,8 @@ abstract class IProfileService {
   });
 
   Future<void> acceptFriendRequest({required String friendRequestId});
+
+  Future<void> sendFriendRequest({required String userId});
 
   Future<void> rejectFriendRequest({required String friendRequestId});
 }

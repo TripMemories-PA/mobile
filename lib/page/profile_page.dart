@@ -83,37 +83,15 @@ class ProfilePage extends HookWidget {
                       _buildSliverMenuForPostsAndFriends(tabController),
                   ];
                 },
-                body: _buildMyPostsAndMyFriends(
-                  tabController,
+                body: MyPostsAndMyFriends(
+                  userId: userId,
+                  tabController: tabController,
                 ),
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Padding _buildMyPostsAndMyFriends(
-    TabController tabController,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: userId == null
-          ? TabBarView(
-              controller: tabController,
-              children: const [
-                MyFriendsComponentScrollable(),
-                SingleChildScrollView(
-                  child: MyPostsComponents(),
-                ),
-              ],
-            )
-          : const Center(
-              child: Text(
-                'NO DATA TO DISPLAY FOR NOW: SCREEN INC',
-              ),
-            ),
     );
   }
 
@@ -174,6 +152,41 @@ class ProfilePage extends HookWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class MyPostsAndMyFriends extends HookWidget {
+  const MyPostsAndMyFriends({
+    super.key,
+    required this.userId,
+    required this.tabController,
+  });
+
+  final String? userId;
+  final TabController tabController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: userId == null
+          ? TabBarView(
+              controller: tabController,
+              children: const [
+                SingleChildScrollView(
+                  child: MyFriendsComponent(),
+                ),
+                SingleChildScrollView(
+                  child: MyPostsComponents(),
+                ),
+              ],
+            )
+          : const Center(
+              child: Text(
+                'NO DATA TO DISPLAY FOR NOW: SCREEN INC',
+              ),
+            ),
     );
   }
 }

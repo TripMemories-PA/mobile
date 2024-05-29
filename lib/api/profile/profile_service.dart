@@ -25,6 +25,9 @@ class ProfileService implements IProfileService {
   static const String apiUserUrl = '${AppConfig.apiUrl}/users';
   static const String apiAcceptFriendRequestUrl =
       '$apiMyFriendRequestsBaseUrl/[friend_request_id]/accept';
+  static const String apiUsersUrl =
+      '${AppConfig.apiUrl}/users?page=[nb_page]&perPage=[per_page]';
+  static const String apiFriendRequestsUrl = '$apiMeUrl/friend-requests';
 
   @override
   Future<Profile> getProfile({required String id}) async {
@@ -139,6 +142,36 @@ class ProfileService implements IProfileService {
   }
 
   @override
+  Future<GetFriendsPaginationResponse> getUsers({
+    required int page,
+    required int perPage,
+    String? searchName,
+  }) async {
+    Response response;
+    String url = apiUsersUrl
+        .replaceAll('[nb_page]', page.toString())
+        .replaceAll('[per_page]', perPage.toString());
+
+    if (searchName != null) {
+      url = '$url&search=$searchName';
+    }
+    try {
+      response = await DioClient.instance.get(
+        url,
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      return GetFriendsPaginationResponse.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
+    }
+  }
+
+  @override
   Future<UploadFile> updateProfilePicture({
     required XFile image,
   }) async {
@@ -183,6 +216,20 @@ class ProfileService implements IProfileService {
       throw ParsingResponseException(
         ApiError.errorOccurredWhileParsingResponse(),
       );
+    }
+  }
+
+  @override
+  Future<void> sendFriendRequest({required String userId}) async {
+    try {
+      await DioClient.instance.post(
+        apiFriendRequestsUrl,
+        data: {
+          'userId': int.parse(userId),
+        },
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
     }
   }
 

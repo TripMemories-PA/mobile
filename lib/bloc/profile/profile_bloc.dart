@@ -114,6 +114,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       (event, emit) async {
         if (event.isRefresh) {
           emit(state.copyWith(status: ProfileStatus.loading));
+        } else {
+          emit(
+            state.copyWith(
+              getMoreFriendsStatus: ProfileStatus.loading,
+            ),
+          );
         }
         try {
           final String? authToken = await AuthTokenHandler().getAuthToken();
@@ -144,6 +150,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                         ],
                       ),
                 status: ProfileStatus.notLoading,
+                getMoreFriendsStatus: ProfileStatus.notLoading,
                 friendsPage: event.isRefresh ? 1 : state.friendsPage + 1,
                 hasMoreTweets: friends.data.length == state.friendsPerPage,
               ),

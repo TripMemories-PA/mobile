@@ -16,4 +16,10 @@ abstract class ProfileDataSourceInterface {
     required int page,
     required int perPage,
   });
+
+  Future<GetFriendsPaginationResponse> getUsers({
+    required int page,
+    required int perPage,
+    String? searchName,
+  });
 }

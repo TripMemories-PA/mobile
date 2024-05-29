@@ -109,7 +109,8 @@ class MyFriendsComponent extends StatelessWidget {
   }
 
   Widget _buildHasMoreTweetsPart(BuildContext context) {
-    return context.read<ProfileBloc>().state.getMoreFriendsStatus != ProfileStatus.error
+    return context.read<ProfileBloc>().state.getMoreFriendsStatus !=
+            ProfileStatus.error
         ? _buildGetTweets(context)
         // TODO(nono): SHIMMER
         : _buildErrorWidget(context);
@@ -130,17 +131,6 @@ class MyFriendsComponent extends StatelessWidget {
     );
   }
 
-  void _getNextFriends(
-      {required BuildContext context, bool isRefresh = false}) {
-    final profileBloc = context.read<ProfileBloc>();
-
-    if (profileBloc.state.status != ProfileStatus.loading) {
-      profileBloc.add(
-        GetFriendsEvent(isRefresh: isRefresh),
-      );
-    }
-  }
-
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
@@ -151,5 +141,18 @@ class MyFriendsComponent extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void _getNextFriends({
+    required BuildContext context,
+    bool isRefresh = false,
+  }) {
+    final profileBloc = context.read<ProfileBloc>();
+
+    if (profileBloc.state.status != ProfileStatus.loading) {
+      profileBloc.add(
+        GetFriendsEvent(isRefresh: isRefresh),
+      );
+    }
   }
 }

@@ -425,7 +425,10 @@ class SearchingUsersBody extends HookWidget {
                   child: IconButton(
                     iconSize: 15,
                     padding: EdgeInsets.zero,
-                    icon: const Icon(Icons.person_add_outlined),
+                    icon: Image.asset(
+                      'assets/images/addfriend.png',
+                      color: Colors.white,
+                    ),
                     color: Colors.white,
                     onPressed: () {
                       context.read<UserSearchingBloc>().add(
@@ -445,7 +448,10 @@ class SearchingUsersBody extends HookWidget {
   }
 
   Stack _buildUserPhoto(
-      String? avatarUrl, BuildContext context, String userId) {
+    String? avatarUrl,
+    BuildContext context,
+    String userId,
+  ) {
     return Stack(
       children: [
         Container(

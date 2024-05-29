@@ -109,7 +109,7 @@ class MyFriendsComponent extends StatelessWidget {
   }
 
   Widget _buildHasMoreTweetsPart(BuildContext context) {
-    return context.read<ProfileBloc>().state.status != ProfileStatus.error
+    return context.read<ProfileBloc>().state.getMoreFriendsStatus != ProfileStatus.error
         ? _buildGetTweets(context)
         // TODO(nono): SHIMMER
         : _buildErrorWidget(context);
@@ -118,7 +118,7 @@ class MyFriendsComponent extends StatelessWidget {
   Widget _buildGetTweets(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
-        return state.status == ProfileStatus.loading
+        return state.getMoreFriendsStatus == ProfileStatus.loading
             ? const CircularProgressIndicator()
             : ElevatedButton(
                 onPressed: () {

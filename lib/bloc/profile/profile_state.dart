@@ -17,6 +17,7 @@ class ProfileState {
     this.friendsPerPage = 10,
     this.friendsPage = 0,
     this.hasMoreTweets = true,
+    this.getMoreFriendsStatus = ProfileStatus.initial,
   });
 
   ProfileState copyWith({
@@ -26,6 +27,7 @@ class ProfileState {
     GetFriendsPaginationResponse? friends,
     int? friendsPage,
     bool? hasMoreTweets,
+    ProfileStatus? getMoreFriendsStatus,
   }) {
     return ProfileState(
       profile: profile ?? this.profile,
@@ -34,11 +36,13 @@ class ProfileState {
       friends: friends ?? this.friends,
       friendsPage: friendsPage ?? this.friendsPage,
       hasMoreTweets: hasMoreTweets ?? this.hasMoreTweets,
+      getMoreFriendsStatus: getMoreFriendsStatus ?? this.getMoreFriendsStatus,
     );
   }
 
   final Profile? profile;
   final ProfileStatus status;
+  final ProfileStatus getMoreFriendsStatus;
   final ApiError? error;
   final GetFriendsPaginationResponse? friends;
   final int friendsPerPage;

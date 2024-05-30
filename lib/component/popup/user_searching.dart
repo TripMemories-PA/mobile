@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -7,14 +6,14 @@ import 'package:go_router/go_router.dart';
 import '../../api/profile/profile_service.dart';
 import '../../bloc/user_searching_bloc/user_searching_bloc.dart';
 import '../../constants/my_colors.dart';
-import '../../constants/route_name.dart';
 import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
-import '../../object/profile/profile.dart';
 import '../../repository/profile_repository.dart';
 import '../../service/profile_remote_data_source.dart';
 import '../../utils/messenger.dart';
 import '../custom_card.dart';
+import '../search_bar_custom.dart';
+import '../user_list.dart';
 
 class UserSearching extends HookWidget {
   const UserSearching({
@@ -112,11 +111,12 @@ class SearchingUsersBody extends HookWidget {
               searchController,
               searchContent,
             ),
-            _buildSearchBar(
-              searchController,
-              context,
-              searching,
-              searchContent,
+            SearchBarCustom(
+              searchController: searchController,
+              context: context,
+              searching: searching,
+              searchContent: searchContent,
+              hintText: 'Rechercher des amis',
             ),
             10.ph,
             if (searching.value) _buildSearchUserList(searchContent),
@@ -180,26 +180,7 @@ class SearchingUsersBody extends HookWidget {
                   ),
                 ),
               ),
-              Wrap(
-                spacing: 10.0,
-                runSpacing: 10.0,
-                children: [
-                  ...state.usersSearchByName?.data
-                          .map(
-                            (friend) => Column(
-                              key: ObjectKey(friend),
-                              children: [
-                                _buildUserCard(context, friend),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          )
-                          .toList() ??
-                      [],
-                ],
-              ),
+              UserList(users: state.usersSearchByName?.data ?? []),
               Center(
                 child: state.searchUsersHasMoreUsers
                     ? (state.searchingUserByNameStatus !=
@@ -224,62 +205,6 @@ class SearchingUsersBody extends HookWidget {
           );
         }
       },
-    );
-  }
-
-  Container _buildSearchBar(
-    TextEditingController searchController,
-    BuildContext context,
-    ValueNotifier<bool> searching,
-    ValueNotifier<String> searchContent,
-  ) {
-    return Container(
-      height: 40,
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: MyColors.darkGrey),
-      ),
-      child: ValueListenableBuilder(
-        valueListenable: searchContent,
-        builder: (context, value, child) {
-          return TextField(
-            controller: searchController,
-            decoration: InputDecoration(
-              hintText: 'Rechercher des amis',
-              suffixIcon: value.isEmpty
-                  ? Icon(
-                      Icons.search,
-                      color: Theme.of(context).colorScheme.primary,
-                    )
-                  : IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        searchContent.value = '';
-                        searchController.clear();
-                        searching.value = false;
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 20,
-                      ),
-                    ),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.all(10.0),
-            ),
-            onChanged: (value) {
-              value.isEmpty ? searching.value = false : searching.value = true;
-              searchContent.value = value;
-              context.read<UserSearchingBloc>().add(
-                    SearchUsersEvent(
-                      isRefresh: true,
-                      searchingCriteria: value,
-                    ),
-                  );
-            },
-          );
-        },
-      ),
     );
   }
 
@@ -332,19 +257,8 @@ class SearchingUsersBody extends HookWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Wrap(
-              spacing: 10.0,
-              runSpacing: 10.0,
-              children: context
-                      .read<UserSearchingBloc>()
-                      .state
-                      .users
-                      ?.data
-                      .map(
-                        (friend) => _buildUserCard(context, friend),
-                      )
-                      .toList() ??
-                  [],
+            UserList(
+              users: context.read<UserSearchingBloc>().state.users?.data ?? [],
             ),
             Center(
               child: context.read<UserSearchingBloc>().state.hasMoreUsers
@@ -369,156 +283,6 @@ class SearchingUsersBody extends HookWidget {
           ],
         );
       },
-    );
-  }
-
-  CustomCard _buildUserCard(
-    BuildContext context,
-    Profile user,
-  ) {
-    final String? avatarUrl = user.avatar?.url;
-    return CustomCard(
-      width: 165,
-      height: 150,
-      borderColor: MyColors.lightGrey,
-      content: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildUserPhoto(avatarUrl, context, user.id.toString()),
-            Row(
-              children: [
-                SizedBox(
-                  width: 115,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${user.firstname} '
-                        '${user.lastname}',
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '@${user.username}',
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Expanded(child: SizedBox()),
-                Container(
-                  width: 28,
-                  height: 28,
-                  decoration: const BoxDecoration(
-                    color: MyColors.purple,
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    iconSize: 15,
-                    padding: EdgeInsets.zero,
-                    icon: Image.asset(
-                      'assets/images/addfriend.png',
-                      color: Colors.white,
-                    ),
-                    color: Colors.white,
-                    onPressed: () {
-                      context.read<UserSearchingBloc>().add(
-                            SendFriendRequestEvent(
-                              userId: user.id.toString(),
-                            ),
-                          );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Stack _buildUserPhoto(
-    String? avatarUrl,
-    BuildContext context,
-    String userId,
-  ) {
-    return Stack(
-      children: [
-        Container(
-          width: 160,
-          height: 80,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: avatarUrl != null
-              ? Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: CachedNetworkImage(
-                    imageUrl: avatarUrl,
-                    fit: BoxFit.cover,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) => Center(
-                      child: CircularProgressIndicator(
-                        value: downloadProgress.progress,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).colorScheme.error,
-                        ),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
-                )
-              : Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    color: MyColors.lightGrey,
-                  ),
-                  child: const Icon(
-                    Icons.person,
-                    size: 40,
-                    color: Colors.grey,
-                  ),
-                ),
-        ),
-        Positioned(
-          top: 10,
-          left: 10,
-          child: Container(
-            width: 20,
-            height: 20,
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-              shape: BoxShape.circle,
-              border: Border.fromBorderSide(
-                BorderSide(),
-              ),
-            ),
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              iconSize: 10,
-              icon: const Icon(Icons.remove_red_eye_outlined),
-              color: Colors.black,
-              onPressed: () {
-                context.push('${RouteName.profilePage}/$userId');
-                context.pop();
-              },
-            ),
-          ),
-        ),
-      ],
     );
   }
 

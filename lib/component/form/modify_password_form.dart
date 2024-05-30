@@ -59,7 +59,7 @@ class UpdatePasswordForm extends HookWidget {
                 prefixIcon: Icon(Icons.lock_outline),
               ),
               validator: (value) => FieldValidator.validateSamePassword(
-                value!,
+                value,
                 passwordController.text,
               ),
               controller: confirmPasswordController,

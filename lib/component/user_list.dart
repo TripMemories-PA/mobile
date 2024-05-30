@@ -15,7 +15,7 @@ class UserList extends StatelessWidget {
       runSpacing: 10.0,
       children: users
               .map(
-                (friend) => UserCard(friend),
+                (friend) => UserCard(user: friend),
               )
               .toList(),
     );

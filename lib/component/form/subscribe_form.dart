@@ -6,10 +6,10 @@ import '../../bloc/auth_bloc/auth_bloc.dart';
 import '../../bloc/subscribe_bloc/subscribe_bloc.dart';
 import '../../bloc/subscribe_bloc/subscribe_event.dart';
 import '../../bloc/subscribe_bloc/subscribe_state.dart';
-import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
 import '../../utils/field_validator.dart';
 import '../../utils/messenger.dart';
+import 'form_components/password_text_field.dart';
 
 class SubscribeForm extends HookWidget {
   const SubscribeForm({
@@ -29,9 +29,9 @@ class SubscribeForm extends HookWidget {
         useTextEditingController(text: 'test@mail.com');
     final TextEditingController passwordController =
         useTextEditingController(text: 'Test1234!');
+    final TextEditingController confirmPasswordController =
+        useTextEditingController(text: 'Test1234!');
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final hidePassword = useState(true);
-    final hideConfirmPassword = useState(true);
     return BlocProvider(
       create: (context) => SubscribeBloc(
         context.read<AuthBloc>(),
@@ -69,17 +69,13 @@ class SubscribeForm extends HookWidget {
                     controller: emailController,
                   ),
                   12.ph,
-                  _buildPasswordFormField(
-                    context,
-                    hidePassword,
-                    passwordController,
+                  PasswordTextField(
+                    passwordController: passwordController,
                   ),
                   12.ph,
-                  _buildConfirmPasswordTextFormField(
-                    context,
-                    hidePassword,
-                    hideConfirmPassword,
-                    passwordController,
+                  PasswordTextField(
+                    passwordController: confirmPasswordController,
+                    previousPasswordController: passwordController,
                   ),
                   22.ph,
                   if (context.read<SubscribeBloc>().state.loading)
@@ -147,71 +143,6 @@ class SubscribeForm extends HookWidget {
           ),
         ),
       ],
-    );
-  }
-
-  TextFormField _buildPasswordFormField(
-    BuildContext context,
-    ValueNotifier<bool> hidePassword,
-    TextEditingController passwordController,
-  ) {
-    return TextFormField(
-      readOnly: context.read<SubscribeBloc>().state.loading,
-      obscureText: hidePassword.value,
-      decoration: InputDecoration(
-        errorMaxLines: 4,
-        hintText: 'Mot de passe',
-        suffixIcon: InkWell(
-          child: Icon(
-            hidePassword.value ? Icons.remove_red_eye : Icons.visibility_off,
-            size: 20,
-            color: MyColors.darkGrey,
-          ),
-          onTap: () {
-            hidePassword.value = !hidePassword.value;
-          },
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 10.0,
-          horizontal: 8.0,
-        ),
-      ),
-      validator: (value) => FieldValidator.validatePassword(value),
-      controller: passwordController,
-    );
-  }
-
-  TextFormField _buildConfirmPasswordTextFormField(
-    BuildContext context,
-    ValueNotifier<bool> hidePassword,
-    ValueNotifier<bool> hideConfirmPassword,
-    TextEditingController passwordController,
-  ) {
-    return TextFormField(
-      readOnly: context.read<SubscribeBloc>().state.loading,
-      obscureText: hidePassword.value,
-      decoration: InputDecoration(
-        errorMaxLines: 4,
-        hintText: 'Confirmer le mot de passe',
-        suffixIcon: InkWell(
-          child: Icon(
-            hideConfirmPassword.value
-                ? Icons.remove_red_eye
-                : Icons.visibility_off,
-            size: 20,
-            color: MyColors.darkGrey,
-          ),
-          onTap: () {
-            hideConfirmPassword.value = !hideConfirmPassword.value;
-          },
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 10.0,
-          horizontal: 8.0,
-        ),
-      ),
-      validator: (value) => FieldValidator.validatePassword(value),
-      controller: passwordController,
     );
   }
 

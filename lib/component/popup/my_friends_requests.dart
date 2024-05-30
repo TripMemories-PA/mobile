@@ -232,8 +232,12 @@ class MyFriendsRequests extends StatelessWidget {
                   iconSize: 15,
                   icon: const Icon(Icons.remove_red_eye),
                   color: Colors.white,
-                  onPressed: () => context
-                      .push('${RouteName.profilePage}/${friendRequest.id}'),
+                  onPressed: () {
+                    context.push(
+                      '${RouteName.profilePage}/${friendRequest.sender.id}',
+                    );
+                    context.pop();
+                  },
                 ),
               ),
               const SizedBox(width: 10),

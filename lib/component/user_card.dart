@@ -10,7 +10,10 @@ import '../object/profile/profile.dart';
 import 'custom_card.dart';
 
 class UserCard extends StatelessWidget {
-  const UserCard(this.user, {super.key});
+  const UserCard({
+    super.key,
+    required this.user,
+  });
 
   final Profile user;
 
@@ -37,7 +40,7 @@ class UserCard extends StatelessWidget {
                       children: [
                         Text(
                           '${user.firstname} '
-                              '${user.lastname}',
+                          '${user.lastname}',
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 15,
@@ -73,10 +76,10 @@ class UserCard extends StatelessWidget {
                       color: Colors.white,
                       onPressed: () {
                         context.read<UserSearchingBloc>().add(
-                          SendFriendRequestEvent(
-                            userId: user.id.toString(),
-                          ),
-                        );
+                              SendFriendRequestEvent(
+                                userId: user.id.toString(),
+                              ),
+                            );
                       },
                     ),
                   ),
@@ -90,10 +93,10 @@ class UserCard extends StatelessWidget {
   }
 
   Stack _buildUserPhoto(
-      String? avatarUrl,
-      BuildContext context,
-      String userId,
-      ) {
+    String? avatarUrl,
+    BuildContext context,
+    String userId,
+  ) {
     return Stack(
       children: [
         Container(
@@ -104,36 +107,36 @@ class UserCard extends StatelessWidget {
           ),
           child: avatarUrl != null
               ? Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: CachedNetworkImage(
-              imageUrl: avatarUrl,
-              fit: BoxFit.cover,
-              progressIndicatorBuilder:
-                  (context, url, downloadProgress) => Center(
-                child: CircularProgressIndicator(
-                  value: downloadProgress.progress,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).colorScheme.error,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: avatarUrl,
+                    fit: BoxFit.cover,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Center(
+                      child: CircularProgressIndicator(
+                        value: downloadProgress.progress,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
+                )
+              : Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: MyColors.lightGrey,
+                  ),
+                  child: const Icon(
+                    Icons.person,
+                    size: 40,
+                    color: Colors.grey,
                   ),
                 ),
-              ),
-              errorWidget: (context, url, error) =>
-              const Icon(Icons.error),
-            ),
-          )
-              : Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
-              color: MyColors.lightGrey,
-            ),
-            child: const Icon(
-              Icons.person,
-              size: 40,
-              color: Colors.grey,
-            ),
-          ),
         ),
         Positioned(
           top: 10,

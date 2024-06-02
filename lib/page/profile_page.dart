@@ -78,7 +78,7 @@ class ProfilePage extends HookWidget {
               child: NestedScrollView(
                 headerSliverBuilder: (context, value) {
                   return [
-                    _buildUserProfileInfosSliverAppBar(),
+                    _buildUserProfileInfosSliverAppBar(context),
                     if (userId == null)
                       _buildSliverMenuForPostsAndFriends(tabController),
                   ];
@@ -118,10 +118,9 @@ class ProfilePage extends HookWidget {
     );
   }
 
-  SliverAppBar _buildUserProfileInfosSliverAppBar() {
+  SliverAppBar _buildUserProfileInfosSliverAppBar(BuildContext context) {
     return SliverAppBar(
       expandedHeight: 300,
-      leading: const SizedBox.shrink(),
       flexibleSpace: FlexibleSpaceBar(
         background: ListView(
           children: [

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trip_memories_mobile/component/popup/confirmation_logout_dialog.dart';
-import 'package:trip_memories_mobile/component/profile_picture.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_event.dart';
 import 'banner_picture.dart';
 import 'bouncing_widget.dart';
 import 'custom_card.dart';
+import 'popup/confirmation_logout_dialog.dart';
 import 'profile_banner.dart';
+import 'profile_picture.dart';
 
 class ProfileInfos extends StatelessWidget {
   const ProfileInfos({
@@ -27,7 +27,6 @@ class ProfileInfos extends StatelessWidget {
           topRight: Radius.circular(20),
         ),
       ),
-      height: 250,
       width: MediaQuery.of(context).size.width,
       child: Stack(
         children: [
@@ -35,7 +34,7 @@ class ProfileInfos extends StatelessWidget {
             isMyProfile: true,
           ),
           Positioned(
-            bottom: 0,
+            top: 130,
             child: ProfileBanner(
               isMyProfile: isMyProfile,
             ),
@@ -74,10 +73,10 @@ class ProfileInfos extends StatelessWidget {
               ),
             ),
           Positioned(
-            child: Center(
-              child: ProfilePicture(
-                isMyProfile: isMyProfile,
-              ),
+            top: 70,
+            left: MediaQuery.of(context).size.width / 2 - 50,
+            child: ProfilePicture(
+              isMyProfile: isMyProfile,
             ),
           ),
         ],

@@ -24,33 +24,52 @@ class MyFriendsComponent extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            InkWell(
+            CustomCard(
               onTap: () async {
                 await userSearchingPopup(context);
               },
-              child: CustomCard(
-                width: MediaQuery.of(context).size.width * 0.40,
-                height: 40,
-                content: const Text(
-                  'Ajouter un amis',
-                  textAlign: TextAlign.center,
-                ),
-                borderColor: MyColors.purple,
+              width: MediaQuery.of(context).size.width * 0.40,
+              height: 40,
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.add,
+                    color: MyColors.purple,
+                  ),
+                  10.pw,
+                  const Text(
+                    'Ajouter un amis',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
+              borderColor: MyColors.darkGrey,
+              borderRadius: 20,
             ),
-            InkWell(
+            CustomCard(
               onTap: () async {
                 await myFriendsRequestsPopup(context);
               },
-              child: CustomCard(
-                width: MediaQuery.of(context).size.width * 0.40,
-                height: 40,
-                content: const Text(
-                  'Gérer les demandes',
-                  textAlign: TextAlign.center,
-                ),
-                borderColor: MyColors.purple,
+              width: MediaQuery.of(context).size.width * 0.40,
+              height: 40,
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.groups,
+                    color: MyColors.purple,
+                  ),
+                  10.pw,
+                  const Text('Gérer les demandes',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 10,
+                      )),
+                ],
               ),
+              borderColor: MyColors.darkGrey,
+              borderRadius: 20,
             ),
           ],
         ),

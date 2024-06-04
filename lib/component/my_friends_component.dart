@@ -9,7 +9,7 @@ import '../object/profile/profile.dart';
 import 'custom_card.dart';
 import 'popup/my_friends_requests.dart';
 import 'popup/user_searching.dart';
-import 'user_list_searching.dart';
+import 'user_list.dart';
 
 class MyFriendsComponent extends StatelessWidget {
   const MyFriendsComponent({
@@ -61,11 +61,13 @@ class MyFriendsComponent extends StatelessWidget {
                     color: MyColors.purple,
                   ),
                   10.pw,
-                  const Text('Gérer les demandes',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 10,
-                      )),
+                  const Text(
+                    'Gérer les demandes',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 10,
+                    ),
+                  ),
                 ],
               ),
               borderColor: MyColors.darkGrey,

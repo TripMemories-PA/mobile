@@ -21,6 +21,7 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     {
       final String? avatarUrl = user.avatar?.url;
+      final bool isFriend = user.isFriend ?? false;
       return CustomCard(
         width: 165,
         height: 150,
@@ -66,22 +67,9 @@ class UserCard extends StatelessWidget {
                       color: MyColors.purple,
                       shape: BoxShape.circle,
                     ),
-                    child: IconButton(
-                      iconSize: 15,
-                      padding: EdgeInsets.zero,
-                      icon: Image.asset(
-                        'assets/images/addfriend.png',
-                        color: Colors.white,
-                      ),
-                      color: Colors.white,
-                      onPressed: () {
-                        context.read<UserSearchingBloc>().add(
-                              SendFriendRequestEvent(
-                                userId: user.id.toString(),
-                              ),
-                            );
-                      },
-                    ),
+                    child: isFriend
+                        ? _buildChatIconButton(context)
+                        : _buildAddFriendIconButton(context),
                   ),
                 ],
               ),
@@ -90,6 +78,41 @@ class UserCard extends StatelessWidget {
         ),
       );
     }
+  }
+
+  IconButton _buildAddFriendIconButton(BuildContext context) {
+    return IconButton(
+      iconSize: 15,
+      padding: EdgeInsets.zero,
+      icon: Image.asset(
+        'assets/images/addfriend.png',
+        color: Colors.white,
+      ),
+      color: Colors.white,
+      onPressed: () {
+        context.read<UserSearchingBloc>().add(
+              SendFriendRequestEvent(
+                userId: user.id.toString(),
+              ),
+            );
+      },
+    );
+  }
+
+  IconButton _buildChatIconButton(BuildContext context) {
+    return IconButton(
+      iconSize: 15,
+      padding: EdgeInsets.zero,
+      icon: const Icon(Icons.chat_outlined),
+      color: Colors.white,
+      onPressed: () {
+        context.read<UserSearchingBloc>().add(
+              SendFriendRequestEvent(
+                userId: user.id.toString(),
+              ),
+            );
+      },
+    );
   }
 
   Stack _buildUserPhoto(

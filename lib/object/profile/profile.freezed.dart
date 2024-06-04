@@ -25,6 +25,7 @@ mixin _$Profile {
   String get username => throw _privateConstructorUsedError;
   String? get firstname => throw _privateConstructorUsedError;
   String? get lastname => throw _privateConstructorUsedError;
+  bool? get isFriend => throw _privateConstructorUsedError;
   UploadFile? get avatar => throw _privateConstructorUsedError;
   UploadFile? get banner => throw _privateConstructorUsedError;
 
@@ -44,6 +45,7 @@ abstract class $ProfileCopyWith<$Res> {
       String username,
       String? firstname,
       String? lastname,
+      bool? isFriend,
       UploadFile? avatar,
       UploadFile? banner});
 
@@ -69,6 +71,7 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
     Object? username = null,
     Object? firstname = freezed,
     Object? lastname = freezed,
+    Object? isFriend = freezed,
     Object? avatar = freezed,
     Object? banner = freezed,
   }) {
@@ -93,6 +96,10 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.lastname
           : lastname // ignore: cast_nullable_to_non_nullable
               as String?,
+      isFriend: freezed == isFriend
+          ? _value.isFriend
+          : isFriend // ignore: cast_nullable_to_non_nullable
+              as bool?,
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
@@ -142,6 +149,7 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       String username,
       String? firstname,
       String? lastname,
+      bool? isFriend,
       UploadFile? avatar,
       UploadFile? banner});
 
@@ -167,6 +175,7 @@ class __$$ProfileImplCopyWithImpl<$Res>
     Object? username = null,
     Object? firstname = freezed,
     Object? lastname = freezed,
+    Object? isFriend = freezed,
     Object? avatar = freezed,
     Object? banner = freezed,
   }) {
@@ -191,6 +200,10 @@ class __$$ProfileImplCopyWithImpl<$Res>
           ? _value.lastname
           : lastname // ignore: cast_nullable_to_non_nullable
               as String?,
+      isFriend: freezed == isFriend
+          ? _value.isFriend
+          : isFriend // ignore: cast_nullable_to_non_nullable
+              as bool?,
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
@@ -213,6 +226,7 @@ class _$ProfileImpl implements _Profile {
       required this.username,
       required this.firstname,
       required this.lastname,
+      required this.isFriend,
       this.avatar,
       this.banner});
 
@@ -230,13 +244,15 @@ class _$ProfileImpl implements _Profile {
   @override
   final String? lastname;
   @override
+  final bool? isFriend;
+  @override
   final UploadFile? avatar;
   @override
   final UploadFile? banner;
 
   @override
   String toString() {
-    return 'Profile(id: $id, email: $email, username: $username, firstname: $firstname, lastname: $lastname, avatar: $avatar, banner: $banner)';
+    return 'Profile(id: $id, email: $email, username: $username, firstname: $firstname, lastname: $lastname, isFriend: $isFriend, avatar: $avatar, banner: $banner)';
   }
 
   @override
@@ -252,14 +268,16 @@ class _$ProfileImpl implements _Profile {
                 other.firstname == firstname) &&
             (identical(other.lastname, lastname) ||
                 other.lastname == lastname) &&
+            (identical(other.isFriend, isFriend) ||
+                other.isFriend == isFriend) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
             (identical(other.banner, banner) || other.banner == banner));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, email, username, firstname, lastname, avatar, banner);
+  int get hashCode => Object.hash(runtimeType, id, email, username, firstname,
+      lastname, isFriend, avatar, banner);
 
   @JsonKey(ignore: true)
   @override
@@ -282,6 +300,7 @@ abstract class _Profile implements Profile {
       required final String username,
       required final String? firstname,
       required final String? lastname,
+      required final bool? isFriend,
       final UploadFile? avatar,
       final UploadFile? banner}) = _$ProfileImpl;
 
@@ -297,6 +316,8 @@ abstract class _Profile implements Profile {
   String? get firstname;
   @override
   String? get lastname;
+  @override
+  bool? get isFriend;
   @override
   UploadFile? get avatar;
   @override

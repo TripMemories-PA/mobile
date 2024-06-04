@@ -13,6 +13,7 @@ _$ProfileImpl _$$ProfileImplFromJson(Map<String, dynamic> json) =>
       username: json['username'] as String,
       firstname: json['firstname'] as String?,
       lastname: json['lastname'] as String?,
+      isFriend: json['isFriend'] as bool?,
       avatar: json['avatar'] == null
           ? null
           : UploadFile.fromJson(json['avatar'] as Map<String, dynamic>),
@@ -28,6 +29,7 @@ Map<String, dynamic> _$$ProfileImplToJson(_$ProfileImpl instance) =>
       'username': instance.username,
       'firstname': instance.firstname,
       'lastname': instance.lastname,
+      'isFriend': instance.isFriend,
       'avatar': instance.avatar?.toJson(),
       'banner': instance.banner?.toJson(),
     };

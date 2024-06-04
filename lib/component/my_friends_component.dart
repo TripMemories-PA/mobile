@@ -7,9 +7,9 @@ import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/profile/profile.dart';
 import 'custom_card.dart';
-import 'friend_card.dart';
 import 'popup/my_friends_requests.dart';
 import 'popup/user_searching.dart';
+import 'user_list_searching.dart';
 
 class MyFriendsComponent extends StatelessWidget {
   const MyFriendsComponent({
@@ -98,24 +98,9 @@ class MyFriendsComponent extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            ...context
-                    .read<ProfileBloc>()
-                    .state
-                    .friends
-                    ?.data
-                    .map(
-                      (friend) => Column(
-                        key: ObjectKey(friend),
-                        children: [
-                          FriendCard(friend: friend),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      ),
-                    )
-                    .toList() ??
-                [],
+            UserList(
+              users: state.friends!.data,
+            ),
             Center(
               child: context.read<ProfileBloc>().state.hasMoreTweets
                   ? _buildHasMoreTweetsPart(context)

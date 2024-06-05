@@ -57,6 +57,7 @@ class SearchBarCustom extends StatelessWidget {
               border: InputBorder.none,
               contentPadding: const EdgeInsets.all(10.0),
             ),
+            //TODO: je prie
             onChanged: (value) {
               searching.value = value.isNotEmpty;
               searchContent.value = value;

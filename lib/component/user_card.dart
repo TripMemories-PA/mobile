@@ -69,7 +69,7 @@ class UserCard extends StatelessWidget {
                     ),
                     child: isFriend
                         ? _buildChatIconButton(context)
-                        : _buildAddFriendIconButton(context),
+                        : _buildNotFriendButton(context, user),
                   ),
                 ],
               ),
@@ -78,6 +78,36 @@ class UserCard extends StatelessWidget {
         ),
       );
     }
+  }
+
+  StatelessWidget _buildNotFriendButton(BuildContext context, Profile user) {
+    final bool isReceivedFriendRequest = user.isReceivedFriendRequest ?? false;
+    final bool isSentFriendRequest = user.isSentFriendRequest ?? false;
+    if (isSentFriendRequest || isReceivedFriendRequest) {
+      return _buildDisableButton(
+        isReceivedFriendRequest: isReceivedFriendRequest,
+        isSentFriendRequest: isSentFriendRequest,
+      );
+    } else {
+      return _buildAddFriendIconButton(context);
+    }
+  }
+
+  Container _buildDisableButton({
+    required bool isReceivedFriendRequest,
+    required bool isSentFriendRequest,
+  }) {
+    return Container(
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: MyColors.purple,
+      ),
+      child: Icon(
+        isSentFriendRequest ? Icons.present_to_all : Icons.move_to_inbox,
+        color: Colors.white,
+        size: 15,
+      ),
+    );
   }
 
   IconButton _buildAddFriendIconButton(BuildContext context) {

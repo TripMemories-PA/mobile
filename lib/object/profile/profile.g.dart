@@ -14,6 +14,8 @@ _$ProfileImpl _$$ProfileImplFromJson(Map<String, dynamic> json) =>
       firstname: json['firstname'] as String?,
       lastname: json['lastname'] as String?,
       isFriend: json['isFriend'] as bool?,
+      isSentFriendRequest: json['isSentFriendRequest'] as bool?,
+      isReceivedFriendRequest: json['isReceivedFriendRequest'] as bool?,
       avatar: json['avatar'] == null
           ? null
           : UploadFile.fromJson(json['avatar'] as Map<String, dynamic>),
@@ -30,6 +32,8 @@ Map<String, dynamic> _$$ProfileImplToJson(_$ProfileImpl instance) =>
       'firstname': instance.firstname,
       'lastname': instance.lastname,
       'isFriend': instance.isFriend,
+      'isSentFriendRequest': instance.isSentFriendRequest,
+      'isReceivedFriendRequest': instance.isReceivedFriendRequest,
       'avatar': instance.avatar?.toJson(),
       'banner': instance.banner?.toJson(),
     };

@@ -15,6 +15,8 @@ class Profile with _$Profile {
     required String? firstname,
     required String? lastname,
     required bool? isFriend,
+  required bool? isSentFriendRequest,
+  required bool? isReceivedFriendRequest,
     UploadFile? avatar,
     UploadFile? banner,
   }) = _Profile;

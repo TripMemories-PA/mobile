@@ -120,9 +120,9 @@ class ModifyUserInfosForm extends HookWidget {
             child: Container(
               height: 45,
               decoration: ShapeDecoration(
-                color: MyColors.success,
+                color: MyColors.purple,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(20),
                 ),
               ),
               child: const Center(

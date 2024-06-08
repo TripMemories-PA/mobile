@@ -204,15 +204,22 @@ class UserCard extends StatelessWidget {
                 BorderSide(),
               ),
             ),
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              iconSize: 10,
-              icon: const Icon(Icons.remove_red_eye_outlined),
-              color: Colors.black,
-              onPressed: () {
-                context.push('${RouteName.profilePage}/$userId');
-                context.pop();
-              },
+            child: Theme(
+              data: ThemeData(
+                iconTheme: const IconThemeData(
+                  color: MyColors.purple,
+                ),
+              ),
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                iconSize: 10,
+                icon: const Icon(Icons.remove_red_eye_outlined),
+                color: Colors.black,
+                onPressed: () {
+                  context.push('${RouteName.profilePage}/$userId');
+                  context.pop();
+                },
+              ),
             ),
           ),
         ),

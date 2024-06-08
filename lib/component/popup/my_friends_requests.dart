@@ -64,14 +64,10 @@ class MyFriendsRequests extends StatelessWidget {
           IconButton(
             icon: const Icon(
               Icons.close,
-              color: Colors.white,
             ),
             onPressed: () {
               Navigator.of(context).pop();
             },
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(MyColors.purple),
-            ),
           ),
         ],
       ),
@@ -203,18 +199,25 @@ class MyFriendsRequests extends StatelessWidget {
                     ),
                   ),
                 ),
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  iconSize: 15,
-                  icon: const Icon(Icons.close),
-                  color: MyColors.purple,
-                  onPressed: () {
-                    context.read<FriendRequestBloc>().add(
-                          RejectFriendRequestEvent(
-                            friendRequestId: friendRequest.id.toString(),
-                          ),
-                        );
-                  },
+                child: Theme(
+                  data: ThemeData(
+                    iconTheme: const IconThemeData(
+                      color: MyColors.purple,
+                    ),
+                  ),
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    iconSize: 15,
+                    icon: const Icon(Icons.close),
+                    color: MyColors.purple,
+                    onPressed: () {
+                      context.read<FriendRequestBloc>().add(
+                            RejectFriendRequestEvent(
+                              friendRequestId: friendRequest.id.toString(),
+                            ),
+                          );
+                    },
+                  ),
                 ),
               ),
               12.pw,

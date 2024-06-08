@@ -43,7 +43,6 @@ class SearchBarCustom extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                     )
                   : IconButton(
-                      padding: EdgeInsets.zero,
                       onPressed: () {
                         searchContent.value = '';
                         searchController.clear();

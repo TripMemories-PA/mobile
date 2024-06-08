@@ -94,14 +94,8 @@ class MyPostsComponents extends StatelessWidget {
                   width: 30,
                   child: IconButton(
                     iconSize: 20,
-                    padding: EdgeInsets.zero,
                     icon: const Icon(
                       Icons.remove_red_eye_outlined,
-                      color: Colors.white,
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(MyColors.purple),
                     ),
                     onPressed: () {},
                   ),

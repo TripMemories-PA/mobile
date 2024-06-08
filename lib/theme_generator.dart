@@ -126,6 +126,25 @@ class ThemeGenerator {
         ),
       );
 
+  static IconButtonThemeData get _iconButtonTheme => IconButtonThemeData(
+        style: ButtonStyle(
+          padding: MaterialStateProperty.resolveWith(
+            (Set<MaterialState> states) => EdgeInsets.zero,
+          ),
+          iconColor: MaterialStateProperty.resolveWith(
+            (Set<MaterialState> states) => _colorScheme.background,
+          ),
+          backgroundColor: MaterialStateProperty.resolveWith(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.hovered)) {
+                return _colorScheme.tertiary;
+              }
+              return _colorScheme.primary;
+            },
+          ),
+        ),
+      );
+
   static TextButtonThemeData get _textButtonTheme => TextButtonThemeData(
         style: ButtonStyle(
           animationDuration: Duration.zero,
@@ -176,6 +195,7 @@ class ThemeGenerator {
         checkboxTheme: _checkBoxTheme,
         textButtonTheme: _textButtonTheme,
         elevatedButtonTheme: _elevatedButtonTheme,
+        iconButtonTheme: _iconButtonTheme,
         appBarTheme: _appBarTheme,
         switchTheme: _switchTheme,
         floatingActionButtonTheme: _floatingActionButtonTheme,

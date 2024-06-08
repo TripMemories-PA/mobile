@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
 
 import '../constants/my_colors.dart';
 import 'custom_card.dart';
@@ -88,7 +85,7 @@ class MyPostsComponents extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize: 17,
                       ),
-                    )
+                    ),
                   ],
                 ),
                 const Expanded(child: SizedBox()),

@@ -21,6 +21,7 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     {
       final String? avatarUrl = user.avatar?.url;
+      final bool isFriend = user.isFriend ?? false;
       return CustomCard(
         width: 165,
         height: 150,
@@ -66,22 +67,9 @@ class UserCard extends StatelessWidget {
                       color: MyColors.purple,
                       shape: BoxShape.circle,
                     ),
-                    child: IconButton(
-                      iconSize: 15,
-                      padding: EdgeInsets.zero,
-                      icon: Image.asset(
-                        'assets/images/addfriend.png',
-                        color: Colors.white,
-                      ),
-                      color: Colors.white,
-                      onPressed: () {
-                        context.read<UserSearchingBloc>().add(
-                              SendFriendRequestEvent(
-                                userId: user.id.toString(),
-                              ),
-                            );
-                      },
-                    ),
+                    child: isFriend
+                        ? _buildChatIconButton(context)
+                        : _buildNotFriendButton(context, user),
                   ),
                 ],
               ),
@@ -90,6 +78,71 @@ class UserCard extends StatelessWidget {
         ),
       );
     }
+  }
+
+  StatelessWidget _buildNotFriendButton(BuildContext context, Profile user) {
+    final bool isReceivedFriendRequest = user.isReceivedFriendRequest ?? false;
+    final bool isSentFriendRequest = user.isSentFriendRequest ?? false;
+    if (isSentFriendRequest || isReceivedFriendRequest) {
+      return _buildDisableButton(
+        isReceivedFriendRequest: isReceivedFriendRequest,
+        isSentFriendRequest: isSentFriendRequest,
+      );
+    } else {
+      return _buildAddFriendIconButton(context);
+    }
+  }
+
+  Container _buildDisableButton({
+    required bool isReceivedFriendRequest,
+    required bool isSentFriendRequest,
+  }) {
+    return Container(
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: MyColors.purple,
+      ),
+      child: Icon(
+        isSentFriendRequest ? Icons.present_to_all : Icons.move_to_inbox,
+        color: Colors.white,
+        size: 15,
+      ),
+    );
+  }
+
+  IconButton _buildAddFriendIconButton(BuildContext context) {
+    return IconButton(
+      iconSize: 15,
+      padding: EdgeInsets.zero,
+      icon: Image.asset(
+        'assets/images/addfriend.png',
+        color: Colors.white,
+      ),
+      color: Colors.white,
+      onPressed: () {
+        context.read<UserSearchingBloc>().add(
+              SendFriendRequestEvent(
+                userId: user.id.toString(),
+              ),
+            );
+      },
+    );
+  }
+
+  IconButton _buildChatIconButton(BuildContext context) {
+    return IconButton(
+      iconSize: 15,
+      padding: EdgeInsets.zero,
+      icon: const Icon(Icons.chat_outlined),
+      color: Colors.white,
+      onPressed: () {
+        context.read<UserSearchingBloc>().add(
+              SendFriendRequestEvent(
+                userId: user.id.toString(),
+              ),
+            );
+      },
+    );
   }
 
   Stack _buildUserPhoto(
@@ -151,15 +204,22 @@ class UserCard extends StatelessWidget {
                 BorderSide(),
               ),
             ),
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              iconSize: 10,
-              icon: const Icon(Icons.remove_red_eye_outlined),
-              color: Colors.black,
-              onPressed: () {
-                context.push('${RouteName.profilePage}/$userId');
-                context.pop();
-              },
+            child: Theme(
+              data: ThemeData(
+                iconTheme: const IconThemeData(
+                  color: MyColors.purple,
+                ),
+              ),
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                iconSize: 10,
+                icon: const Icon(Icons.remove_red_eye_outlined),
+                color: Colors.black,
+                onPressed: () {
+                  context.push('${RouteName.profilePage}/$userId');
+                  context.pop();
+                },
+              ),
             ),
           ),
         ),

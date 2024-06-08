@@ -42,8 +42,25 @@ class UserSearching extends HookWidget {
                 child: CustomCard(
                   width: MediaQuery.of(context).size.width * 0.90,
                   height: MediaQuery.of(context).size.height * 0.81,
-                  content: const SizedBox.expand(
-                    child: SearchingUsersBody(),
+                  content: SizedBox.expand(
+                    child: Stack(
+                      children: [
+                        const SearchingUsersBody(),
+                        Positioned(
+                          top: 30,
+                          right: 10,
+                          child: SizedBox(
+                            height: 25,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                context.pop();
+                              },
+                              child: const Text('Fermer'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -214,32 +231,17 @@ class SearchingUsersBody extends HookWidget {
     TextEditingController searchController,
     ValueNotifier<String> searchContent,
   ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Ajouter des amis',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 25,
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.pop();
-                  },
-                  child: const Text('Fermer'),
-                ),
-              ),
-            ],
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          'Ajouter des amis',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
-        ],
+        ),
       ),
     );
   }

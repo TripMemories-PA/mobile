@@ -25,6 +25,9 @@ mixin _$Profile {
   String get username => throw _privateConstructorUsedError;
   String? get firstname => throw _privateConstructorUsedError;
   String? get lastname => throw _privateConstructorUsedError;
+  bool? get isFriend => throw _privateConstructorUsedError;
+  bool? get isSentFriendRequest => throw _privateConstructorUsedError;
+  bool? get isReceivedFriendRequest => throw _privateConstructorUsedError;
   UploadFile? get avatar => throw _privateConstructorUsedError;
   UploadFile? get banner => throw _privateConstructorUsedError;
 
@@ -44,6 +47,9 @@ abstract class $ProfileCopyWith<$Res> {
       String username,
       String? firstname,
       String? lastname,
+      bool? isFriend,
+      bool? isSentFriendRequest,
+      bool? isReceivedFriendRequest,
       UploadFile? avatar,
       UploadFile? banner});
 
@@ -69,6 +75,9 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
     Object? username = null,
     Object? firstname = freezed,
     Object? lastname = freezed,
+    Object? isFriend = freezed,
+    Object? isSentFriendRequest = freezed,
+    Object? isReceivedFriendRequest = freezed,
     Object? avatar = freezed,
     Object? banner = freezed,
   }) {
@@ -93,6 +102,18 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.lastname
           : lastname // ignore: cast_nullable_to_non_nullable
               as String?,
+      isFriend: freezed == isFriend
+          ? _value.isFriend
+          : isFriend // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isSentFriendRequest: freezed == isSentFriendRequest
+          ? _value.isSentFriendRequest
+          : isSentFriendRequest // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isReceivedFriendRequest: freezed == isReceivedFriendRequest
+          ? _value.isReceivedFriendRequest
+          : isReceivedFriendRequest // ignore: cast_nullable_to_non_nullable
+              as bool?,
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
@@ -142,6 +163,9 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       String username,
       String? firstname,
       String? lastname,
+      bool? isFriend,
+      bool? isSentFriendRequest,
+      bool? isReceivedFriendRequest,
       UploadFile? avatar,
       UploadFile? banner});
 
@@ -167,6 +191,9 @@ class __$$ProfileImplCopyWithImpl<$Res>
     Object? username = null,
     Object? firstname = freezed,
     Object? lastname = freezed,
+    Object? isFriend = freezed,
+    Object? isSentFriendRequest = freezed,
+    Object? isReceivedFriendRequest = freezed,
     Object? avatar = freezed,
     Object? banner = freezed,
   }) {
@@ -191,6 +218,18 @@ class __$$ProfileImplCopyWithImpl<$Res>
           ? _value.lastname
           : lastname // ignore: cast_nullable_to_non_nullable
               as String?,
+      isFriend: freezed == isFriend
+          ? _value.isFriend
+          : isFriend // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isSentFriendRequest: freezed == isSentFriendRequest
+          ? _value.isSentFriendRequest
+          : isSentFriendRequest // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isReceivedFriendRequest: freezed == isReceivedFriendRequest
+          ? _value.isReceivedFriendRequest
+          : isReceivedFriendRequest // ignore: cast_nullable_to_non_nullable
+              as bool?,
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
@@ -213,6 +252,9 @@ class _$ProfileImpl implements _Profile {
       required this.username,
       required this.firstname,
       required this.lastname,
+      required this.isFriend,
+      required this.isSentFriendRequest,
+      required this.isReceivedFriendRequest,
       this.avatar,
       this.banner});
 
@@ -230,13 +272,19 @@ class _$ProfileImpl implements _Profile {
   @override
   final String? lastname;
   @override
+  final bool? isFriend;
+  @override
+  final bool? isSentFriendRequest;
+  @override
+  final bool? isReceivedFriendRequest;
+  @override
   final UploadFile? avatar;
   @override
   final UploadFile? banner;
 
   @override
   String toString() {
-    return 'Profile(id: $id, email: $email, username: $username, firstname: $firstname, lastname: $lastname, avatar: $avatar, banner: $banner)';
+    return 'Profile(id: $id, email: $email, username: $username, firstname: $firstname, lastname: $lastname, isFriend: $isFriend, isSentFriendRequest: $isSentFriendRequest, isReceivedFriendRequest: $isReceivedFriendRequest, avatar: $avatar, banner: $banner)';
   }
 
   @override
@@ -252,6 +300,13 @@ class _$ProfileImpl implements _Profile {
                 other.firstname == firstname) &&
             (identical(other.lastname, lastname) ||
                 other.lastname == lastname) &&
+            (identical(other.isFriend, isFriend) ||
+                other.isFriend == isFriend) &&
+            (identical(other.isSentFriendRequest, isSentFriendRequest) ||
+                other.isSentFriendRequest == isSentFriendRequest) &&
+            (identical(
+                    other.isReceivedFriendRequest, isReceivedFriendRequest) ||
+                other.isReceivedFriendRequest == isReceivedFriendRequest) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
             (identical(other.banner, banner) || other.banner == banner));
   }
@@ -259,7 +314,17 @@ class _$ProfileImpl implements _Profile {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, email, username, firstname, lastname, avatar, banner);
+      runtimeType,
+      id,
+      email,
+      username,
+      firstname,
+      lastname,
+      isFriend,
+      isSentFriendRequest,
+      isReceivedFriendRequest,
+      avatar,
+      banner);
 
   @JsonKey(ignore: true)
   @override
@@ -282,6 +347,9 @@ abstract class _Profile implements Profile {
       required final String username,
       required final String? firstname,
       required final String? lastname,
+      required final bool? isFriend,
+      required final bool? isSentFriendRequest,
+      required final bool? isReceivedFriendRequest,
       final UploadFile? avatar,
       final UploadFile? banner}) = _$ProfileImpl;
 
@@ -297,6 +365,12 @@ abstract class _Profile implements Profile {
   String? get firstname;
   @override
   String? get lastname;
+  @override
+  bool? get isFriend;
+  @override
+  bool? get isSentFriendRequest;
+  @override
+  bool? get isReceivedFriendRequest;
   @override
   UploadFile? get avatar;
   @override

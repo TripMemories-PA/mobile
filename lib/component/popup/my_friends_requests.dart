@@ -62,7 +62,9 @@ class MyFriendsRequests extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.close),
+            icon: const Icon(
+              Icons.close,
+            ),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -146,8 +148,14 @@ class MyFriendsRequests extends StatelessWidget {
   ) {
     final String? avatarUrl = friendRequest.sender.avatar?.url;
     return CustomCard(
+      onTap: () {
+        context.push(
+          '${RouteName.profilePage}/${friendRequest.sender.id}',
+        );
+        context.pop();
+      },
       width: MediaQuery.of(context).size.width * 0.90,
-      height: 55,
+      height: 80,
       borderColor: MyColors.lightGrey,
       content: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -155,7 +163,7 @@ class MyFriendsRequests extends StatelessWidget {
           Row(
             children: [
               const SizedBox(
-                width: 12,
+                width: 10,
               ),
               _buildUserPhoto(avatarUrl),
               const SizedBox(width: 10),
@@ -180,13 +188,54 @@ class MyFriendsRequests extends StatelessWidget {
               ),
               const Expanded(child: SizedBox()),
               Container(
-                width: 33,
-                height: 33,
+                width: 25,
+                height: 25,
                 decoration: const BoxDecoration(
-                  color: MyColors.success,
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.fromBorderSide(
+                    BorderSide(
+                      color: MyColors.purple,
+                    ),
+                  ),
+                ),
+                child: Theme(
+                  data: ThemeData(
+                    iconTheme: const IconThemeData(
+                      color: MyColors.purple,
+                    ),
+                  ),
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    iconSize: 15,
+                    icon: const Icon(Icons.close),
+                    color: MyColors.purple,
+                    onPressed: () {
+                      context.read<FriendRequestBloc>().add(
+                            RejectFriendRequestEvent(
+                              friendRequestId: friendRequest.id.toString(),
+                            ),
+                          );
+                    },
+                  ),
+                ),
+              ),
+              12.pw,
+              Container(
+                width: 1,
+                height: 25,
+                color: MyColors.lightGrey,
+              ),
+              12.pw,
+              Container(
+                width: 25,
+                height: 25,
+                decoration: const BoxDecoration(
+                  color: MyColors.purple,
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
+                  padding: EdgeInsets.zero,
                   iconSize: 15,
                   icon: const Icon(Icons.check),
                   color: Colors.white,
@@ -199,48 +248,7 @@ class MyFriendsRequests extends StatelessWidget {
                   },
                 ),
               ),
-              10.pw,
-              Container(
-                width: 33,
-                height: 33,
-                decoration: const BoxDecoration(
-                  color: MyColors.fail,
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  iconSize: 15,
-                  icon: const Icon(Icons.close),
-                  color: Colors.white,
-                  onPressed: () {
-                    context.read<FriendRequestBloc>().add(
-                          RejectFriendRequestEvent(
-                            friendRequestId: friendRequest.id.toString(),
-                          ),
-                        );
-                  },
-                ),
-              ),
-              10.pw,
-              Container(
-                width: 33,
-                height: 33,
-                decoration: const BoxDecoration(
-                  color: MyColors.purple,
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  iconSize: 15,
-                  icon: const Icon(Icons.remove_red_eye),
-                  color: Colors.white,
-                  onPressed: () {
-                    context.push(
-                      '${RouteName.profilePage}/${friendRequest.sender.id}',
-                    );
-                    context.pop();
-                  },
-                ),
-              ),
-              const SizedBox(width: 10),
+              15.pw,
             ],
           ),
         ],
@@ -250,11 +258,11 @@ class MyFriendsRequests extends StatelessWidget {
 
   SizedBox _buildUserPhoto(String? avatarUrl) {
     return SizedBox(
-      width: 40,
-      height: 40,
+      width: 80,
+      height: 65,
       child: ClipRRect(
         borderRadius: const BorderRadius.all(
-          Radius.circular(50.0),
+          Radius.circular(10.0),
         ),
         child: avatarUrl != null
             ? CachedNetworkImage(

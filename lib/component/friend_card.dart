@@ -17,8 +17,8 @@ class FriendCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final String? avatarUrl = friend.avatar?.url;
     return CustomCard(
-      width: MediaQuery.of(context).size.width * 0.90,
-      height: 55,
+      width: MediaQuery.of(context).size.width * 0.4,
+      height: 100,
       borderColor: MyColors.lightGrey,
       content: Column(
         mainAxisAlignment: MainAxisAlignment.center,

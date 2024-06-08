@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,33 +39,34 @@ class SearchBarCustom extends StatelessWidget {
               hintText: 'Rechercher des amis',
               suffixIcon: value.isEmpty
                   ? Icon(
-                Icons.search,
-                color: Theme.of(context).colorScheme.primary,
-              )
+                      Icons.search,
+                      color: Theme.of(context).colorScheme.primary,
+                    )
                   : IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  searchContent.value = '';
-                  searchController.clear();
-                  searching.value = false;
-                },
-                icon: const Icon(
-                  Icons.close,
-                  size: 20,
-                ),
-              ),
+                      onPressed: () {
+                        searchContent.value = '';
+                        searchController.clear();
+                        searching.value = false;
+                      },
+                      icon: const Icon(
+                        Icons.close,
+                        size: 20,
+                      ),
+                    ),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.all(10.0),
             ),
             onChanged: (value) {
-              value.isEmpty ? searching.value = false : searching.value = true;
+              searching.value = value.isNotEmpty;
               searchContent.value = value;
-              context.read<UserSearchingBloc>().add(
-                SearchUsersEvent(
-                  isRefresh: true,
-                  searchingCriteria: value,
-                ),
-              );
+              EasyDebounce.debounce('search_bar', Durations.medium1, () {
+                context.read<UserSearchingBloc>().add(
+                      SearchUsersEvent(
+                        isRefresh: true,
+                        searchingCriteria: value,
+                      ),
+                    );
+              });
             },
           );
         },

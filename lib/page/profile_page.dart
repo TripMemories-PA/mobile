@@ -8,10 +8,10 @@ import '../api/profile/profile_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/profile/profile_bloc.dart';
-import '../component/friends_and_visited_widget.dart';
 import '../component/my_friends_component.dart';
 import '../component/my_post_component.dart';
 import '../component/profile_infos.dart';
+import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
 import '../repository/profile_repository.dart';
 import '../service/profile_remote_data_source.dart';
@@ -78,7 +78,7 @@ class ProfilePage extends HookWidget {
               child: NestedScrollView(
                 headerSliverBuilder: (context, value) {
                   return [
-                    _buildUserProfileInfosSliverAppBar(),
+                    _buildUserProfileInfosSliverAppBar(context),
                     if (userId == null)
                       _buildSliverMenuForPostsAndFriends(tabController),
                   ];
@@ -106,6 +106,7 @@ class ProfilePage extends HookWidget {
         child: ColoredBox(
           color: Colors.white,
           child: TabBar(
+            unselectedLabelColor: MyColors.darkGrey,
             controller: tabController,
             indicatorSize: TabBarIndicatorSize.tab,
             tabs: const [
@@ -118,19 +119,17 @@ class ProfilePage extends HookWidget {
     );
   }
 
-  SliverAppBar _buildUserProfileInfosSliverAppBar() {
+  SliverAppBar _buildUserProfileInfosSliverAppBar(BuildContext context) {
     return SliverAppBar(
       expandedHeight: 300,
-      leading: const SizedBox.shrink(),
       flexibleSpace: FlexibleSpaceBar(
         background: ListView(
           children: [
-            ProfileInfos(
-              isMyProfile: userId == null,
-            ),
-            const SizedBox(height: 20),
-            FriendsAndVisitedWidget(
-              itIsMe: userId == null,
+            SizedBox(
+              height: 300,
+              child: ProfileInfos(
+                isMyProfile: userId == null,
+              ),
             ),
             const SizedBox(height: 10),
             BlocListener<ProfileBloc, ProfileState>(

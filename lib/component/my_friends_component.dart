@@ -7,9 +7,9 @@ import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/profile/profile.dart';
 import 'custom_card.dart';
-import 'friend_card.dart';
 import 'popup/my_friends_requests.dart';
 import 'popup/user_searching.dart';
+import 'user_list.dart';
 
 class MyFriendsComponent extends StatelessWidget {
   const MyFriendsComponent({
@@ -24,33 +24,54 @@ class MyFriendsComponent extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            InkWell(
+            CustomCard(
               onTap: () async {
                 await userSearchingPopup(context);
               },
-              child: CustomCard(
-                width: MediaQuery.of(context).size.width * 0.40,
-                height: 40,
-                content: const Text(
-                  'Ajouter un amis',
-                  textAlign: TextAlign.center,
-                ),
-                borderColor: MyColors.purple,
+              width: MediaQuery.of(context).size.width * 0.40,
+              height: 40,
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.add,
+                    color: MyColors.purple,
+                  ),
+                  10.pw,
+                  const Text(
+                    'Ajouter un amis',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
+              borderColor: MyColors.darkGrey,
+              borderRadius: 20,
             ),
-            InkWell(
+            CustomCard(
               onTap: () async {
                 await myFriendsRequestsPopup(context);
               },
-              child: CustomCard(
-                width: MediaQuery.of(context).size.width * 0.40,
-                height: 40,
-                content: const Text(
-                  'Gérer les demandes',
-                  textAlign: TextAlign.center,
-                ),
-                borderColor: MyColors.purple,
+              width: MediaQuery.of(context).size.width * 0.40,
+              height: 40,
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.groups,
+                    color: MyColors.purple,
+                  ),
+                  10.pw,
+                  const Text(
+                    'Gérer les demandes',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
               ),
+              borderColor: MyColors.darkGrey,
+              borderRadius: 20,
             ),
           ],
         ),
@@ -79,24 +100,9 @@ class MyFriendsComponent extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            ...context
-                    .read<ProfileBloc>()
-                    .state
-                    .friends
-                    ?.data
-                    .map(
-                      (friend) => Column(
-                        key: ObjectKey(friend),
-                        children: [
-                          FriendCard(friend: friend),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      ),
-                    )
-                    .toList() ??
-                [],
+            UserList(
+              users: state.friends!.data,
+            ),
             Center(
               child: context.read<ProfileBloc>().state.hasMoreTweets
                   ? _buildHasMoreTweetsPart(context)

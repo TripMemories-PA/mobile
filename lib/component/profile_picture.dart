@@ -14,66 +14,84 @@ class ProfilePicture extends StatelessWidget {
   final bool isMyProfile;
 
   Future<void> _selectImage(BuildContext context) async {
-    if(!isMyProfile){
+    if (!isMyProfile) {
       return;
     }
     final picker = ImagePicker();
-    await picker.pickImage(source: ImageSource.gallery,).then(
+    await picker
+        .pickImage(
+          source: ImageSource.gallery,
+        )
+        .then(
           (pickedImage) => {
-        if (pickedImage != null)
-          {
-            context.read<ProfileBloc>().add(
-              UpdateProfilePictureEvent(
-                pickedImage,
-              ),
-            ),
+            if (pickedImage != null)
+              {
+                context.read<ProfileBloc>().add(
+                      UpdateProfilePictureEvent(
+                        pickedImage,
+                      ),
+                    ),
+              },
           },
-      },
-    );
+        );
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
-  builder: (context, state) {
-    final String? avatarUrl =
-        context.read<ProfileBloc>().state.profile?.avatar?.url;
-    return GestureDetector(
-      onTap: () => _selectImage(context),
-      child: SizedBox(
-        width: 100,
-        height: 100,
-        child: ClipRRect(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(50.0),
-          ),
-          child: avatarUrl != null
-              ? CachedNetworkImage(
-            imageUrl: avatarUrl,
-            fit: BoxFit.cover,
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                Center(
-                  child: CircularProgressIndicator(
-                    value: downloadProgress.progress,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).colorScheme.error,
-                    ),
-                  ),
+      builder: (context, state) {
+        final String? avatarUrl =
+            context.read<ProfileBloc>().state.profile?.avatar?.url;
+        return GestureDetector(
+          onTap: () => _selectImage(context),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
                 ),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
-          )
-              : const CircleAvatar(
-            backgroundColor: Colors.grey,
-            child: Icon(
-              Icons.person,
-              size: 50,
-              color: Colors.white,
+              ],
+            ),
+            child: SizedBox(
+              width: 100,
+              height: 100,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(50.0),
+                ),
+                child: avatarUrl != null
+                    ? CachedNetworkImage(
+                        imageUrl: avatarUrl,
+                        fit: BoxFit.cover,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) => Center(
+                          child: CircularProgressIndicator(
+                            value: downloadProgress.progress,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Theme.of(context).colorScheme.error,
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      )
+                    : const CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        child: Icon(
+                          Icons.person,
+                          size: 50,
+                          color: Colors.white,
+                        ),
+                      ),
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
-  },
-);
   }
 }

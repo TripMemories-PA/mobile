@@ -75,7 +75,7 @@ class ProfileInfos extends StatelessWidget {
           Positioned(
             top: 70,
             left: MediaQuery.of(context).size.width / 2 - 50,
-            child: ProfilePicture(
+            child: ProfilePictureInteractive(
               isMyProfile: isMyProfile,
             ),
           ),

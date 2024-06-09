@@ -7,7 +7,7 @@ part 'message.freezed.dart';
 part 'message.g.dart';
 
 @Freezed()
-class Message with Message {
+class Message with _$Message {
   @JsonSerializable(explicitToJson: true)
   const factory Message({
     required int id,

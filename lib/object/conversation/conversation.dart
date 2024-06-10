@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../avatar/avatar.dart';
 import '../message/message.dart';
 import '../profile/profile.dart';
 

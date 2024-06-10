@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
 
-// ignore_for_file: unused_element, deprecated_member_use,
-// deprecated_member_use_from_same_package,
-// use_function_type_syntax_for_parameters, unnecessary_const,
-// avoid_init_to_null, invalid_override_different_default_values_named,
-// prefer_expression_function_bodies, annotate_overrides,
-// invalid_annotation_target, unnecessary_question_mark
-
 import 'constants/my_colors.dart';
 
 class ThemeGenerator {
@@ -21,9 +14,9 @@ class ThemeGenerator {
           borderRadius: BorderRadius.circular(4),
         ),
         side: const BorderSide(),
-        fillColor: MaterialStateProperty.resolveWith(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.selected)) {
+        fillColor: WidgetStateProperty.resolveWith(
+          (Set<WidgetState> states) {
+            if (states.contains(WidgetState.selected)) {
               return Colors.white;
             }
             return Colors.white;
@@ -34,8 +27,6 @@ class ThemeGenerator {
   static TextTheme get _textTheme => Typography.blackCupertino;
 
   static ColorScheme get _colorScheme => const ColorScheme(
-        background: Colors.white,
-        onBackground: Colors.black,
         primary: Color(0xFF4169E1),
         onPrimary: Colors.white,
         secondary: Color(0x1a5569e1),
@@ -78,16 +69,16 @@ class ThemeGenerator {
       );
 
   static SwitchThemeData get _switchTheme => SwitchThemeData(
-        trackColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-          if (states.contains(MaterialState.selected)) {
+        trackColor:
+            WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.selected)) {
             return _colorScheme.primary.withAlpha(100);
           }
           return Colors.grey.withAlpha(100);
         }),
-        thumbColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-          if (states.contains(MaterialState.selected)) {
+        thumbColor:
+            WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.selected)) {
             return _colorScheme.primary;
           }
           return Colors.grey;
@@ -105,21 +96,20 @@ class ThemeGenerator {
       ElevatedButtonThemeData(
         style: ButtonStyle(
           animationDuration: Duration.zero,
-          textStyle: MaterialStatePropertyAll<TextStyle>(
+          textStyle: WidgetStatePropertyAll<TextStyle>(
             _textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
           ),
           backgroundColor:
-              MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-            if (states.contains(MaterialState.hovered)) {
+              WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+            if (states.contains(WidgetState.hovered)) {
               return _colorScheme.tertiary;
             }
             return _colorScheme.primary;
           }),
-          shadowColor:
-              const MaterialStatePropertyAll<Color>(Colors.transparent),
-          foregroundColor: const MaterialStatePropertyAll<Color>(Colors.white),
-          shape: MaterialStateProperty.resolveWith(
-            (Set<MaterialState> states) => RoundedRectangleBorder(
+          shadowColor: const WidgetStatePropertyAll<Color>(Colors.transparent),
+          foregroundColor: const WidgetStatePropertyAll<Color>(Colors.white),
+          shape: WidgetStateProperty.resolveWith(
+            (Set<WidgetState> states) => RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(kBorderRadius),
             ),
           ),
@@ -128,15 +118,15 @@ class ThemeGenerator {
 
   static IconButtonThemeData get _iconButtonTheme => IconButtonThemeData(
         style: ButtonStyle(
-          padding: MaterialStateProperty.resolveWith(
-            (Set<MaterialState> states) => EdgeInsets.zero,
+          padding: WidgetStateProperty.resolveWith(
+            (Set<WidgetState> states) => EdgeInsets.zero,
           ),
-          iconColor: MaterialStateProperty.resolveWith(
-            (Set<MaterialState> states) => _colorScheme.background,
+          iconColor: WidgetStateProperty.resolveWith(
+            (Set<WidgetState> states) => _colorScheme.surface,
           ),
-          backgroundColor: MaterialStateProperty.resolveWith(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.hovered)) {
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.hovered)) {
                 return _colorScheme.tertiary;
               }
               return _colorScheme.primary;
@@ -148,9 +138,8 @@ class ThemeGenerator {
   static TextButtonThemeData get _textButtonTheme => TextButtonThemeData(
         style: ButtonStyle(
           animationDuration: Duration.zero,
-          overlayColor:
-              const MaterialStatePropertyAll<Color>(Colors.transparent),
-          textStyle: MaterialStateProperty.all(
+          overlayColor: const WidgetStatePropertyAll<Color>(Colors.transparent),
+          textStyle: WidgetStateProperty.all(
             _textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
@@ -201,5 +190,6 @@ class ThemeGenerator {
         floatingActionButtonTheme: _floatingActionButtonTheme,
         tabBarTheme: _tabBarTheme,
         popupMenuTheme: _popupMenuTheme,
+        inputDecorationTheme: _inputDecorationTheme,
       );
 }

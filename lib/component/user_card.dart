@@ -136,11 +136,7 @@ class UserCard extends StatelessWidget {
       icon: const Icon(Icons.chat_outlined),
       color: Colors.white,
       onPressed: () {
-        context.read<UserSearchingBloc>().add(
-              SendFriendRequestEvent(
-                userId: user.id.toString(),
-              ),
-            );
+        context.push('${RouteName.chatPage}/${user.id}', extra: user);
       },
     );
   }

@@ -8,6 +8,8 @@ import 'bloc/auth_bloc/auth_bloc.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
+import 'object/profile/profile.dart';
+import 'page/chat_page.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
 import 'page/profile_page.dart';
@@ -90,6 +92,13 @@ class MyApp extends HookWidget {
                       GoRouterState.of(context).pathParameters;
                   final String? userId = queryParameters['userId'];
                   return ProfilePage(userId: userId);
+                },
+              ),
+              GoRoute(
+                path: '${RouteName.chatPage}/:userId',
+                builder: (BuildContext context, GoRouterState state) {
+                  final Profile user = state.extra! as Profile;
+                  return ChatPage(user: user);
                 },
               ),
             ],

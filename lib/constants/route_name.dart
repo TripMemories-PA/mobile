@@ -7,4 +7,5 @@ class RouteName {
   static const String myPosts = '${RouteName.profilePage}/myPosts';
   static const String myFriends = '${RouteName.profilePage}/myFriends';
   static const String loginPage = '/login';
+  static const String chatPage = '/chat';
 }

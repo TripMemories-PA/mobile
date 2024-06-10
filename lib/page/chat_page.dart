@@ -164,7 +164,7 @@ class ChatPage extends StatelessWidget {
                                 ? TextAlign.left
                                 : TextAlign.right,
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                     ),

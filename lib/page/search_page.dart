@@ -5,13 +5,11 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: ColoredBox(
         color: Colors.blue,
         child: Center(
-          child: InkWell(
-              onTap: () => print(ModalRoute.of(context)?.settings.name),
-              child: Text('RECHERCHER')),
+          child: Text('RECHERCHER'),
         ),
       ),
     );

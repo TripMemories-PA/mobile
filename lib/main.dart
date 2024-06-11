@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:trip_memories_mobile/page/splash_page.dart';
 
 import 'api/auth/auth_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
@@ -30,8 +31,14 @@ class MyApp extends HookWidget {
 
   final GoRouter _router = GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: RouteName.searchPage,
+    initialLocation: RouteName.splashPage,
     routes: <RouteBase>[
+      GoRoute(
+        path: RouteName.splashPage,
+        builder: (BuildContext context, GoRouterState state) {
+          return const SplashPage();
+        },
+      ),
       StatefulShellRoute.indexedStack(
         builder: (
           BuildContext context,

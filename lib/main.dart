@@ -15,6 +15,7 @@ import 'page/map_page.dart';
 import 'page/profile_page.dart';
 import 'page/search_page.dart';
 import 'page/shop_page.dart';
+import 'page/splash_page.dart';
 import 'theme_generator.dart';
 import 'utils/messenger.dart';
 
@@ -30,8 +31,14 @@ class MyApp extends HookWidget {
 
   final GoRouter _router = GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: RouteName.searchPage,
+    initialLocation: RouteName.splashPage,
     routes: <RouteBase>[
+      GoRoute(
+        path: RouteName.splashPage,
+        builder: (BuildContext context, GoRouterState state) {
+          return const SplashPage();
+        },
+      ),
       StatefulShellRoute.indexedStack(
         builder: (
           BuildContext context,

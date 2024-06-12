@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../app.config.dart';
-import '../../object/avatar/uploadedFile.dart';
+import '../../object/avatar/uploaded_file.dart';
 import '../../object/profile/profile.dart';
 import '../dio.dart';
 import '../error/api_error.dart';

@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../../object/avatar/uploadedFile.dart';
+import '../../../../../object/avatar/uploaded_file.dart';
 
 part 'poi.freezed.dart';
 part 'poi.g.dart';

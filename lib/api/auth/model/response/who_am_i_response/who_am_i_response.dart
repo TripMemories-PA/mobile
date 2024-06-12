@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../../object/avatar/avatar.dart';
+import '../../../../../object/avatar/uploaded_file.dart';
 import '../friend_request_response/friend_request_response.dart';
 
 part 'who_am_i_response.freezed.dart';

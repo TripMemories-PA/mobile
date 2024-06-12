@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../avatar/avatar.dart';
+import '../avatar/uploadedFile.dart';
 
 part 'profile.freezed.dart';
 part 'profile.g.dart';
@@ -15,8 +15,8 @@ class Profile with _$Profile {
     required String? firstname,
     required String? lastname,
     required bool? isFriend,
-  required bool? isSentFriendRequest,
-  required bool? isReceivedFriendRequest,
+    required bool? isSentFriendRequest,
+    required bool? isReceivedFriendRequest,
     UploadFile? avatar,
     UploadFile? banner,
   }) = _Profile;

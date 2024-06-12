@@ -1,6 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 
-import '../../object/avatar/avatar.dart';
+import '../../object/avatar/uploadedFile.dart';
 import '../../object/profile/profile.dart';
 import 'response/friend_request/friend_request_response.dart';
 import 'response/friends/get_friends_pagination_response.dart';

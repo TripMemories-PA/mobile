@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'avatar.freezed.dart';
-part 'avatar.g.dart';
+part 'uploadedFile.freezed.dart';
+part 'uploadedFile.g.dart';
 
 @Freezed()
 class UploadFile with _$UploadFile {
@@ -14,5 +14,6 @@ class UploadFile with _$UploadFile {
     DateTime? updatedAt,
   }) = _UploadFile;
 
-  factory UploadFile.fromJson(Map<String, dynamic> json) => _$UploadFileFromJson(json);
+  factory UploadFile.fromJson(Map<String, dynamic> json) =>
+      _$UploadFileFromJson(json);
 }

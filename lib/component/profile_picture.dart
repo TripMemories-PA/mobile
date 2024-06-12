@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../bloc/profile/profile_bloc.dart';
-import '../object/avatar/avatar.dart';
+import '../object/avatar/uploadedFile.dart';
 
 class ProfilePictureInteractive extends StatelessWidget {
   const ProfilePictureInteractive({

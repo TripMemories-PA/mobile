@@ -8,7 +8,7 @@ import '../../api/exception/custom_exception.dart';
 import '../../api/profile/i_profile_service.dart';
 import '../../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../../local_storage/secure_storage/auth_token_handler.dart';
-import '../../object/avatar/avatar.dart';
+import '../../object/avatar/uploadedFile.dart';
 import '../../object/profile/profile.dart';
 import '../../repository/profile_repository.dart';
 

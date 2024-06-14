@@ -25,8 +25,8 @@ mixin _$Poi {
   String? get description => throw _privateConstructorUsedError;
   int? get coverId => throw _privateConstructorUsedError;
   int? get typeId => throw _privateConstructorUsedError;
-  String get latitude => throw _privateConstructorUsedError;
-  String get longitude => throw _privateConstructorUsedError;
+  double get latitude => throw _privateConstructorUsedError;
+  double get longitude => throw _privateConstructorUsedError;
   String? get city => throw _privateConstructorUsedError;
   String? get zipCode => throw _privateConstructorUsedError;
   String? get address => throw _privateConstructorUsedError;
@@ -51,8 +51,8 @@ abstract class $PoiCopyWith<$Res> {
       String? description,
       int? coverId,
       int? typeId,
-      String latitude,
-      String longitude,
+      double latitude,
+      double longitude,
       String? city,
       String? zipCode,
       String? address,
@@ -116,11 +116,11 @@ class _$PoiCopyWithImpl<$Res, $Val extends Poi> implements $PoiCopyWith<$Res> {
       latitude: null == latitude
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
       longitude: null == longitude
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
       city: freezed == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
@@ -181,8 +181,8 @@ abstract class _$$PoiImplCopyWith<$Res> implements $PoiCopyWith<$Res> {
       String? description,
       int? coverId,
       int? typeId,
-      String latitude,
-      String longitude,
+      double latitude,
+      double longitude,
       String? city,
       String? zipCode,
       String? address,
@@ -245,11 +245,11 @@ class __$$PoiImplCopyWithImpl<$Res> extends _$PoiCopyWithImpl<$Res, _$PoiImpl>
       latitude: null == latitude
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
       longitude: null == longitude
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
       city: freezed == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
@@ -315,9 +315,9 @@ class _$PoiImpl implements _Poi {
   @override
   final int? typeId;
   @override
-  final String latitude;
+  final double latitude;
   @override
-  final String longitude;
+  final double longitude;
   @override
   final String? city;
   @override
@@ -404,8 +404,8 @@ abstract class _Poi implements Poi {
       required final String? description,
       required final int? coverId,
       required final int? typeId,
-      required final String latitude,
-      required final String longitude,
+      required final double latitude,
+      required final double longitude,
       required final String? city,
       required final String? zipCode,
       required final String? address,
@@ -427,9 +427,9 @@ abstract class _Poi implements Poi {
   @override
   int? get typeId;
   @override
-  String get latitude;
+  double get latitude;
   @override
-  String get longitude;
+  double get longitude;
   @override
   String? get city;
   @override

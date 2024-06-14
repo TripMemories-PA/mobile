@@ -9,5 +9,6 @@ class RouteName {
   static const String loginPage = '/login';
   static const String chatPage = '/chat';
   static const String splashPage = '/splash';
+  static const String monumentPage = '/monument';
 
 }

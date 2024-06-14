@@ -64,36 +64,45 @@ class _MapCustomState extends State<MapCustom> {
 
   void buildGoogleMap() {
     final List<Marker> markers = [];
-    for(final Poi poi in widget.pois!) {
-      markers.add(Marker(
-        onTap: () {
-          context.go('${RouteName.monumentPage}/${poi.id}', extra: poi,);
-        },
-        icon: markerIcon,
-        markerId: MarkerId(poi.id.toString()),
-        position: LatLng(poi.latitude, poi.longitude),
-        infoWindow: InfoWindow(
-          title: poi.name,
-          snippet: poi.description,
-        ),
-      ),);
-    }
-    setState(() {
-      myMap = GoogleMap(
-        initialCameraPosition: CameraPosition(
-          target: _center,
-          zoom: 11.0,
-        ),
-        markers: markers.toSet(),
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-          _controller.future.then((value) {
-            mapController = value;
-            // ignore: deprecated_member_use
-            mapController.setMapStyle(_mapStyleString);
-          });
-        },
-      );
-    });
+    for(final Poi poi in widget.pois) {
+      try {
+        String lat = poi.latitude;
+        double latitude = double.parse(lat);
+        String lng = poi.longitude;
+        double longitude = double.parse(lng);
+        markers.add(Marker(
+          onTap: () {
+            context.go('${RouteName.monumentPage}/${poi.id}', extra: poi,);
+          },
+          icon: markerIcon,
+          markerId: MarkerId(poi.id.toString()),
+          position: LatLng(latitude, longitude),
+          infoWindow: InfoWindow(
+            title: poi.name,
+            snippet: poi.description,
+          ),
+        ),);
+      } catch (e) {
+        print(e);
+      };
+      setState(() {
+        myMap = GoogleMap(
+          initialCameraPosition: CameraPosition(
+            target: _center,
+            zoom: 11.0,
+          ),
+          markers: markers.toSet(),
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+            _controller.future.then((value) {
+              mapController = value;
+              // ignore: deprecated_member_use
+              mapController.setMapStyle(_mapStyleString);
+            });
+          },
+        );
+      });
+      }
+
   }
 }

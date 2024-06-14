@@ -45,7 +45,7 @@ jobs:
         run: flutter pub get
 
       - name: Replace string with GitHub secret
-        run: sed -i 's/{GOOGLE_MAP_API_KEY}/${{ GOOGLE_MAP_API_KEY }}/g' android/app/src/main/AndroidManifest.xml
+        run: sed -i 's/{GOOGLE_MAP_API_KEY}/${{ secrets.GOOGLE_MAP_API_KEY }}/g' android/app/src/main/AndroidManifest.xml
 
       - name: Build APK
         run: flutter build apk --release

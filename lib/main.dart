@@ -67,14 +67,15 @@ class MyApp extends HookWidget {
                     const MapPage(),
               ),
               GoRoute(
-                  path: RouteName.monumentPage,
-                  builder: (context, state) {
-                    final Poi poi = state.extra! as Poi;
+                path: '${RouteName.monumentPage}/:monumentId',
+                builder: (context, state) {
+                  final Poi poi = state.extra! as Poi;
 
-                    return MonumentPage(
-                      monument: poi,
-                    );
-                  }),
+                  return MonumentPage(
+                    monument: poi,
+                  );
+                },
+              ),
             ],
           ),
           StatefulShellBranch(

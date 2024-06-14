@@ -8,11 +8,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../api/poi/model/response/poi/poi.dart';
 import '../constants/route_name.dart';
+import '../utils/messenger.dart';
 
 final Completer<GoogleMapController> _controller = Completer();
 
 class MapCustom extends StatefulWidget {
-  const MapCustom({super.key, required this.pois,});
+  const MapCustom({
+    super.key,
+    required this.pois,
+  });
 
   final List<Poi> pois;
 
@@ -45,7 +49,7 @@ class _MapCustomState extends State<MapCustom> {
         _mapStyleString = string;
       });
     });
-    getBytesFromAsset('assets/images/paris.png', 100).then((value) {
+    getBytesFromAsset('assets/images/map_pin.png', 100).then((value) {
       setState(() {
         if (value != null) {
           markerIcon = BitmapDescriptor.fromBytes(value);
@@ -64,27 +68,34 @@ class _MapCustomState extends State<MapCustom> {
 
   void buildGoogleMap() {
     final List<Marker> markers = [];
-    for(final Poi poi in widget.pois) {
+    for (final Poi poi in widget.pois) {
       try {
-        String lat = poi.latitude;
-        double latitude = double.parse(lat);
-        String lng = poi.longitude;
-        double longitude = double.parse(lng);
-        markers.add(Marker(
-          onTap: () {
-            context.go('${RouteName.monumentPage}/${poi.id}', extra: poi,);
-          },
-          icon: markerIcon,
-          markerId: MarkerId(poi.id.toString()),
-          position: LatLng(latitude, longitude),
-          infoWindow: InfoWindow(
-            title: poi.name,
-            snippet: poi.description,
+        final String lat = poi.latitude;
+        final double latitude = double.parse(lat);
+        final String lng = poi.longitude;
+        final double longitude = double.parse(lng);
+        markers.add(
+          Marker(
+            icon: markerIcon,
+            markerId: MarkerId(poi.id.toString()),
+            position: LatLng(latitude, longitude),
+            infoWindow: InfoWindow(
+              title: poi.name,
+              snippet: 'Cliquez pour plus de détails',
+              onTap: () {
+                context.push(
+                  '${RouteName.monumentPage}/${poi.id}',
+                  extra: poi,
+                );
+              },
+            ),
           ),
-        ),);
+        );
       } catch (e) {
-        print(e);
-      };
+        Messenger.showSnackBarError(
+          "Une erreur est survenue lors de l'affichage des monuments.",
+        );
+      }
       setState(() {
         myMap = GoogleMap(
           initialCameraPosition: CameraPosition(
@@ -102,7 +113,6 @@ class _MapCustomState extends State<MapCustom> {
           },
         );
       });
-      }
-
+    }
   }
 }

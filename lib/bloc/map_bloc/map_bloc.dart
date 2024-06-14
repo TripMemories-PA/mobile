@@ -3,10 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api/poi/i_poi_service.dart';
 import '../../api/poi/model/response/poi/poi.dart';
 import '../../api/poi/model/response/pois_response/pois_response.dart';
-import '../../api/poi/poi_service.dart';
 
 part 'map_event.dart';
-
 part 'map_state.dart';
 
 class MapBloc extends Bloc<MapEvent, MapState> {

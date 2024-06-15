@@ -69,8 +69,11 @@ jobs:
         with:
           channel: 'stable' # or: 'beta', 'dev', 'master' (or 'main')
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Replace string with GitHub secret
+        run: sed -i 's/{GOOGLE_MAP_API_KEY}/${{ secrets.GOOGLE_MAP_API_KEY }}/g' android/app/src/main/AndroidManifest.xml
+
+      - name: Display result
+        run: cat android/app/src/main/AndroidManifest.xml
 
       - name: Analyze project source
         run: flutter analyze

@@ -38,6 +38,7 @@ class ThemeGenerator {
         brightness: Brightness.light,
         error: Colors.black,
         onError: Colors.white,
+        surfaceTint: Color(0xffd4dfff),
       );
 
   static InputDecorationTheme get _inputDecorationTheme =>

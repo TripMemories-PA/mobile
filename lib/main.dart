@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:trip_memories_mobile/page/edit_tweet_page.dart';
 
 import 'api/auth/auth_service.dart';
 import 'api/poi/model/response/poi/poi.dart';
@@ -33,12 +34,18 @@ class MyApp extends HookWidget {
 
   final GoRouter _router = GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: RouteName.splashPage,
+    initialLocation: RouteName.editTweetPage,
     routes: <RouteBase>[
       GoRoute(
         path: RouteName.splashPage,
         builder: (BuildContext context, GoRouterState state) {
           return const SplashPage();
+        },
+      ),
+      GoRoute(
+        path: RouteName.editTweetPage,
+        builder: (BuildContext context, GoRouterState state) {
+          return const EditTweetPage();
         },
       ),
       StatefulShellRoute.indexedStack(

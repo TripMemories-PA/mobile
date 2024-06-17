@@ -14,6 +14,7 @@ class Post with _$Post {
     required String content,
     required String note,
     required UploadFile? image,
+    required int? imageId,
     required Profile createdBy,
     required DateTime createdAt,
     required DateTime? updatedAt,

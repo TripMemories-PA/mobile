@@ -14,6 +14,7 @@ _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
       image: json['image'] == null
           ? null
           : UploadFile.fromJson(json['image'] as Map<String, dynamic>),
+      imageId: (json['imageId'] as num?)?.toInt(),
       createdBy: Profile.fromJson(json['createdBy'] as Map<String, dynamic>),
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: json['updatedAt'] == null
@@ -28,6 +29,7 @@ Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
       'content': instance.content,
       'note': instance.note,
       'image': instance.image,
+      'imageId': instance.imageId,
       'createdBy': instance.createdBy,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),

@@ -25,6 +25,7 @@ mixin _$Post {
   String get content => throw _privateConstructorUsedError;
   String get note => throw _privateConstructorUsedError;
   UploadFile? get image => throw _privateConstructorUsedError;
+  int? get imageId => throw _privateConstructorUsedError;
   Profile get createdBy => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
@@ -45,6 +46,7 @@ abstract class $PostCopyWith<$Res> {
       String content,
       String note,
       UploadFile? image,
+      int? imageId,
       Profile createdBy,
       DateTime createdAt,
       DateTime? updatedAt});
@@ -71,6 +73,7 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
     Object? content = null,
     Object? note = null,
     Object? image = freezed,
+    Object? imageId = freezed,
     Object? createdBy = null,
     Object? createdAt = null,
     Object? updatedAt = freezed,
@@ -96,6 +99,10 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as UploadFile?,
+      imageId: freezed == imageId
+          ? _value.imageId
+          : imageId // ignore: cast_nullable_to_non_nullable
+              as int?,
       createdBy: null == createdBy
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -145,6 +152,7 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
       String content,
       String note,
       UploadFile? image,
+      int? imageId,
       Profile createdBy,
       DateTime createdAt,
       DateTime? updatedAt});
@@ -170,6 +178,7 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? content = null,
     Object? note = null,
     Object? image = freezed,
+    Object? imageId = freezed,
     Object? createdBy = null,
     Object? createdAt = null,
     Object? updatedAt = freezed,
@@ -195,6 +204,10 @@ class __$$PostImplCopyWithImpl<$Res>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as UploadFile?,
+      imageId: freezed == imageId
+          ? _value.imageId
+          : imageId // ignore: cast_nullable_to_non_nullable
+              as int?,
       createdBy: null == createdBy
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -220,6 +233,7 @@ class _$PostImpl implements _Post {
       required this.content,
       required this.note,
       required this.image,
+      required this.imageId,
       required this.createdBy,
       required this.createdAt,
       required this.updatedAt});
@@ -238,6 +252,8 @@ class _$PostImpl implements _Post {
   @override
   final UploadFile? image;
   @override
+  final int? imageId;
+  @override
   final Profile createdBy;
   @override
   final DateTime createdAt;
@@ -246,7 +262,7 @@ class _$PostImpl implements _Post {
 
   @override
   String toString() {
-    return 'Post(id: $id, poiId: $poiId, content: $content, note: $note, image: $image, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Post(id: $id, poiId: $poiId, content: $content, note: $note, image: $image, imageId: $imageId, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -259,6 +275,7 @@ class _$PostImpl implements _Post {
             (identical(other.content, content) || other.content == content) &&
             (identical(other.note, note) || other.note == note) &&
             (identical(other.image, image) || other.image == image) &&
+            (identical(other.imageId, imageId) || other.imageId == imageId) &&
             (identical(other.createdBy, createdBy) ||
                 other.createdBy == createdBy) &&
             (identical(other.createdAt, createdAt) ||
@@ -270,7 +287,7 @@ class _$PostImpl implements _Post {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, poiId, content, note, image,
-      createdBy, createdAt, updatedAt);
+      imageId, createdBy, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -293,6 +310,7 @@ abstract class _Post implements Post {
       required final String content,
       required final String note,
       required final UploadFile? image,
+      required final int? imageId,
       required final Profile createdBy,
       required final DateTime createdAt,
       required final DateTime? updatedAt}) = _$PostImpl;
@@ -309,6 +327,8 @@ abstract class _Post implements Post {
   String get note;
   @override
   UploadFile? get image;
+  @override
+  int? get imageId;
   @override
   Profile get createdBy;
   @override

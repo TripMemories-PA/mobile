@@ -1,3 +1,4 @@
+import '../post/model/response/get_all_posts_response.dart';
 import 'model/response/pois_response/pois_response.dart';
 
 abstract class IPoiService {
@@ -8,5 +9,11 @@ abstract class IPoiService {
     required double xy,
     required double yx,
     required double yy,
+  });
+
+  Future<GetAllPostsResponse> getPoisPosts({
+    required int poiId,
+    required int page,
+    required int perPage,
   });
 }

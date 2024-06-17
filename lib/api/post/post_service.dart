@@ -1,45 +1,155 @@
+import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../app.config.dart';
 import '../../object/avatar/uploaded_file.dart';
 import '../../object/post/post.dart';
-import 'I_post_service.dart';
+import '../dio.dart';
+import '../error/api_error.dart';
+import '../error/specific_error/auth_error.dart';
+import '../exception/bad_request_exception.dart';
+import '../exception/parsing_response_exception.dart';
+import 'i_post_service.dart';
+import 'model/query/create_post/create_post_query.dart';
+import 'model/query/update_post_query/update_post_query.dart';
+import 'model/response/get_all_posts_response.dart';
 
 class PostService implements IPostService {
+  static const String apiPostBaseUrl = '${AppConfig.apiUrl}/posts';
+
   @override
-  Future<Post> createPost({required String title, required String content}) {
-    // TODO: implement createPost
-    throw UnimplementedError();
+  Future<Post> createPost({
+    required CreatePostQuery query,
+  }) async {
+    Response response;
+    try {
+      response = await DioClient.instance.post(
+        apiPostBaseUrl,
+        data: query.toJson(),
+      );
+    } on BadRequestException {
+      throw BadRequestException(ApiError.errorOccurred());
+    }
+    try {
+      return Post.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
+    }
   }
 
   @override
-  Future<void> deletePost({required String postId}) {
-    // TODO: implement deletePost
-    throw UnimplementedError();
+  Future<void> deletePost({required int postId}) async {
+    try {
+      await DioClient.instance.delete(
+        '$apiPostBaseUrl/$postId',
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
   }
 
   @override
-  Future<List<Post>> getPoiPosts({required String poiId}) {
-    // TODO: implement getPoiPosts
-    throw UnimplementedError();
+  Future<Post> getPostById({required int postId}) async {
+    Response response;
+    try {
+      response = await DioClient.instance.get(
+        '$apiPostBaseUrl/$postId',
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      return Post.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
+    }
   }
 
   @override
-  Future<Post> getPostById({required String postId}) {
-    // TODO: implement getPostById
-    throw UnimplementedError();
+  Future<GetAllPostsResponse> getPosts({
+    required int page,
+    required int perPage,
+  }) async {
+    Response response;
+    try {
+      response = await DioClient.instance.get(
+        '$apiPostBaseUrl?page=$page&perPage=$perPage',
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      return GetAllPostsResponse.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
+    }
   }
 
   @override
-  Future<List<Post>> getPosts() {
-    // TODO: implement getPosts
-    throw UnimplementedError();
+  Future<Post> updatePost({
+    required UpdatePostQuery query,
+  }) async {
+    Response response;
+    try {
+      response = await DioClient.instance.put(
+        apiPostBaseUrl,
+        data: query.toJson(),
+      );
+    } on BadRequestException {
+      throw BadRequestException(ApiError.errorOccurred());
+    }
+    try {
+      return Post.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
+    }
   }
 
   @override
-  Future<Post> updatePost(
-      {required String postId,
-      String? title,
-      String? content,
-      UploadFile? image}) {
-    // TODO: implement updatePost
-    throw UnimplementedError();
+  Future<int> publishImage({required XFile image}) async {
+    Response response;
+    try {
+      response = await DioClient.instance.post(
+        '$apiPostBaseUrl/image',
+        data: FormData.fromMap({
+          'file': await MultipartFile.fromFile(image.path),
+        }),
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      return UploadFile.fromJson(response.data).id;
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
+    }
+  }
+
+  @override
+  Future<void> likePost({required int postId}) async {
+    try {
+      await DioClient.instance.post('$apiPostBaseUrl/$postId/like');
+    } on BadRequestException {
+      throw BadRequestException(ApiError.errorOccurred());
+    }
+  }
+
+  @override
+  Future<void> unlikePost({required int postId}) async {
+    try {
+      await DioClient.instance.delete('$apiPostBaseUrl/$postId/like');
+    } on BadRequestException {
+      throw BadRequestException(ApiError.errorOccurred());
+    }
   }
 }

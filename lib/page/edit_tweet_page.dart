@@ -1,11 +1,15 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../api/monument/model/response/poi/poi.dart';
 import '../component/custom_card.dart';
+import '../component/popup/search_monument_popup.dart';
 import '../num_extensions.dart';
 
 class EditTweetPage extends HookWidget {
@@ -28,27 +32,47 @@ class EditTweetPage extends HookWidget {
     final ValueNotifier<XFile?> image = useState(null);
     final TextEditingController textEditingController =
         useTextEditingController();
+    final selectedMonument = useState<Poi?>(null);
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(25.0),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: ListView(
             children: [
+              20.ph,
               _buildHeader(context),
               20.ph,
               if (image.value != null)
-                Container(
-                  width: double.infinity,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.0),
-                    image: DecorationImage(
-                      image: FileImage(
-                        File(image.value!.path),
+                Stack(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.0),
+                        image: DecorationImage(
+                          image: FileImage(
+                            File(image.value!.path),
+                          ),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      fit: BoxFit.cover,
                     ),
-                  ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                        ),
+                        onPressed: () {
+                          if (context.mounted) {
+                            image.value = null;
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 )
               else
                 _buildImagePicker(image, context),
@@ -84,7 +108,7 @@ class EditTweetPage extends HookWidget {
                       ),
                     ),
                     10.ph,
-                    _buildMonumentPicker(context),
+                    _buildMonumentPicker(context, selectedMonument),
                   ],
                 ),
               ),
@@ -124,28 +148,80 @@ class EditTweetPage extends HookWidget {
     );
   }
 
-  CustomCard _buildMonumentPicker(BuildContext context) {
+  CustomCard _buildMonumentPicker(
+    BuildContext context,
+    ValueNotifier<Poi?> selectedMonument,
+  ) {
     return CustomCard(
       width: double.infinity,
       height: 100,
       borderColor: Colors.transparent,
       backgroundColor: Theme.of(context).colorScheme.tertiary,
-      content: CustomCard(
-        height: 40,
-        width: MediaQuery.of(context).size.width * 0.35,
-        borderRadius: 20,
-        borderColor: Colors.transparent,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        content: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text(
-            'Ajouter un lieu',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.surface,
+      content: selectedMonument.value == null
+          ? CustomCard(
+              onTap: () async {
+                final Poi? result = await searchMonumentPopup(context);
+                if (result == null) {
+                  return;
+                } else {
+                  if (context.mounted) {
+                    selectedMonument.value = result;
+                  }
+                }
+              },
+              height: 40,
+              width: MediaQuery.of(context).size.width * 0.35,
+              borderRadius: 20,
+              borderColor: Colors.transparent,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              content: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  'Ajouter un lieu',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
+                ),
+              ),
+            )
+          : Stack(
+              children: [
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: CachedNetworkImage(
+                      imageUrl: selectedMonument.value?.cover.url ?? '',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Text(
+                  selectedMonument.value?.city ?? 'Une ville',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 15,
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                    ),
+                    onPressed: () {
+                      if (context.mounted) {
+                        selectedMonument.value = null;
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -208,6 +284,7 @@ class EditTweetPage extends HookWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomCard(
+          onTap: () => context.pop(),
           borderColor: Theme.of(context).colorScheme.primary,
           height: 30,
           borderRadius: 20,

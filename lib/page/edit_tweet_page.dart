@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../component/custom_card.dart';
 import '../num_extensions.dart';
@@ -8,8 +11,21 @@ import '../num_extensions.dart';
 class EditTweetPage extends HookWidget {
   const EditTweetPage({super.key});
 
+  Future<void> _selectImage(ValueNotifier<XFile?> image) async {
+    final picker = ImagePicker();
+    await picker.pickImage(source: ImageSource.gallery).then(
+          (pickedImage) => {
+            if (pickedImage != null)
+              {
+                image.value = pickedImage,
+              },
+          },
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final ValueNotifier<XFile?> image = useState(null);
     final TextEditingController textEditingController =
         useTextEditingController();
     return SafeArea(
@@ -20,29 +36,22 @@ class EditTweetPage extends HookWidget {
             children: [
               _buildHeader(context),
               20.ph,
-              CustomCard(
-                width: double.infinity,
-                height: 200,
-                borderColor: Colors.transparent,
-                backgroundColor: Theme.of(context).colorScheme.tertiary,
-                content: CustomCard(
-                  height: 40,
-                  width: MediaQuery.of(context).size.width * 0.35,
-                  borderRadius: 20,
-                  borderColor: Colors.transparent,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  content: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      'Ajouter une photo',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.surface,
+              if (image.value != null)
+                Container(
+                  width: double.infinity,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    image: DecorationImage(
+                      image: FileImage(
+                        File(image.value!.path),
                       ),
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  onTap: null,
-                ),
-              ),
+                )
+              else
+                _buildImagePicker(image, context),
               20.ph,
               SizedBox(
                 width: double.infinity,
@@ -64,29 +73,7 @@ class EditTweetPage extends HookWidget {
                       ),
                     ),
                     10.ph,
-                    Container(
-                      width: double.infinity,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.tertiary,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: TextField(
-                        controller: textEditingController,
-                        maxLength: 500,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          hintText: 'Partagez votre expérience',
-                          counterText: '',
-                          border: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          contentPadding: EdgeInsets.all(
-                            12.0,
-                          ),
-                        ),
-                      ),
-                    ),
+                    _buildPostText(context, textEditingController),
                     10.ph,
                     Text(
                       'Localisation',
@@ -96,10 +83,93 @@ class EditTweetPage extends HookWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    10.ph,
+                    _buildMonumentPicker(context),
                   ],
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  CustomCard _buildImagePicker(
+      ValueNotifier<XFile?> image, BuildContext context) {
+    return CustomCard(
+      onTap: () => _selectImage(image),
+      width: double.infinity,
+      height: 200,
+      borderColor: Colors.transparent,
+      backgroundColor: Theme.of(context).colorScheme.tertiary,
+      content: CustomCard(
+        height: 40,
+        width: MediaQuery.of(context).size.width * 0.35,
+        borderRadius: 20,
+        borderColor: Colors.transparent,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        content: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            'Ajouter une photo',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.surface,
+            ),
+          ),
+        ),
+        onTap: null,
+      ),
+    );
+  }
+
+  CustomCard _buildMonumentPicker(BuildContext context) {
+    return CustomCard(
+      width: double.infinity,
+      height: 100,
+      borderColor: Colors.transparent,
+      backgroundColor: Theme.of(context).colorScheme.tertiary,
+      content: CustomCard(
+        height: 40,
+        width: MediaQuery.of(context).size.width * 0.35,
+        borderRadius: 20,
+        borderColor: Colors.transparent,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        content: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            'Ajouter un lieu',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.surface,
+            ),
+          ),
+        ),
+        onTap: null,
+      ),
+    );
+  }
+
+  Container _buildPostText(
+      BuildContext context, TextEditingController textEditingController) {
+    return Container(
+      width: double.infinity,
+      height: 200,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.tertiary,
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: TextField(
+        controller: textEditingController,
+        maxLength: 500,
+        maxLines: null,
+        decoration: const InputDecoration(
+          hintText: 'Partagez votre expérience',
+          counterText: '',
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          contentPadding: EdgeInsets.all(
+            12.0,
           ),
         ),
       ),

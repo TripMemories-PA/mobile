@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trip_memories_mobile/page/edit_tweet_page.dart';
 
 import 'api/auth/auth_service.dart';
 import 'api/poi/model/response/poi/poi.dart';
@@ -12,6 +11,7 @@ import 'constants/route_name.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
 import 'object/profile/profile.dart';
 import 'page/chat_page.dart';
+import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
 import 'page/monument_page.dart';

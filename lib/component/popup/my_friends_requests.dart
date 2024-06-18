@@ -11,7 +11,7 @@ import '../../constants/route_name.dart';
 import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
 import '../../repository/profile_repository.dart';
-import '../../service/profile_remote_data_source.dart';
+import '../../service/profile/profile_remote_data_source.dart';
 import '../../utils/messenger.dart';
 import '../custom_card.dart';
 

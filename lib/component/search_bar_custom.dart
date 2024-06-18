@@ -1,8 +1,6 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/user_searching_bloc/user_searching_bloc.dart';
 import '../constants/my_colors.dart';
 
 class SearchBarCustom extends StatelessWidget {
@@ -13,6 +11,7 @@ class SearchBarCustom extends StatelessWidget {
     required this.searching,
     required this.searchContent,
     this.hintText,
+    required this.onSearch,
   });
 
   final TextEditingController searchController;
@@ -20,6 +19,7 @@ class SearchBarCustom extends StatelessWidget {
   final ValueNotifier<bool> searching;
   final ValueNotifier<String> searchContent;
   final String? hintText;
+  final Function onSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class SearchBarCustom extends StatelessWidget {
           return TextField(
             controller: searchController,
             decoration: InputDecoration(
-              hintText: 'Rechercher des amis',
+              hintText: hintText,
               suffixIcon: value.isEmpty
                   ? Icon(
                       Icons.search,
@@ -47,6 +47,7 @@ class SearchBarCustom extends StatelessWidget {
                         searchContent.value = '';
                         searchController.clear();
                         searching.value = false;
+                        onSearch('');
                       },
                       icon: const Icon(
                         Icons.close,
@@ -60,12 +61,7 @@ class SearchBarCustom extends StatelessWidget {
               searching.value = value.isNotEmpty;
               searchContent.value = value;
               EasyDebounce.debounce('search_bar', Durations.medium1, () {
-                context.read<UserSearchingBloc>().add(
-                      SearchUsersEvent(
-                        isRefresh: true,
-                        searchingCriteria: value,
-                      ),
-                    );
+                onSearch(value);
               });
             },
           );

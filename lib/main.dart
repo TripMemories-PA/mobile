@@ -4,14 +4,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
 import 'api/auth/auth_service.dart';
-import 'api/poi/model/response/poi/poi.dart';
+import 'api/monument/model/response/poi/poi.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
 import 'object/profile/profile.dart';
 import 'page/chat_page.dart';
-import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
 import 'page/monument_page.dart';
@@ -34,18 +33,12 @@ class MyApp extends HookWidget {
 
   final GoRouter _router = GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: RouteName.editTweetPage,
+    initialLocation: RouteName.splashPage,
     routes: <RouteBase>[
       GoRoute(
         path: RouteName.splashPage,
         builder: (BuildContext context, GoRouterState state) {
           return const SplashPage();
-        },
-      ),
-      GoRoute(
-        path: RouteName.editTweetPage,
-        builder: (BuildContext context, GoRouterState state) {
-          return const EditTweetPage();
         },
       ),
       StatefulShellRoute.indexedStack(

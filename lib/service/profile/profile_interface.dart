@@ -1,6 +1,6 @@
-import '../api/profile/response/friend_request/friend_request_response.dart';
-import '../api/profile/response/friends/get_friends_pagination_response.dart';
-import '../object/profile/profile.dart';
+import '../../api/profile/response/friend_request/friend_request_response.dart';
+import '../../api/profile/response/friends/get_friends_pagination_response.dart';
+import '../../object/profile/profile.dart';
 
 abstract class ProfileDataSourceInterface {
   Future<Profile> getProfile(String id);

@@ -1,7 +1,7 @@
 import '../api/profile/response/friend_request/friend_request_response.dart';
 import '../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../object/profile/profile.dart';
-import '../service/profile_remote_data_source.dart';
+import '../service/profile/profile_remote_data_source.dart';
 
 // TODO(nono): implement the profilelocalDataSource
 class ProfileRepository {

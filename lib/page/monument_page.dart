@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../api/poi/model/response/poi/poi.dart';
+import '../api/monument/model/response/poi/poi.dart';
 
 class MonumentPage extends StatelessWidget {
   const MonumentPage({super.key, required this.monument});

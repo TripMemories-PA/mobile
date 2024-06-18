@@ -9,7 +9,7 @@ import '../../constants/my_colors.dart';
 import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
 import '../../repository/profile_repository.dart';
-import '../../service/profile_remote_data_source.dart';
+import '../../service/profile/profile_remote_data_source.dart';
 import '../../utils/messenger.dart';
 import '../custom_card.dart';
 import '../search_bar_custom.dart';
@@ -134,6 +134,14 @@ class SearchingUsersBody extends HookWidget {
               searching: searching,
               searchContent: searchContent,
               hintText: 'Rechercher des amis',
+              onSearch: (value) {
+                context.read<UserSearchingBloc>().add(
+                      SearchUsersEvent(
+                        isRefresh: true,
+                        searchingCriteria: value,
+                      ),
+                    );
+              },
             ),
             10.ph,
             if (searching.value) _buildSearchUserList(searchContent),

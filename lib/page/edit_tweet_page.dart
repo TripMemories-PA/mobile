@@ -96,7 +96,9 @@ class EditTweetPage extends HookWidget {
   }
 
   CustomCard _buildImagePicker(
-      ValueNotifier<XFile?> image, BuildContext context) {
+    ValueNotifier<XFile?> image,
+    BuildContext context,
+  ) {
     return CustomCard(
       onTap: () => _selectImage(image),
       width: double.infinity,
@@ -118,7 +120,6 @@ class EditTweetPage extends HookWidget {
             ),
           ),
         ),
-        onTap: null,
       ),
     );
   }
@@ -144,13 +145,14 @@ class EditTweetPage extends HookWidget {
             ),
           ),
         ),
-        onTap: null,
       ),
     );
   }
 
   Container _buildPostText(
-      BuildContext context, TextEditingController textEditingController) {
+    BuildContext context,
+    TextEditingController textEditingController,
+  ) {
     return Container(
       width: double.infinity,
       height: 200,
@@ -207,7 +209,6 @@ class EditTweetPage extends HookWidget {
       children: [
         CustomCard(
           borderColor: Theme.of(context).colorScheme.primary,
-          onTap: null,
           height: 30,
           borderRadius: 20,
           content: Row(
@@ -220,10 +221,11 @@ class EditTweetPage extends HookWidget {
                 child: IconButton(
                   padding: EdgeInsets.zero,
                   style: ButtonStyle(
-                    minimumSize: WidgetStateProperty.all(Size(25, 25)),
-                    maximumSize: WidgetStateProperty.all(Size(25, 25)),
+                    minimumSize: WidgetStateProperty.all(const Size(25, 25)),
+                    maximumSize: WidgetStateProperty.all(const Size(25, 25)),
                     backgroundColor: WidgetStateProperty.all(
-                        Theme.of(context).colorScheme.surface),
+                      Theme.of(context).colorScheme.surface,
+                    ),
                     side: WidgetStateProperty.all(
                       BorderSide(
                         color: Theme.of(context).colorScheme.primary,
@@ -245,7 +247,9 @@ class EditTweetPage extends HookWidget {
               Text(
                 'Retour',
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 11),
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 11,
+                ),
               ),
               10.pw,
             ],
@@ -264,7 +268,6 @@ class EditTweetPage extends HookWidget {
               style: TextStyle(color: Theme.of(context).colorScheme.surface),
             ),
           ),
-          onTap: null,
         ),
       ],
     );

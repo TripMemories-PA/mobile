@@ -11,6 +11,7 @@ import 'constants/route_name.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
 import 'object/profile/profile.dart';
 import 'page/chat_page.dart';
+import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
 import 'page/monument_page.dart';
@@ -33,12 +34,18 @@ class MyApp extends HookWidget {
 
   final GoRouter _router = GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: RouteName.splashPage,
+    initialLocation: RouteName.editTweetPage,
     routes: <RouteBase>[
       GoRoute(
         path: RouteName.splashPage,
         builder: (BuildContext context, GoRouterState state) {
           return const SplashPage();
+        },
+      ),
+      GoRoute(
+        path: RouteName.editTweetPage,
+        builder: (BuildContext context, GoRouterState state) {
+          return const EditTweetPage();
         },
       ),
       StatefulShellRoute.indexedStack(

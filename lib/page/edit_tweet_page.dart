@@ -1,31 +1,25 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
-import '../api/dio.dart';
 import '../api/monument/model/response/poi/poi.dart';
 import '../api/post/post_service.dart';
 import '../bloc/edit_tweet_bloc/publish_post_bloc.dart';
 import '../component/custom_card.dart';
 import '../component/popup/search_monument_popup.dart';
 import '../num_extensions.dart';
-import '../object/post/post.dart';
 import '../utils/messenger.dart';
 
 class EditTweetPage extends HookWidget {
-  const EditTweetPage({super.key, this.post});
-
-  final Post? post;
+  const EditTweetPage({
+    super.key,
+  });
 
   Future<void> _selectImage(ValueNotifier<XFile?> image) async {
     final picker = ImagePicker();
@@ -43,91 +37,29 @@ class EditTweetPage extends HookWidget {
     required BuildContext context,
     required ValueNotifier<XFile?> image,
     required TextEditingController textEditingController,
+    required TextEditingController titleEditingController,
     Poi? selectedMonument,
     required double rating,
   }) {
     context.read<PublishPostBloc>().add(
           PostTweetRequested(
+            title: titleEditingController.text,
             content: textEditingController.text,
             rating: rating,
             monumentId: selectedMonument!.id,
             image: image.value,
           ),
         );
-  }
-
-  void updatePost({
-    required BuildContext context,
-    required ValueNotifier<XFile?> image,
-    required TextEditingController textEditingController,
-    Poi? selectedMonument,
-    required double rating,
-  }) {
-    // TODO(nono): implement update post
-    /*
-    final Post post = Post(
-      id: this.post!.id,
-      content: textEditingController.text,
-      note: rating.toString(),
-      image: this.post!.image,
-      poi: selectedMonument!.id,
-    );
-    context.read<PublishPostBloc>().add(
-          UpdatePostRequested(
-            content: textEditingController.text,
-            rating: rating,
-            monumentId: selectedMonument!.id,
-            image: image.value,
-          ),
-        );*/
-  }
-
-  Future<void> _downloadAndSetImage(
-    String url,
-    ValueNotifier<bool> imageLoading,
-    ValueNotifier<XFile?> image,
-  ) async {
-    if (url.isNotEmpty) {
-      imageLoading.value = true;
-
-      try {
-        final response = await DioClient.instance.get(
-          url,
-          options: Options(responseType: ResponseType.bytes),
-        );
-        final bytes = Uint8List.fromList(response.data);
-        final dir = await getApplicationDocumentsDirectory();
-        final filePath = path.join(dir.path, path.basename(url));
-
-        final file = File(filePath);
-        await file.writeAsBytes(bytes);
-
-        image.value = XFile(filePath);
-        imageLoading.value = false;
-      } catch (error) {
-        imageLoading.value = false;
-      }
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     final ValueNotifier<XFile?> image = useState(null);
-    final imageLoading = useState(false);
-    final TextEditingController contentController =
-        useTextEditingController(text: post?.content);
+    final TextEditingController contentController = useTextEditingController();
+    final TextEditingController titleController = useTextEditingController();
 // TODO(nono): ajouter le poi de la publication quand pierre l'aura mis en place
     final selectedMonument = useState<Poi?>(null);
     final rating = useState<double>(0.0);
-    useEffect(
-      () {
-        if (post?.image != null) {
-          _downloadAndSetImage(post!.image!.url, imageLoading, image);
-        }
-        return null;
-      },
-      [],
-    );
     return BlocProvider(
       create: (context) => PublishPostBloc(postService: PostService()),
       child: SafeArea(
@@ -153,52 +85,32 @@ class EditTweetPage extends HookWidget {
                     ),
                     20.ph,
                     _buildHeader(context, () {
-                      post == null
-                          ? publishPost(
-                              context: context,
-                              image: image,
-                              textEditingController: contentController,
-                              selectedMonument: selectedMonument.value,
-                              rating: rating.value,
-                            )
-                          : updatePost(
-                              context: context,
-                              image: image,
-                              textEditingController: contentController,
-                              selectedMonument: selectedMonument.value,
-                              rating: rating.value,
-                            );
+                      publishPost(
+                        context: context,
+                        image: image,
+                        textEditingController: contentController,
+                        selectedMonument: selectedMonument.value,
+                        rating: rating.value,
+                        titleEditingController: titleController,
+                      );
                     }),
                     20.ph,
-                    if (image.value != null || imageLoading.value)
+                    if (image.value != null)
                       Stack(
                         children: [
-                          if (imageLoading.value)
-                            Container(
-                              width: double.infinity,
-                              height: 200,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.tertiary,
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            )
-                          else
-                            Container(
-                              width: double.infinity,
-                              height: 200,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.0),
-                                image: DecorationImage(
-                                  image: FileImage(
-                                    File(image.value!.path),
-                                  ),
-                                  fit: BoxFit.cover,
+                          Container(
+                            width: double.infinity,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0),
+                              image: DecorationImage(
+                                image: FileImage(
+                                  File(image.value!.path),
                                 ),
+                                fit: BoxFit.cover,
                               ),
                             ),
+                          ),
                           Positioned(
                             top: 0,
                             right: 0,
@@ -404,9 +316,7 @@ class EditTweetPage extends HookWidget {
   ) {
     return RatingBar(
       glow: false,
-      initialRating: post != null
-          ? double.tryParse(post?.note ?? '') ?? rating.value
-          : rating.value,
+      initialRating: rating.value,
       minRating: 1,
       maxRating: 5,
       updateOnDrag: true,

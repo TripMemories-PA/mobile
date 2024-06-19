@@ -20,6 +20,7 @@ CreatePostQuery _$CreatePostQueryFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CreatePostQuery {
+  String get title => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   int? get imageId => throw _privateConstructorUsedError;
   int get poiId => throw _privateConstructorUsedError;
@@ -37,7 +38,8 @@ abstract class $CreatePostQueryCopyWith<$Res> {
           CreatePostQuery value, $Res Function(CreatePostQuery) then) =
       _$CreatePostQueryCopyWithImpl<$Res, CreatePostQuery>;
   @useResult
-  $Res call({String content, int? imageId, int poiId, double note});
+  $Res call(
+      {String title, String content, int? imageId, int poiId, double note});
 }
 
 /// @nodoc
@@ -53,12 +55,17 @@ class _$CreatePostQueryCopyWithImpl<$Res, $Val extends CreatePostQuery>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? title = null,
     Object? content = null,
     Object? imageId = freezed,
     Object? poiId = null,
     Object? note = null,
   }) {
     return _then(_value.copyWith(
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -87,7 +94,8 @@ abstract class _$$CreatePostQueryImplCopyWith<$Res>
       __$$CreatePostQueryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String content, int? imageId, int poiId, double note});
+  $Res call(
+      {String title, String content, int? imageId, int poiId, double note});
 }
 
 /// @nodoc
@@ -101,12 +109,17 @@ class __$$CreatePostQueryImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? title = null,
     Object? content = null,
     Object? imageId = freezed,
     Object? poiId = null,
     Object? note = null,
   }) {
     return _then(_$CreatePostQueryImpl(
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -132,7 +145,8 @@ class __$$CreatePostQueryImplCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$CreatePostQueryImpl implements _CreatePostQuery {
   const _$CreatePostQueryImpl(
-      {required this.content,
+      {required this.title,
+      required this.content,
       this.imageId,
       required this.poiId,
       required this.note});
@@ -140,6 +154,8 @@ class _$CreatePostQueryImpl implements _CreatePostQuery {
   factory _$CreatePostQueryImpl.fromJson(Map<String, dynamic> json) =>
       _$$CreatePostQueryImplFromJson(json);
 
+  @override
+  final String title;
   @override
   final String content;
   @override
@@ -151,7 +167,7 @@ class _$CreatePostQueryImpl implements _CreatePostQuery {
 
   @override
   String toString() {
-    return 'CreatePostQuery(content: $content, imageId: $imageId, poiId: $poiId, note: $note)';
+    return 'CreatePostQuery(title: $title, content: $content, imageId: $imageId, poiId: $poiId, note: $note)';
   }
 
   @override
@@ -159,6 +175,7 @@ class _$CreatePostQueryImpl implements _CreatePostQuery {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CreatePostQueryImpl &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.content, content) || other.content == content) &&
             (identical(other.imageId, imageId) || other.imageId == imageId) &&
             (identical(other.poiId, poiId) || other.poiId == poiId) &&
@@ -167,7 +184,8 @@ class _$CreatePostQueryImpl implements _CreatePostQuery {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, content, imageId, poiId, note);
+  int get hashCode =>
+      Object.hash(runtimeType, title, content, imageId, poiId, note);
 
   @JsonKey(ignore: true)
   @override
@@ -186,7 +204,8 @@ class _$CreatePostQueryImpl implements _CreatePostQuery {
 
 abstract class _CreatePostQuery implements CreatePostQuery {
   const factory _CreatePostQuery(
-      {required final String content,
+      {required final String title,
+      required final String content,
       final int? imageId,
       required final int poiId,
       required final double note}) = _$CreatePostQueryImpl;
@@ -194,6 +213,8 @@ abstract class _CreatePostQuery implements CreatePostQuery {
   factory _CreatePostQuery.fromJson(Map<String, dynamic> json) =
       _$CreatePostQueryImpl.fromJson;
 
+  @override
+  String get title;
   @override
   String get content;
   @override

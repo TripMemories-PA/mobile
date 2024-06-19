@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:go_router/go_router.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/my_colors.dart';
-import '../constants/route_name.dart';
 import '../object/post/post.dart';
 import 'custom_card.dart';
 import 'popup/confirmation_logout_dialog.dart';
@@ -85,36 +83,28 @@ class PostCard extends HookWidget {
                 Positioned(
                   top: 10,
                   right: 10,
-                  child: Column(
-                    children: [
-                      RatingBar(
-                        ignoreGestures: true,
-                        glow: false,
-                        initialRating: double.tryParse(post.note) ?? 0,
-                        minRating: 1,
-                        maxRating: 5,
-                        allowHalfRating: true,
-                        ratingWidget: RatingWidget(
-                          full: Icon(
-                            Icons.star,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          half: Icon(
-                            Icons.star_half,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          empty: Icon(
-                            Icons.star,
-                            color: Theme.of(context).colorScheme.surfaceTint,
-                          ),
-                        ),
-                        onRatingUpdate: (double value) {},
+                  child: RatingBar(
+                    ignoreGestures: true,
+                    glow: false,
+                    initialRating: double.tryParse(post.note) ?? 0,
+                    minRating: 1,
+                    maxRating: 5,
+                    allowHalfRating: true,
+                    ratingWidget: RatingWidget(
+                      full: Icon(
+                        Icons.star,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
-                      const Text(
-                        '(1245 avis)',
-                        style: TextStyle(color: MyColors.purple),
+                      half: Icon(
+                        Icons.star_half,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
-                    ],
+                      empty: Icon(
+                        Icons.star,
+                        color: Theme.of(context).colorScheme.surfaceTint,
+                      ),
+                    ),
+                    onRatingUpdate: (double value) {},
                   ),
                 ),
               ],
@@ -124,37 +114,26 @@ class PostCard extends HookWidget {
             ),
             Row(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      post.createdBy.username,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${post.poi.city} - ${post.poi.zipCode}',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey,
+                        ),
                       ),
-                    ),
-                    const Text(
-                      'Une vue incroyable !',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
+                      Text(
+                        post.title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const Expanded(child: SizedBox()),
-                SizedBox(
-                  height: 30,
-                  width: 30,
-                  child: IconButton(
-                    iconSize: 20,
-                    icon: const Icon(
-                      Icons.edit,
-                    ),
-                    onPressed: () {
-                      context.push(RouteName.editTweetPage, extra: post);
-                    },
+                    ],
                   ),
                 ),
               ],

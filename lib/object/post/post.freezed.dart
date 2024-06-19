@@ -22,6 +22,7 @@ Post _$PostFromJson(Map<String, dynamic> json) {
 mixin _$Post {
   int get id => throw _privateConstructorUsedError;
   int get poiId => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   String get note => throw _privateConstructorUsedError;
   UploadFile? get image => throw _privateConstructorUsedError;
@@ -32,6 +33,7 @@ mixin _$Post {
   int get likesCount => throw _privateConstructorUsedError;
   int get commentsCount => throw _privateConstructorUsedError;
   bool get isLiked => throw _privateConstructorUsedError;
+  Poi get poi => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,6 +48,7 @@ abstract class $PostCopyWith<$Res> {
   $Res call(
       {int id,
       int poiId,
+      String title,
       String content,
       String note,
       UploadFile? image,
@@ -55,10 +58,12 @@ abstract class $PostCopyWith<$Res> {
       DateTime? updatedAt,
       int likesCount,
       int commentsCount,
-      bool isLiked});
+      bool isLiked,
+      Poi poi});
 
   $UploadFileCopyWith<$Res>? get image;
   $ProfileCopyWith<$Res> get createdBy;
+  $PoiCopyWith<$Res> get poi;
 }
 
 /// @nodoc
@@ -76,6 +81,7 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
   $Res call({
     Object? id = null,
     Object? poiId = null,
+    Object? title = null,
     Object? content = null,
     Object? note = null,
     Object? image = freezed,
@@ -86,6 +92,7 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
     Object? likesCount = null,
     Object? commentsCount = null,
     Object? isLiked = null,
+    Object? poi = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -96,6 +103,10 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
           ? _value.poiId
           : poiId // ignore: cast_nullable_to_non_nullable
               as int,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -136,6 +147,10 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
           ? _value.isLiked
           : isLiked // ignore: cast_nullable_to_non_nullable
               as bool,
+      poi: null == poi
+          ? _value.poi
+          : poi // ignore: cast_nullable_to_non_nullable
+              as Poi,
     ) as $Val);
   }
 
@@ -158,6 +173,14 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
       return _then(_value.copyWith(createdBy: value) as $Val);
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PoiCopyWith<$Res> get poi {
+    return $PoiCopyWith<$Res>(_value.poi, (value) {
+      return _then(_value.copyWith(poi: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -170,6 +193,7 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
   $Res call(
       {int id,
       int poiId,
+      String title,
       String content,
       String note,
       UploadFile? image,
@@ -179,12 +203,15 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
       DateTime? updatedAt,
       int likesCount,
       int commentsCount,
-      bool isLiked});
+      bool isLiked,
+      Poi poi});
 
   @override
   $UploadFileCopyWith<$Res>? get image;
   @override
   $ProfileCopyWith<$Res> get createdBy;
+  @override
+  $PoiCopyWith<$Res> get poi;
 }
 
 /// @nodoc
@@ -199,6 +226,7 @@ class __$$PostImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? poiId = null,
+    Object? title = null,
     Object? content = null,
     Object? note = null,
     Object? image = freezed,
@@ -209,6 +237,7 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? likesCount = null,
     Object? commentsCount = null,
     Object? isLiked = null,
+    Object? poi = null,
   }) {
     return _then(_$PostImpl(
       id: null == id
@@ -219,6 +248,10 @@ class __$$PostImplCopyWithImpl<$Res>
           ? _value.poiId
           : poiId // ignore: cast_nullable_to_non_nullable
               as int,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -259,6 +292,10 @@ class __$$PostImplCopyWithImpl<$Res>
           ? _value.isLiked
           : isLiked // ignore: cast_nullable_to_non_nullable
               as bool,
+      poi: null == poi
+          ? _value.poi
+          : poi // ignore: cast_nullable_to_non_nullable
+              as Poi,
     ));
   }
 }
@@ -269,6 +306,7 @@ class _$PostImpl implements _Post {
   const _$PostImpl(
       {required this.id,
       required this.poiId,
+      required this.title,
       required this.content,
       required this.note,
       required this.image,
@@ -278,7 +316,8 @@ class _$PostImpl implements _Post {
       required this.updatedAt,
       required this.likesCount,
       required this.commentsCount,
-      required this.isLiked});
+      required this.isLiked,
+      required this.poi});
 
   factory _$PostImpl.fromJson(Map<String, dynamic> json) =>
       _$$PostImplFromJson(json);
@@ -287,6 +326,8 @@ class _$PostImpl implements _Post {
   final int id;
   @override
   final int poiId;
+  @override
+  final String title;
   @override
   final String content;
   @override
@@ -307,10 +348,12 @@ class _$PostImpl implements _Post {
   final int commentsCount;
   @override
   final bool isLiked;
+  @override
+  final Poi poi;
 
   @override
   String toString() {
-    return 'Post(id: $id, poiId: $poiId, content: $content, note: $note, image: $image, imageId: $imageId, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt, likesCount: $likesCount, commentsCount: $commentsCount, isLiked: $isLiked)';
+    return 'Post(id: $id, poiId: $poiId, title: $title, content: $content, note: $note, image: $image, imageId: $imageId, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt, likesCount: $likesCount, commentsCount: $commentsCount, isLiked: $isLiked, poi: $poi)';
   }
 
   @override
@@ -320,6 +363,7 @@ class _$PostImpl implements _Post {
             other is _$PostImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.poiId, poiId) || other.poiId == poiId) &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.content, content) || other.content == content) &&
             (identical(other.note, note) || other.note == note) &&
             (identical(other.image, image) || other.image == image) &&
@@ -334,7 +378,8 @@ class _$PostImpl implements _Post {
                 other.likesCount == likesCount) &&
             (identical(other.commentsCount, commentsCount) ||
                 other.commentsCount == commentsCount) &&
-            (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
+            (identical(other.isLiked, isLiked) || other.isLiked == isLiked) &&
+            (identical(other.poi, poi) || other.poi == poi));
   }
 
   @JsonKey(ignore: true)
@@ -343,6 +388,7 @@ class _$PostImpl implements _Post {
       runtimeType,
       id,
       poiId,
+      title,
       content,
       note,
       image,
@@ -352,7 +398,8 @@ class _$PostImpl implements _Post {
       updatedAt,
       likesCount,
       commentsCount,
-      isLiked);
+      isLiked,
+      poi);
 
   @JsonKey(ignore: true)
   @override
@@ -372,6 +419,7 @@ abstract class _Post implements Post {
   const factory _Post(
       {required final int id,
       required final int poiId,
+      required final String title,
       required final String content,
       required final String note,
       required final UploadFile? image,
@@ -381,7 +429,8 @@ abstract class _Post implements Post {
       required final DateTime? updatedAt,
       required final int likesCount,
       required final int commentsCount,
-      required final bool isLiked}) = _$PostImpl;
+      required final bool isLiked,
+      required final Poi poi}) = _$PostImpl;
 
   factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
 
@@ -389,6 +438,8 @@ abstract class _Post implements Post {
   int get id;
   @override
   int get poiId;
+  @override
+  String get title;
   @override
   String get content;
   @override
@@ -409,6 +460,8 @@ abstract class _Post implements Post {
   int get commentsCount;
   @override
   bool get isLiked;
+  @override
+  Poi get poi;
   @override
   @JsonKey(ignore: true)
   _$$PostImplCopyWith<_$PostImpl> get copyWith =>

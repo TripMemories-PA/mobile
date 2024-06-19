@@ -27,11 +27,16 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           );
         }
         try {
-          final GetAllPostsResponse posts = await postRepository.getPosts(
-            page: event.isRefresh ? 1 : state.postsPage + 1,
-            perPage: state.postsPerPage,
-            userId: event.userId,
-          );
+          final GetAllPostsResponse posts = event.myPosts
+              ? await postRepository.getMyPosts(
+                  page: event.isRefresh ? 1 : state.postsPage + 1,
+                  perPage: state.postsPerPage,
+                )
+              : await postRepository.getPosts(
+                  page: event.isRefresh ? 1 : state.postsPage + 1,
+                  perPage: state.postsPerPage,
+                  userId: event.userId,
+                );
           emit(
             state.copyWith(
               posts: event.isRefresh
@@ -81,7 +86,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
               error: e is CustomException ? e.apiError : ApiError.unknown(),
             ),
           );
-          add(GetPostsEvent(isRefresh: true));
+          add(GetPostsEvent(isRefresh: true, myPosts: true));
         }
       },
     );

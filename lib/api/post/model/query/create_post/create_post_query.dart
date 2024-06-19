@@ -7,6 +7,7 @@ part 'create_post_query.g.dart';
 class CreatePostQuery with _$CreatePostQuery {
   @JsonSerializable(explicitToJson: true)
   const factory CreatePostQuery({
+    required String title,
     required String content,
     int? imageId,
     required int poiId,

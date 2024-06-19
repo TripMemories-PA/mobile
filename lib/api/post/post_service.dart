@@ -11,7 +11,6 @@ import '../exception/bad_request_exception.dart';
 import '../exception/parsing_response_exception.dart';
 import 'i_post_service.dart';
 import 'model/query/create_post/create_post_query.dart';
-import 'model/query/update_post_query/update_post_query.dart';
 import 'model/response/create_post_response/create_post_response.dart';
 import 'model/response/get_all_posts_response.dart';
 
@@ -103,20 +102,23 @@ class PostService implements IPostService {
   }
 
   @override
-  Future<Post> updatePost({
-    required UpdatePostQuery query,
+  Future<GetAllPostsResponse> getMyPosts({
+    required int page,
+    required int perPage,
+    int? userId,
   }) async {
     Response response;
     try {
-      response = await DioClient.instance.put(
-        apiPostBaseUrl,
-        data: query.toJson(),
+      final String url =
+          '${AppConfig.apiUrl}/me/posts?page=$page&perPage=$perPage';
+      response = await DioClient.instance.get(
+        url,
       );
     } on BadRequestException {
-      throw BadRequestException(ApiError.errorOccurred());
+      throw BadRequestException(AuthError.notAuthenticated());
     }
     try {
-      return Post.fromJson(response.data);
+      return GetAllPostsResponse.fromJson(response.data);
     } catch (e) {
       throw ParsingResponseException(
         ApiError.errorOccurredWhileParsingResponse(),

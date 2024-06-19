@@ -10,7 +10,6 @@ import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
-import 'object/post/post.dart';
 import 'object/profile/profile.dart';
 import 'page/chat_page.dart';
 import 'page/edit_tweet_page.dart';
@@ -91,10 +90,9 @@ class MyApp extends HookWidget {
               GoRoute(
                 path: RouteName.editTweetPage,
                 pageBuilder: (context, state) {
-                  final Post? post = state.extra as Post?;
                   return CustomTransitionPage(
                     key: state.pageKey,
-                    child: EditTweetPage(post: post),
+                    child: const EditTweetPage(),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       return CustomTransition.buildRightToLeftPopTransition(

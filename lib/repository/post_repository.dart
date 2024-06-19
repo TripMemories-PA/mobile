@@ -23,4 +23,15 @@ class PostRepository {
       userId: userId,
     );
   }
+
+  Future<GetAllPostsResponse> getMyPosts({
+    required int page,
+    required int perPage,
+    int? userId,
+  }) async {
+    return postRemoteDataSource.getMyPosts(
+      page: page,
+      perPage: perPage,
+    );
+  }
 }

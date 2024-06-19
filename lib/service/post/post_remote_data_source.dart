@@ -18,4 +18,16 @@ class PostRemoteDataSource extends PostDataSourceInterface {
     );
     return posts;
   }
+
+  @override
+  Future<GetAllPostsResponse> getMyPosts({
+    required int page,
+    required int perPage,
+  }) async {
+    final GetAllPostsResponse posts = await _profileService.getMyPosts(
+      page: page,
+      perPage: perPage,
+    );
+    return posts;
+  }
 }

@@ -167,7 +167,7 @@ class ProfilePage extends HookWidget {
 class MyPostsAndMyFriends extends HookWidget {
   const MyPostsAndMyFriends({
     super.key,
-    required this.userId,
+    this.userId,
     required this.tabController,
   });
 
@@ -213,13 +213,16 @@ class MyPostsAndMyFriends extends HookWidget {
         )..add(
             GetPostsEvent(
               isRefresh: true,
+              myPosts: true,
             ),
           ),
         child: BlocBuilder<PostBloc, PostState>(
           builder: (context, state) {
             return RefreshIndicator(
               onRefresh: () async {
-                context.read<PostBloc>().add(GetPostsEvent(isRefresh: true));
+                context
+                    .read<PostBloc>()
+                    .add(GetPostsEvent(isRefresh: true, myPosts: true));
               },
               child: const SingleChildScrollView(
                 child: MyPostsComponents(),

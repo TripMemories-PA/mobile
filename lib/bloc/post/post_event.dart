@@ -6,8 +6,10 @@ class GetPostsEvent extends PostEvent {
   GetPostsEvent({
     this.isRefresh = false,
     this.userId,
+    this.myPosts = false,
   });
 
+  final bool myPosts;
   final bool isRefresh;
   final int? userId;
 }

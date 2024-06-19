@@ -5,4 +5,9 @@ abstract class PostDataSourceInterface {
     required int page,
     required int perPage,
   });
+
+  Future<GetAllPostsResponse> getMyPosts({
+    required int page,
+    required int perPage,
+  });
 }

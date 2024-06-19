@@ -2,7 +2,6 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../object/post/post.dart';
 import 'model/query/create_post/create_post_query.dart';
-import 'model/query/update_post_query/update_post_query.dart';
 import 'model/response/create_post_response/create_post_response.dart';
 import 'model/response/get_all_posts_response.dart';
 
@@ -21,8 +20,9 @@ abstract class IPostService {
     required int? userId,
   });
 
-  Future<Post> updatePost({
-    required UpdatePostQuery query,
+  Future<GetAllPostsResponse> getMyPosts({
+    required int page,
+    required int perPage,
   });
 
   Future<void> deletePost({

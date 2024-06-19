@@ -254,7 +254,9 @@ class MyPostsAndMyFriends extends HookWidget {
           builder: (context, state) {
             return RefreshIndicator(
               onRefresh: () async {
-                context.read<PostBloc>().add(GetPostsEvent(isRefresh: true));
+                context
+                    .read<PostBloc>()
+                    .add(GetPostsEvent(isRefresh: true, userId: userId));
               },
               child: const SingleChildScrollView(
                 child: MyPostsComponents(),

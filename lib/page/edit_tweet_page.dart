@@ -297,7 +297,6 @@ class EditTweetPage extends HookWidget {
       child: TextField(
         controller: textEditingController,
         maxLength: 40,
-        maxLines: 1,
         decoration: const InputDecoration(
           hintText: 'Entrez un titre',
           counterText: '',

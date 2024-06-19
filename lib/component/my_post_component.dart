@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:go_router/go_router.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/post/post_bloc.dart';
@@ -69,15 +72,36 @@ class PostCard extends HookWidget {
           children: [
             Stack(
               children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(15.0),
-                  ),
-                  child: CachedNetworkImage(
-                    imageUrl: post.image?.url ?? '',
-                    height: 200,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            _PostImage(post: post),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  child: Hero(
+                    tag: post.id,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(15.0),
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: post.image?.url ?? '',
+                        height: 200,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
                 Positioned(
@@ -196,6 +220,51 @@ class PostCard extends HookWidget {
                     },
                   ),
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PostImage extends StatelessWidget {
+  const _PostImage({required this.post});
+
+  final Post post;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        context.pop(context);
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+              child: Container(
+                color: Colors.black.withOpacity(0.5),
+              ),
+            ),
+            Center(
+              child: Hero(
+                tag: post.id,
+                child: InteractiveViewer(
+                  minScale: 0.5,
+                  maxScale: 5.0,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: CachedNetworkImage(
+                      imageUrl: post.image?.url ?? '',
+                      width: double.infinity,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

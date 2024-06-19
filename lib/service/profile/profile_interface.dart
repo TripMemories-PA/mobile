@@ -1,3 +1,4 @@
+import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../api/profile/response/friend_request/friend_request_response.dart';
 import '../../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../../object/profile/profile.dart';
@@ -21,5 +22,10 @@ abstract class ProfileDataSourceInterface {
     required int page,
     required int perPage,
     String? searchName,
+  });
+
+  Future<GetAllPostsResponse> getMyPosts({
+    required int page,
+    required int perPage,
   });
 }

@@ -1,3 +1,4 @@
+import '../api/post/model/response/get_all_posts_response.dart';
 import '../api/profile/response/friend_request/friend_request_response.dart';
 import '../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../object/profile/profile.dart';
@@ -56,6 +57,16 @@ class ProfileRepository {
       page: page,
       perPage: perPage,
       searchName: searchName,
+    );
+  }
+
+  Future<GetAllPostsResponse> getMyPosts({
+    required int page,
+    required int perPage,
+  }) async {
+    return profileRemoteDataSource.getMyPosts(
+      page: page,
+      perPage: perPage,
     );
   }
 }

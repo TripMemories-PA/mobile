@@ -20,6 +20,8 @@ _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
+      likesCount: (json['likesCount'] as num?)?.toInt(),
+      commentsCount: (json['commentsCount'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
@@ -33,4 +35,6 @@ Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
       'createdBy': instance.createdBy,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
+      'likesCount': instance.likesCount,
+      'commentsCount': instance.commentsCount,
     };

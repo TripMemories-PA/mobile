@@ -18,6 +18,8 @@ class Post with _$Post {
     required Profile createdBy,
     required DateTime createdAt,
     required DateTime? updatedAt,
+    required int? likesCount,
+    required int? commentsCount,
   }) = _Post;
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);

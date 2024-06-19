@@ -1,3 +1,4 @@
+import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../api/profile/profile_service.dart';
 import '../../api/profile/response/friend_request/friend_request_response.dart';
 import '../../api/profile/response/friends/get_friends_pagination_response.dart';
@@ -48,5 +49,13 @@ class ProfileRemoteDataSource extends ProfileDataSourceInterface {
     final GetFriendsPaginationResponse friendRequests = await _profileService
         .getUsers(page: page, perPage: perPage, searchName: searchName);
     return friendRequests;
+  }
+
+  @override
+  Future<GetAllPostsResponse> getMyPosts(
+      {required int page, required int perPage}) async {
+    final GetAllPostsResponse posts =
+        await _profileService.getMyPosts(page: page, perPage: perPage);
+    return posts;
   }
 }

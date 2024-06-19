@@ -33,7 +33,7 @@ class GetFriendsEvent extends ProfileEvent {
     this.isRefresh = false,
   });
 
-final bool isRefresh;
+  final bool isRefresh;
 }
 
 class UpdateProfilePictureEvent extends ProfileEvent {
@@ -46,4 +46,12 @@ class UpdateProfileBannerEvent extends ProfileEvent {
   UpdateProfileBannerEvent(this.image);
 
   final XFile image;
+}
+
+class GetMyPostsEvent extends ProfileEvent {
+  GetMyPostsEvent({
+    this.isRefresh = false,
+  });
+
+  final bool isRefresh;
 }

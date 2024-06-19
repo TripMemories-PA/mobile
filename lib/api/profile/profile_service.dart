@@ -31,6 +31,7 @@ class ProfileService implements IProfileService {
   static const String apiFriendRequestsUrl = '$apiMeUrl/friend-requests';
   static const String apiMyPostsUrl =
       '$apiMeUrl/posts?page=[nb_page]&perPage=[per_page]';
+  static const String apiPostUrl = '${AppConfig.apiUrl}/posts';
 
   @override
   Future<Profile> getProfile({required String id}) async {
@@ -264,8 +265,10 @@ class ProfileService implements IProfileService {
   }
 
   @override
-  Future<GetAllPostsResponse> getMyPosts(
-      {required int page, required int perPage}) async {
+  Future<GetAllPostsResponse> getMyPosts({
+    required int page,
+    required int perPage,
+  }) async {
     Response response;
     final String url = apiMyPostsUrl
         .replaceAll('[nb_page]', page.toString())
@@ -284,6 +287,17 @@ class ProfileService implements IProfileService {
       throw ParsingResponseException(
         ApiError.errorOccurredWhileParsingResponse(),
       );
+    }
+  }
+
+  @override
+  Future<void> deletePost({required int postId}) async {
+    try {
+      await DioClient.instance.delete(
+        '$apiPostUrl/$postId',
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
     }
   }
 }

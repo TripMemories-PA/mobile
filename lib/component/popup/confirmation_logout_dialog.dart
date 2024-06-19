@@ -21,32 +21,32 @@ class ConfirmationDialog extends StatelessWidget {
           height: 200,
           content: Padding(
             padding: const EdgeInsets.all(32),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(title ?? StringConstants().confirmAction),
-                  16.ph,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      TextButton(
-                        child: Text(StringConstants().no),
-                        onPressed: () => context.pop(false),
-                      ),
-                      ElevatedButton(
-                        child: Text(StringConstants().yes),
-                        onPressed: () => context.pop(true),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(title ?? StringConstants().confirmAction),
+                16.ph,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    TextButton(
+                      child: Text(StringConstants().no),
+                      onPressed: () => context.pop(false),
+                    ),
+                    ElevatedButton(
+                      child: Text(StringConstants().yes),
+                      onPressed: () => context.pop(true),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
+        ),
       );
 }
 
-Future<bool> confirmationLogout(
+Future<bool> confirmationPopUp(
   BuildContext context, {
   String? title,
   String? subtitle,

@@ -56,4 +56,6 @@ abstract class IProfileService {
     required int page,
     required int perPage,
   });
+
+  Future<void> deletePost({required int postId});
 }

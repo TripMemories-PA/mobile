@@ -145,6 +145,11 @@ class ProfilePage extends HookWidget {
                     StringConstants().profileUpdated,
                   );
                 }
+                if (state.status == ProfileStatus.postDeleted) {
+                  Messenger.showSnackBarSuccess(
+                    StringConstants().postDeleted,
+                  );
+                }
               },
               child: const SizedBox.shrink(),
             ),
@@ -172,12 +177,26 @@ class MyPostsAndMyFriends extends HookWidget {
       child: userId == null
           ? TabBarView(
               controller: tabController,
-              children: const [
-                SingleChildScrollView(
-                  child: MyFriendsComponent(),
+              children: [
+                RefreshIndicator(
+                  onRefresh: () async {
+                    context
+                        .read<ProfileBloc>()
+                        .add(GetFriendsEvent(isRefresh: true));
+                  },
+                  child: const SingleChildScrollView(
+                    child: MyFriendsComponent(),
+                  ),
                 ),
-                SingleChildScrollView(
-                  child: MyPostsComponents(),
+                RefreshIndicator(
+                  onRefresh: () async {
+                    context
+                        .read<ProfileBloc>()
+                        .add(GetMyPostsEvent(isRefresh: true));
+                  },
+                  child: const SingleChildScrollView(
+                    child: MyPostsComponents(),
+                  ),
                 ),
               ],
             )

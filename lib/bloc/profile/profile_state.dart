@@ -6,6 +6,7 @@ enum ProfileStatus {
   notLoading,
   updated,
   error,
+  postDeleted,
 }
 
 class ProfileState {

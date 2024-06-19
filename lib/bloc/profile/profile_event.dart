@@ -55,3 +55,9 @@ class GetMyPostsEvent extends ProfileEvent {
 
   final bool isRefresh;
 }
+
+class DeletePostEvent extends ProfileEvent {
+  DeletePostEvent(this.postId);
+
+  final int postId;
+}

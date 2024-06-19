@@ -47,6 +47,7 @@ class StringConstants {
   String get confirmAction => 'Etes-vous sûr ?';
 
   String get profileUpdated => 'Profil modifié !';
+  String get postDeleted => 'Post supprimé !';
 
   String get noMoreFriends => "Plus d'amis à afficher.";
   String get noMoreUsers => "Plus d'utilisateurs à afficher.";

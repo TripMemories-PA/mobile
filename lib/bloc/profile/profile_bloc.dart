@@ -296,6 +296,33 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         }
       },
     );
+
+    on<DeletePostEvent>(
+      (event, emit) async {
+        try {
+          emit(state.copyWith(status: ProfileStatus.loading));
+          await profileService.deletePost(postId: event.postId);
+          emit(state.copyWith(status: ProfileStatus.postDeleted));
+          emit(
+            state.copyWith(
+              posts: state.posts?.copyWith(
+                data: state.posts!.data
+                    .where((post) => post.id != event.postId)
+                    .toList(),
+              ),
+            ),
+          );
+        } catch (e) {
+          emit(
+            state.copyWith(
+              status: ProfileStatus.error,
+              error: e is CustomException ? e.apiError : ApiError.unknown(),
+            ),
+          );
+          add(GetMyPostsEvent(isRefresh: true));
+        }
+      },
+    );
   }
 
   final IProfileService profileService;

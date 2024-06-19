@@ -52,8 +52,10 @@ class ProfileRemoteDataSource extends ProfileDataSourceInterface {
   }
 
   @override
-  Future<GetAllPostsResponse> getMyPosts(
-      {required int page, required int perPage}) async {
+  Future<GetAllPostsResponse> getMyPosts({
+    required int page,
+    required int perPage,
+  }) async {
     final GetAllPostsResponse posts =
         await _profileService.getMyPosts(page: page, perPage: perPage);
     return posts;

@@ -305,7 +305,9 @@ class EditTweetPage extends HookWidget {
   }
 
   RatingBar _buildRatingBar(
-      BuildContext context, ValueNotifier<double> rating) {
+    BuildContext context,
+    ValueNotifier<double> rating,
+  ) {
     return RatingBar(
       glow: false,
       initialRating: rating.value,

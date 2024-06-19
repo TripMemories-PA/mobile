@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../api/error/api_error.dart';
@@ -31,11 +31,11 @@ class PublishPostBloc extends Bloc<PublishPostEvent, PublishPostState> {
       } catch (e) {
         if (e is CustomException) {
           emit(
-              state.copyWith(error: e.apiError, status: EditTweetStatus.error));
+              state.copyWith(error: e.apiError, status: EditTweetStatus.error),);
         } else {
           emit(
             state.copyWith(
-                error: ApiError.errorOccurred(), status: EditTweetStatus.error),
+                error: ApiError.errorOccurred(), status: EditTweetStatus.error,),
           );
         }
       }

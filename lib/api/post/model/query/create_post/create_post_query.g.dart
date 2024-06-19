@@ -11,9 +11,9 @@ _$CreatePostQueryImpl _$$CreatePostQueryImplFromJson(
         Map<String, dynamic> json) =>
     _$CreatePostQueryImpl(
       content: json['content'] as String,
-      imageId: (json['imageId'] as num).toInt(),
+      imageId: (json['imageId'] as num?)?.toInt(),
       poiId: (json['poiId'] as num).toInt(),
-      note: json['note'] as String,
+      note: (json['note'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$CreatePostQueryImplToJson(

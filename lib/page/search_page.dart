@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends HookWidget {
   const SearchPage({super.key});
 
   @override

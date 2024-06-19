@@ -12,13 +12,14 @@ import '../exception/parsing_response_exception.dart';
 import 'i_post_service.dart';
 import 'model/query/create_post/create_post_query.dart';
 import 'model/query/update_post_query/update_post_query.dart';
+import 'model/response/create_post_response/create_post_response.dart';
 import 'model/response/get_all_posts_response.dart';
 
 class PostService implements IPostService {
   static const String apiPostBaseUrl = '${AppConfig.apiUrl}/posts';
 
   @override
-  Future<Post> createPost({
+  Future<CreatePostResponse> createPost({
     required CreatePostQuery query,
   }) async {
     Response response;
@@ -31,7 +32,7 @@ class PostService implements IPostService {
       throw BadRequestException(ApiError.errorOccurred());
     }
     try {
-      return Post.fromJson(response.data);
+      return CreatePostResponse.fromJson(response.data);
     } catch (e) {
       throw ParsingResponseException(
         ApiError.errorOccurredWhileParsingResponse(),

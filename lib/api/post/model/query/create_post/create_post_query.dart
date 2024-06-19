@@ -8,9 +8,9 @@ class CreatePostQuery with _$CreatePostQuery {
   @JsonSerializable(explicitToJson: true)
   const factory CreatePostQuery({
     required String content,
-    required int imageId,
+    int? imageId,
     required int poiId,
-    required String note,
+    required double note,
   }) = _CreatePostQuery;
 
   factory CreatePostQuery.fromJson(Map<String, dynamic> json) =>

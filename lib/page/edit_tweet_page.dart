@@ -1,12 +1,20 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../api/monument/model/response/poi/poi.dart';
+import '../api/post/post_service.dart';
+import '../bloc/edit_tweet_bloc/publish_post_bloc.dart';
 import '../component/custom_card.dart';
+import '../component/popup/search_monument_popup.dart';
 import '../num_extensions.dart';
+import '../utils/messenger.dart';
 
 class EditTweetPage extends HookWidget {
   const EditTweetPage({super.key});
@@ -23,73 +31,139 @@ class EditTweetPage extends HookWidget {
         );
   }
 
+  void publishTweet({
+    required BuildContext context,
+    required ValueNotifier<XFile?> image,
+    required TextEditingController textEditingController,
+    Poi? selectedMonument,
+    required double rating,
+  }) {
+    context.read<PublishPostBloc>().add(
+          PostTweetRequested(
+            content: textEditingController.text,
+            rating: rating,
+            monumentId: selectedMonument!.id,
+            image: image.value,
+          ),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ValueNotifier<XFile?> image = useState(null);
     final TextEditingController textEditingController =
         useTextEditingController();
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: ListView(
-            children: [
-              _buildHeader(context),
-              20.ph,
-              if (image.value != null)
-                Container(
-                  width: double.infinity,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.0),
-                    image: DecorationImage(
-                      image: FileImage(
-                        File(image.value!.path),
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                )
-              else
-                _buildImagePicker(image, context),
-              20.ph,
-              SizedBox(
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    final selectedMonument = useState<Poi?>(null);
+    final rating = useState<double>(0.0);
+    return BlocProvider(
+      create: (context) => PublishPostBloc(postService: PostService()),
+      child: SafeArea(
+        child: BlocBuilder<PublishPostBloc, PublishPostState>(
+          builder: (context, state) {
+            return Scaffold(
+              body: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: ListView(
                   children: [
-                    const Text(
-                      'Evaluez votre expérience',
-                      textAlign: TextAlign.left,
+                    BlocListener<PublishPostBloc, PublishPostState>(
+                      listener: (context, state) {
+                        if (state.error != null) {
+                          Messenger.showSnackBarError(
+                            state.error!.getDescription(),
+                          );
+                        } else if (state.status == EditTweetStatus.posted) {
+                          Messenger.showSnackBarSuccess('Tweet publié');
+                          context.pop();
+                        }
+                      },
+                      child: const SizedBox.shrink(),
                     ),
-                    _buildRatingBar(context),
-                    10.ph,
-                    Text(
-                      'Mon expérience',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+                    20.ph,
+                    _buildHeader(context, () {
+                      publishTweet(
+                        context: context,
+                        image: image,
+                        textEditingController: textEditingController,
+                        selectedMonument: selectedMonument.value,
+                        rating: rating.value,
+                      );
+                    }),
+                    20.ph,
+                    if (image.value != null)
+                      Stack(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0),
+                              image: DecorationImage(
+                                image: FileImage(
+                                  File(image.value!.path),
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.close,
+                              ),
+                              onPressed: () {
+                                if (context.mounted) {
+                                  image.value = null;
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      )
+                    else
+                      _buildImagePicker(image, context),
+                    20.ph,
+                    SizedBox(
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Evaluez votre expérience',
+                            textAlign: TextAlign.left,
+                          ),
+                          _buildRatingBar(context, rating),
+                          10.ph,
+                          Text(
+                            'Mon expérience',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          10.ph,
+                          _buildPostText(context, textEditingController),
+                          10.ph,
+                          Text(
+                            'Localisation',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          10.ph,
+                          _buildMonumentPicker(context, selectedMonument),
+                        ],
                       ),
                     ),
-                    10.ph,
-                    _buildPostText(context, textEditingController),
-                    10.ph,
-                    Text(
-                      'Localisation',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    10.ph,
-                    _buildMonumentPicker(context),
                   ],
                 ),
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
@@ -124,28 +198,80 @@ class EditTweetPage extends HookWidget {
     );
   }
 
-  CustomCard _buildMonumentPicker(BuildContext context) {
+  CustomCard _buildMonumentPicker(
+    BuildContext context,
+    ValueNotifier<Poi?> selectedMonument,
+  ) {
     return CustomCard(
       width: double.infinity,
       height: 100,
       borderColor: Colors.transparent,
       backgroundColor: Theme.of(context).colorScheme.tertiary,
-      content: CustomCard(
-        height: 40,
-        width: MediaQuery.of(context).size.width * 0.35,
-        borderRadius: 20,
-        borderColor: Colors.transparent,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        content: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text(
-            'Ajouter un lieu',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.surface,
+      content: selectedMonument.value == null
+          ? CustomCard(
+              onTap: () async {
+                final Poi? result = await searchMonumentPopup(context);
+                if (result == null) {
+                  return;
+                } else {
+                  if (context.mounted) {
+                    selectedMonument.value = result;
+                  }
+                }
+              },
+              height: 40,
+              width: MediaQuery.of(context).size.width * 0.35,
+              borderRadius: 20,
+              borderColor: Colors.transparent,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              content: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  'Ajouter un lieu',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
+                ),
+              ),
+            )
+          : Stack(
+              children: [
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: CachedNetworkImage(
+                      imageUrl: selectedMonument.value?.cover.url ?? '',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Text(
+                  selectedMonument.value?.city ?? 'Une ville',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 15,
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                    ),
+                    onPressed: () {
+                      if (context.mounted) {
+                        selectedMonument.value = null;
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -178,9 +304,13 @@ class EditTweetPage extends HookWidget {
     );
   }
 
-  RatingBar _buildRatingBar(BuildContext context) {
+  RatingBar _buildRatingBar(
+    BuildContext context,
+    ValueNotifier<double> rating,
+  ) {
     return RatingBar(
       glow: false,
+      initialRating: rating.value,
       minRating: 1,
       maxRating: 5,
       updateOnDrag: true,
@@ -199,15 +329,18 @@ class EditTweetPage extends HookWidget {
           color: Theme.of(context).colorScheme.surfaceTint,
         ),
       ),
-      onRatingUpdate: (double value) {},
+      onRatingUpdate: (double value) {
+        rating.value = value;
+      },
     );
   }
 
-  Row _buildHeader(BuildContext context) {
+  Row _buildHeader(BuildContext context, Function() validate) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomCard(
+          onTap: () => context.pop(),
           borderColor: Theme.of(context).colorScheme.primary,
           height: 30,
           borderRadius: 20,
@@ -256,6 +389,7 @@ class EditTweetPage extends HookWidget {
           ),
         ),
         CustomCard(
+          onTap: validate,
           height: 30,
           width: 100,
           borderRadius: 20,

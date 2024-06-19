@@ -14,7 +14,7 @@ import '../component/profile_infos.dart';
 import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
 import '../repository/profile_repository.dart';
-import '../service/profile_remote_data_source.dart';
+import '../service/profile/profile_remote_data_source.dart';
 import '../utils/messenger.dart';
 import 'login_page.dart';
 

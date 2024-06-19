@@ -135,6 +135,8 @@ class EditTweetPage extends HookWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          _buildTitle(context, titleController),
+                          10.ph,
                           const Text(
                             'Evaluez votre expérience',
                             textAlign: TextAlign.left,
@@ -278,6 +280,35 @@ class EditTweetPage extends HookWidget {
                 ),
               ],
             ),
+    );
+  }
+
+  Container _buildTitle(
+    BuildContext context,
+    TextEditingController textEditingController,
+  ) {
+    return Container(
+      width: double.infinity,
+      height: 50,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.tertiary,
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: TextField(
+        controller: textEditingController,
+        maxLength: 40,
+        maxLines: 1,
+        decoration: const InputDecoration(
+          hintText: 'Entrez un titre',
+          counterText: '',
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          contentPadding: EdgeInsets.all(
+            12.0,
+          ),
+        ),
+      ),
     );
   }
 

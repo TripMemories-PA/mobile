@@ -4,16 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../api/post/post_service.dart';
 import '../api/profile/profile_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
+import '../bloc/post/post_bloc.dart';
 import '../bloc/profile/profile_bloc.dart';
 import '../component/my_friends_component.dart';
 import '../component/my_post_component.dart';
 import '../component/profile_infos.dart';
 import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
+import '../repository/post_repository.dart';
 import '../repository/profile_repository.dart';
+import '../service/post/post_remote_data_source.dart';
 import '../service/profile/profile_remote_data_source.dart';
 import '../utils/messenger.dart';
 import 'login_page.dart';
@@ -188,16 +192,7 @@ class MyPostsAndMyFriends extends HookWidget {
                     child: MyFriendsComponent(),
                   ),
                 ),
-                RefreshIndicator(
-                  onRefresh: () async {
-                    context
-                        .read<ProfileBloc>()
-                        .add(GetMyPostsEvent(isRefresh: true));
-                  },
-                  child: const SingleChildScrollView(
-                    child: MyPostsComponents(),
-                  ),
-                ),
+                _buildPostsPart(),
               ],
             )
           : const Center(
@@ -205,6 +200,37 @@ class MyPostsAndMyFriends extends HookWidget {
                 'NO DATA TO DISPLAY FOR NOW: SCREEN INC',
               ),
             ),
+    );
+  }
+
+  RepositoryProvider<PostRepository> _buildPostsPart() {
+    return RepositoryProvider(
+      create: (context) =>
+          PostRepository(postRemoteDataSource: PostRemoteDataSource()),
+      child: BlocProvider(
+        create: (context) => PostBloc(
+          postRepository: RepositoryProvider.of<PostRepository>(
+            context,
+          ),
+          postService: PostService(),
+        )..add(
+            GetMyPostsEvent(
+              isRefresh: true,
+            ),
+          ),
+        child: BlocBuilder<PostBloc, PostState>(
+          builder: (context, state) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<PostBloc>().add(GetMyPostsEvent(isRefresh: true));
+              },
+              child: const SingleChildScrollView(
+                child: MyPostsComponents(),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

@@ -56,9 +56,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           add(
             GetFriendsEvent(isRefresh: true),
           );
-          add(
-            GetMyPostsEvent(isRefresh: true),
-          );
         } catch (e) {
           // TODO(nono): implement profileLocalDataSource
           /* try {
@@ -239,90 +236,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         );
       }
     });
-
-    on<GetMyPostsEvent>(
-      (event, emit) async {
-        if (event.isRefresh) {
-          emit(state.copyWith(status: ProfileStatus.loading));
-        } else {
-          emit(
-            state.copyWith(
-              getMorePostsStatus: ProfileStatus.loading,
-            ),
-          );
-        }
-        try {
-          final String? authToken = await AuthTokenHandler().getAuthToken();
-          if (authToken == null) {
-            emit(
-              state.copyWith(
-                status: ProfileStatus.error,
-                error: AuthError.notAuthenticated(),
-              ),
-            );
-            return;
-          }
-          final Profile? tmpProfile = state.profile;
-          if (tmpProfile != null) {
-            final GetAllPostsResponse myPosts =
-                await profileRepository.getMyPosts(
-              page: event.isRefresh ? 1 : state.postsPage + 1,
-              perPage: state.postsPerPage,
-            );
-            emit(
-              state.copyWith(
-                posts: event.isRefresh
-                    ? myPosts
-                    : state.posts?.copyWith(
-                        data: [
-                          ...state.posts!.data,
-                          ...myPosts.data,
-                        ],
-                      ),
-                status: ProfileStatus.notLoading,
-                getMorePostsStatus: ProfileStatus.notLoading,
-                postsPage: event.isRefresh ? 1 : state.postsPage + 1,
-                hasMorePosts: myPosts.data.length == state.postsPerPage,
-              ),
-            );
-          }
-        } catch (e) {
-          emit(
-            state.copyWith(
-              status: ProfileStatus.error,
-              error: e is CustomException ? e.apiError : ApiError.unknown(),
-            ),
-          );
-        }
-      },
-    );
-
-    on<DeletePostEvent>(
-      (event, emit) async {
-        try {
-          emit(state.copyWith(status: ProfileStatus.loading));
-          await profileService.deletePost(postId: event.postId);
-          emit(state.copyWith(status: ProfileStatus.postDeleted));
-          emit(
-            state.copyWith(
-              posts: state.posts?.copyWith(
-                data: state.posts!.data
-                    .where((post) => post.id != event.postId)
-                    .toList(),
-              ),
-            ),
-          );
-        } catch (e) {
-          emit(
-            state.copyWith(
-              status: ProfileStatus.error,
-              error: e is CustomException ? e.apiError : ApiError.unknown(),
-            ),
-          );
-          add(GetMyPostsEvent(isRefresh: true));
-        }
-      },
-    );
   }
 
   final IProfileService profileService;

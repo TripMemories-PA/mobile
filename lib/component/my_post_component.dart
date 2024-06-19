@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:go_router/go_router.dart';
 
-import '../bloc/profile/profile_bloc.dart';
+import '../bloc/post/post_bloc.dart';
 import '../constants/my_colors.dart';
+import '../constants/route_name.dart';
 import '../object/post/post.dart';
 import 'custom_card.dart';
 import 'popup/confirmation_logout_dialog.dart';
@@ -19,9 +21,9 @@ class MyPostsComponents extends StatelessWidget {
   }
 
   Widget _buildPostList(BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileState>(
+    return BlocBuilder<PostBloc, PostState>(
       builder: (context, state) {
-        if (state.getMorePostsStatus == ProfileStatus.notLoading) {
+        if (state.getMorePostsStatus == PostStatus.notLoading) {
           final List<Post>? posts = state.posts?.data;
           if (posts != null && posts.isNotEmpty) {
             return Padding(
@@ -40,9 +42,9 @@ class MyPostsComponents extends StatelessWidget {
           } else {
             return const Center(child: Text('Pas de post à afficher'));
           }
-        } else if (state.getMorePostsStatus == ProfileStatus.loading) {
+        } else if (state.getMorePostsStatus == PostStatus.loading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state.getMorePostsStatus == ProfileStatus.error) {
+        } else if (state.getMorePostsStatus == PostStatus.error) {
           return const Center(
             child: Text('Erreur lors du chargement des posts'),
           );
@@ -147,9 +149,11 @@ class PostCard extends HookWidget {
                   child: IconButton(
                     iconSize: 20,
                     icon: const Icon(
-                      Icons.remove_red_eye_outlined,
+                      Icons.edit,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      context.push(RouteName.editTweetPage, extra: post);
+                    },
                   ),
                 ),
               ],
@@ -194,9 +198,7 @@ class PostCard extends HookWidget {
                       return;
                     } else {
                       if (context.mounted) {
-                        context
-                            .read<ProfileBloc>()
-                            .add(DeletePostEvent(post.id));
+                        context.read<PostBloc>().add(DeletePostEvent(post.id));
                       }
                     }
                   },

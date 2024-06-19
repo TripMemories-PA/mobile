@@ -15,3 +15,13 @@ class PostTweetRequested extends PublishPostEvent {
   final double rating;
   final XFile? image;
 }
+
+class UpdatePostRequested extends PublishPostEvent {
+  UpdatePostRequested({
+    required this.post,
+    this.image,
+  });
+
+  final Post post;
+  final XFile? image;
+}

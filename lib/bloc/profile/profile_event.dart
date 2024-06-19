@@ -47,17 +47,3 @@ class UpdateProfileBannerEvent extends ProfileEvent {
 
   final XFile image;
 }
-
-class GetMyPostsEvent extends ProfileEvent {
-  GetMyPostsEvent({
-    this.isRefresh = false,
-  });
-
-  final bool isRefresh;
-}
-
-class DeletePostEvent extends ProfileEvent {
-  DeletePostEvent(this.postId);
-
-  final int postId;
-}

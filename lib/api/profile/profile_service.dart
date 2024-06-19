@@ -34,7 +34,7 @@ class ProfileService implements IProfileService {
   static const String apiPostUrl = '${AppConfig.apiUrl}/posts';
 
   @override
-  Future<Profile> getProfile({required String id}) async {
+  Future<Profile> getProfile({required int id}) async {
     Response response;
     try {
       response = await DioClient.instance.get(

@@ -18,6 +18,7 @@ abstract class IPostService {
   Future<GetAllPostsResponse> getPosts({
     required int page,
     required int perPage,
+    required int? userId,
   });
 
   Future<Post> updatePost({
@@ -36,7 +37,7 @@ abstract class IPostService {
     required int postId,
   });
 
-  Future<void> unlikePost({
+  Future<void> dislikePost({
     required int postId,
   });
 }

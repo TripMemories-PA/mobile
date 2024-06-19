@@ -12,13 +12,15 @@ class PostRepository {
 
   //final ProfileLocalDataSource profilelocalDataSource;
 
-  Future<GetAllPostsResponse> getMyPosts({
+  Future<GetAllPostsResponse> getPosts({
     required int page,
     required int perPage,
+    int? userId,
   }) async {
-    return postRemoteDataSource.getMyPosts(
+    return postRemoteDataSource.getPosts(
       page: page,
       perPage: perPage,
+      userId: userId,
     );
   }
 }

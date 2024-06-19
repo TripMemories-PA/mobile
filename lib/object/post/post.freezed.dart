@@ -29,8 +29,9 @@ mixin _$Post {
   Profile get createdBy => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
-  int? get likesCount => throw _privateConstructorUsedError;
-  int? get commentsCount => throw _privateConstructorUsedError;
+  int get likesCount => throw _privateConstructorUsedError;
+  int get commentsCount => throw _privateConstructorUsedError;
+  bool get isLiked => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -52,8 +53,9 @@ abstract class $PostCopyWith<$Res> {
       Profile createdBy,
       DateTime createdAt,
       DateTime? updatedAt,
-      int? likesCount,
-      int? commentsCount});
+      int likesCount,
+      int commentsCount,
+      bool isLiked});
 
   $UploadFileCopyWith<$Res>? get image;
   $ProfileCopyWith<$Res> get createdBy;
@@ -81,8 +83,9 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
     Object? createdBy = null,
     Object? createdAt = null,
     Object? updatedAt = freezed,
-    Object? likesCount = freezed,
-    Object? commentsCount = freezed,
+    Object? likesCount = null,
+    Object? commentsCount = null,
+    Object? isLiked = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -121,14 +124,18 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      likesCount: freezed == likesCount
+      likesCount: null == likesCount
           ? _value.likesCount
           : likesCount // ignore: cast_nullable_to_non_nullable
-              as int?,
-      commentsCount: freezed == commentsCount
+              as int,
+      commentsCount: null == commentsCount
           ? _value.commentsCount
           : commentsCount // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
+      isLiked: null == isLiked
+          ? _value.isLiked
+          : isLiked // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -170,8 +177,9 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
       Profile createdBy,
       DateTime createdAt,
       DateTime? updatedAt,
-      int? likesCount,
-      int? commentsCount});
+      int likesCount,
+      int commentsCount,
+      bool isLiked});
 
   @override
   $UploadFileCopyWith<$Res>? get image;
@@ -198,8 +206,9 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? createdBy = null,
     Object? createdAt = null,
     Object? updatedAt = freezed,
-    Object? likesCount = freezed,
-    Object? commentsCount = freezed,
+    Object? likesCount = null,
+    Object? commentsCount = null,
+    Object? isLiked = null,
   }) {
     return _then(_$PostImpl(
       id: null == id
@@ -238,14 +247,18 @@ class __$$PostImplCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      likesCount: freezed == likesCount
+      likesCount: null == likesCount
           ? _value.likesCount
           : likesCount // ignore: cast_nullable_to_non_nullable
-              as int?,
-      commentsCount: freezed == commentsCount
+              as int,
+      commentsCount: null == commentsCount
           ? _value.commentsCount
           : commentsCount // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
+      isLiked: null == isLiked
+          ? _value.isLiked
+          : isLiked // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -264,7 +277,8 @@ class _$PostImpl implements _Post {
       required this.createdAt,
       required this.updatedAt,
       required this.likesCount,
-      required this.commentsCount});
+      required this.commentsCount,
+      required this.isLiked});
 
   factory _$PostImpl.fromJson(Map<String, dynamic> json) =>
       _$$PostImplFromJson(json);
@@ -288,13 +302,15 @@ class _$PostImpl implements _Post {
   @override
   final DateTime? updatedAt;
   @override
-  final int? likesCount;
+  final int likesCount;
   @override
-  final int? commentsCount;
+  final int commentsCount;
+  @override
+  final bool isLiked;
 
   @override
   String toString() {
-    return 'Post(id: $id, poiId: $poiId, content: $content, note: $note, image: $image, imageId: $imageId, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt, likesCount: $likesCount, commentsCount: $commentsCount)';
+    return 'Post(id: $id, poiId: $poiId, content: $content, note: $note, image: $image, imageId: $imageId, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt, likesCount: $likesCount, commentsCount: $commentsCount, isLiked: $isLiked)';
   }
 
   @override
@@ -317,13 +333,26 @@ class _$PostImpl implements _Post {
             (identical(other.likesCount, likesCount) ||
                 other.likesCount == likesCount) &&
             (identical(other.commentsCount, commentsCount) ||
-                other.commentsCount == commentsCount));
+                other.commentsCount == commentsCount) &&
+            (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, poiId, content, note, image,
-      imageId, createdBy, createdAt, updatedAt, likesCount, commentsCount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      poiId,
+      content,
+      note,
+      image,
+      imageId,
+      createdBy,
+      createdAt,
+      updatedAt,
+      likesCount,
+      commentsCount,
+      isLiked);
 
   @JsonKey(ignore: true)
   @override
@@ -350,8 +379,9 @@ abstract class _Post implements Post {
       required final Profile createdBy,
       required final DateTime createdAt,
       required final DateTime? updatedAt,
-      required final int? likesCount,
-      required final int? commentsCount}) = _$PostImpl;
+      required final int likesCount,
+      required final int commentsCount,
+      required final bool isLiked}) = _$PostImpl;
 
   factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
 
@@ -374,9 +404,11 @@ abstract class _Post implements Post {
   @override
   DateTime? get updatedAt;
   @override
-  int? get likesCount;
+  int get likesCount;
   @override
-  int? get commentsCount;
+  int get commentsCount;
+  @override
+  bool get isLiked;
   @override
   @JsonKey(ignore: true)
   _$$PostImplCopyWith<_$PostImpl> get copyWith =>

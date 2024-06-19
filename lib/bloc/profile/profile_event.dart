@@ -5,7 +5,7 @@ sealed class ProfileEvent {}
 class GetProfileEvent extends ProfileEvent {
   GetProfileEvent({this.userId});
 
-  String? userId;
+  int? userId;
 }
 
 class UpdateProfileEvent extends ProfileEvent {

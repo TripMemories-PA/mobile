@@ -1,11 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../api/error/api_error.dart';
-import '../../api/error/specific_error/auth_error.dart';
 import '../../api/exception/custom_exception.dart';
 import '../../api/post/i_post_service.dart';
 import '../../api/post/model/response/get_all_posts_response.dart';
-import '../../local_storage/secure_storage/auth_token_handler.dart';
+import '../../object/post/post.dart';
 import '../../repository/post_repository.dart';
 
 part 'post_event.dart';
@@ -16,7 +15,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     required PostRepository postRepository,
     required this.postService,
   }) : super(const PostState()) {
-    on<GetMyPostsEvent>(
+    on<GetPostsEvent>(
       (event, emit) async {
         if (event.isRefresh) {
           emit(state.copyWith(status: PostStatus.loading));
@@ -28,34 +27,25 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           );
         }
         try {
-          final String? authToken = await AuthTokenHandler().getAuthToken();
-          if (authToken == null) {
-            emit(
-              state.copyWith(
-                status: PostStatus.error,
-                error: AuthError.notAuthenticated(),
-              ),
-            );
-            return;
-          }
-          final GetAllPostsResponse myPosts = await postRepository.getMyPosts(
+          final GetAllPostsResponse posts = await postRepository.getPosts(
             page: event.isRefresh ? 1 : state.postsPage + 1,
             perPage: state.postsPerPage,
+            userId: event.userId,
           );
           emit(
             state.copyWith(
               posts: event.isRefresh
-                  ? myPosts
+                  ? posts
                   : state.posts?.copyWith(
                       data: [
                         ...state.posts!.data,
-                        ...myPosts.data,
+                        ...posts.data,
                       ],
                     ),
               status: PostStatus.notLoading,
               getMorePostsStatus: PostStatus.notLoading,
               postsPage: event.isRefresh ? 1 : state.postsPage + 1,
-              hasMorePosts: myPosts.data.length == state.postsPerPage,
+              hasMorePosts: posts.data.length == state.postsPerPage,
             ),
           );
         } catch (e) {
@@ -91,7 +81,71 @@ class PostBloc extends Bloc<PostEvent, PostState> {
               error: e is CustomException ? e.apiError : ApiError.unknown(),
             ),
           );
-          add(GetMyPostsEvent(isRefresh: true));
+          add(GetPostsEvent(isRefresh: true));
+        }
+      },
+    );
+
+    on<LikePostEvent>(
+      (event, emit) async {
+        try {
+          emit(state.copyWith(status: PostStatus.loading));
+          await postService.likePost(postId: event.postId);
+          emit(state.copyWith(status: PostStatus.notLoading));
+          GetAllPostsResponse? data = state.posts;
+          if (data != null) {
+            final List<Post> posts = data.data.map((post) {
+              if (post.id == event.postId) {
+                post = post.copyWith(
+                  isLiked: true,
+                  likesCount: post.likesCount + 1,
+                );
+              }
+              return post;
+            }).toList();
+            data = data.copyWith(data: posts);
+            emit(state.copyWith(posts: data));
+          }
+        } catch (e) {
+          emit(
+            state.copyWith(
+              status: PostStatus.error,
+              error: e is CustomException ? e.apiError : ApiError.unknown(),
+            ),
+          );
+          add(GetPostsEvent(isRefresh: true));
+        }
+      },
+    );
+
+    on<DislikePostEvent>(
+      (event, emit) async {
+        try {
+          emit(state.copyWith(status: PostStatus.loading));
+          await postService.dislikePost(postId: event.postId);
+          emit(state.copyWith(status: PostStatus.notLoading));
+          GetAllPostsResponse? data = state.posts;
+          if (data != null) {
+            final List<Post> posts = data.data.map((post) {
+              if (post.id == event.postId) {
+                post = post.copyWith(
+                  isLiked: false,
+                  likesCount: post.likesCount - 1,
+                );
+              }
+              return post;
+            }).toList();
+            data = data.copyWith(data: posts);
+            emit(state.copyWith(posts: data));
+          }
+        } catch (e) {
+          emit(
+            state.copyWith(
+              status: PostStatus.error,
+              error: e is CustomException ? e.apiError : ApiError.unknown(),
+            ),
+          );
+          add(GetPostsEvent(isRefresh: true));
         }
       },
     );

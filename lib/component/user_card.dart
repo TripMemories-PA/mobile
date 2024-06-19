@@ -13,9 +13,11 @@ class UserCard extends StatelessWidget {
   const UserCard({
     super.key,
     required this.user,
+    this.needToPop = false,
   });
 
   final Profile user;
+  final bool needToPop;
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +215,9 @@ class UserCard extends StatelessWidget {
                 color: Colors.black,
                 onPressed: () {
                   context.push('${RouteName.profilePage}/$userId');
-                  context.pop();
+                  if (needToPop) {
+                    context.pop();
+                  }
                 },
               ),
             ),

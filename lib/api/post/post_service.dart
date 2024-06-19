@@ -17,6 +17,8 @@ import 'model/response/get_all_posts_response.dart';
 
 class PostService implements IPostService {
   static const String apiPostBaseUrl = '${AppConfig.apiUrl}/posts';
+  static const String apiGetUserPostUrl =
+      '${AppConfig.apiUrl}/users/[user_id]/posts';
 
   @override
   Future<CreatePostResponse> createPost({
@@ -74,11 +76,19 @@ class PostService implements IPostService {
   Future<GetAllPostsResponse> getPosts({
     required int page,
     required int perPage,
+    int? userId,
   }) async {
     Response response;
     try {
+      String url;
+      if (userId != null) {
+        url = '$apiGetUserPostUrl?page=$page&perPage=$perPage';
+        url = url.replaceAll('[user_id]', userId.toString());
+      } else {
+        url = '$apiPostBaseUrl?page=$page&perPage=$perPage';
+      }
       response = await DioClient.instance.get(
-        '$apiPostBaseUrl?page=$page&perPage=$perPage',
+        url,
       );
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());
@@ -146,7 +156,7 @@ class PostService implements IPostService {
   }
 
   @override
-  Future<void> unlikePost({required int postId}) async {
+  Future<void> dislikePost({required int postId}) async {
     try {
       await DioClient.instance.delete('$apiPostBaseUrl/$postId/like');
     } on BadRequestException {

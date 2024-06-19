@@ -205,7 +205,10 @@ class SearchingUsersBody extends HookWidget {
                   ),
                 ),
               ),
-              UserList(users: state.usersSearchByName?.data ?? []),
+              UserList(
+                users: state.usersSearchByName?.data ?? [],
+                needToPop: true,
+              ),
               Center(
                 child: state.searchUsersHasMoreUsers
                     ? (state.searchingUserByNameStatus !=
@@ -269,6 +272,7 @@ class SearchingUsersBody extends HookWidget {
             const SizedBox(height: 10),
             UserList(
               users: context.read<UserSearchingBloc>().state.users?.data ?? [],
+              needToPop: true,
             ),
             Center(
               child: context.read<UserSearchingBloc>().state.hasMoreUsers

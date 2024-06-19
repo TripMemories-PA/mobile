@@ -25,7 +25,7 @@ import 'login_page.dart';
 class ProfilePage extends HookWidget {
   const ProfilePage({super.key, this.userId});
 
-  final String? userId;
+  final int? userId;
 
   @override
   Widget build(BuildContext context) {
@@ -171,14 +171,15 @@ class MyPostsAndMyFriends extends HookWidget {
     required this.tabController,
   });
 
-  final String? userId;
+  final int? userId;
   final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
+    final int? tmpUserId = userId;
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
-      child: userId == null
+      child: tmpUserId == null
           ? TabBarView(
               controller: tabController,
               children: [
@@ -192,18 +193,14 @@ class MyPostsAndMyFriends extends HookWidget {
                     child: MyFriendsComponent(),
                   ),
                 ),
-                _buildPostsPart(),
+                _buildMyPostsPart(),
               ],
             )
-          : const Center(
-              child: Text(
-                'NO DATA TO DISPLAY FOR NOW: SCREEN INC',
-              ),
-            ),
+          : _buildOtherUsersPosts(tmpUserId),
     );
   }
 
-  RepositoryProvider<PostRepository> _buildPostsPart() {
+  RepositoryProvider<PostRepository> _buildMyPostsPart() {
     return RepositoryProvider(
       create: (context) =>
           PostRepository(postRemoteDataSource: PostRemoteDataSource()),
@@ -214,7 +211,7 @@ class MyPostsAndMyFriends extends HookWidget {
           ),
           postService: PostService(),
         )..add(
-            GetMyPostsEvent(
+            GetPostsEvent(
               isRefresh: true,
             ),
           ),
@@ -222,7 +219,39 @@ class MyPostsAndMyFriends extends HookWidget {
           builder: (context, state) {
             return RefreshIndicator(
               onRefresh: () async {
-                context.read<PostBloc>().add(GetMyPostsEvent(isRefresh: true));
+                context.read<PostBloc>().add(GetPostsEvent(isRefresh: true));
+              },
+              child: const SingleChildScrollView(
+                child: MyPostsComponents(),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  RepositoryProvider<PostRepository> _buildOtherUsersPosts(int userId) {
+    return RepositoryProvider(
+      create: (context) =>
+          PostRepository(postRemoteDataSource: PostRemoteDataSource()),
+      child: BlocProvider(
+        create: (context) => PostBloc(
+          postRepository: RepositoryProvider.of<PostRepository>(
+            context,
+          ),
+          postService: PostService(),
+        )..add(
+            GetPostsEvent(
+              isRefresh: true,
+              userId: userId,
+            ),
+          ),
+        child: BlocBuilder<PostBloc, PostState>(
+          builder: (context, state) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<PostBloc>().add(GetPostsEvent(isRefresh: true));
               },
               child: const SingleChildScrollView(
                 child: MyPostsComponents(),

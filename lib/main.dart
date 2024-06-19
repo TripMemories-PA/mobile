@@ -129,7 +129,7 @@ class MyApp extends HookWidget {
                 builder: (BuildContext context, GoRouterState state) {
                   final Map<String, String> queryParameters =
                       GoRouterState.of(context).pathParameters;
-                  final String? userId = queryParameters['userId'];
+                  final int? userId = int.tryParse(queryParameters['userId']!);
                   return ProfilePage(userId: userId);
                 },
               ),

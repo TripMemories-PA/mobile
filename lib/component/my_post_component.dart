@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 
+import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/my_colors.dart';
 import '../constants/route_name.dart';
@@ -169,8 +170,16 @@ class PostCard extends HookWidget {
               children: [
                 IconButton(
                   color: MyColors.purple,
-                  icon: const Icon(Icons.favorite_border),
-                  onPressed: () {},
+                  icon: Icon(
+                    post.isLiked ? Icons.favorite : Icons.favorite_border,
+                  ),
+                  onPressed: () {
+                    post.isLiked
+                        ? context
+                            .read<PostBloc>()
+                            .add(DislikePostEvent(post.id))
+                        : context.read<PostBloc>().add(LikePostEvent(post.id));
+                  },
                 ),
                 Text(
                   post.likesCount.toString(),
@@ -187,22 +196,26 @@ class PostCard extends HookWidget {
                   style: const TextStyle(color: MyColors.purple),
                 ),
                 const Expanded(child: SizedBox()),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () async {
-                    final bool result = await confirmationPopUp(
-                      context,
-                      title: 'Etes-vous sûr de vouloir supprimer ce post ?',
-                    );
-                    if (!result) {
-                      return;
-                    } else {
-                      if (context.mounted) {
-                        context.read<PostBloc>().add(DeletePostEvent(post.id));
+                if (post.createdBy.id ==
+                    context.read<AuthBloc>().state.user?.id)
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () async {
+                      final bool result = await confirmationPopUp(
+                        context,
+                        title: 'Etes-vous sûr de vouloir supprimer ce post ?',
+                      );
+                      if (!result) {
+                        return;
+                      } else {
+                        if (context.mounted) {
+                          context
+                              .read<PostBloc>()
+                              .add(DeletePostEvent(post.id));
+                        }
                       }
-                    }
-                  },
-                ),
+                    },
+                  ),
               ],
             ),
           ],

@@ -7,7 +7,7 @@ import 'response/friend_request/friend_request_response.dart';
 import 'response/friends/get_friends_pagination_response.dart';
 
 abstract class IProfileService {
-  Future<Profile> getProfile({required String id});
+  Future<Profile> getProfile({required int id});
 
   Future<Profile> whoAmI();
 

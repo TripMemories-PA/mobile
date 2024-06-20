@@ -8,7 +8,7 @@ import '../../bloc/user_searching_bloc/user_searching_bloc.dart';
 import '../../constants/my_colors.dart';
 import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
-import '../../repository/profile_repository.dart';
+import '../../repository/profile/profile_repository.dart';
 import '../../service/profile/profile_remote_data_source.dart';
 import '../../utils/messenger.dart';
 import '../custom_card.dart';

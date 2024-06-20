@@ -13,6 +13,8 @@ import '../bloc/comment_bloc/comment_bloc.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
+import '../num_extensions.dart';
+import '../object/comment/comment.dart';
 import '../object/post/post.dart';
 import '../repository/comment/comment_repository.dart';
 import '../service/comment/comment_remote_data_source.dart';
@@ -260,7 +262,7 @@ class CommentButton extends HookWidget {
                 )..add(GetCommentsEvent(isRefresh: true)),
                 child: BlocBuilder<CommentBloc, CommentState>(
                   builder: (context, state) {
-                    return CommentButtonContent();
+                    return const CommentButtonContent();
                   },
                 ),
               ),
@@ -325,7 +327,7 @@ class CommentButtonContent extends HookWidget {
         builder: (context, state) {
           if (state.status == CommentStatus.error) {
             return _buildErrorWidget(context);
-          } else if (state.searchMoreCommentsStatus == CommentStatus.loading) {
+          } else if (state.status == CommentStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state.commentResponse == null) {
             return const Text('Aucun commentaire trouvé');
@@ -337,13 +339,39 @@ class CommentButtonContent extends HookWidget {
                   child: SingleChildScrollView(
                     controller: commentScrollController,
                     child: Column(
-                      children:
-                          (state.commentResponse?.data ?? []).map((comment) {
-                        return ListTile(
-                          title: Text(comment.content),
-                          subtitle: Text(comment.createdBy.username),
-                        );
-                      }).toList(),
+                      children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: state.commentResponse?.data.length ?? 0,
+                          itemBuilder: (context, index) {
+                            final Comment comment =
+                                (state.commentResponse?.data ?? [])[index];
+                            return ListTile(
+                              title: Text(comment.content),
+                              subtitle: Text(comment.createdBy.username),
+                            );
+                          },
+                        ),
+                        Center(
+                          child: state.hasMoreComments
+                              ? (state.searchMoreCommentsStatus !=
+                                      CommentStatus.error
+                                  ? ElevatedButton(
+                                      onPressed: () {
+                                        context
+                                            .read<CommentBloc>()
+                                            .add(GetCommentsEvent());
+                                      },
+                                      child:
+                                          const Text('Voir plus de résultats'),
+                                    )
+                                  // TODO: Ajoutez un widget SHIMMER ici en cas d'erreur de chargement
+                                  : _buildErrorWidget(context))
+                              : Text(StringConstants().noMoreComments),
+                        ),
+                        20.ph,
+                      ],
                     ),
                   ),
                 ),

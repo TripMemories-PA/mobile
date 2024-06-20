@@ -15,7 +15,11 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
   }) : super(const CommentState()) {
     on<GetCommentsEvent>(
       (event, emit) async {
-        emit(state.copyWith(status: CommentStatus.loading));
+        if (event.isRefresh) {
+          emit(state.copyWith(status: CommentStatus.loading));
+        } else {
+          emit(state.copyWith(searchMoreCommentsStatus: CommentStatus.loading));
+        }
         try {
           final CommentResponse commentResponse =
               await commentRepository.getComments(
@@ -27,7 +31,15 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           emit(
             state.copyWith(
               status: CommentStatus.notLoading,
-              commentResponse: commentResponse,
+              searchMoreCommentsStatus: CommentStatus.notLoading,
+              commentResponse: event.isRefresh
+                  ? commentResponse
+                  : state.commentResponse?.copyWith(
+                      data: [
+                        ...state.commentResponse!.data,
+                        ...commentResponse.data,
+                      ],
+                    ),
               commentsPage: event.isRefresh ? 1 : state.commentsPage + 1,
               hasMoreComments:
                   commentResponse.data.length == state.commentsPerPage,

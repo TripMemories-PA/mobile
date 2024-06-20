@@ -6,14 +6,14 @@ import '../../api/exception/custom_exception.dart';
 import '../../api/profile/i_profile_service.dart';
 import '../../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../../local_storage/secure_storage/auth_token_handler.dart';
-import '../../repository/profile_repository.dart';
+import '../../repository/profile/i_profile_repository.dart';
 
 part 'user_searching_event.dart';
 part 'user_searching_state.dart';
 
 class UserSearchingBloc extends Bloc<UserSearchingEvent, UserSearchingState> {
   UserSearchingBloc({
-    required ProfileRepository profileRepository,
+    required this.profileRepository,
     required this.profileService,
   }) : super(const UserSearchingState()) {
     on<GetUsersRequestEvent>((event, emit) async {
@@ -89,7 +89,7 @@ class UserSearchingBloc extends Bloc<UserSearchingEvent, UserSearchingState> {
           ),
         );
         final GetFriendsPaginationResponse users =
-            await profileService.getUsers(
+            await profileRepository.getUsers(
           page: event.isRefresh ? 1 : state.searchUsersPage + 1,
           perPage: state.searchUsersPerPage,
           searchName: event.searchingCriteria,
@@ -122,4 +122,5 @@ class UserSearchingBloc extends Bloc<UserSearchingEvent, UserSearchingState> {
   }
 
   final IProfileService profileService;
+  final IProfileRepository profileRepository;
 }

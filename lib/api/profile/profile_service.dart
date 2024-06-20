@@ -4,17 +4,18 @@ import 'package:image_picker/image_picker.dart';
 import '../../app.config.dart';
 import '../../object/avatar/uploaded_file.dart';
 import '../../object/profile/profile.dart';
+import '../../repository/profile/i_profile_repository.dart';
 import '../dio.dart';
 import '../error/api_error.dart';
 import '../error/specific_error/auth_error.dart';
 import '../exception/bad_request_exception.dart';
 import '../exception/parsing_response_exception.dart';
-import '../post/model/response/get_all_posts_response.dart';
 import 'i_profile_service.dart';
 import 'response/friend_request/friend_request_response.dart';
 import 'response/friends/get_friends_pagination_response.dart';
 
-class ProfileService implements IProfileService {
+// TODO(nono): gestion des erreurs notamment pour le username qui a des restrictions de nommage
+class ProfileService implements IProfileService, IProfileRepository {
   static const String apiMeUrl = '${AppConfig.apiUrl}/me';
   static const String apiMyAvatarUrl = '$apiMeUrl/avatar';
   static const String apiMyBannerUrl = '$apiMeUrl/banner';
@@ -34,7 +35,7 @@ class ProfileService implements IProfileService {
   static const String apiPostUrl = '${AppConfig.apiUrl}/posts';
 
   @override
-  Future<Profile> getProfile({required int id}) async {
+  Future<Profile> getProfile(id) async {
     Response response;
     try {
       response = await DioClient.instance.get(
@@ -261,32 +262,6 @@ class ProfileService implements IProfileService {
       );
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());
-    }
-  }
-
-  @override
-  Future<GetAllPostsResponse> getMyPosts({
-    required int page,
-    required int perPage,
-  }) async {
-    Response response;
-    final String url = apiMyPostsUrl
-        .replaceAll('[nb_page]', page.toString())
-        .replaceAll('[per_page]', perPage.toString());
-
-    try {
-      response = await DioClient.instance.get(
-        url,
-      );
-    } on BadRequestException {
-      throw BadRequestException(AuthError.notAuthenticated());
-    }
-    try {
-      return GetAllPostsResponse.fromJson(response.data);
-    } catch (e) {
-      throw ParsingResponseException(
-        ApiError.errorOccurredWhileParsingResponse(),
-      );
     }
   }
 

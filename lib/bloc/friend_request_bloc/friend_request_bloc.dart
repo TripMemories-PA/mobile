@@ -8,10 +8,9 @@ import '../../api/profile/i_profile_service.dart';
 import '../../api/profile/response/friend_request/friend_request_response.dart';
 import '../../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../../local_storage/secure_storage/auth_token_handler.dart';
-import '../../repository/profile_repository.dart';
+import '../../repository/profile/profile_repository.dart';
 
 part 'friend_request_event.dart';
-
 part 'friend_request_state.dart';
 
 class FriendRequestBloc extends Bloc<FriendRequestEvent, FriendRequestState> {
@@ -75,7 +74,7 @@ class FriendRequestBloc extends Bloc<FriendRequestEvent, FriendRequestState> {
           friendRequests = List<FriendRequest>.from(friendRequests);
 
           friendRequests.removeWhere(
-                (element) => element.id.toString() == event.friendRequestId,
+            (element) => element.id.toString() == event.friendRequestId,
           );
         }
         GetFriendRequestResponse? friendRequestsResponse = state.friendRequests;

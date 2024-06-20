@@ -1,11 +1,13 @@
-import '../api/monument/model/response/poi/poi.dart';
-import '../api/monument/model/response/pois_response/pois_response.dart';
-import '../object/position.dart';
-import '../object/sort_possibility.dart';
-import '../service/monument/monument_remote_data_source.dart';
+import '../../api/monument/model/response/poi/poi.dart';
+import '../../api/monument/model/response/pois_response/pois_response.dart';
+import '../../api/post/model/response/get_all_posts_response.dart';
+import '../../object/position.dart';
+import '../../object/sort_possibility.dart';
+import '../../service/monument/monument_remote_data_source.dart';
+import 'i_monument_repository.dart';
 
 // TODO(nono): implement the monumentlocalDataSource
-class MonumentRepository {
+class MonumentRepository implements IMonumentRepository {
   MonumentRepository({
     required this.monumentRemoteDataSource,
     //required this.profilelocalDataSource,
@@ -15,10 +17,12 @@ class MonumentRepository {
 
   //final ProfileLocalDataSource profilelocalDataSource;
 
+  @override
   Future<Poi> getMonument(int id) async {
     return monumentRemoteDataSource.getMonument(id);
   }
 
+  @override
   Future<PoisResponse> getMonuments({
     Position? position,
     required bool sortByName,
@@ -34,6 +38,15 @@ class MonumentRepository {
       page: page,
       perPage: perPage,
       searchingCriteria: searchingCriteria,
+    );
+  }
+
+  @override
+  Future<GetAllPostsResponse> getMonumentPosts({required int poiId, required int page, required int perPage}) {
+    return monumentRemoteDataSource.getMonumentPosts(
+      poiId: poiId,
+      page: page,
+      perPage: perPage,
     );
   }
 }

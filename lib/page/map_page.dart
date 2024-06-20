@@ -5,7 +5,7 @@ import '../api/monument/model/response/poi/poi.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../component/map_custom.dart';
 import '../object/position.dart';
-import '../repository/monument_repository.dart';
+import '../repository/monument/monument_repository.dart';
 import '../service/monument/monument_remote_data_source.dart';
 
 class MapPage extends StatelessWidget {

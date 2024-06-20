@@ -4,14 +4,14 @@ import '../../api/monument/model/response/poi/poi.dart';
 import '../../api/monument/model/response/pois_response/pois_response.dart';
 import '../../object/position.dart';
 import '../../object/sort_possibility.dart';
-import '../../repository/monument_repository.dart';
+import '../../repository/monument/i_monument_repository.dart';
 
 part 'monument_event.dart';
 part 'monument_state.dart';
 
 class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
   MonumentBloc({
-    required MonumentRepository monumentRepository,
+    required this.monumentRepository,
   }) : super(const MonumentState()) {
     on<GetMonumentsEvent>((event, emit) async {
       emit(
@@ -61,4 +61,6 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
       );
     });
   }
+
+  final IMonumentRepository monumentRepository;
 }

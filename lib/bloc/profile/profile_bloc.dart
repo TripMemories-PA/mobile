@@ -11,7 +11,7 @@ import '../../api/profile/response/friends/get_friends_pagination_response.dart'
 import '../../local_storage/secure_storage/auth_token_handler.dart';
 import '../../object/avatar/uploaded_file.dart';
 import '../../object/profile/profile.dart';
-import '../../repository/profile_repository.dart';
+import '../../repository/profile/profile_repository.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';

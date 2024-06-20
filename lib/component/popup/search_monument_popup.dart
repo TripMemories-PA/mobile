@@ -8,7 +8,7 @@ import '../../bloc/monument_bloc/monument_bloc.dart';
 import '../../constants/my_colors.dart';
 import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
-import '../../repository/monument_repository.dart';
+import '../../repository/monument/monument_repository.dart';
 import '../../service/monument/monument_remote_data_source.dart';
 import '../custom_card.dart';
 import '../monument_resume_list.dart';

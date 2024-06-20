@@ -40,13 +40,13 @@ class CommentButton extends HookWidget {
             return RepositoryProvider(
               create: (context) => CommentRepository(
                 CommentRemoteDataSource(),
-                CommentService(),
               ),
               child: BlocProvider(
                 create: (context) => CommentBloc(
                   commentRepository: RepositoryProvider.of<CommentRepository>(
                     context,
                   ),
+                  commentService: CommentService(),
                   postId: post.id,
                   postBloc: postBloc,
                 )..add(GetCommentsEvent(isRefresh: true)),

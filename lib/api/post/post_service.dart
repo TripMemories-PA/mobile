@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../app.config.dart';
 import '../../object/avatar/uploaded_file.dart';
 import '../../object/post/post.dart';
+import '../../repository/post/i_post_repository.dart';
 import '../dio.dart';
 import '../error/api_error.dart';
 import '../error/specific_error/auth_error.dart';
@@ -14,7 +15,7 @@ import 'model/query/create_post/create_post_query.dart';
 import 'model/response/create_post_response/create_post_response.dart';
 import 'model/response/get_all_posts_response.dart';
 
-class PostService implements IPostService {
+class PostService implements IPostService, IPostRepository {
   static const String apiPostBaseUrl = '${AppConfig.apiUrl}/posts';
   static const String apiGetUserPostUrl =
       '${AppConfig.apiUrl}/users/[user_id]/posts';
@@ -105,7 +106,6 @@ class PostService implements IPostService {
   Future<GetAllPostsResponse> getMyPosts({
     required int page,
     required int perPage,
-    int? userId,
   }) async {
     Response response;
     try {

@@ -8,8 +8,10 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
+import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/my_colors.dart';
+import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../object/post/post.dart';
 import 'comment_button.dart';
@@ -135,12 +137,21 @@ class PostCard extends HookWidget {
                   icon: Icon(
                     post.isLiked ? Icons.favorite : Icons.favorite_border,
                   ),
-                  onPressed: () {
-                    if (context.read<AuthBloc>().state.user == null) {
-                      confirmationPopUp(
+                  // TODO(nono): ajouter le like au double tap sur la card donc extract la fonction pour l'utiliser dans les deux
+                  onPressed: () async {
+                    if (context.read<AuthBloc>().state.status ==
+                        AuthStatus.guest) {
+                      final bool result = await confirmationPopUp(
                         context,
                         title: StringConstants().pleaseLogin,
                       );
+                      if (!result) {
+                        return;
+                      } else {
+                        if (context.mounted) {
+                          context.go(RouteName.loginPage);
+                        }
+                      }
                     } else {
                       if (context.read<AuthBloc>().state.user?.id !=
                           post.createdBy.id) {

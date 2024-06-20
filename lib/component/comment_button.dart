@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../api/comment/comment_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
+import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/comment_bloc/comment_bloc.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/route_name.dart';
@@ -315,41 +316,44 @@ class CommentButtonContent extends HookWidget {
                   child: Text(comment.content),
                 ),
               ),
-              if (comment.createdBy.id ==
-                  context.read<AuthBloc>().state.user?.id)
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () async {
-                    final bool result = await confirmationPopUp(
-                      context,
-                      title: StringConstants().sureToDeleteComment,
-                    );
-                    if (!result) {
-                      return;
-                    } else {
-                      if (context.mounted) {
-                        context
-                            .read<CommentBloc>()
-                            .add(DeleteCommentEvent(comment.id));
+              if (context.read<AuthBloc>().state.status ==
+                  AuthStatus.authenticated)
+                if (comment.createdBy.id ==
+                    context.read<AuthBloc>().state.user?.id)
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () async {
+                      final bool result = await confirmationPopUp(
+                        context,
+                        title: StringConstants().sureToDeleteComment,
+                      );
+                      if (!result) {
+                        return;
+                      } else {
+                        if (context.mounted) {
+                          context
+                              .read<CommentBloc>()
+                              .add(DeleteCommentEvent(comment.id));
+                        }
                       }
-                    }
-                  },
-                )
-              else
-                IconButton(
-                  icon: Icon(
-                    comment.isLiked ? Icons.favorite : Icons.favorite_outline,
+                    },
+                  )
+                else
+                  IconButton(
+                    icon: Icon(
+                      comment.isLiked ? Icons.favorite : Icons.favorite_outline,
+                    ),
+                    onPressed: () async {
+                      if (context.read<AuthBloc>().state.status ==
+                          AuthStatus.authenticated) {
+                        context.read<CommentBloc>().add(
+                              comment.isLiked
+                                  ? DislikeCommentEvent(comment.id)
+                                  : LikeCommentEvent(comment.id),
+                            );
+                      }
+                    },
                   ),
-                  onPressed: () async {
-                    context.read<CommentBloc>().add(
-                          comment.isLiked
-                              ? DislikeCommentEvent(comment.id)
-                              : LikeCommentEvent(
-                                  comment.id,
-                                ),
-                        );
-                  },
-                ),
             ],
           ),
         ),

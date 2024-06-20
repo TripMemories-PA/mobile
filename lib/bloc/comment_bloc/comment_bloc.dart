@@ -1,10 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../api/comment/i_comment_service.dart';
+import '../../api/comment/model/query/post_comment_query/post_comment_query.dart';
 import '../../api/comment/model/response/get_comment_response/get_comment_response.dart';
 import '../../api/error/api_error.dart';
 import '../../api/exception/custom_exception.dart';
 import '../../object/comment/comment.dart';
-import '../../repository/comment/comment_repository.dart';
+import '../../repository/comment/i_comment_repository.dart';
 import '../post/post_bloc.dart';
 
 part 'comment_event.dart';
@@ -13,6 +15,7 @@ part 'comment_state.dart';
 class CommentBloc extends Bloc<CommentEvent, CommentState> {
   CommentBloc({
     required this.commentRepository,
+    required this.commentService,
     required this.postId,
     required this.postBloc,
   }) : super(const CommentState()) {
@@ -73,9 +76,12 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       (event, emit) async {
         emit(state.copyWith(addCommentStatus: CommentStatus.loading));
         try {
-          await commentRepository.commentPost(
+          final PostCommentQuery query = PostCommentQuery(
             postId: postId,
             content: event.content,
+          );
+          await commentService.commentPost(
+            query: query,
           );
 
           emit(state.copyWith(addCommentStatus: CommentStatus.commentPosted));
@@ -105,7 +111,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
     on<LikeCommentEvent>(
       (event, emit) async {
         try {
-          await commentRepository.likeComment(commentId: event.commentId);
+          await commentService.likeComment(commentId: event.commentId);
           List<Comment>? comments = state.commentResponse?.data;
           if (comments != null) {
             comments = comments.map((comment) {
@@ -150,7 +156,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
     on<DislikeCommentEvent>(
       (event, emit) async {
         try {
-          await commentRepository.dislikeComment(commentId: event.commentId);
+          await commentService.dislikeComment(commentId: event.commentId);
           List<Comment>? comments = state.commentResponse?.data;
           if (comments != null) {
             comments = comments.map((comment) {
@@ -195,7 +201,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
     on<DeleteCommentEvent>(
       (event, emit) async {
         try {
-          await commentRepository.deleteComment(commentId: event.commentId);
+          await commentService.deleteComment(commentId: event.commentId);
           List<Comment>? comments = state.commentResponse?.data;
           if (comments != null) {
             comments = comments
@@ -234,6 +240,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
   }
 
   int postId;
-  CommentRepository commentRepository;
+  ICommentRepository commentRepository;
+  ICommentService commentService;
   PostBloc postBloc;
 }

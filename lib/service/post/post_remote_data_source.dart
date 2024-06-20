@@ -1,9 +1,18 @@
 import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../api/post/post_service.dart';
-import 'post_interface.dart';
+import '../../object/post/post.dart';
+import '../../repository/post/i_post_repository.dart';
 
-class PostRemoteDataSource extends PostDataSourceInterface {
+class PostRemoteDataSource extends IPostRepository {
   final PostService _profileService = PostService();
+
+  @override
+  Future<Post> getPostById({
+    required int postId,
+  }) async {
+    final Post post = await _profileService.getPostById(postId: postId);
+    return post;
+  }
 
   @override
   Future<GetAllPostsResponse> getPosts({

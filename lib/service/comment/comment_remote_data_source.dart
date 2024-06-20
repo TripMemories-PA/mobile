@@ -1,8 +1,8 @@
 import '../../api/comment/comment_service.dart';
 import '../../api/comment/model/response/get_comment_response/get_comment_response.dart';
-import 'comment_interface.dart';
+import '../../repository/comment/i_comment_repository.dart';
 
-class CommentRemoteDataSource extends CommentDataSourceInterface {
+class CommentRemoteDataSource implements ICommentRepository {
   final CommentService _commentService = CommentService();
 
   @override

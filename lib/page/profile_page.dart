@@ -15,7 +15,7 @@ import '../component/my_post_component.dart';
 import '../component/profile_infos.dart';
 import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
-import '../repository/post_repository.dart';
+import '../repository/post/post_repository.dart';
 import '../repository/profile_repository.dart';
 import '../service/post/post_remote_data_source.dart';
 import '../service/profile/profile_remote_data_source.dart';
@@ -236,8 +236,9 @@ class MyPostsAndMyFriends extends HookWidget {
 
   RepositoryProvider<PostRepository> _buildOtherUsersPosts(int userId) {
     return RepositoryProvider(
-      create: (context) =>
-          PostRepository(postRemoteDataSource: PostRemoteDataSource()),
+      create: (context) => PostRepository(
+        postRemoteDataSource: PostRemoteDataSource(),
+      ),
       child: BlocProvider(
         create: (context) => PostBloc(
           postRepository: RepositoryProvider.of<PostRepository>(

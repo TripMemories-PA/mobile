@@ -52,6 +52,7 @@ class StringConstants {
   String get noMoreFriends => "Plus d'amis à afficher.";
   String get noMoreUsers => "Plus d'utilisateurs à afficher.";
   String get noMoreMonuments => 'Plus de monuments à afficher.';
+  String get noMoreComments => 'Plus de commentaires à afficher.';
   String get retry => 'Réessayer';
 
   String get friendRequestAccepted => "Demande d'ami acceptée";

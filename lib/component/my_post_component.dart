@@ -7,10 +7,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 
+import '../api/comment/comment_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
+import '../bloc/comment_bloc/comment_bloc.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/my_colors.dart';
+import '../constants/string_constants.dart';
 import '../object/post/post.dart';
+import '../repository/comment/comment_repository.dart';
+import '../service/comment/comment_remote_data_source.dart';
 import 'custom_card.dart';
 import 'popup/confirmation_logout_dialog.dart';
 
@@ -189,11 +194,7 @@ class PostCard extends HookWidget {
                   style: const TextStyle(color: MyColors.purple),
                 ),
                 const SizedBox(width: 5),
-                IconButton(
-                  color: MyColors.purple,
-                  icon: const Icon(Icons.chat_bubble_outline),
-                  onPressed: () {},
-                ),
+                CommentButton(post: post),
                 Text(
                   post.commentsCount.toString(),
                   style: const TextStyle(color: MyColors.purple),
@@ -223,6 +224,133 @@ class PostCard extends HookWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CommentButton extends HookWidget {
+  const CommentButton({
+    super.key,
+    required this.post,
+  });
+
+  final Post post;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      color: MyColors.purple,
+      icon: const Icon(Icons.chat_bubble_outline),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return RepositoryProvider(
+              create: (context) => CommentRepository(
+                CommentRemoteDataSource(),
+                CommentService(),
+              ),
+              child: BlocProvider(
+                create: (context) => CommentBloc(
+                  commentRepository: RepositoryProvider.of<CommentRepository>(
+                    context,
+                  ),
+                  postId: post.id,
+                )..add(GetCommentsEvent(isRefresh: true)),
+                child: BlocBuilder<CommentBloc, CommentState>(
+                  builder: (context, state) {
+                    return CommentButtonContent();
+                  },
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class CommentButtonContent extends HookWidget {
+  const CommentButtonContent({
+    super.key,
+  });
+
+  void _getComments(BuildContext context) {
+    final monumentBloc = context.read<CommentBloc>();
+
+    if (monumentBloc.state.status != CommentStatus.loading) {
+      monumentBloc.add(
+        GetCommentsEvent(),
+      );
+    }
+  }
+
+  Widget _buildErrorWidget(BuildContext context) {
+    return Column(
+      children: [
+        Text(StringConstants().errorAppendedWhileGettingData),
+        ElevatedButton(
+          onPressed: () => _getComments(context),
+          child: Text(StringConstants().retry),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ScrollController commentScrollController = useScrollController();
+    useEffect(
+      () {
+        void createScrollListener() {
+          if (commentScrollController.position.atEdge) {
+            if (commentScrollController.position.pixels != 0) {
+              _getComments(context);
+            }
+          }
+        }
+
+        commentScrollController.addListener(createScrollListener);
+        return () =>
+            commentScrollController.removeListener(createScrollListener);
+      },
+      const [],
+    );
+    return SizedBox(
+      height: 300,
+      width: double.infinity,
+      child: BlocBuilder<CommentBloc, CommentState>(
+        builder: (context, state) {
+          if (state.status == CommentStatus.error) {
+            return _buildErrorWidget(context);
+          } else if (state.searchMoreCommentsStatus == CommentStatus.loading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state.commentResponse == null) {
+            return const Text('Aucun commentaire trouvé');
+          } else {
+            return Column(
+              children: [
+                const Text('Commentaires'),
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: commentScrollController,
+                    child: Column(
+                      children:
+                          (state.commentResponse?.data ?? []).map((comment) {
+                        return ListTile(
+                          title: Text(comment.content),
+                          subtitle: Text(comment.createdBy.username),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+        },
       ),
     );
   }

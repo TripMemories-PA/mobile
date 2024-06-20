@@ -1,9 +1,9 @@
-import 'model/query/post_comment_query/post_comment_query.dart';
-import 'model/response/get_comment_response/get_comment_response.dart';
+import '../../api/comment/model/response/get_comment_response/get_comment_response.dart';
 
-abstract class ICommentService {
+abstract class ICommentRepository {
   Future<void> commentPost({
-    required PostCommentQuery query,
+    required int postId,
+    required String content,
   });
 
   Future<void> deleteComment({

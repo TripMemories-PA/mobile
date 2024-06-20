@@ -45,7 +45,7 @@ class ProfileInfos extends StatelessWidget {
               right: 10,
               child: BouncingWidget(
                 onTap: () async {
-                  final bool result = await confirmationLogout(
+                  final bool result = await confirmationPopUp(
                     context,
                     title: 'Etes-vous sûr de vouloir vous déconnecter ?',
                   );

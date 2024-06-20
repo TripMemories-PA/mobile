@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-
+// ignore_for_file: type=lint
 part of 'get_all_posts_response.dart';
 
 // **************************************************************************
@@ -7,7 +7,7 @@ part of 'get_all_posts_response.dart';
 // **************************************************************************
 
 _$GetAllPostsResponseImpl _$$GetAllPostsResponseImplFromJson(
-        Map<String, dynamic> json,) =>
+        Map<String, dynamic> json) =>
     _$GetAllPostsResponseImpl(
       meta: Meta.fromJson(json['meta'] as Map<String, dynamic>),
       data: (json['data'] as List<dynamic>)
@@ -16,7 +16,7 @@ _$GetAllPostsResponseImpl _$$GetAllPostsResponseImplFromJson(
     );
 
 Map<String, dynamic> _$$GetAllPostsResponseImplToJson(
-        _$GetAllPostsResponseImpl instance,) =>
+        _$GetAllPostsResponseImpl instance) =>
     <String, dynamic>{
       'meta': instance.meta,
       'data': instance.data,

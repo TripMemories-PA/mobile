@@ -6,6 +6,7 @@ enum ProfileStatus {
   notLoading,
   updated,
   error,
+  postDeleted,
 }
 
 class ProfileState {
@@ -16,18 +17,23 @@ class ProfileState {
     this.friends,
     this.friendsPerPage = 10,
     this.friendsPage = 0,
-    this.hasMoreTweets = true,
+    this.hasMoreFriends = true,
     this.getMoreFriendsStatus = ProfileStatus.initial,
   });
 
   ProfileState copyWith({
     Profile? profile,
     ProfileStatus? status,
+    ProfileStatus? getMorePostsStatus,
     ApiError? error,
     GetFriendsPaginationResponse? friends,
     int? friendsPage,
-    bool? hasMoreTweets,
+    bool? hasMoreFriends,
     ProfileStatus? getMoreFriendsStatus,
+    GetAllPostsResponse? posts,
+    int? postsPage,
+    int? postsPerPage,
+    bool? hasMorePosts,
   }) {
     return ProfileState(
       profile: profile ?? this.profile,
@@ -35,7 +41,7 @@ class ProfileState {
       error: error,
       friends: friends ?? this.friends,
       friendsPage: friendsPage ?? this.friendsPage,
-      hasMoreTweets: hasMoreTweets ?? this.hasMoreTweets,
+      hasMoreFriends: hasMoreFriends ?? this.hasMoreFriends,
       getMoreFriendsStatus: getMoreFriendsStatus ?? this.getMoreFriendsStatus,
     );
   }
@@ -47,5 +53,5 @@ class ProfileState {
   final GetFriendsPaginationResponse? friends;
   final int friendsPerPage;
   final int friendsPage;
-  final bool hasMoreTweets;
+  final bool hasMoreFriends;
 }

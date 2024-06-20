@@ -104,7 +104,7 @@ class MyFriendsComponent extends StatelessWidget {
               users: state.friends!.data,
             ),
             Center(
-              child: context.read<ProfileBloc>().state.hasMoreTweets
+              child: context.read<ProfileBloc>().state.hasMoreFriends
                   ? _buildHasMoreTweetsPart(context)
                   : Text(StringConstants().noMoreFriends),
             ),

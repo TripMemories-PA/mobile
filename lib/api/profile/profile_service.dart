@@ -9,6 +9,7 @@ import '../error/api_error.dart';
 import '../error/specific_error/auth_error.dart';
 import '../exception/bad_request_exception.dart';
 import '../exception/parsing_response_exception.dart';
+import '../post/model/response/get_all_posts_response.dart';
 import 'i_profile_service.dart';
 import 'response/friend_request/friend_request_response.dart';
 import 'response/friends/get_friends_pagination_response.dart';
@@ -28,9 +29,12 @@ class ProfileService implements IProfileService {
   static const String apiUsersUrl =
       '${AppConfig.apiUrl}/users?page=[nb_page]&perPage=[per_page]';
   static const String apiFriendRequestsUrl = '$apiMeUrl/friend-requests';
+  static const String apiMyPostsUrl =
+      '$apiMeUrl/posts?page=[nb_page]&perPage=[per_page]';
+  static const String apiPostUrl = '${AppConfig.apiUrl}/posts';
 
   @override
-  Future<Profile> getProfile({required String id}) async {
+  Future<Profile> getProfile({required int id}) async {
     Response response;
     try {
       response = await DioClient.instance.get(
@@ -254,6 +258,43 @@ class ProfileService implements IProfileService {
       final String url = '$apiMyFriendRequestsBaseUrl/$friendRequestId';
       await DioClient.instance.delete(
         url,
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+  }
+
+  @override
+  Future<GetAllPostsResponse> getMyPosts({
+    required int page,
+    required int perPage,
+  }) async {
+    Response response;
+    final String url = apiMyPostsUrl
+        .replaceAll('[nb_page]', page.toString())
+        .replaceAll('[per_page]', perPage.toString());
+
+    try {
+      response = await DioClient.instance.get(
+        url,
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      return GetAllPostsResponse.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
+    }
+  }
+
+  @override
+  Future<void> deletePost({required int postId}) async {
+    try {
+      await DioClient.instance.delete(
+        '$apiPostUrl/$postId',
       );
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());

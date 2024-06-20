@@ -47,12 +47,23 @@ class StringConstants {
   String get confirmAction => 'Etes-vous sûr ?';
 
   String get profileUpdated => 'Profil modifié !';
+  String get postDeleted => 'Post supprimé !';
 
   String get noMoreFriends => "Plus d'amis à afficher.";
   String get noMoreUsers => "Plus d'utilisateurs à afficher.";
   String get noMoreMonuments => 'Plus de monuments à afficher.';
+  String get noMoreComments => 'Plus de commentaires à afficher.';
   String get retry => 'Réessayer';
 
   String get friendRequestAccepted => "Demande d'ami acceptée";
   String get friendRequestRefused => "Demande d'ami refusée";
+  String get comments => 'Commentaires';
+  String get noComments => 'Pas de commentaires';
+  String get loadMoreResults => 'Charger plus de résultats';
+  String get sureToDeletePost => 'Etes-vous sûr de vouloir supprimer ce post ?';
+  String get errorWhileLoadingPosts => 'Erreur lors du chargement des posts';
+  String get noPostYet => 'Pas de post pour le moment';
+  String get sureToDeleteComment =>
+      'Etes-vous sûr de vouloir supprimer ce commentaire ?';
+  String get pleaseLogin => 'Veuillez vous connecter';
 }

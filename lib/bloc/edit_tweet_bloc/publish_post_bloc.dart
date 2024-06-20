@@ -21,6 +21,7 @@ class PublishPostBloc extends Bloc<PublishPostEvent, PublishPostState> {
         }
         await postService.createPost(
           query: CreatePostQuery(
+            title: event.title,
             content: event.content,
             poiId: event.monumentId,
             note: event.rating,
@@ -31,11 +32,14 @@ class PublishPostBloc extends Bloc<PublishPostEvent, PublishPostState> {
       } catch (e) {
         if (e is CustomException) {
           emit(
-              state.copyWith(error: e.apiError, status: EditTweetStatus.error),);
+            state.copyWith(error: e.apiError, status: EditTweetStatus.error),
+          );
         } else {
           emit(
             state.copyWith(
-                error: ApiError.errorOccurred(), status: EditTweetStatus.error,),
+              error: ApiError.errorOccurred(),
+              status: EditTweetStatus.error,
+            ),
           );
         }
       }

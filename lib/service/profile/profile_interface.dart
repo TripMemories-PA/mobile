@@ -3,7 +3,7 @@ import '../../api/profile/response/friends/get_friends_pagination_response.dart'
 import '../../object/profile/profile.dart';
 
 abstract class ProfileDataSourceInterface {
-  Future<Profile> getProfile(String id);
+  Future<Profile> getProfile(int id);
 
   Future<Profile> whoAmI();
 

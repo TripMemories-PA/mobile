@@ -5,7 +5,7 @@ sealed class ProfileEvent {}
 class GetProfileEvent extends ProfileEvent {
   GetProfileEvent({this.userId});
 
-  String? userId;
+  int? userId;
 }
 
 class UpdateProfileEvent extends ProfileEvent {
@@ -33,7 +33,7 @@ class GetFriendsEvent extends ProfileEvent {
     this.isRefresh = false,
   });
 
-final bool isRefresh;
+  final bool isRefresh;
 }
 
 class UpdateProfilePictureEvent extends ProfileEvent {

@@ -27,8 +27,8 @@ mixin _$Poi {
   int? get typeId => throw _privateConstructorUsedError;
   String get latitude => throw _privateConstructorUsedError;
   String get longitude => throw _privateConstructorUsedError;
-  String? get city => throw _privateConstructorUsedError;
-  String? get zipCode => throw _privateConstructorUsedError;
+  String get city => throw _privateConstructorUsedError;
+  String get zipCode => throw _privateConstructorUsedError;
   String? get address => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
@@ -53,8 +53,8 @@ abstract class $PoiCopyWith<$Res> {
       int? typeId,
       String latitude,
       String longitude,
-      String? city,
-      String? zipCode,
+      String city,
+      String zipCode,
       String? address,
       DateTime createdAt,
       DateTime updatedAt,
@@ -84,8 +84,8 @@ class _$PoiCopyWithImpl<$Res, $Val extends Poi> implements $PoiCopyWith<$Res> {
     Object? typeId = freezed,
     Object? latitude = null,
     Object? longitude = null,
-    Object? city = freezed,
-    Object? zipCode = freezed,
+    Object? city = null,
+    Object? zipCode = null,
     Object? address = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
@@ -121,14 +121,14 @@ class _$PoiCopyWithImpl<$Res, $Val extends Poi> implements $PoiCopyWith<$Res> {
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as String,
-      city: freezed == city
+      city: null == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
-              as String?,
-      zipCode: freezed == zipCode
+              as String,
+      zipCode: null == zipCode
           ? _value.zipCode
           : zipCode // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       address: freezed == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -183,8 +183,8 @@ abstract class _$$PoiImplCopyWith<$Res> implements $PoiCopyWith<$Res> {
       int? typeId,
       String latitude,
       String longitude,
-      String? city,
-      String? zipCode,
+      String city,
+      String zipCode,
       String? address,
       DateTime createdAt,
       DateTime updatedAt,
@@ -213,8 +213,8 @@ class __$$PoiImplCopyWithImpl<$Res> extends _$PoiCopyWithImpl<$Res, _$PoiImpl>
     Object? typeId = freezed,
     Object? latitude = null,
     Object? longitude = null,
-    Object? city = freezed,
-    Object? zipCode = freezed,
+    Object? city = null,
+    Object? zipCode = null,
     Object? address = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
@@ -250,14 +250,14 @@ class __$$PoiImplCopyWithImpl<$Res> extends _$PoiCopyWithImpl<$Res, _$PoiImpl>
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as String,
-      city: freezed == city
+      city: null == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
-              as String?,
-      zipCode: freezed == zipCode
+              as String,
+      zipCode: null == zipCode
           ? _value.zipCode
           : zipCode // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       address: freezed == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -319,9 +319,9 @@ class _$PoiImpl implements _Poi {
   @override
   final String longitude;
   @override
-  final String? city;
+  final String city;
   @override
-  final String? zipCode;
+  final String zipCode;
   @override
   final String? address;
   @override
@@ -406,8 +406,8 @@ abstract class _Poi implements Poi {
       required final int? typeId,
       required final String latitude,
       required final String longitude,
-      required final String? city,
-      required final String? zipCode,
+      required final String city,
+      required final String zipCode,
       required final String? address,
       required final DateTime createdAt,
       required final DateTime updatedAt,
@@ -431,9 +431,9 @@ abstract class _Poi implements Poi {
   @override
   String get longitude;
   @override
-  String? get city;
+  String get city;
   @override
-  String? get zipCode;
+  String get zipCode;
   @override
   String? get address;
   @override

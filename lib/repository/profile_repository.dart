@@ -14,7 +14,7 @@ class ProfileRepository {
 
   //final ProfileLocalDataSource profilelocalDataSource;
 
-  Future<Profile> getProfile(String id) async {
+  Future<Profile> getProfile(int id) async {
     return profileRemoteDataSource.getProfile(id);
   }
 

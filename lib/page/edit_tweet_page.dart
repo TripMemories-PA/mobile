@@ -17,7 +17,9 @@ import '../num_extensions.dart';
 import '../utils/messenger.dart';
 
 class EditTweetPage extends HookWidget {
-  const EditTweetPage({super.key});
+  const EditTweetPage({
+    super.key,
+  });
 
   Future<void> _selectImage(ValueNotifier<XFile?> image) async {
     final picker = ImagePicker();
@@ -31,15 +33,17 @@ class EditTweetPage extends HookWidget {
         );
   }
 
-  void publishTweet({
+  void publishPost({
     required BuildContext context,
     required ValueNotifier<XFile?> image,
     required TextEditingController textEditingController,
+    required TextEditingController titleEditingController,
     Poi? selectedMonument,
     required double rating,
   }) {
     context.read<PublishPostBloc>().add(
           PostTweetRequested(
+            title: titleEditingController.text,
             content: textEditingController.text,
             rating: rating,
             monumentId: selectedMonument!.id,
@@ -51,8 +55,9 @@ class EditTweetPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final ValueNotifier<XFile?> image = useState(null);
-    final TextEditingController textEditingController =
-        useTextEditingController();
+    final TextEditingController contentController = useTextEditingController();
+    final TextEditingController titleController = useTextEditingController();
+// TODO(nono): ajouter le poi de la publication quand pierre l'aura mis en place
     final selectedMonument = useState<Poi?>(null);
     final rating = useState<double>(0.0);
     return BlocProvider(
@@ -80,12 +85,13 @@ class EditTweetPage extends HookWidget {
                     ),
                     20.ph,
                     _buildHeader(context, () {
-                      publishTweet(
+                      publishPost(
                         context: context,
                         image: image,
-                        textEditingController: textEditingController,
+                        textEditingController: contentController,
                         selectedMonument: selectedMonument.value,
                         rating: rating.value,
+                        titleEditingController: titleController,
                       );
                     }),
                     20.ph,
@@ -129,6 +135,8 @@ class EditTweetPage extends HookWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          _buildTitle(context, titleController),
+                          10.ph,
                           const Text(
                             'Evaluez votre expérience',
                             textAlign: TextAlign.left,
@@ -144,7 +152,7 @@ class EditTweetPage extends HookWidget {
                             ),
                           ),
                           10.ph,
-                          _buildPostText(context, textEditingController),
+                          _buildPostText(context, contentController),
                           10.ph,
                           Text(
                             'Localisation',
@@ -272,6 +280,34 @@ class EditTweetPage extends HookWidget {
                 ),
               ],
             ),
+    );
+  }
+
+  Container _buildTitle(
+    BuildContext context,
+    TextEditingController textEditingController,
+  ) {
+    return Container(
+      width: double.infinity,
+      height: 50,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.tertiary,
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: TextField(
+        controller: textEditingController,
+        maxLength: 40,
+        decoration: const InputDecoration(
+          hintText: 'Entrez un titre',
+          counterText: '',
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          contentPadding: EdgeInsets.all(
+            12.0,
+          ),
+        ),
+      ),
     );
   }
 

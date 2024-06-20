@@ -4,16 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../api/post/post_service.dart';
 import '../api/profile/profile_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
+import '../bloc/post/post_bloc.dart';
 import '../bloc/profile/profile_bloc.dart';
 import '../component/my_friends_component.dart';
 import '../component/my_post_component.dart';
 import '../component/profile_infos.dart';
 import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
+import '../repository/post_repository.dart';
 import '../repository/profile_repository.dart';
+import '../service/post/post_remote_data_source.dart';
 import '../service/profile/profile_remote_data_source.dart';
 import '../utils/messenger.dart';
 import 'login_page.dart';
@@ -21,7 +25,7 @@ import 'login_page.dart';
 class ProfilePage extends HookWidget {
   const ProfilePage({super.key, this.userId});
 
-  final String? userId;
+  final int? userId;
 
   @override
   Widget build(BuildContext context) {
@@ -145,6 +149,11 @@ class ProfilePage extends HookWidget {
                     StringConstants().profileUpdated,
                   );
                 }
+                if (state.status == ProfileStatus.postDeleted) {
+                  Messenger.showSnackBarSuccess(
+                    StringConstants().postDeleted,
+                  );
+                }
               },
               child: const SizedBox.shrink(),
             ),
@@ -158,34 +167,104 @@ class ProfilePage extends HookWidget {
 class MyPostsAndMyFriends extends HookWidget {
   const MyPostsAndMyFriends({
     super.key,
-    required this.userId,
+    this.userId,
     required this.tabController,
   });
 
-  final String? userId;
+  final int? userId;
   final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
+    final int? tmpUserId = userId;
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
-      child: userId == null
+      child: tmpUserId == null
           ? TabBarView(
               controller: tabController,
-              children: const [
-                SingleChildScrollView(
-                  child: MyFriendsComponent(),
+              children: [
+                RefreshIndicator(
+                  onRefresh: () async {
+                    context
+                        .read<ProfileBloc>()
+                        .add(GetFriendsEvent(isRefresh: true));
+                  },
+                  child: const SingleChildScrollView(
+                    child: MyFriendsComponent(),
+                  ),
                 ),
-                SingleChildScrollView(
-                  child: MyPostsComponents(),
-                ),
+                _buildMyPostsPart(),
               ],
             )
-          : const Center(
-              child: Text(
-                'NO DATA TO DISPLAY FOR NOW: SCREEN INC',
-              ),
+          : _buildOtherUsersPosts(tmpUserId),
+    );
+  }
+
+  RepositoryProvider<PostRepository> _buildMyPostsPart() {
+    return RepositoryProvider(
+      create: (context) =>
+          PostRepository(postRemoteDataSource: PostRemoteDataSource()),
+      child: BlocProvider(
+        create: (context) => PostBloc(
+          postRepository: RepositoryProvider.of<PostRepository>(
+            context,
+          ),
+          postService: PostService(),
+        )..add(
+            GetPostsEvent(
+              isRefresh: true,
+              myPosts: true,
             ),
+          ),
+        child: BlocBuilder<PostBloc, PostState>(
+          builder: (context, state) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                context
+                    .read<PostBloc>()
+                    .add(GetPostsEvent(isRefresh: true, myPosts: true));
+              },
+              child: const SingleChildScrollView(
+                child: MyPostsComponents(),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  RepositoryProvider<PostRepository> _buildOtherUsersPosts(int userId) {
+    return RepositoryProvider(
+      create: (context) =>
+          PostRepository(postRemoteDataSource: PostRemoteDataSource()),
+      child: BlocProvider(
+        create: (context) => PostBloc(
+          postRepository: RepositoryProvider.of<PostRepository>(
+            context,
+          ),
+          postService: PostService(),
+        )..add(
+            GetPostsEvent(
+              isRefresh: true,
+              userId: userId,
+            ),
+          ),
+        child: BlocBuilder<PostBloc, PostState>(
+          builder: (context, state) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                context
+                    .read<PostBloc>()
+                    .add(GetPostsEvent(isRefresh: true, userId: userId));
+              },
+              child: const SingleChildScrollView(
+                child: MyPostsComponents(),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

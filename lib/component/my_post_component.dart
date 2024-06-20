@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../constants/my_colors.dart';
-import 'custom_card.dart';
+import '../bloc/post/post_bloc.dart';
+import '../constants/string_constants.dart';
+import '../object/post/post.dart';
+import 'post_card.dart';
 
 class MyPostsComponents extends StatelessWidget {
   const MyPostsComponents({super.key});
@@ -12,131 +15,37 @@ class MyPostsComponents extends StatelessWidget {
   }
 
   Widget _buildPostList(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        children: List.generate(15, (index) {
-          return Column(
-            children: [
-              _buildPostCard(context),
-              const SizedBox(height: 10),
-            ],
-          );
-        }),
-      ),
-    );
-  }
-
-  Widget _buildPostCard(BuildContext context) {
-    return CustomCard(
-      content: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(15.0),
-                  ),
-                  child: Image.asset('assets/images/paris.jpeg'),
-                ),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: Column(
+    return BlocBuilder<PostBloc, PostState>(
+      builder: (context, state) {
+        if (state.getMorePostsStatus == PostStatus.notLoading) {
+          final List<Post>? posts = state.posts?.data;
+          if (posts != null && posts.isNotEmpty) {
+            return Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: posts.map((post) {
+                  return Column(
                     children: [
-                      Row(
-                        children: List.generate(
-                          5,
-                          (index) => const Icon(
-                            Icons.star,
-                            color: MyColors.purple,
-                          ),
-                        ).toList(),
-                      ),
-                      const Text(
-                        '(1245 avis)',
-                        style: TextStyle(color: MyColors.purple),
-                      ),
+                      PostCard(post: post, postBloc: context.read<PostBloc>()),
+                      const SizedBox(height: 10),
                     ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Paris, France',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Text(
-                      'Une vue incroyable !',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                  ],
-                ),
-                const Expanded(child: SizedBox()),
-                SizedBox(
-                  height: 30,
-                  width: 30,
-                  child: IconButton(
-                    iconSize: 20,
-                    icon: const Icon(
-                      Icons.remove_red_eye_outlined,
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-              ],
-            ),
-            const Text(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec nisl tincidunt tincidunt',
-              style: TextStyle(fontSize: 15),
-            ),
-            Row(
-              children: [
-                IconButton(
-                  color: MyColors.purple,
-                  icon: const Icon(Icons.favorite_border),
-                  onPressed: () {},
-                ),
-                const Text(
-                  'NB LIKES',
-                  style: TextStyle(color: MyColors.purple),
-                ),
-                const SizedBox(width: 5),
-                IconButton(
-                  color: MyColors.purple,
-                  icon: const Icon(Icons.chat_bubble_outline),
-                  onPressed: () {},
-                ),
-                const Text(
-                  'NB COMM',
-                  style: TextStyle(color: MyColors.purple),
-                ),
-                const Expanded(child: SizedBox()),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+                  );
+                }).toList(),
+              ),
+            );
+          } else {
+            return Center(child: Text(StringConstants().noPostYet));
+          }
+        } else if (state.getMorePostsStatus == PostStatus.loading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state.getMorePostsStatus == PostStatus.error) {
+          return Center(
+            child: Text(StringConstants().errorWhileLoadingPosts),
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 }

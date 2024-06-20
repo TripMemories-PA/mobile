@@ -1,6 +1,12 @@
 part of 'publish_post_bloc.dart';
 
-enum EditTweetStatus { loading, notLoading, error, posted }
+enum EditTweetStatus {
+  loading,
+  notLoading,
+  error,
+  posted,
+  updated,
+}
 
 class PublishPostState {
   const PublishPostState({

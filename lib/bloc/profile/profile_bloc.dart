@@ -5,6 +5,7 @@ import '../../api/error/api_error.dart';
 import '../../api/error/specific_error/auth_error.dart';
 import '../../api/error/specific_error/file_upload_error.dart';
 import '../../api/exception/custom_exception.dart';
+import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../api/profile/i_profile_service.dart';
 import '../../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../../local_storage/secure_storage/auth_token_handler.dart';
@@ -33,9 +34,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                 status: ProfileStatus.notLoading,
               ),
             );
-            add(
-              GetFriendsEvent(isRefresh: true),
-            );
           } else {
             final String? authToken = await AuthTokenHandler().getAuthToken();
             if (authToken == null) {
@@ -54,10 +52,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                 status: ProfileStatus.notLoading,
               ),
             );
-            add(
-              GetFriendsEvent(isRefresh: true),
-            );
           }
+          add(
+            GetFriendsEvent(isRefresh: true),
+          );
         } catch (e) {
           // TODO(nono): implement profileLocalDataSource
           /* try {
@@ -152,7 +150,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                 status: ProfileStatus.notLoading,
                 getMoreFriendsStatus: ProfileStatus.notLoading,
                 friendsPage: event.isRefresh ? 1 : state.friendsPage + 1,
-                hasMoreTweets: friends.data.length == state.friendsPerPage,
+                hasMoreFriends: friends.data.length == state.friendsPerPage,
               ),
             );
           }

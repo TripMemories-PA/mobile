@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import '../../app.config.dart';
 import '../../object/position.dart';
 import '../../object/sort_possibility.dart';
+import '../../repository/monument/i_monument_repository.dart';
 import '../dio.dart';
 import '../error/api_error.dart';
 import '../error/specific_error/auth_error.dart';
@@ -13,7 +14,7 @@ import 'i_monument_service.dart';
 import 'model/response/poi/poi.dart';
 import 'model/response/pois_response/pois_response.dart';
 
-class MonumentService implements IMonumentService {
+class MonumentService implements IMonumentService, IMonumentRepository {
   static const String apiPoisBaseUrl = '${AppConfig.apiUrl}/pois';
 
   @override

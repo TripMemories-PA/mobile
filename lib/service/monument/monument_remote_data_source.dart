@@ -1,11 +1,12 @@
 import '../../api/monument/model/response/poi/poi.dart';
 import '../../api/monument/model/response/pois_response/pois_response.dart';
 import '../../api/monument/monument_service.dart';
+import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../object/position.dart';
 import '../../object/sort_possibility.dart';
-import 'monument_interface.dart';
+import '../../repository/monument/i_monument_repository.dart';
 
-class MonumentRemoteDataSource extends MonumentDataSourceInterface {
+class MonumentRemoteDataSource implements IMonumentRepository {
   final MonumentService _monumentService = MonumentService();
 
   @override
@@ -32,5 +33,20 @@ class MonumentRemoteDataSource extends MonumentDataSourceInterface {
       searchingCriteria: searchingCriteria,
     );
     return poisResponse;
+  }
+
+  @override
+  Future<GetAllPostsResponse> getMonumentPosts({
+    required int poiId,
+    required int page,
+    required int perPage,
+  }) async {
+    final GetAllPostsResponse postsResponse =
+        await _monumentService.getMonumentPosts(
+      poiId: poiId,
+      page: page,
+      perPage: perPage,
+    );
+    return postsResponse;
   }
 }

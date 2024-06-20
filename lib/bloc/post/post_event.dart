@@ -43,3 +43,15 @@ class DecrementCommentCounterEvent extends PostEvent {
 
   final int postId;
 }
+
+class IncrementLikeCounterEvent extends PostEvent {
+  IncrementLikeCounterEvent(this.postId);
+
+  final int postId;
+}
+
+class DecrementLikeCounterEvent extends PostEvent {
+  DecrementLikeCounterEvent(this.postId);
+
+  final int postId;
+}

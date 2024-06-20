@@ -63,4 +63,7 @@ class StringConstants {
   String get sureToDeletePost => 'Etes-vous sûr de vouloir supprimer ce post ?';
   String get errorWhileLoadingPosts => 'Erreur lors du chargement des posts';
   String get noPostYet => 'Pas de post pour le moment';
+  String get sureToDeleteComment =>
+      'Etes-vous sûr de vouloir supprimer ce commentaire ?';
+  String get pleaseLogin => 'Veuillez vous connecter';
 }

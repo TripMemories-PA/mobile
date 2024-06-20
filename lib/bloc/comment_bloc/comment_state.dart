@@ -1,6 +1,13 @@
 part of 'comment_bloc.dart';
 
-enum CommentStatus { loading, notLoading, error, commentPosted }
+enum CommentStatus {
+  loading,
+  notLoading,
+  error,
+  commentPosted,
+  commentDeleted,
+  commentLiked
+}
 
 class CommentState {
   const CommentState({

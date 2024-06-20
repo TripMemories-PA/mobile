@@ -54,12 +54,21 @@ class PostBloc extends Bloc<PostEvent, PostState> {
             ),
           );
         } catch (e) {
-          emit(
-            state.copyWith(
-              status: PostStatus.error,
-              error: e is CustomException ? e.apiError : ApiError.unknown(),
-            ),
-          );
+          if (e is CustomException) {
+            emit(
+              state.copyWith(
+                status: PostStatus.error,
+                error: e.apiError,
+              ),
+            );
+          } else {
+            emit(
+              state.copyWith(
+                status: PostStatus.error,
+                error: ApiError.errorOccurred(),
+              ),
+            );
+          }
         }
       },
     );
@@ -80,12 +89,21 @@ class PostBloc extends Bloc<PostEvent, PostState> {
             ),
           );
         } catch (e) {
-          emit(
-            state.copyWith(
-              status: PostStatus.error,
-              error: e is CustomException ? e.apiError : ApiError.unknown(),
-            ),
-          );
+          if (e is CustomException) {
+            emit(
+              state.copyWith(
+                status: PostStatus.error,
+                error: e.apiError,
+              ),
+            );
+          } else {
+            emit(
+              state.copyWith(
+                status: PostStatus.error,
+                error: ApiError.errorOccurred(),
+              ),
+            );
+          }
           add(GetPostsEvent(isRefresh: true, myPosts: true));
         }
       },
@@ -112,12 +130,21 @@ class PostBloc extends Bloc<PostEvent, PostState> {
             emit(state.copyWith(posts: data));
           }
         } catch (e) {
-          emit(
-            state.copyWith(
-              status: PostStatus.error,
-              error: e is CustomException ? e.apiError : ApiError.unknown(),
-            ),
-          );
+          if (e is CustomException) {
+            emit(
+              state.copyWith(
+                status: PostStatus.error,
+                error: e.apiError,
+              ),
+            );
+          } else {
+            emit(
+              state.copyWith(
+                status: PostStatus.error,
+                error: ApiError.errorOccurred(),
+              ),
+            );
+          }
           add(GetPostsEvent(isRefresh: true));
         }
       },
@@ -144,12 +171,21 @@ class PostBloc extends Bloc<PostEvent, PostState> {
             emit(state.copyWith(posts: data));
           }
         } catch (e) {
-          emit(
-            state.copyWith(
-              status: PostStatus.error,
-              error: e is CustomException ? e.apiError : ApiError.unknown(),
-            ),
-          );
+          if (e is CustomException) {
+            emit(
+              state.copyWith(
+                status: PostStatus.error,
+                error: e.apiError,
+              ),
+            );
+          } else {
+            emit(
+              state.copyWith(
+                status: PostStatus.error,
+                error: ApiError.errorOccurred(),
+              ),
+            );
+          }
           add(GetPostsEvent(isRefresh: true));
         }
       },
@@ -181,6 +217,42 @@ class PostBloc extends Bloc<PostEvent, PostState> {
             if (post.id == event.postId) {
               post = post.copyWith(
                 commentsCount: post.commentsCount - 1,
+              );
+            }
+            return post;
+          }).toList();
+          data = data.copyWith(data: posts);
+          emit(state.copyWith(posts: data));
+        }
+      },
+    );
+
+    on<IncrementLikeCounterEvent>(
+      (event, emit) async {
+        GetAllPostsResponse? data = state.posts;
+        if (data != null) {
+          final List<Post> posts = data.data.map((post) {
+            if (post.id == event.postId) {
+              post = post.copyWith(
+                likesCount: post.likesCount + 1,
+              );
+            }
+            return post;
+          }).toList();
+          data = data.copyWith(data: posts);
+          emit(state.copyWith(posts: data));
+        }
+      },
+    );
+
+    on<DecrementLikeCounterEvent>(
+      (event, emit) async {
+        GetAllPostsResponse? data = state.posts;
+        if (data != null) {
+          final List<Post> posts = data.data.map((post) {
+            if (post.id == event.postId) {
+              post = post.copyWith(
+                likesCount: post.likesCount - 1,
               );
             }
             return post;

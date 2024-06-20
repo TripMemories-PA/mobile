@@ -56,8 +56,19 @@ class MyApp extends HookWidget {
             routes: <RouteBase>[
               GoRoute(
                 path: RouteName.searchPage,
-                builder: (BuildContext context, GoRouterState state) =>
-                    const SearchPage(),
+                pageBuilder: (context, state) {
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: const SearchPage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return CustomTransition.buildFadeTransition(
+                        animation,
+                        child,
+                      );
+                    },
+                  );
+                },
               ),
             ],
           ),

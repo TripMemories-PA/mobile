@@ -11,6 +11,7 @@ class CommentState {
     this.commentsPage = 0,
     this.hasMoreComments = true,
     this.searchMoreCommentsStatus = CommentStatus.notLoading,
+    this.addCommentStatus = CommentStatus.notLoading,
   });
 
   CommentState copyWith({
@@ -21,6 +22,7 @@ class CommentState {
     int? commentsPage,
     bool? hasMoreComments,
     CommentStatus? searchMoreCommentsStatus,
+    CommentStatus? addCommentStatus,
   }) {
     return CommentState(
       commentResponse: commentResponse ?? this.commentResponse,
@@ -31,6 +33,7 @@ class CommentState {
       hasMoreComments: hasMoreComments ?? this.hasMoreComments,
       searchMoreCommentsStatus:
           searchMoreCommentsStatus ?? this.searchMoreCommentsStatus,
+      addCommentStatus: addCommentStatus ?? this.addCommentStatus,
     );
   }
 
@@ -41,4 +44,5 @@ class CommentState {
   final int commentsPage;
   final bool hasMoreComments;
   final CommentStatus searchMoreCommentsStatus;
+  final CommentStatus addCommentStatus;
 }

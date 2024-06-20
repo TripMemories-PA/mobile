@@ -9,3 +9,13 @@ class GetCommentsEvent extends CommentEvent {
 
   final bool isRefresh;
 }
+
+class AddCommentEvent extends CommentEvent {
+  AddCommentEvent({
+    required this.content,
+    required this.postId,
+  });
+
+  final String content;
+  final int postId;
+}

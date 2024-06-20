@@ -12,12 +12,14 @@ import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/comment_bloc/comment_bloc.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/my_colors.dart';
+import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/comment/comment.dart';
 import '../object/post/post.dart';
 import '../repository/comment/comment_repository.dart';
 import '../service/comment/comment_remote_data_source.dart';
+import '../utils/messenger.dart';
 import 'custom_card.dart';
 import 'popup/confirmation_logout_dialog.dart';
 
@@ -41,7 +43,7 @@ class MyPostsComponents extends StatelessWidget {
                 children: posts.map((post) {
                   return Column(
                     children: [
-                      PostCard(post: post),
+                      PostCard(post: post, postBloc: context.read<PostBloc>()),
                       const SizedBox(height: 10),
                     ],
                   );
@@ -49,13 +51,13 @@ class MyPostsComponents extends StatelessWidget {
               ),
             );
           } else {
-            return const Center(child: Text('Pas de post à afficher'));
+            return Center(child: Text(StringConstants().noPostYet));
           }
         } else if (state.getMorePostsStatus == PostStatus.loading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state.getMorePostsStatus == PostStatus.error) {
-          return const Center(
-            child: Text('Erreur lors du chargement des posts'),
+          return Center(
+            child: Text(StringConstants().errorWhileLoadingPosts),
           );
         } else {
           return Container();
@@ -66,9 +68,10 @@ class MyPostsComponents extends StatelessWidget {
 }
 
 class PostCard extends HookWidget {
-  const PostCard({super.key, required this.post});
+  const PostCard({super.key, required this.post, required this.postBloc});
 
   final Post post;
+  final PostBloc postBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +199,10 @@ class PostCard extends HookWidget {
                   style: const TextStyle(color: MyColors.purple),
                 ),
                 const SizedBox(width: 5),
-                CommentButton(post: post),
+                CommentButton(
+                  post: post,
+                  postBloc: postBloc,
+                ),
                 Text(
                   post.commentsCount.toString(),
                   style: const TextStyle(color: MyColors.purple),
@@ -209,7 +215,7 @@ class PostCard extends HookWidget {
                     onPressed: () async {
                       final bool result = await confirmationPopUp(
                         context,
-                        title: 'Etes-vous sûr de vouloir supprimer ce post ?',
+                        title: StringConstants().sureToDeletePost,
                       );
                       if (!result) {
                         return;
@@ -235,9 +241,11 @@ class CommentButton extends HookWidget {
   const CommentButton({
     super.key,
     required this.post,
+    required this.postBloc,
   });
 
   final Post post;
+  final PostBloc postBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -246,6 +254,7 @@ class CommentButton extends HookWidget {
       icon: const Icon(Icons.chat_bubble_outline),
       onPressed: () {
         showModalBottomSheet(
+          isScrollControlled: true,
           context: context,
           builder: (context) {
             return RepositoryProvider(
@@ -259,10 +268,13 @@ class CommentButton extends HookWidget {
                     context,
                   ),
                   postId: post.id,
+                  postBloc: postBloc,
                 )..add(GetCommentsEvent(isRefresh: true)),
                 child: BlocBuilder<CommentBloc, CommentState>(
                   builder: (context, state) {
-                    return const CommentButtonContent();
+                    return CommentButtonContent(
+                      postId: post.id,
+                    );
                   },
                 ),
               ),
@@ -277,7 +289,10 @@ class CommentButton extends HookWidget {
 class CommentButtonContent extends HookWidget {
   const CommentButtonContent({
     super.key,
+    required this.postId,
   });
+
+  final int postId;
 
   void _getComments(BuildContext context) {
     final monumentBloc = context.read<CommentBloc>();
@@ -304,6 +319,7 @@ class CommentButtonContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final ScrollController commentScrollController = useScrollController();
+    final TextEditingController commentController = useTextEditingController();
     useEffect(
       () {
         void createScrollListener() {
@@ -321,7 +337,7 @@ class CommentButtonContent extends HookWidget {
       const [],
     );
     return SizedBox(
-      height: 300,
+      height: MediaQuery.of(context).size.height * 0.7,
       width: double.infinity,
       child: BlocBuilder<CommentBloc, CommentState>(
         builder: (context, state) {
@@ -330,12 +346,28 @@ class CommentButtonContent extends HookWidget {
           } else if (state.status == CommentStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state.commentResponse == null) {
-            return const Text('Aucun commentaire trouvé');
+            return Text(StringConstants().noComments);
           } else {
-            return Column(
+            return ListView(
               children: [
-                const Text('Commentaires'),
-                Expanded(
+                Container(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30.0),
+                    child: Text(
+                      StringConstants().comments,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 1,
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+                20.ph,
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.5,
                   child: SingleChildScrollView(
                     controller: commentScrollController,
                     child: Column(
@@ -347,10 +379,7 @@ class CommentButtonContent extends HookWidget {
                           itemBuilder: (context, index) {
                             final Comment comment =
                                 (state.commentResponse?.data ?? [])[index];
-                            return ListTile(
-                              title: Text(comment.content),
-                              subtitle: Text(comment.createdBy.username),
-                            );
+                            return _buildComment(comment, context);
                           },
                         ),
                         Center(
@@ -363,10 +392,10 @@ class CommentButtonContent extends HookWidget {
                                             .read<CommentBloc>()
                                             .add(GetCommentsEvent());
                                       },
-                                      child:
-                                          const Text('Voir plus de résultats'),
+                                      child: Text(
+                                        StringConstants().loadMoreResults,
+                                      ),
                                     )
-                                  // TODO: Ajoutez un widget SHIMMER ici en cas d'erreur de chargement
                                   : _buildErrorWidget(context))
                               : Text(StringConstants().noMoreComments),
                         ),
@@ -375,11 +404,149 @@ class CommentButtonContent extends HookWidget {
                     ),
                   ),
                 ),
+                _buildCommentTextInput(context, commentController),
               ],
             );
           }
         },
       ),
+    );
+  }
+
+  Padding _buildCommentTextInput(
+    BuildContext context,
+    TextEditingController controller,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          BlocListener<CommentBloc, CommentState>(
+            listener: (context, state) {
+              if (state.error != null) {
+                Messenger.showSnackBarError(
+                  state.error!.getDescription(),
+                );
+              } else if (state.addCommentStatus ==
+                  CommentStatus.commentPosted) {
+                Messenger.showSnackBarSuccess('Commentaire posté');
+                controller.clear();
+              }
+            },
+            child: const SizedBox.shrink(),
+          ),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(20),
+                ),
+              ),
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: 'Ecrire un commentaire',
+                  hintStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          BlocBuilder<CommentBloc, CommentState>(
+            builder: (context, state) {
+              final bool isLoading =
+                  state.addCommentStatus == CommentStatus.loading;
+              return IconButton(
+                icon: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    if (isLoading)
+                      CircularProgressIndicator(
+                        strokeWidth: 2.0,
+                        color: Theme.of(context).colorScheme.surface,
+                      )
+                    else
+                      const Icon(
+                        Icons.send,
+                        size: 15,
+                      ),
+                  ],
+                ),
+                onPressed: () {
+                  context.read<CommentBloc>().add(
+                        AddCommentEvent(
+                          content: controller.text,
+                          postId: postId,
+                        ),
+                      );
+                },
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildComment(Comment comment, BuildContext context) {
+    final String? imageUrl = comment.createdBy.avatar?.url;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (imageUrl != null)
+                GestureDetector(
+                  onTap: () => context
+                      .push('${RouteName.profilePage}/${comment.createdBy.id}'),
+                  child: CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(
+                      comment.createdBy.avatar?.url ?? '',
+                    ),
+                  ),
+                )
+              else
+                const Icon(Icons.account_circle),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 10.0,
+                    right: 10.0,
+                    bottom: 10.0,
+                  ),
+                  child: Text(comment.content),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Container(
+            width: double.infinity,
+            height: 1,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+        ),
+      ],
     );
   }
 }

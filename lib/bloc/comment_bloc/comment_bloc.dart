@@ -4,6 +4,7 @@ import '../../api/comment/model/response/get_comment_response/get_comment_respon
 import '../../api/error/api_error.dart';
 import '../../api/exception/custom_exception.dart';
 import '../../repository/comment/comment_repository.dart';
+import '../post/post_bloc.dart';
 
 part 'comment_event.dart';
 part 'comment_state.dart';
@@ -12,6 +13,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
   CommentBloc({
     required this.commentRepository,
     required this.postId,
+    required this.postBloc,
   }) : super(const CommentState()) {
     on<GetCommentsEvent>(
       (event, emit) async {
@@ -61,8 +63,41 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         }
       },
     );
+
+    on<AddCommentEvent>(
+      (event, emit) async {
+        emit(state.copyWith(addCommentStatus: CommentStatus.loading));
+        try {
+          await commentRepository.commentPost(
+            postId: postId,
+            content: event.content,
+          );
+
+          emit(state.copyWith(addCommentStatus: CommentStatus.commentPosted));
+          add(GetCommentsEvent(isRefresh: true));
+          postBloc.add(IncrementCommentCounterEvent(postId));
+        } catch (e) {
+          if (e is CustomException) {
+            emit(
+              state.copyWith(
+                addCommentStatus: CommentStatus.error,
+                error: e.apiError,
+              ),
+            );
+          } else {
+            emit(
+              state.copyWith(
+                status: CommentStatus.error,
+                error: ApiError.errorOccurred(),
+              ),
+            );
+          }
+        }
+      },
+    );
   }
 
   int postId;
   CommentRepository commentRepository;
+  PostBloc postBloc;
 }

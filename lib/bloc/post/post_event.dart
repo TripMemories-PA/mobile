@@ -31,3 +31,15 @@ class DislikePostEvent extends PostEvent {
 
   final int postId;
 }
+
+class IncrementCommentCounterEvent extends PostEvent {
+  IncrementCommentCounterEvent(this.postId);
+
+  final int postId;
+}
+
+class DecrementCommentCounterEvent extends PostEvent {
+  DecrementCommentCounterEvent(this.postId);
+
+  final int postId;
+}

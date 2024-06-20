@@ -154,6 +154,42 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         }
       },
     );
+
+    on<IncrementCommentCounterEvent>(
+      (event, emit) async {
+        GetAllPostsResponse? data = state.posts;
+        if (data != null) {
+          final List<Post> posts = data.data.map((post) {
+            if (post.id == event.postId) {
+              post = post.copyWith(
+                commentsCount: post.commentsCount + 1,
+              );
+            }
+            return post;
+          }).toList();
+          data = data.copyWith(data: posts);
+          emit(state.copyWith(posts: data));
+        }
+      },
+    );
+
+    on<DecrementCommentCounterEvent>(
+      (event, emit) async {
+        GetAllPostsResponse? data = state.posts;
+        if (data != null) {
+          final List<Post> posts = data.data.map((post) {
+            if (post.id == event.postId) {
+              post = post.copyWith(
+                commentsCount: post.commentsCount - 1,
+              );
+            }
+            return post;
+          }).toList();
+          data = data.copyWith(data: posts);
+          emit(state.copyWith(posts: data));
+        }
+      },
+    );
   }
 
   final IPostService postService;

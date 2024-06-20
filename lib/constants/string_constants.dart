@@ -57,4 +57,10 @@ class StringConstants {
 
   String get friendRequestAccepted => "Demande d'ami acceptée";
   String get friendRequestRefused => "Demande d'ami refusée";
+  String get comments => 'Commentaires';
+  String get noComments => 'Pas de commentaires';
+  String get loadMoreResults => 'Charger plus de résultats';
+  String get sureToDeletePost => 'Etes-vous sûr de vouloir supprimer ce post ?';
+  String get errorWhileLoadingPosts => 'Erreur lors du chargement des posts';
+  String get noPostYet => 'Pas de post pour le moment';
 }

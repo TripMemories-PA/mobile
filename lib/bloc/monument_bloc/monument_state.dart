@@ -4,12 +4,13 @@ enum MonumentStatus { loading, notLoading, error }
 
 class MonumentState {
   const MonumentState({
-    this.monuments,
-    this.monumentsPerPage = 50,
-    this.monumentsPage = 1,
+    this.monuments = const [],
+    this.monumentsPerPage = 10,
+    this.monumentsPage = 0,
     this.status = MonumentStatus.notLoading,
     this.searchingMonumentByNameStatus = MonumentStatus.notLoading,
     this.searchMonumentsHasMoreMonuments = true,
+    this.isRefresh = false,
   });
 
   MonumentState copyWith({
@@ -18,7 +19,8 @@ class MonumentState {
     int? monumentsPage,
     MonumentStatus? status,
     MonumentStatus? searchingMonumentByNameStatus,
-    bool? searchMonumentsHasMoreUsers,
+    bool? isRefresh,
+    bool? searchMonumentsHasMoreMonuments,
   }) {
     return MonumentState(
       monuments: monuments ?? this.monuments,
@@ -27,15 +29,17 @@ class MonumentState {
       status: status ?? this.status,
       searchingMonumentByNameStatus:
           searchingMonumentByNameStatus ?? this.searchingMonumentByNameStatus,
-      searchMonumentsHasMoreMonuments:
-          searchMonumentsHasMoreUsers ?? searchMonumentsHasMoreMonuments,
+      searchMonumentsHasMoreMonuments: searchMonumentsHasMoreMonuments ??
+          this.searchMonumentsHasMoreMonuments,
+      isRefresh: isRefresh ?? this.isRefresh,
     );
   }
 
-  final List<Poi>? monuments;
+  final List<Poi> monuments;
   final int monumentsPerPage;
   final int monumentsPage;
   final MonumentStatus status;
   final MonumentStatus searchingMonumentByNameStatus;
   final bool searchMonumentsHasMoreMonuments;
+  final bool isRefresh;
 }

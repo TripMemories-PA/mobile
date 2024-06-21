@@ -2,26 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../api/monument/model/response/poi/poi.dart';
+import '../constants/route_name.dart';
 import 'monument_resume_card.dart';
+import 'searching_monuments_body.dart';
 
 class MonumentResumeList extends StatelessWidget {
-  const MonumentResumeList({super.key, required this.monuments});
+  const MonumentResumeList({
+    super.key,
+    required this.monuments,
+    this.needToPop = false,
+    this.bodySize = SearchingMonumentBodySize.large,
+    required this.monumentsScrollController,
+  });
 
   final List<Poi> monuments;
+  final bool needToPop;
+  final SearchingMonumentBodySize bodySize;
+  final ScrollController monumentsScrollController;
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 10.0,
-      runSpacing: 10.0,
-      children: monuments
-          .map(
-            (monument) => GestureDetector(
-              onTap: () => context.pop(monument),
-              child: MonumentResumeCard(monument: monument),
-            ),
-          )
-          .toList(),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return GridView.builder(
+          controller: monumentsScrollController,
+          padding: const EdgeInsets.all(10.0),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 15.0,
+            childAspectRatio: constraints.maxWidth / 2 / 200,
+          ),
+          itemCount: monuments.length,
+          itemBuilder: (context, index) {
+            final monument = monuments[index];
+            return GestureDetector(
+              onTap: () => needToPop
+                  ? context.pop(monument)
+                  : context.push(
+                      '${RouteName.monumentPage}/${monument.id}',
+                      extra: monument,
+                    ),
+              child: MonumentResumeCard(
+                monument: monument,
+                bodySize: bodySize,
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

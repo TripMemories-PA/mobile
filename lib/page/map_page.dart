@@ -35,7 +35,7 @@ class MapPage extends StatelessWidget {
             ),
           child: BlocBuilder<MonumentBloc, MonumentState>(
             builder: (context, state) {
-              final List<Poi> monuments = state.monuments ?? [];
+              final List<Poi> monuments = state.monuments;
               if (monuments.isEmpty) {
                 return const Center(child: CircularProgressIndicator());
               }

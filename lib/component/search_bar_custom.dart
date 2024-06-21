@@ -1,8 +1,6 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 
-import '../constants/my_colors.dart';
-
 class SearchBarCustom extends StatelessWidget {
   const SearchBarCustom({
     super.key,
@@ -24,23 +22,27 @@ class SearchBarCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      height: 50,
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: MyColors.darkGrey),
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: Theme.of(context).colorScheme.onSurface),
       ),
       child: ValueListenableBuilder(
         valueListenable: searchContent,
         builder: (context, value, child) {
           return TextField(
+            textAlignVertical: TextAlignVertical.center,
             controller: searchController,
             decoration: InputDecoration(
               hintText: hintText,
+              hintStyle: TextStyle(
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
               suffixIcon: value.isEmpty
                   ? Icon(
                       Icons.search,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.onSurface,
                     )
                   : IconButton(
                       onPressed: () {
@@ -55,6 +57,8 @@ class SearchBarCustom extends StatelessWidget {
                       ),
                     ),
               border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
               contentPadding: const EdgeInsets.all(10.0),
             ),
             onChanged: (value) {

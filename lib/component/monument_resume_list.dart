@@ -5,9 +5,10 @@ import '../api/monument/model/response/poi/poi.dart';
 import 'monument_resume_card.dart';
 
 class MonumentResumeList extends StatelessWidget {
-  const MonumentResumeList({super.key, required this.monuments});
+  const MonumentResumeList({super.key, required this.monuments, this.needToPop = false});
 
   final List<Poi> monuments;
+  final bool needToPop;
 
   @override
   Widget build(BuildContext context) {

@@ -7,7 +7,7 @@ class GetMonumentsEvent extends MonumentEvent {
     this.position,
     this.sortByName = true,
     this.order = AlphabeticalSortPossibility.ascending,
-    this.isRefresh = true,
+    this.isRefresh = false,
     this.searchingCriteria,
   });
 

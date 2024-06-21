@@ -55,6 +55,8 @@ class SearchBarCustom extends StatelessWidget {
                       ),
                     ),
               border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
               contentPadding: const EdgeInsets.all(10.0),
             ),
             onChanged: (value) {

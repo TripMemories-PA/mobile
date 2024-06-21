@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../api/monument/model/response/poi/poi.dart';
 import '../../bloc/monument_bloc/monument_bloc.dart';
+import '../../constants/string_constants.dart';
 import '../../repository/monument/monument_repository.dart';
 import '../../service/monument/monument_remote_data_source.dart';
 import '../custom_card.dart';
@@ -105,7 +106,7 @@ class _Body extends HookWidget {
                       onPressed: () {
                         context.pop();
                       },
-                      child: const Text('Fermer'),
+                      child: Text(StringConstants().close),
                     ),
                   ),
                 ),
@@ -128,13 +129,13 @@ class _Body extends HookWidget {
   }
 
   Widget _buildTitle() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          'Rechercher des monuments',
-          style: TextStyle(
+          StringConstants().searchMonuments,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),

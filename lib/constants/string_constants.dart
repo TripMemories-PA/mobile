@@ -80,4 +80,5 @@ class StringConstants {
   String get noMonumentFound => 'Aucun monument trouvé';
   String get result => 'résultat';
   String get searchMonuments => 'Rechercher des monuments';
+  String get close => 'Fermer';
 }

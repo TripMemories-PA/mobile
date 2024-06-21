@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../constants/my_colors.dart';
@@ -95,11 +96,15 @@ class SearchingMonumentBody extends HookWidget {
               ),
               Center(
                 child: state.searchMonumentsHasMoreMonuments
-                    ? (state.status != MonumentStatus.error
-                        ? const Text(
-                            'SHIMMER HERE',
-                          ) // TODO(nono): Add Shimmer effect here
-                        : _buildErrorWidget(context))
+                    ? (state.searchingMonumentByNameStatus ==
+                            MonumentStatus.loading
+                        ? SpinKitThreeBounce(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            size: 20,
+                          )
+                        : (state.status == MonumentStatus.error
+                            ? _buildErrorWidget(context)
+                            : const SizedBox.shrink()))
                     : Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Text(StringConstants().noMoreMonuments),

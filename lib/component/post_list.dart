@@ -32,12 +32,12 @@ class PostList extends HookWidget {
           ),
           postService: PostService(),
         )..add(
-          GetPostsEvent(
-            isRefresh: true,
-            myPosts: myPosts,
-            userId: userId,
+            GetPostsEvent(
+              isRefresh: true,
+              myPosts: myPosts,
+              userId: userId,
+            ),
           ),
-        ),
         child: _PostListContent(myPosts, userId),
       ),
     );
@@ -46,9 +46,9 @@ class PostList extends HookWidget {
 
 class _PostListContent extends HookWidget {
   const _PostListContent(
-      this.myPosts,
-      this.userId,
-      );
+    this.myPosts,
+    this.userId,
+  );
 
   final bool myPosts;
   final int? userId;
@@ -79,10 +79,7 @@ class _PostListContent extends HookWidget {
                   ...posts.map((post) {
                     return Column(
                       children: [
-                        PostCard(
-                          post: post,
-                          postBloc: context.read<PostBloc>(),
-                        ),
+                        PostCardLikable(post: post),
                         const SizedBox(height: 10),
                       ],
                     );
@@ -90,11 +87,11 @@ class _PostListContent extends HookWidget {
                   Center(
                     child: context.read<PostBloc>().state.hasMorePosts
                         ? (context.read<PostBloc>().state.status !=
-                        PostStatus.error
-                        ? const Text(
-                      'SHIMMER HERE',
-                    ) // TODO(nono): Add Shimmer effect here
-                        : _buildErrorWidget(context))
+                                PostStatus.error
+                            ? const Text(
+                                'SHIMMER HERE',
+                              ) // TODO(nono): Add Shimmer effect here
+                            : _buildErrorWidget(context))
                         : Text(StringConstants().noMorePosts),
                   ),
                 ],
@@ -130,19 +127,19 @@ class _PostListContent extends HookWidget {
 
   void _getPostsRequest(BuildContext context) {
     context.read<PostBloc>().add(
-      GetPostsEvent(
-        isRefresh: true,
-        myPosts: myPosts,
-        userId: userId,
-      ),
-    );
+          GetPostsEvent(
+            isRefresh: true,
+            myPosts: myPosts,
+            userId: userId,
+          ),
+        );
   }
 
   @override
   Widget build(BuildContext context) {
     final ScrollController postScrollController = useScrollController();
     useEffect(
-          () {
+      () {
         void createScrollListener() {
           if (postScrollController.position.atEdge) {
             if (postScrollController.position.pixels != 0) {
@@ -165,14 +162,14 @@ class _PostListContent extends HookWidget {
                 .add(GetPostsEvent(isRefresh: true, myPosts: myPosts));
           },
           child: state.status == PostStatus.loading
-          // TODO(nono): shimmer
+              // TODO(nono): shimmer
               ? const Center(
-            child: CircularProgressIndicator(),
-          )
+                  child: CircularProgressIndicator(),
+                )
               : SingleChildScrollView(
-            controller: postScrollController,
-            child: _buildPostList(context),
-          ),
+                  controller: postScrollController,
+                  child: _buildPostList(context),
+                ),
         );
       },
     );

@@ -18,6 +18,7 @@ import '../repository/comment/comment_repository.dart';
 import '../service/comment/comment_remote_data_source.dart';
 import '../utils/messenger.dart';
 import 'popup/confirmation_logout_dialog.dart';
+import 'text_field_custom.dart';
 
 class CommentButton extends HookWidget {
   const CommentButton({
@@ -217,36 +218,7 @@ class CommentButtonContent extends HookWidget {
             child: const SizedBox.shrink(),
           ),
           Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.tertiary,
-                ),
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(20),
-                ),
-              ),
-              child: TextField(
-                controller: controller,
-                decoration: InputDecoration(
-                  hintText: 'Ecrire un commentaire',
-                  hintStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            child: TextFieldCustom(controller: controller,),
           ),
           BlocBuilder<CommentBloc, CommentState>(
             builder: (context, state) {

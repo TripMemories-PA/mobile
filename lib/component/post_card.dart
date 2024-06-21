@@ -136,6 +136,7 @@ class PostCard extends HookWidget {
                   color: MyColors.purple,
                   icon: Icon(
                     post.isLiked ? Icons.favorite : Icons.favorite_border,
+                    color: Colors.red,
                   ),
                   // TODO(nono): ajouter le like au double tap sur la card donc extract la fonction pour l'utiliser dans les deux
                   onPressed: () async {
@@ -249,6 +250,66 @@ class _PostImage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+
+class PostCardLikable extends HookWidget {
+  const PostCardLikable({super.key, required this.post});
+
+  final Post post;
+
+  @override
+  Widget build(BuildContext context) {
+    final showHeart = useState(false);
+    final controller = useAnimationController(
+      duration: const Duration(milliseconds: 300),
+    );
+    final animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.elasticOut,
+    );
+
+    void handleDoubleTap() {
+      if (context.read<AuthBloc>().state.status != AuthStatus.authenticated ||
+          post.isLiked ||
+          post.createdBy.id == context.read<AuthBloc>().state.user?.id) {
+        return;
+      }
+
+      context.read<PostBloc>().add(
+        LikePostEvent(post.id),
+      );
+      showHeart.value = true;
+      controller.forward().then((_) {
+        Future.delayed(const Duration(milliseconds: 500), () {
+          showHeart.value = false;
+          controller.reset();
+        });
+      });
+    }
+
+    return InkWell(
+      onDoubleTap: handleDoubleTap,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          PostCard(
+            post: post,
+            postBloc: context.read<PostBloc>(),
+          ),
+          if (showHeart.value)
+            ScaleTransition(
+              scale: animation,
+              child: const Icon(
+                Icons.favorite,
+                color: Colors.red,
+                size: 100,
+              ),
+            ),
+        ],
       ),
     );
   }

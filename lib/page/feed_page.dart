@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
+import '../component/post_list.dart';
 import '../constants/route_name.dart';
 
 class FeedPage extends StatelessWidget {
@@ -11,18 +12,18 @@ class FeedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton:
-          context.read<AuthBloc>().state.status == AuthStatus.authenticated
-              ? FloatingActionButton(
-                  onPressed: () => context.push(RouteName.editTweetPage),
-                  child: const Icon(Icons.add),
-                )
-              : null,
-      body: const ColoredBox(
-        color: Colors.yellow,
-        child: Center(
-          child: Text('FEED'),
+    return SafeArea(
+      child: Scaffold(
+        floatingActionButton:
+            context.read<AuthBloc>().state.status == AuthStatus.authenticated
+                ? FloatingActionButton(
+                    onPressed: () => context.push(RouteName.editTweetPage),
+                    child: const Icon(Icons.add),
+                  )
+                : null,
+        body: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: PostList(),
         ),
       ),
     );

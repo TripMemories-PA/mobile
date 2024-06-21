@@ -6,10 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
+import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/my_colors.dart';
+import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../object/post/post.dart';
 import 'comment_button.dart';
@@ -134,13 +137,22 @@ class PostCard extends HookWidget {
                   color: MyColors.purple,
                   icon: Icon(
                     post.isLiked ? Icons.favorite : Icons.favorite_border,
+                    color: Colors.red,
                   ),
-                  onPressed: () {
-                    if (context.read<AuthBloc>().state.user == null) {
-                      confirmationPopUp(
+                  onPressed: () async {
+                    if (context.read<AuthBloc>().state.status ==
+                        AuthStatus.guest) {
+                      final bool result = await confirmationPopUp(
                         context,
                         title: StringConstants().pleaseLogin,
                       );
+                      if (!result) {
+                        return;
+                      } else {
+                        if (context.mounted) {
+                          context.go(RouteName.loginPage);
+                        }
+                      }
                     } else {
                       if (context.read<AuthBloc>().state.user?.id !=
                           post.createdBy.id) {
@@ -238,6 +250,80 @@ class _PostImage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class PostCardLikable extends HookWidget {
+  const PostCardLikable({super.key, required this.post});
+
+  final Post post;
+
+  @override
+  Widget build(BuildContext context) {
+    final showHeart = useState(false);
+    final showDislike = useState(false);
+    final controller = useAnimationController(
+      duration: const Duration(milliseconds: 500),
+    );
+
+    void handleDoubleTap() {
+      if (context.read<AuthBloc>().state.status != AuthStatus.authenticated ||
+          post.createdBy.id == context.read<AuthBloc>().state.user?.id) {
+        return;
+      }
+
+      if (post.isLiked) {
+        context.read<PostBloc>().add(
+              DislikePostEvent(post.id),
+            );
+        showDislike.value = true;
+        controller.forward().then((_) {
+          Future.delayed(const Duration(milliseconds: 1200), () {
+            showDislike.value = false;
+            controller.reset();
+          });
+        });
+        return;
+      }
+
+      context.read<PostBloc>().add(
+            LikePostEvent(post.id),
+          );
+      showHeart.value = true;
+      controller.forward().then((_) {
+        Future.delayed(const Duration(milliseconds: 2000), () {
+          showHeart.value = false;
+          controller.reset();
+        });
+      });
+    }
+
+    return InkWell(
+      onDoubleTap: handleDoubleTap,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          PostCard(
+            post: post,
+            postBloc: context.read<PostBloc>(),
+          ),
+          if (showHeart.value)
+            Lottie.asset(
+              'assets/lottie/like_animation.json',
+              width: 200,
+              height: 200,
+              fit: BoxFit.fill,
+            ),
+          if (showDislike.value)
+            Lottie.asset(
+              'assets/lottie/dislike_animation.json',
+              width: 200,
+              height: 200,
+              fit: BoxFit.fill,
+            ),
+        ],
       ),
     );
   }

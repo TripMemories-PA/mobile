@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/chat/chat_bloc.dart';
 import '../component/profile_picture.dart';
+import '../component/text_field_custom.dart';
 import '../constants/my_colors.dart';
 import '../num_extensions.dart';
 import '../object/profile/profile.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends HookWidget {
   const ChatPage({super.key, required this.user});
 
   final Profile user;
 
   @override
   Widget build(BuildContext context) {
+    final messageController = useTextEditingController();
     final int myId = context.read<AuthBloc>().state.user?.id ?? 0;
     return SafeArea(
       child: Scaffold(
@@ -43,7 +46,7 @@ class ChatPage extends StatelessWidget {
                     },
                   ),
                 ),
-                _buildMessageTextInput(context),
+                _buildMessageTextInput(context, messageController),
               ],
             ),
           ),
@@ -52,40 +55,18 @@ class ChatPage extends StatelessWidget {
     );
   }
 
-  Padding _buildMessageTextInput(BuildContext context) {
+  Padding _buildMessageTextInput(
+    BuildContext context,
+    TextEditingController messageController,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
           Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.tertiary,
-                ),
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(20),
-                ),
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Ecrire un message',
-                  hintStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
-              ),
+            child: TextFieldCustom(
+              controller: messageController,
+              hintText: 'Ecrire un message',
             ),
           ),
           IconButton(

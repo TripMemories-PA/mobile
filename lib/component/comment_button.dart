@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../api/comment/comment_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
+import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/comment_bloc/comment_bloc.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/route_name.dart';
@@ -17,6 +18,7 @@ import '../repository/comment/comment_repository.dart';
 import '../service/comment/comment_remote_data_source.dart';
 import '../utils/messenger.dart';
 import 'popup/confirmation_logout_dialog.dart';
+import 'text_field_custom.dart';
 
 class CommentButton extends HookWidget {
   const CommentButton({
@@ -216,36 +218,7 @@ class CommentButtonContent extends HookWidget {
             child: const SizedBox.shrink(),
           ),
           Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.tertiary,
-                ),
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(20),
-                ),
-              ),
-              child: TextField(
-                controller: controller,
-                decoration: InputDecoration(
-                  hintText: 'Ecrire un commentaire',
-                  hintStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            child: TextFieldCustom(controller: controller,),
           ),
           BlocBuilder<CommentBloc, CommentState>(
             builder: (context, state) {
@@ -315,41 +288,44 @@ class CommentButtonContent extends HookWidget {
                   child: Text(comment.content),
                 ),
               ),
-              if (comment.createdBy.id ==
-                  context.read<AuthBloc>().state.user?.id)
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () async {
-                    final bool result = await confirmationPopUp(
-                      context,
-                      title: StringConstants().sureToDeleteComment,
-                    );
-                    if (!result) {
-                      return;
-                    } else {
-                      if (context.mounted) {
-                        context
-                            .read<CommentBloc>()
-                            .add(DeleteCommentEvent(comment.id));
+              if (context.read<AuthBloc>().state.status ==
+                  AuthStatus.authenticated)
+                if (comment.createdBy.id ==
+                    context.read<AuthBloc>().state.user?.id)
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () async {
+                      final bool result = await confirmationPopUp(
+                        context,
+                        title: StringConstants().sureToDeleteComment,
+                      );
+                      if (!result) {
+                        return;
+                      } else {
+                        if (context.mounted) {
+                          context
+                              .read<CommentBloc>()
+                              .add(DeleteCommentEvent(comment.id));
+                        }
                       }
-                    }
-                  },
-                )
-              else
-                IconButton(
-                  icon: Icon(
-                    comment.isLiked ? Icons.favorite : Icons.favorite_outline,
+                    },
+                  )
+                else
+                  IconButton(
+                    icon: Icon(
+                      comment.isLiked ? Icons.favorite : Icons.favorite_outline,
+                    ),
+                    onPressed: () async {
+                      if (context.read<AuthBloc>().state.status ==
+                          AuthStatus.authenticated) {
+                        context.read<CommentBloc>().add(
+                              comment.isLiked
+                                  ? DislikeCommentEvent(comment.id)
+                                  : LikeCommentEvent(comment.id),
+                            );
+                      }
+                    },
                   ),
-                  onPressed: () async {
-                    context.read<CommentBloc>().add(
-                          comment.isLiked
-                              ? DislikeCommentEvent(comment.id)
-                              : LikeCommentEvent(
-                                  comment.id,
-                                ),
-                        );
-                  },
-                ),
             ],
           ),
         ),

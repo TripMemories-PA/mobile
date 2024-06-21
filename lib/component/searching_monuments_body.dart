@@ -20,6 +20,7 @@ class SearchingMonumentBody extends HookWidget {
     required this.searchController,
     required this.searchContent,
     required this.searching,
+    required this.monumentsScrollController,
   });
 
   final bool needToPop;
@@ -28,6 +29,7 @@ class SearchingMonumentBody extends HookWidget {
   final TextEditingController searchController;
   final ValueNotifier<String> searchContent;
   final ValueNotifier<bool> searching;
+  final ScrollController monumentsScrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class SearchingMonumentBody extends HookWidget {
             },
           ),
           10.ph,
-          _buildSearchMonumentList(searchContent),
+          Expanded(child: _buildSearchMonumentList(searchContent)),
         ],
       ),
     );
@@ -83,10 +85,13 @@ class SearchingMonumentBody extends HookWidget {
                   ),
                 ),
               ),
-              MonumentResumeList(
-                monuments: state.monuments,
-                needToPop: needToPop,
-                bodySize: bodySize,
+              Expanded(
+                child: MonumentResumeList(
+                  monuments: state.monuments,
+                  needToPop: needToPop,
+                  bodySize: bodySize,
+                  monumentsScrollController: monumentsScrollController,
+                ),
               ),
               Center(
                 child: state.searchMonumentsHasMoreMonuments
@@ -122,7 +127,9 @@ class SearchingMonumentBody extends HookWidget {
   void _getMonumentsRequest(BuildContext context) {
     context.read<MonumentBloc>().add(
           GetMonumentsEvent(
-              isRefresh: true, searchingCriteria: searchContent.value),
+            isRefresh: true,
+            searchingCriteria: searchContent.value,
+          ),
         );
   }
 }

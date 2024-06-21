@@ -61,27 +61,31 @@ class _Body extends HookWidget {
       },
       const [],
     );
-    return RefreshIndicator(
-      onRefresh: () async {
-        context.read<MonumentBloc>().add(
-              GetMonumentsEvent(
-                isRefresh: true,
-                searchingCriteria: searchContent.value,
+    return SafeArea(
+      child: RefreshIndicator(
+        onRefresh: () async {
+          context.read<MonumentBloc>().add(
+                GetMonumentsEvent(
+                  isRefresh: true,
+                  searchingCriteria: searchContent.value,
+                ),
+              );
+        },
+        child: Column(
+          children: [
+            _buildHeader(),
+            20.ph,
+            Expanded(
+              child: SearchingMonumentBody(
+                padding: 20,
+                searchController: searchController,
+                searchContent: searchContent,
+                searching: searching,
+                monumentsScrollController: monumentsScrollController,
               ),
-            );
-      },
-      child: ListView(
-        controller: monumentsScrollController,
-        children: [
-          _buildHeader(),
-          20.ph,
-          SearchingMonumentBody(
-            padding: 20,
-            searchController: searchController,
-            searchContent: searchContent,
-            searching: searching,
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

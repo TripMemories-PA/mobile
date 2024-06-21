@@ -21,7 +21,7 @@ class MonumentResumeCard extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return SizedBox(
-          height: 190,
+          height: 300,
           width: constraints.maxWidth / 2 - 5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,8 +33,11 @@ class MonumentResumeCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15.0),
                   child: Image.network(
                     monument.cover.url,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
+                    loadingBuilder: (
+                      BuildContext context,
+                      Widget child,
+                      ImageChunkEvent? loadingProgress,
+                    ) {
                       if (loadingProgress == null) {
                         return child;
                       } else {
@@ -43,10 +46,14 @@ class MonumentResumeCard extends StatelessWidget {
                         );
                       }
                     },
-                    errorBuilder: (BuildContext context, Object error,
-                        StackTrace? stackTrace) {
+                    errorBuilder: (
+                      BuildContext context,
+                      Object error,
+                      StackTrace? stackTrace,
+                    ) {
                       return const Icon(
-                          CupertinoIcons.exclamationmark_triangle);
+                        CupertinoIcons.exclamationmark_triangle,
+                      );
                     },
                     fit: BoxFit.cover,
                   ),

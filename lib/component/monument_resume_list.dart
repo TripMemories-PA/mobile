@@ -12,20 +12,31 @@ class MonumentResumeList extends StatelessWidget {
     required this.monuments,
     this.needToPop = false,
     this.bodySize = SearchingMonumentBodySize.large,
+    required this.monumentsScrollController,
   });
 
   final List<Poi> monuments;
   final bool needToPop;
   final SearchingMonumentBodySize bodySize;
+  final ScrollController monumentsScrollController;
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 10.0,
-      runSpacing: 15.0,
-      children: monuments
-          .map(
-            (monument) => GestureDetector(
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return GridView.builder(
+          controller: monumentsScrollController,
+          padding: const EdgeInsets.all(10.0),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 15.0,
+            childAspectRatio: constraints.maxWidth / 2 / 200,
+          ),
+          itemCount: monuments.length,
+          itemBuilder: (context, index) {
+            final monument = monuments[index];
+            return GestureDetector(
               onTap: () => needToPop
                   ? context.pop(monument)
                   : context.push(
@@ -36,9 +47,10 @@ class MonumentResumeList extends StatelessWidget {
                 monument: monument,
                 bodySize: bodySize,
               ),
-            ),
-          )
-          .toList(),
+            );
+          },
+        );
+      },
     );
   }
 }

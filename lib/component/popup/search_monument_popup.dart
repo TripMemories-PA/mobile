@@ -79,17 +79,19 @@ class _Body extends HookWidget {
                           ),
                         );
                   },
-                  child: ListView(
-                    controller: monumentsScrollController,
+                  child: Column(
                     children: [
                       _buildTitle(),
-                      SearchingMonumentBody(
-                        needToPop: true,
-                        padding: 10,
-                        bodySize: SearchingMonumentBodySize.small,
-                        searchController: searchController,
-                        searchContent: searchContent,
-                        searching: searching,
+                      Expanded(
+                        child: SearchingMonumentBody(
+                          needToPop: true,
+                          padding: 10,
+                          bodySize: SearchingMonumentBodySize.small,
+                          searchController: searchController,
+                          searchContent: searchContent,
+                          searching: searching,
+                          monumentsScrollController: monumentsScrollController,
+                        ),
                       ),
                     ],
                   ),

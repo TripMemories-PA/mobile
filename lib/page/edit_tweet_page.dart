@@ -165,6 +165,7 @@ class EditTweetPage extends HookWidget {
                           ),
                           10.ph,
                           _buildMonumentPicker(context, selectedMonument),
+                          10.ph,
                         ],
                       ),
                     ),
@@ -212,7 +213,7 @@ class EditTweetPage extends HookWidget {
   ) {
     return CustomCard(
       width: double.infinity,
-      height: 100,
+      height: selectedMonument.value != null ? 200 : 100,
       borderColor: Colors.transparent,
       backgroundColor: Theme.of(context).colorScheme.tertiary,
       content: selectedMonument.value == null
@@ -245,6 +246,7 @@ class EditTweetPage extends HookWidget {
           : Stack(
               children: [
                 Container(
+                  height: 400,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.0),
@@ -406,7 +408,6 @@ class EditTweetPage extends HookWidget {
                     Icons.chevron_left,
                     color: Theme.of(context).colorScheme.primary,
                     size: 25,
-
                   ),
                   onPressed: null,
                 ),

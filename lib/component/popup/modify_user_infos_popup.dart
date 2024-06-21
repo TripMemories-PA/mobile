@@ -41,90 +41,94 @@ class UserInfosFormPopup extends StatelessWidget {
     final Profile profile = profileBloc.state.profile!;
     final String? avatarUrl = profile.avatar?.url;
     final String? bannerUrl = profile.banner?.url;
-    return ListView(
-      children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.23,
-          child: Stack(
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 180,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(14.0),
-                  child: bannerUrl != null
-                      ? Image.network(
-                          bannerUrl,
-                          fit: BoxFit.cover,
-                        )
-                      : Image.asset('assets/images/louvre.png'),
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                left: MediaQuery.of(context).size.width * 0.35,
-                child: SizedBox(
-                  width: 100,
-                  height: 100,
+    return SizedBox.expand(
+      child: ListView(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.23,
+            child: Stack(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 180,
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(50.0),
-                    ),
-                    child: avatarUrl != null
+                    borderRadius: BorderRadius.circular(14.0),
+                    child: bannerUrl != null
                         ? Image.network(
-                            avatarUrl,
+                            bannerUrl,
                             fit: BoxFit.cover,
                           )
-                        : const CircleAvatar(
-                            backgroundColor: MyColors.lightGrey,
-                            child: Icon(
-                              Icons.person,
-                              size: 50,
-                              color: Colors.grey,
-                            ),
+                        : Image.asset(
+                            'assets/images/louvre.png',
+                            fit: BoxFit.cover,
                           ),
                   ),
                 ),
-              ),
-              Positioned(
-                right: 20,
-                child: IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => context.pop(false),
-                  color: Colors.red,
-                  iconSize: 40,
+                Positioned(
+                  bottom: 0,
+                  left: MediaQuery.of(context).size.width * 0.35,
+                  child: SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(50.0),
+                      ),
+                      child: avatarUrl != null
+                          ? Image.network(
+                              avatarUrl,
+                              fit: BoxFit.cover,
+                            )
+                          : const CircleAvatar(
+                              backgroundColor: MyColors.lightGrey,
+                              child: Icon(
+                                Icons.person,
+                                size: 50,
+                                color: Colors.grey,
+                              ),
+                            ),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                Positioned(
+                  right: 20,
+                  child: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => context.pop(false),
+                    color: Colors.red,
+                    iconSize: 40,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        10.ph,
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            children: [
-              ModifyUserInfosForm(
-                profileBloc: profileBloc,
-              ),
-              15.ph,
-              const UpdatePasswordForm(),
-            ],
+          10.ph,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              children: [
+                ModifyUserInfosForm(
+                  profileBloc: profileBloc,
+                ),
+                15.ph,
+                const UpdatePasswordForm(),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
 Future<bool> modifyUserInfosPopup(
-    BuildContext context,) async {
+  BuildContext context,
+) async {
   return await showDialog<bool>(
-    context: context,
-    builder: (_) =>
-       UserInfosFormPopup(
-        profileBloc: context.read<ProfileBloc>(),
-      ),
-
-  ) ??
+        context: context,
+        builder: (_) => UserInfosFormPopup(
+          profileBloc: context.read<ProfileBloc>(),
+        ),
+      ) ??
       false;
 }

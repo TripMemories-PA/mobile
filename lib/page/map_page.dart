@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../api/monument/model/response/poi/poi.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../component/map_custom.dart';
-import '../object/position.dart';
+import '../object/radius.dart';
 import '../repository/monument/monument_repository.dart';
 import '../service/monument/monument_remote_data_source.dart';
 
@@ -13,6 +14,7 @@ class MapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const LatLng center = LatLng(48.84922330209508, 2.389781701197292);
     return Scaffold(
       body: RepositoryProvider(
         create: (context) => MonumentRepository(
@@ -25,11 +27,11 @@ class MapPage extends StatelessWidget {
           )..add(
               // TODO(nono): donner les coordonnées de la carte
               GetMonumentsOnMapEvent(
-                position: Position(
-                  swLat: 1,
-                  swLng: 1,
-                  neLat: 1,
-                  neLng: 1,
+                isRefresh: true,
+                radius: RadiusQueryInfos(
+                  km: 10,
+                  lat: center.latitude,
+                  lng: center.longitude,
                 ),
               ),
             ),

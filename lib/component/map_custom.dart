@@ -3,11 +3,14 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../api/monument/model/response/poi/poi.dart';
+import '../bloc/monument_bloc/monument_bloc.dart';
 import '../constants/route_name.dart';
+import '../object/position.dart';
 import '../utils/messenger.dart';
 
 final Completer<GoogleMapController> _controller = Completer();
@@ -98,6 +101,18 @@ class _MapCustomState extends State<MapCustom> {
       }
       setState(() {
         myMap = GoogleMap(
+          onCameraIdle: () async {
+            final LatLngBounds bounds = await mapController.getVisibleRegion();
+            final LatLng southwest = bounds.southwest;
+            final LatLng northeast = bounds.northeast;
+            final Position position = Position(
+              swLat: southwest.latitude,
+              swLng: southwest.longitude,
+              neLat: northeast.latitude,
+              neLng: northeast.longitude,
+            );
+            _getNewMonuments(position, context);
+          },
           initialCameraPosition: CameraPosition(
             target: _center,
             zoom: 11.0,
@@ -114,5 +129,13 @@ class _MapCustomState extends State<MapCustom> {
         );
       });
     }
+  }
+
+  void _getNewMonuments(Position position, BuildContext context) {
+    BlocProvider.of<MonumentBloc>(context).add(
+      GetMonumentsOnMapEvent(
+        position: position,
+      ),
+    );
   }
 }

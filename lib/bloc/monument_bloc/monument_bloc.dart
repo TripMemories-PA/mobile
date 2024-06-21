@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api/monument/model/response/poi/poi.dart';
 import '../../api/monument/model/response/pois_response/pois_response.dart';
 import '../../object/position.dart';
+import '../../object/radius.dart';
 import '../../object/sort_possibility.dart';
 import '../../repository/monument/i_monument_repository.dart';
 
@@ -58,13 +59,40 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
           status: MonumentStatus.loading,
         ),
       );
+      int page = 1;
       final PoisResponse monuments = await monumentRepository.getMonuments(
-        page: 1,
-        perPage: 50,
+        page: page,
+        perPage: 10,
         position: event.position,
+        radius: event.radius,
         sortByName: true,
         order: AlphabeticalSortPossibility.ascending,
       );
+      if (!event.isRefresh) {
+        int cpt = 0;
+        final List<Poi> newMonuments = [];
+        while (newMonuments.length < perPage) {
+          page++;
+          final PoisResponse monuments = await monumentRepository.getMonuments(
+            page: page,
+            perPage: 10,
+            position: event.position,
+            radius: event.radius,
+            sortByName: true,
+            order: AlphabeticalSortPossibility.ascending,
+          );
+          for (final Poi poi in monuments.data) {
+            if (state.monuments.contains(poi)) {
+              cpt++;
+            } else {
+              newMonuments.add(poi);
+            }
+          }
+          if (monuments.data.length < perPage || cpt == monuments.data.length) {
+            break;
+          }
+        }
+      }
       emit(
         state.copyWith(
           monuments: monuments.data,
@@ -73,6 +101,6 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
       );
     });
   }
-
+  final int perPage = 10;
   final IMonumentRepository monumentRepository;
 }

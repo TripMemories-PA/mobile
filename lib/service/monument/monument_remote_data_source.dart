@@ -3,6 +3,7 @@ import '../../api/monument/model/response/pois_response/pois_response.dart';
 import '../../api/monument/monument_service.dart';
 import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../object/position.dart';
+import '../../object/radius.dart';
 import '../../object/sort_possibility.dart';
 import '../../repository/monument/i_monument_repository.dart';
 
@@ -23,6 +24,7 @@ class MonumentRemoteDataSource implements IMonumentRepository {
     required int page,
     required int perPage,
     String? searchingCriteria,
+    RadiusQueryInfos? radius,
   }) async {
     final PoisResponse poisResponse = await _monumentService.getMonuments(
       position: position,
@@ -31,6 +33,7 @@ class MonumentRemoteDataSource implements IMonumentRepository {
       page: page,
       perPage: perPage,
       searchingCriteria: searchingCriteria,
+      radius: radius,
     );
     return poisResponse;
   }

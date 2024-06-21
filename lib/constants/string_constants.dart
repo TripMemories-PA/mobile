@@ -67,4 +67,14 @@ class StringConstants {
   String get sureToDeleteComment =>
       'Etes-vous sûr de vouloir supprimer ce commentaire ?';
   String get pleaseLogin => 'Veuillez vous connecter';
+  String get shareYourExperience => 'Partagez votre expérience';
+  String get password => 'Mot de passe';
+  String get confirmPassword => 'Confirmer le mot de passe';
+  String get email => 'Email';
+  String get firstName => 'Prénom';
+  String get lastName => 'Nom';
+  String get username => "Nom d'utilisateur";
+  String get addTitle => 'Ajouter un titre';
+  String get addLocation => 'Ajouter un lieu';
+  String get addPhoto => 'Ajouter une photo';
 }

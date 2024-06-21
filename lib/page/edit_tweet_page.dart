@@ -13,6 +13,7 @@ import '../api/post/post_service.dart';
 import '../bloc/edit_tweet_bloc/publish_post_bloc.dart';
 import '../component/custom_card.dart';
 import '../component/popup/search_monument_popup.dart';
+import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../utils/messenger.dart';
 
@@ -62,11 +63,11 @@ class EditTweetPage extends HookWidget {
     final rating = useState<double>(0.0);
     return BlocProvider(
       create: (context) => PublishPostBloc(postService: PostService()),
-      child: SafeArea(
-        child: BlocBuilder<PublishPostBloc, PublishPostState>(
-          builder: (context, state) {
-            return Scaffold(
-              body: Padding(
+      child: BlocBuilder<PublishPostBloc, PublishPostState>(
+        builder: (context, state) {
+          return Scaffold(
+            body: SafeArea(
+              child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: ListView(
                   children: [
@@ -170,9 +171,9 @@ class EditTweetPage extends HookWidget {
                   ],
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -187,16 +188,15 @@ class EditTweetPage extends HookWidget {
       height: 200,
       borderColor: Colors.transparent,
       backgroundColor: Theme.of(context).colorScheme.tertiary,
-      content: CustomCard(
-        height: 40,
-        width: MediaQuery.of(context).size.width * 0.35,
-        borderRadius: 20,
-        borderColor: Colors.transparent,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        content: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      content: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
           child: Text(
-            'Ajouter une photo',
+            StringConstants().addPhoto,
             style: TextStyle(
               color: Theme.of(context).colorScheme.surface,
             ),
@@ -235,7 +235,7 @@ class EditTweetPage extends HookWidget {
               content: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
-                  'Ajouter un lieu',
+                  StringConstants().addLocation,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.surface,
                   ),
@@ -288,8 +288,7 @@ class EditTweetPage extends HookWidget {
     TextEditingController textEditingController,
   ) {
     return Container(
-      width: double.infinity,
-      height: 50,
+      width: MediaQuery.of(context).size.width * 0.7,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.tertiary,
         borderRadius: BorderRadius.circular(12.0),
@@ -297,15 +296,16 @@ class EditTweetPage extends HookWidget {
       child: TextField(
         controller: textEditingController,
         maxLength: 40,
-        decoration: const InputDecoration(
-          hintText: 'Entrez un titre',
+        textAlign: TextAlign.left,
+        textAlignVertical: TextAlignVertical.center,
+        decoration: InputDecoration(
+          hintText: StringConstants().addTitle,
           counterText: '',
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
-          contentPadding: EdgeInsets.all(
-            12.0,
-          ),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
         ),
       ),
     );
@@ -326,15 +326,15 @@ class EditTweetPage extends HookWidget {
         controller: textEditingController,
         maxLength: 500,
         maxLines: null,
-        decoration: const InputDecoration(
-          hintText: 'Partagez votre expérience',
+        decoration: InputDecoration(
+          hintText: StringConstants().shareYourExperience,
           counterText: '',
+          contentPadding: const EdgeInsets.all(
+            12.0,
+          ),
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
-          contentPadding: EdgeInsets.all(
-            12.0,
-          ),
         ),
       ),
     );
@@ -390,8 +390,6 @@ class EditTweetPage extends HookWidget {
                 child: IconButton(
                   padding: EdgeInsets.zero,
                   style: ButtonStyle(
-                    minimumSize: WidgetStateProperty.all(const Size(25, 25)),
-                    maximumSize: WidgetStateProperty.all(const Size(25, 25)),
                     backgroundColor: WidgetStateProperty.all(
                       Theme.of(context).colorScheme.surface,
                     ),
@@ -405,9 +403,10 @@ class EditTweetPage extends HookWidget {
                     ),
                   ),
                   icon: Icon(
-                    Icons.arrow_back_ios,
+                    Icons.chevron_left,
                     color: Theme.of(context).colorScheme.primary,
-                    size: 15,
+                    size: 25,
+
                   ),
                   onPressed: null,
                 ),

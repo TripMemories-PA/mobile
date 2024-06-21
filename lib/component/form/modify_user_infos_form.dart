@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../bloc/profile/profile_bloc.dart';
 import '../../constants/my_colors.dart';
+import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
 import '../../utils/field_validator.dart';
 import '../bouncing_widget.dart';
@@ -18,11 +19,16 @@ class ModifyUserInfosForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController usernameController = useTextEditingController(text: profileBloc.state.profile!.username);
-    final TextEditingController lastName = useTextEditingController(text: profileBloc.state.profile?.lastname ?? '');
-    final TextEditingController firstNameController =
-        useTextEditingController(text: profileBloc.state.profile?.firstname ?? '');
-    final TextEditingController emailController = useTextEditingController(text: profileBloc.state.profile!.email);
+    final TextEditingController usernameController =
+        useTextEditingController(text: profileBloc.state.profile!.username);
+    final TextEditingController lastName = useTextEditingController(
+      text: profileBloc.state.profile?.lastname ?? '',
+    );
+    final TextEditingController firstNameController = useTextEditingController(
+      text: profileBloc.state.profile?.firstname ?? '',
+    );
+    final TextEditingController emailController =
+        useTextEditingController(text: profileBloc.state.profile!.email);
     return Form(
       key: formKey,
       child: Column(
@@ -36,11 +42,14 @@ class ModifyUserInfosForm extends HookWidget {
               ),
             ),
             child: TextFormField(
-              decoration: const InputDecoration(
-                hintText: "Nom d'utilisateur",
+              decoration: InputDecoration(
+                hintText: StringConstants().username,
                 border: InputBorder.none,
-                prefixIcon: Icon(Icons.person_outline),
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                prefixIcon: const Icon(Icons.person_outline),
               ),
+              textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validateRequired(value),
               controller: usernameController,
             ),
@@ -55,11 +64,14 @@ class ModifyUserInfosForm extends HookWidget {
               ),
             ),
             child: TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Nom',
+              decoration: InputDecoration(
+                hintText: StringConstants().lastName,
                 border: InputBorder.none,
-                prefixIcon: Icon(Icons.person_outline),
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                prefixIcon: const Icon(Icons.person_outline),
               ),
+              textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validateRequired(value),
               controller: lastName,
             ),
@@ -74,11 +86,14 @@ class ModifyUserInfosForm extends HookWidget {
               ),
             ),
             child: TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Prénom',
+              decoration: InputDecoration(
+                hintText: StringConstants().firstName,
                 border: InputBorder.none,
-                prefixIcon: Icon(Icons.person_outline),
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                prefixIcon: const Icon(Icons.person_outline),
               ),
+              textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validateRequired(value),
               controller: firstNameController,
             ),
@@ -93,11 +108,14 @@ class ModifyUserInfosForm extends HookWidget {
               ),
             ),
             child: TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Email',
+              decoration: InputDecoration(
+                hintText: StringConstants().email,
                 border: InputBorder.none,
-                prefixIcon: Icon(Icons.alternate_email),
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                prefixIcon: const Icon(Icons.alternate_email),
               ),
+              textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validateEmail(value!),
               controller: emailController,
             ),
@@ -108,13 +126,13 @@ class ModifyUserInfosForm extends HookWidget {
               if (formKey.currentState!.validate()) {
                 FocusManager.instance.primaryFocus?.unfocus();
                 profileBloc.add(
-                      UpdateProfileEvent(
-                        username: usernameController.text,
-                        lastName: lastName.text,
-                        firstName: firstNameController.text,
-                        email: emailController.text,
-                      ),
-                    );
+                  UpdateProfileEvent(
+                    username: usernameController.text,
+                    lastName: lastName.text,
+                    firstName: firstNameController.text,
+                    email: emailController.text,
+                  ),
+                );
               }
             },
             child: Container(

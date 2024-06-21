@@ -218,7 +218,9 @@ class CommentButtonContent extends HookWidget {
             child: const SizedBox.shrink(),
           ),
           Expanded(
-            child: TextFieldCustom(controller: controller,),
+            child: TextFieldCustom(
+              controller: controller,
+            ),
           ),
           BlocBuilder<CommentBloc, CommentState>(
             builder: (context, state) {

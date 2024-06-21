@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../bloc/profile/profile_bloc.dart';
 import '../../constants/my_colors.dart';
+import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
 import '../../utils/field_validator.dart';
 import '../bouncing_widget.dart';
@@ -31,14 +32,17 @@ class UpdatePasswordForm extends HookWidget {
             ),
             child: TextFormField(
               decoration: InputDecoration(
-                hintText: 'Mot de passe',
+                hintText: StringConstants().password,
                 border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
                 prefixIcon: const Icon(Icons.lock_outline),
                 suffixIcon: InkWell(
                   child: const Icon(Icons.remove_red_eye_outlined),
                   onTap: () {},
                 ),
               ),
+              textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validatePassword(value),
               controller: passwordController,
             ),
@@ -53,11 +57,14 @@ class UpdatePasswordForm extends HookWidget {
               ),
             ),
             child: TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Confirmation de mot de passe',
+              decoration: InputDecoration(
+                hintText: StringConstants().confirmPassword,
                 border: InputBorder.none,
-                prefixIcon: Icon(Icons.lock_outline),
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                prefixIcon: const Icon(Icons.lock_outline),
               ),
+              textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validateSamePassword(
                 value,
                 passwordController.text,

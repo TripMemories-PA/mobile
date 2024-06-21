@@ -34,11 +34,7 @@ class TextFieldCustom extends StatelessWidget {
               color: Theme.of(context).colorScheme.secondary,
             ),
           ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
+          focusedBorder: InputBorder.none,
         ),
       ),
     );

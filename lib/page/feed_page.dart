@@ -12,20 +12,27 @@ class FeedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        floatingActionButton:
-            context.read<AuthBloc>().state.status == AuthStatus.authenticated
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        return SafeArea(
+          child: Scaffold(
+            floatingActionButton:
+            context
+                .read<AuthBloc>()
+                .state
+                .status == AuthStatus.authenticated
                 ? FloatingActionButton(
-                    onPressed: () => context.push(RouteName.editTweetPage),
-                    child: const Icon(Icons.add),
-                  )
+              onPressed: () => context.push(RouteName.editTweetPage),
+              child: const Icon(Icons.add),
+            )
                 : null,
-        body: const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: PostList(),
-        ),
-      ),
+            body: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: PostList(),
+            ),
+          ),
+        );
+      },
     );
   }
 }

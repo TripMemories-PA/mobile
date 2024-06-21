@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/profile/profile_bloc.dart';
-import 'bouncing_widget.dart';
 import 'friends_and_visited_widget.dart';
 import 'popup/modify_user_infos_popup.dart';
 
@@ -31,20 +30,27 @@ class ProfileBanner extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  SizedBox(
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: BouncingWidget(
-                        onTap: () async {
-                          await modifyUserInfosPopup(context);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: SizedBox(
-                            width: 50,
-                            child: Image.asset('assets/images/editProfile.png'),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(
+                          Theme.of(context).colorScheme.surface,
+                        ),
+                        shape: WidgetStateProperty.all(
+                          CircleBorder(
+                            side: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                           ),
                         ),
+                      ),
+                      onPressed: () async {
+                        await modifyUserInfosPopup(context);
+                      },
+                      icon: Icon(
+                        Icons.edit,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),

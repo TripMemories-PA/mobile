@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../api/monument/model/response/poi/poi.dart';
@@ -26,38 +27,114 @@ class SearchMonumentPopup extends StatelessWidget {
         create: (context) => MonumentBloc(
           monumentRepository:
               RepositoryProvider.of<MonumentRepository>(context),
-        )..add(GetMonumentsEvent()),
-        child: Scaffold(
+        )..add(GetMonumentsEvent(isRefresh: true)),
+        child: const Scaffold(
           backgroundColor: Colors.transparent,
-          body: Builder(
-            builder: (context) => Dialog(
-              child: CustomCard(
-                width: MediaQuery.of(context).size.width * 0.90,
-                height: MediaQuery.of(context).size.height * 0.81,
-                content: SizedBox.expand(
-                  child: Stack(
-                    children: [
-                      const SearchingMonumentBody(
-                        needToPop: true,
-                      ),
-                      Positioned(
-                        top: 30,
-                        right: 10,
-                        child: SizedBox(
-                          height: 25,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.pop();
-                            },
-                            child: const Text('Fermer'),
+          body: _Body(),
+        ),
+      ),
+    );
+  }
+}
+
+class _Body extends HookWidget {
+  const _Body();
+
+  @override
+  Widget build(BuildContext context) {
+    final TextEditingController searchController = useTextEditingController();
+    final searching = useState(false);
+    final searchContent = useState('');
+    final ScrollController monumentsScrollController = useScrollController();
+    useEffect(
+      () {
+        void createScrollListener() {
+          if (monumentsScrollController.position.atEdge) {
+            if (monumentsScrollController.position.pixels != 0) {
+              _getMonuments(context, searchContent.value);
+            }
+          }
+        }
+
+        monumentsScrollController.addListener(createScrollListener);
+        return () =>
+            monumentsScrollController.removeListener(createScrollListener);
+      },
+      const [],
+    );
+    return Builder(
+      builder: (context) => Dialog(
+        child: CustomCard(
+          width: MediaQuery.of(context).size.width * 0.90,
+          height: MediaQuery.of(context).size.height * 0.81,
+          content: SizedBox.expand(
+            child: Stack(
+              children: [
+                RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<MonumentBloc>().add(
+                          GetMonumentsEvent(
+                            isRefresh: true,
+                            searchingCriteria: searchContent.value,
                           ),
-                        ),
+                        );
+                  },
+                  child: ListView(
+                    controller: monumentsScrollController,
+                    children: [
+                      _buildTitle(),
+                      SearchingMonumentBody(
+                        needToPop: true,
+                        padding: 10,
+                        bodySize: SearchingMonumentBodySize.small,
+                        searchController: searchController,
+                        searchContent: searchContent,
+                        searching: searching,
                       ),
                     ],
                   ),
                 ),
-              ),
+                Positioned(
+                  top: 30,
+                  right: 10,
+                  child: SizedBox(
+                    height: 25,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        context.pop();
+                      },
+                      child: const Text('Fermer'),
+                    ),
+                  ),
+                ),
+              ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _getMonuments(BuildContext context, String searchContent) {
+    final monumentBloc = context.read<MonumentBloc>();
+
+    if (monumentBloc.state.status != MonumentStatus.loading) {
+      monumentBloc.add(
+        GetMonumentsEvent(searchingCriteria: searchContent),
+      );
+    }
+  }
+
+  Widget _buildTitle() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          'Rechercher des monuments',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

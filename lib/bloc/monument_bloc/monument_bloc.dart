@@ -14,7 +14,7 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
     required this.monumentRepository,
   }) : super(const MonumentState()) {
     on<GetMonumentsEvent>((event, emit) async {
-      if(event.isRefresh) {
+      if (event.isRefresh) {
         emit(
           state.copyWith(
             searchingMonumentByNameStatus: MonumentStatus.loading,
@@ -28,19 +28,24 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
         );
       }
       final PoisResponse monuments = await monumentRepository.getMonuments(
-        page: state.isRefresh ? 1 : state.monumentsPage + 1,
+        page: event.isRefresh ? 1 : state.monumentsPage + 1,
         perPage: state.monumentsPerPage,
         position: event.position,
         sortByName: event.sortByName,
-        order: AlphabeticalSortPossibility.ascending,
+        order: event.order ?? AlphabeticalSortPossibility.ascending,
         searchingCriteria: event.searchingCriteria,
       );
       emit(
         state.copyWith(
-          monuments: event.isRefresh ? monuments.data : [
-            ...state.monuments,
-            ...monuments.data,
-          ],
+          monumentsPage: state.isRefresh ? 0 : state.monumentsPage + 1,
+          monuments: event.isRefresh
+              ? monuments.data
+              : [
+                  ...state.monuments,
+                  ...monuments.data,
+                ],
+          searchMonumentsHasMoreMonuments:
+              monuments.data.length == state.monumentsPerPage,
           searchingMonumentByNameStatus: MonumentStatus.notLoading,
           status: MonumentStatus.notLoading,
         ),

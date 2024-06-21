@@ -6,7 +6,7 @@ class MonumentState {
   const MonumentState({
     this.monuments = const [],
     this.monumentsPerPage = 10,
-    this.monumentsPage = 1,
+    this.monumentsPage = 0,
     this.status = MonumentStatus.notLoading,
     this.searchingMonumentByNameStatus = MonumentStatus.notLoading,
     this.searchMonumentsHasMoreMonuments = true,
@@ -19,8 +19,8 @@ class MonumentState {
     int? monumentsPage,
     MonumentStatus? status,
     MonumentStatus? searchingMonumentByNameStatus,
-    bool? searchMonumentsHasMoreUsers,
     bool? isRefresh,
+    bool? searchMonumentsHasMoreMonuments,
   }) {
     return MonumentState(
       monuments: monuments ?? this.monuments,
@@ -29,8 +29,8 @@ class MonumentState {
       status: status ?? this.status,
       searchingMonumentByNameStatus:
           searchingMonumentByNameStatus ?? this.searchingMonumentByNameStatus,
-      searchMonumentsHasMoreMonuments:
-          searchMonumentsHasMoreUsers ?? searchMonumentsHasMoreMonuments,
+      searchMonumentsHasMoreMonuments: searchMonumentsHasMoreMonuments ??
+          this.searchMonumentsHasMoreMonuments,
       isRefresh: isRefresh ?? this.isRefresh,
     );
   }

@@ -112,7 +112,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<LikePostEvent>(
       (event, emit) async {
         try {
-          await postService.likePost(postId: event.postId);
           GetAllPostsResponse? data = state.posts;
           if (data != null) {
             final List<Post> posts = data.data.map((post) {
@@ -126,6 +125,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
             }).toList();
             data = data.copyWith(data: posts);
             emit(state.copyWith(posts: data));
+            await postService.likePost(postId: event.postId);
           }
         } catch (e) {
           if (e is CustomException) {
@@ -151,7 +151,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<DislikePostEvent>(
       (event, emit) async {
         try {
-          await postService.dislikePost(postId: event.postId);
           GetAllPostsResponse? data = state.posts;
           if (data != null) {
             final List<Post> posts = data.data.map((post) {
@@ -165,6 +164,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
             }).toList();
             data = data.copyWith(data: posts);
             emit(state.copyWith(posts: data));
+            await postService.dislikePost(postId: event.postId);
           }
         } catch (e) {
           if (e is CustomException) {

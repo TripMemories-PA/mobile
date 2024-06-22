@@ -60,7 +60,9 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
         ),
       );
       int page = 1;
-      final PoisResponse monuments = await monumentRepository.getMonuments(
+      final List<Poi> monumentsToAdd = [];
+      final PoisResponse monumentsFirstRound =
+          await monumentRepository.getMonuments(
         page: page,
         perPage: 10,
         position: event.position,
@@ -69,11 +71,15 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
         order: AlphabeticalSortPossibility.ascending,
       );
       if (!event.isRefresh) {
-        int cpt = 0;
-        final List<Poi> newMonuments = [];
-        while (newMonuments.length < perPage) {
+        for (final Poi poi in monumentsFirstRound.data) {
+          if (!state.monuments.contains(poi)) {
+            monumentsToAdd.add(poi);
+          }
+        }
+        while (monumentsToAdd.length < perPage) {
           page++;
-          final PoisResponse monuments = await monumentRepository.getMonuments(
+          final PoisResponse monumentsNextRounds =
+              await monumentRepository.getMonuments(
             page: page,
             perPage: 10,
             position: event.position,
@@ -81,21 +87,24 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
             sortByName: true,
             order: AlphabeticalSortPossibility.ascending,
           );
-          for (final Poi poi in monuments.data) {
-            if (state.monuments.contains(poi)) {
-              cpt++;
-            } else {
-              newMonuments.add(poi);
+          for (final Poi poi in monumentsNextRounds.data) {
+            if (!state.monuments.contains(poi) &&
+                !monumentsToAdd.contains(poi)) {
+              monumentsToAdd.add(poi);
             }
           }
-          if (monuments.data.length < perPage || cpt == monuments.data.length) {
+          if (monumentsNextRounds.data.length < perPage ||
+              monumentsToAdd.length == monumentsNextRounds.data.length) {
             break;
           }
         }
+      } else {
+        monumentsToAdd.addAll(monumentsFirstRound.data);
       }
+      final List<Poi> finalList = state.monuments + monumentsToAdd;
       emit(
         state.copyWith(
-          monuments: monuments.data,
+          monuments: finalList,
           status: MonumentStatus.notLoading,
         ),
       );

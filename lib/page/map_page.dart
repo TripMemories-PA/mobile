@@ -43,6 +43,7 @@ class MapPage extends StatelessWidget {
               }
               return MapCustom(
                 pois: monuments,
+                monumentBloc: BlocProvider.of<MonumentBloc>(context),
               );
             },
           ),

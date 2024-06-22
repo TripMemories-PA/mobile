@@ -11,7 +11,6 @@ import '../api/monument/model/response/poi/poi.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../constants/route_name.dart';
 import '../object/position.dart';
-import '../utils/messenger.dart';
 
 final Completer<GoogleMapController> _controller = Completer();
 
@@ -19,18 +18,20 @@ class MapCustom extends StatefulWidget {
   const MapCustom({
     super.key,
     required this.pois,
+    required this.monumentBloc,
   });
 
   final List<Poi> pois;
+  final MonumentBloc monumentBloc;
 
   @override
   State<MapCustom> createState() => _MapCustomState();
 }
 
 class _MapCustomState extends State<MapCustom> {
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   late GoogleMapController mapController;
   String? _mapStyleString;
-  GoogleMap? myMap;
   final LatLng _center = const LatLng(48.84922330209508, 2.389781701197292);
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
 
@@ -57,7 +58,6 @@ class _MapCustomState extends State<MapCustom> {
         if (value != null) {
           markerIcon = BitmapDescriptor.fromBytes(value);
         }
-        buildGoogleMap();
       });
     });
   }
@@ -65,42 +65,36 @@ class _MapCustomState extends State<MapCustom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: myMap ?? const Center(child: CircularProgressIndicator()),
-    );
-  }
-
-  void buildGoogleMap() {
-    final List<Marker> markers = [];
-    for (final Poi poi in widget.pois) {
-      try {
-        final String lat = poi.latitude;
-        final double latitude = double.parse(lat);
-        final String lng = poi.longitude;
-        final double longitude = double.parse(lng);
-        markers.add(
-          Marker(
-            icon: markerIcon,
-            markerId: MarkerId(poi.id.toString()),
-            position: LatLng(latitude, longitude),
-            infoWindow: InfoWindow(
-              title: poi.name,
-              snippet: 'Cliquez pour plus de détails',
-              onTap: () {
-                context.push(
-                  '${RouteName.monumentPage}/${poi.id}',
-                  extra: poi,
-                );
-              },
-            ),
-          ),
-        );
-      } catch (e) {
-        Messenger.showSnackBarError(
-          "Une erreur est survenue lors de l'affichage des monuments.",
-        );
-      }
-      setState(() {
-        myMap = GoogleMap(
+      body: BlocListener<MonumentBloc, MonumentState>(
+        listener: (context, state) {
+          setState(() {
+            markers = <MarkerId, Marker>{};
+            for (final Poi poi in state.monuments) {
+              final String lat = poi.latitude;
+              final double latitude = double.parse(lat);
+              final String lng = poi.longitude;
+              final double longitude = double.parse(lng);
+              final MarkerId markerId = MarkerId(poi.id.toString());
+              final Marker marker = Marker(
+                icon: markerIcon,
+                markerId: MarkerId(poi.id.toString()),
+                position: LatLng(latitude, longitude),
+                infoWindow: InfoWindow(
+                  title: poi.name,
+                  snippet: 'Cliquez pour plus de détails',
+                  onTap: () {
+                    context.push(
+                      '${RouteName.monumentPage}/${poi.id}',
+                      extra: poi,
+                    );
+                  },
+                ),
+              );
+              markers[markerId] = marker;
+            }
+          });
+        },
+        child: GoogleMap(
           onCameraIdle: () async {
             final LatLngBounds bounds = await mapController.getVisibleRegion();
             final LatLng southwest = bounds.southwest;
@@ -111,13 +105,13 @@ class _MapCustomState extends State<MapCustom> {
               neLat: northeast.latitude,
               neLng: northeast.longitude,
             );
-            _getNewMonuments(position, context);
+            _getNewMonuments(position);
           },
           initialCameraPosition: CameraPosition(
             target: _center,
             zoom: 11.0,
           ),
-          markers: markers.toSet(),
+          markers: Set<Marker>.of(markers.values),
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
             _controller.future.then((value) {
@@ -126,13 +120,13 @@ class _MapCustomState extends State<MapCustom> {
               mapController.setMapStyle(_mapStyleString);
             });
           },
-        );
-      });
-    }
+        ),
+      ),
+    );
   }
 
-  void _getNewMonuments(Position position, BuildContext context) {
-    BlocProvider.of<MonumentBloc>(context).add(
+  void _getNewMonuments(Position position) {
+    widget.monumentBloc.add(
       GetMonumentsOnMapEvent(
         position: position,
       ),

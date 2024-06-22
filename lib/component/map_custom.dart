@@ -136,7 +136,6 @@ class _MapCustomState extends State<MapCustom> {
                 });
               },
               onTap: (LatLng position) {
-                print("j'ai tapé sur la map");
                 setState(() {
                   selectedMarkerId = null;
                   selectedPoi = null;
@@ -486,7 +485,8 @@ class SearchOnMap extends HookWidget {
                                     : Padding(
                                         padding: const EdgeInsets.all(15.0),
                                         child: Text(
-                                            StringConstants().noMoreMonuments),
+                                          StringConstants().noMoreMonuments,
+                                        ),
                                       ),
                               ),
                             ],
@@ -497,7 +497,7 @@ class SearchOnMap extends HookWidget {
                   },
                 ),
               ],
-            )
+            ),
         ],
       ),
     );

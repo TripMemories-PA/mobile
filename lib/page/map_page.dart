@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../api/monument/model/response/poi/poi.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../component/map_custom.dart';
 import '../object/radius.dart';
@@ -26,7 +25,6 @@ class MapPage extends StatelessWidget {
               monumentRepository:
                   RepositoryProvider.of<MonumentRepository>(context),
             )..add(
-                // TODO(nono): donner les coordonnées de la carte
                 GetMonumentsOnMapEvent(
                   isRefresh: true,
                   radius: RadiusQueryInfos(
@@ -38,12 +36,7 @@ class MapPage extends StatelessWidget {
               ),
             child: BlocBuilder<MonumentBloc, MonumentState>(
               builder: (context, state) {
-                final List<Poi> monuments = state.monuments;
-                if (monuments.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
-                }
                 return MapCustom(
-                  pois: monuments,
                   monumentBloc: BlocProvider.of<MonumentBloc>(context),
                 );
               },

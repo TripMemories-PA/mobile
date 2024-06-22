@@ -18,7 +18,6 @@ import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/position.dart';
-import 'custom_card.dart';
 import 'search_bar_custom.dart';
 
 final Completer<GoogleMapController> _controller = Completer();
@@ -26,11 +25,9 @@ final Completer<GoogleMapController> _controller = Completer();
 class MapCustom extends StatefulWidget {
   const MapCustom({
     super.key,
-    required this.pois,
     required this.monumentBloc,
   });
 
-  final List<Poi> pois;
   final MonumentBloc monumentBloc;
 
   @override
@@ -113,73 +110,8 @@ class _MapCustomState extends State<MapCustom> {
         },
         child: Stack(
           children: [
-            GoogleMap(
-              mapToolbarEnabled: false,
-              onCameraIdle: () async {
-                EasyDebounce.debounce('search_map_monuments', Durations.medium1,
-                    () async {
-                  final Position position = await _getPosition();
-                  _getNewMonuments(position);
-                });
-              },
-              initialCameraPosition: CameraPosition(
-                target: _center,
-                zoom: 11.0,
-              ),
-              markers: Set<Marker>.of(markers.values),
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-                _controller.future.then((value) {
-                  mapController = value;
-                  // ignore: deprecated_member_use
-                  mapController.setMapStyle(_mapStyleString);
-                });
-              },
-              onTap: (LatLng position) {
-                setState(() {
-                  selectedMarkerId = null;
-                  selectedPoi = null;
-                });
-              },
-            ),
-            Positioned(
-              top: 30,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: SearchOnMap(
-                  onMonumentSelected: (Poi poi) {
-                    setState(() {
-                      final String lat = poi.latitude;
-                      final double latitude = double.parse(lat);
-                      final String lng = poi.longitude;
-                      final double longitude = double.parse(lng);
-                      final MarkerId markerId = MarkerId(poi.id.toString());
-                      final Marker marker = Marker(
-                        icon: selectedMarkerIcon,
-                        markerId: MarkerId(poi.id.toString()),
-                        position: LatLng(latitude, longitude),
-                        onTap: () {
-                          setState(() {
-                            selectedPoi = poi;
-                            selectedMarkerId = markerId;
-                          });
-                        },
-                      );
-                      markers[markerId] = marker;
-                      selectedPoi = poi;
-                      selectedMarkerId = markerId;
-                      mapController.animateCamera(
-                        CameraUpdate.newLatLngZoom(
-                          LatLng(latitude, longitude),
-                          15,
-                        ),
-                      );
-                    });
-                  },
-                ),
-              ),
-            ),
+            _buildGoogleMap(),
+            _buildSearchMonumentPart(),
             if (selectedPoi != null) _buildMonumentPopupCard(context),
             if (selectedPoi != null)
               Positioned(
@@ -198,6 +130,79 @@ class _MapCustomState extends State<MapCustom> {
           ],
         ),
       ),
+    );
+  }
+
+  Positioned _buildSearchMonumentPart() {
+    return Positioned(
+      top: 30,
+      left: 0,
+      right: 0,
+      child: Center(
+        child: _SearchOnMap(
+          onMonumentSelected: (Poi poi) {
+            setState(() {
+              final String lat = poi.latitude;
+              final double latitude = double.parse(lat);
+              final String lng = poi.longitude;
+              final double longitude = double.parse(lng);
+              final MarkerId markerId = MarkerId(poi.id.toString());
+              final Marker marker = Marker(
+                icon: selectedMarkerIcon,
+                markerId: MarkerId(poi.id.toString()),
+                position: LatLng(latitude, longitude),
+                onTap: () {
+                  setState(() {
+                    selectedPoi = poi;
+                    selectedMarkerId = markerId;
+                  });
+                },
+              );
+              markers[markerId] = marker;
+              selectedPoi = poi;
+              selectedMarkerId = markerId;
+              mapController.animateCamera(
+                CameraUpdate.newLatLngZoom(
+                  LatLng(latitude, longitude),
+                  15,
+                ),
+              );
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  GoogleMap _buildGoogleMap() {
+    return GoogleMap(
+      mapToolbarEnabled: false,
+      onCameraIdle: () async {
+        EasyDebounce.debounce('search_map_monuments', Durations.medium1,
+            () async {
+          final Position position = await _getPosition();
+          _getNewMonuments(position);
+        });
+      },
+      initialCameraPosition: CameraPosition(
+        target: _center,
+        zoom: 11.0,
+      ),
+      markers: Set<Marker>.of(markers.values),
+      onMapCreated: (GoogleMapController controller) {
+        _controller.complete(controller);
+        _controller.future.then((value) {
+          mapController = value;
+          // ignore: deprecated_member_use
+          mapController.setMapStyle(_mapStyleString);
+        });
+      },
+      onTap: (LatLng position) {
+        setState(() {
+          selectedMarkerId = null;
+          selectedPoi = null;
+        });
+      },
     );
   }
 
@@ -291,6 +296,8 @@ class _MapCustomState extends State<MapCustom> {
                       5.ph,
                       Text(
                         selectedPoi?.name ?? 'Pas de nom',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           height: 1,
                           fontWeight: FontWeight.bold,
@@ -381,8 +388,8 @@ class _MapCustomState extends State<MapCustom> {
   }
 }
 
-class SearchOnMap extends HookWidget {
-  const SearchOnMap({super.key, required this.onMonumentSelected});
+class _SearchOnMap extends HookWidget {
+  const _SearchOnMap({required this.onMonumentSelected});
 
   final Function onMonumentSelected;
 
@@ -435,68 +442,95 @@ class SearchOnMap extends HookWidget {
             },
           ),
           if (searchContent.value.isNotEmpty)
-            Column(
-              children: [
-                10.ph,
-                BlocBuilder<MonumentBloc, MonumentState>(
-                  builder: (context, state) {
-                    if (state.status == MonumentStatus.error) {
-                      return _buildErrorWidget(context);
-                    } else if (state.status == MonumentStatus.loading) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else {
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.33,
-                        child: SingleChildScrollView(
-                          controller: monumentsScrollController,
-                          child: Column(
-                            children: [
-                              ...state.monuments.map(
-                                (Poi poi) => GestureDetector(
-                                  onTap: () {
-                                    searchContent.value = '';
-                                    searchController.clear();
-                                    onMonumentSelected(poi);
-                                  },
-                                  child: CustomCard(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.90,
-                                    height: 50,
-                                    content: Text(
-                                      poi.name,
-                                      overflow: TextOverflow.ellipsis,
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+              child: Column(
+                children: [
+                  BlocBuilder<MonumentBloc, MonumentState>(
+                    builder: (context, state) {
+                      if (state.status == MonumentStatus.error) {
+                        return _buildErrorWidget(context);
+                      } else if (state.status == MonumentStatus.loading) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.33,
+                          child: SingleChildScrollView(
+                            controller: monumentsScrollController,
+                            child: Column(
+                              children: [
+                                ...state.monuments.map(
+                                  (Poi poi) => GestureDetector(
+                                    onTap: () {
+                                      searchContent.value = '';
+                                      searchController.clear();
+                                      onMonumentSelected(poi);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          8.ph,
+                                          Text(
+                                            poi.name,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 3,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0,
+                                            ),
+                                            child: Container(
+                                              height: 1,
+                                              width: 300,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Center(
-                                child: state.searchMonumentsHasMoreMonuments
-                                    ? (state.searchingMonumentByNameStatus ==
-                                            MonumentStatus.loading
-                                        ? SpinKitThreeBounce(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface,
-                                            size: 20,
-                                          )
-                                        : (state.status == MonumentStatus.error
-                                            ? _buildErrorWidget(context)
-                                            : const SizedBox.shrink()))
-                                    : Padding(
-                                        padding: const EdgeInsets.all(15.0),
-                                        child: Text(
-                                          StringConstants().noMoreMonuments,
+                                Center(
+                                  child: state.searchMonumentsHasMoreMonuments
+                                      ? (state.searchingMonumentByNameStatus ==
+                                              MonumentStatus.loading
+                                          ? SpinKitThreeBounce(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
+                                              size: 20,
+                                            )
+                                          : (state.status ==
+                                                  MonumentStatus.error
+                                              ? _buildErrorWidget(context)
+                                              : const SizedBox.shrink()))
+                                      : SizedBox(
+                                          width: double.infinity,
+                                          child: Text(
+                                            StringConstants().noMoreMonuments,
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ),
-                                      ),
-                              ),
-                            ],
+                                ),
+                                8.ph,
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ],
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
         ],
       ),

@@ -16,36 +16,38 @@ class MapPage extends StatelessWidget {
   Widget build(BuildContext context) {
     const LatLng center = LatLng(48.84922330209508, 2.389781701197292);
     return Scaffold(
-      body: RepositoryProvider(
-        create: (context) => MonumentRepository(
-          monumentRemoteDataSource: MonumentRemoteDataSource(),
-        ),
-        child: BlocProvider(
-          create: (context) => MonumentBloc(
-            monumentRepository:
-                RepositoryProvider.of<MonumentRepository>(context),
-          )..add(
-              // TODO(nono): donner les coordonnées de la carte
-              GetMonumentsOnMapEvent(
-                isRefresh: true,
-                radius: RadiusQueryInfos(
-                  km: 10,
-                  lat: center.latitude,
-                  lng: center.longitude,
+      body: SafeArea(
+        child: RepositoryProvider(
+          create: (context) => MonumentRepository(
+            monumentRemoteDataSource: MonumentRemoteDataSource(),
+          ),
+          child: BlocProvider(
+            create: (context) => MonumentBloc(
+              monumentRepository:
+                  RepositoryProvider.of<MonumentRepository>(context),
+            )..add(
+                // TODO(nono): donner les coordonnées de la carte
+                GetMonumentsOnMapEvent(
+                  isRefresh: true,
+                  radius: RadiusQueryInfos(
+                    km: 10,
+                    lat: center.latitude,
+                    lng: center.longitude,
+                  ),
                 ),
               ),
+            child: BlocBuilder<MonumentBloc, MonumentState>(
+              builder: (context, state) {
+                final List<Poi> monuments = state.monuments;
+                if (monuments.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return MapCustom(
+                  pois: monuments,
+                  monumentBloc: BlocProvider.of<MonumentBloc>(context),
+                );
+              },
             ),
-          child: BlocBuilder<MonumentBloc, MonumentState>(
-            builder: (context, state) {
-              final List<Poi> monuments = state.monuments;
-              if (monuments.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              return MapCustom(
-                pois: monuments,
-                monumentBloc: BlocProvider.of<MonumentBloc>(context),
-              );
-            },
           ),
         ),
       ),

@@ -1,19 +1,25 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../api/monument/model/response/poi/poi.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../constants/route_name.dart';
+import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/position.dart';
+import 'custom_card.dart';
+import 'search_bar_custom.dart';
 
 final Completer<GoogleMapController> _controller = Completer();
 
@@ -38,6 +44,7 @@ class _MapCustomState extends State<MapCustom> {
   String? _mapStyleString;
   final LatLng _center = const LatLng(48.84922330209508, 2.389781701197292);
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor selectedMarkerIcon = BitmapDescriptor.defaultMarker;
   MarkerId? selectedMarkerId;
 
   Future<Uint8List?> getBytesFromAsset(String path, int width) async {
@@ -65,6 +72,13 @@ class _MapCustomState extends State<MapCustom> {
         }
       });
     });
+    getBytesFromAsset('assets/images/selected_map_pin.png', 150).then((value) {
+      setState(() {
+        if (value != null) {
+          selectedMarkerIcon = BitmapDescriptor.fromBytes(value);
+        }
+      });
+    });
   }
 
   @override
@@ -81,7 +95,9 @@ class _MapCustomState extends State<MapCustom> {
               final double longitude = double.parse(lng);
               final MarkerId markerId = MarkerId(poi.id.toString());
               final Marker marker = Marker(
-                icon: markerIcon,
+                icon: selectedMarkerId == markerId
+                    ? selectedMarkerIcon
+                    : markerIcon,
                 markerId: MarkerId(poi.id.toString()),
                 position: LatLng(latitude, longitude),
                 onTap: () {
@@ -100,17 +116,11 @@ class _MapCustomState extends State<MapCustom> {
             GoogleMap(
               mapToolbarEnabled: false,
               onCameraIdle: () async {
-                final LatLngBounds bounds =
-                    await mapController.getVisibleRegion();
-                final LatLng southwest = bounds.southwest;
-                final LatLng northeast = bounds.northeast;
-                final Position position = Position(
-                  swLat: southwest.latitude,
-                  swLng: southwest.longitude,
-                  neLat: northeast.latitude,
-                  neLng: northeast.longitude,
-                );
-                _getNewMonuments(position);
+                EasyDebounce.debounce('search_map_monuments', Durations.medium1,
+                    () async {
+                  final Position position = await _getPosition();
+                  _getNewMonuments(position);
+                });
               },
               initialCameraPosition: CameraPosition(
                 target: _center,
@@ -126,11 +136,50 @@ class _MapCustomState extends State<MapCustom> {
                 });
               },
               onTap: (LatLng position) {
+                print("j'ai tapé sur la map");
                 setState(() {
                   selectedMarkerId = null;
                   selectedPoi = null;
                 });
               },
+            ),
+            Positioned(
+              top: 30,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: SearchOnMap(
+                  onMonumentSelected: (Poi poi) {
+                    setState(() {
+                      final String lat = poi.latitude;
+                      final double latitude = double.parse(lat);
+                      final String lng = poi.longitude;
+                      final double longitude = double.parse(lng);
+                      final MarkerId markerId = MarkerId(poi.id.toString());
+                      final Marker marker = Marker(
+                        icon: selectedMarkerIcon,
+                        markerId: MarkerId(poi.id.toString()),
+                        position: LatLng(latitude, longitude),
+                        onTap: () {
+                          setState(() {
+                            selectedPoi = poi;
+                            selectedMarkerId = markerId;
+                          });
+                        },
+                      );
+                      markers[markerId] = marker;
+                      selectedPoi = poi;
+                      selectedMarkerId = markerId;
+                      mapController.animateCamera(
+                        CameraUpdate.newLatLngZoom(
+                          LatLng(latitude, longitude),
+                          15,
+                        ),
+                      );
+                    });
+                  },
+                ),
+              ),
             ),
             if (selectedPoi != null) _buildMonumentPopupCard(context),
             if (selectedPoi != null)
@@ -153,6 +202,19 @@ class _MapCustomState extends State<MapCustom> {
     );
   }
 
+  Future<Position> _getPosition() async {
+    final LatLngBounds bounds = await mapController.getVisibleRegion();
+    final LatLng southwest = bounds.southwest;
+    final LatLng northeast = bounds.northeast;
+    final Position position = Position(
+      swLat: southwest.latitude,
+      swLng: southwest.longitude,
+      neLat: northeast.latitude,
+      neLng: northeast.longitude,
+    );
+    return position;
+  }
+
   Positioned _buildMonumentPopupCard(BuildContext context) {
     return Positioned(
       left: 0,
@@ -171,7 +233,7 @@ class _MapCustomState extends State<MapCustom> {
             height: 170,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
             ),
             child: Row(
               children: [
@@ -316,6 +378,147 @@ class _MapCustomState extends State<MapCustom> {
       GetMonumentsOnMapEvent(
         position: position,
       ),
+    );
+  }
+}
+
+class SearchOnMap extends HookWidget {
+  const SearchOnMap({super.key, required this.onMonumentSelected});
+
+  final Function onMonumentSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextEditingController searchController = useTextEditingController();
+    final searching = useState(false);
+    final searchContent = useState('');
+    final ScrollController monumentsScrollController = useScrollController();
+    useEffect(
+      () {
+        void createScrollListener() {
+          if (monumentsScrollController.position.atEdge) {
+            if (monumentsScrollController.position.pixels != 0) {
+              context.read<MonumentBloc>().add(
+                    GetMonumentsEvent(
+                      searchingCriteria: searchContent.value,
+                    ),
+                  );
+            }
+          }
+        }
+
+        monumentsScrollController.addListener(createScrollListener);
+        return () =>
+            monumentsScrollController.removeListener(createScrollListener);
+      },
+      const [],
+    );
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.90,
+      height: searchContent.value.isNotEmpty
+          ? MediaQuery.of(context).size.height * 0.4
+          : 50,
+      child: Column(
+        children: [
+          SearchBarCustom(
+            searchController: searchController,
+            context: context,
+            searching: searching,
+            searchContent: searchContent,
+            onSearch: (value) {
+              // TODO(nono): le is refresh wipe les markers il faut créer un évent spécial map search
+              context.read<MonumentBloc>().add(
+                    GetMonumentsEvent(
+                      isRefresh: true,
+                      searchingCriteria: value,
+                    ),
+                  );
+            },
+          ),
+          if (searchContent.value.isNotEmpty)
+            Column(
+              children: [
+                10.ph,
+                BlocBuilder<MonumentBloc, MonumentState>(
+                  builder: (context, state) {
+                    if (state.status == MonumentStatus.error) {
+                      return _buildErrorWidget(context);
+                    } else if (state.status == MonumentStatus.loading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.33,
+                        child: SingleChildScrollView(
+                          controller: monumentsScrollController,
+                          child: Column(
+                            children: [
+                              ...state.monuments.map(
+                                (Poi poi) => GestureDetector(
+                                  onTap: () {
+                                    searchContent.value = '';
+                                    searchController.clear();
+                                    onMonumentSelected(poi);
+                                  },
+                                  child: CustomCard(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.90,
+                                    height: 50,
+                                    content: Text(
+                                      poi.name,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Center(
+                                child: state.searchMonumentsHasMoreMonuments
+                                    ? (state.searchingMonumentByNameStatus ==
+                                            MonumentStatus.loading
+                                        ? SpinKitThreeBounce(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                            size: 20,
+                                          )
+                                        : (state.status == MonumentStatus.error
+                                            ? _buildErrorWidget(context)
+                                            : const SizedBox.shrink()))
+                                    : Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Text(
+                                            StringConstants().noMoreMonuments),
+                                      ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
+            )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorWidget(BuildContext context) {
+    return Column(
+      children: [
+        Text(StringConstants().errorAppendedWhileGettingData),
+        ElevatedButton(
+          onPressed: () => {
+            context.read<MonumentBloc>().add(
+                  GetMonumentsEvent(
+                    isRefresh: true,
+                    searchingCriteria: '',
+                  ),
+                ),
+          },
+          child: Text(StringConstants().retry),
+        ),
+      ],
     );
   }
 }

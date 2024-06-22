@@ -121,6 +121,7 @@ class _MapCustomState extends State<MapCustom> {
                 _controller.complete(controller);
                 _controller.future.then((value) {
                   mapController = value;
+                  // ignore: deprecated_member_use
                   mapController.setMapStyle(_mapStyleString);
                 });
               },

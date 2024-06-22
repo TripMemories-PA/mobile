@@ -81,11 +81,20 @@ class MyApp extends HookWidget {
               ),
               GoRoute(
                 path: '${RouteName.monumentPage}/:monumentId',
-                builder: (context, state) {
+                pageBuilder: (context, state) {
                   final Poi poi = state.extra! as Poi;
-
-                  return MonumentPage(
-                    monument: poi,
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: MonumentPage(
+                      monument: poi,
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return CustomTransition.buildBottomToTopPopTransition(
+                        animation,
+                        child,
+                      );
+                    },
                   );
                 },
               ),

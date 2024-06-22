@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../app.config.dart';
 import '../../object/position.dart';
+import '../../object/radius.dart';
 import '../../object/sort_possibility.dart';
 import '../../repository/monument/i_monument_repository.dart';
 import '../dio.dart';
@@ -25,6 +26,7 @@ class MonumentService implements IMonumentService, IMonumentRepository {
     required bool sortByName,
     required AlphabeticalSortPossibility order,
     String? searchingCriteria,
+    RadiusQueryInfos? radius,
   }) async {
     Response response;
     try {
@@ -32,6 +34,13 @@ class MonumentService implements IMonumentService, IMonumentRepository {
       if (searchingCriteria != null) {
         url += '&search=$searchingCriteria';
       }
+      if (position != null) {
+        url +=
+            '&swLng=${position.swLng}&swLat=${position.swLat}&neLng=${position.neLng}&neLat=${position.neLat}';
+      } else if (radius != null) {
+        url += '&radius=${radius.km}&lng=${radius.lng}&lat=${radius.lat}';
+      }
+
       response = await DioClient.instance.get(
         url,
       );

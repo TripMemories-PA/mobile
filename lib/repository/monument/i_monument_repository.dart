@@ -2,6 +2,7 @@ import '../../api/monument/model/response/poi/poi.dart';
 import '../../api/monument/model/response/pois_response/pois_response.dart';
 import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../object/position.dart';
+import '../../object/radius.dart';
 import '../../object/sort_possibility.dart';
 
 // TODO(nono): implement the monumentlocalDataSource
@@ -15,6 +16,7 @@ abstract class IMonumentRepository {
     required int page,
     required int perPage,
     String? searchingCriteria,
+    RadiusQueryInfos? radius,
   });
 
   Future<GetAllPostsResponse> getMonumentPosts({

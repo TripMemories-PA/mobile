@@ -22,10 +22,14 @@ class GetMonumentsEvent extends MonumentEvent {
 
 class GetMonumentsOnMapEvent extends MonumentEvent {
   GetMonumentsOnMapEvent({
-    required this.position,
+    this.position,
+    this.radius,
+    this.isRefresh = false,
   });
 
-  final Position position;
+  final Position? position;
+  final RadiusQueryInfos? radius;
+  final bool isRefresh;
 }
 
 class GetMonumentEvent extends MonumentEvent {

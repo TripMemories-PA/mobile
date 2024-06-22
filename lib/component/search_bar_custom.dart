@@ -27,6 +27,7 @@ class SearchBarCustom extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
         border: Border.all(color: Theme.of(context).colorScheme.onSurface),
+        color: Theme.of(context).colorScheme.surface,
       ),
       child: ValueListenableBuilder(
         valueListenable: searchContent,

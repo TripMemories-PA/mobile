@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api/monument/model/response/poi/poi.dart';
 import '../../api/monument/model/response/pois_response/pois_response.dart';
 import '../../object/position.dart';
+import '../../object/radius.dart';
 import '../../object/sort_possibility.dart';
 import '../../repository/monument/i_monument_repository.dart';
 
@@ -58,21 +59,57 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
           status: MonumentStatus.loading,
         ),
       );
-      final PoisResponse monuments = await monumentRepository.getMonuments(
-        page: 1,
-        perPage: 50,
+      int page = 1;
+      final List<Poi> monumentsToAdd = [];
+      final PoisResponse monumentsFirstRound =
+          await monumentRepository.getMonuments(
+        page: page,
+        perPage: 10,
         position: event.position,
+        radius: event.radius,
         sortByName: true,
         order: AlphabeticalSortPossibility.ascending,
       );
+      if (!event.isRefresh) {
+        for (final Poi poi in monumentsFirstRound.data) {
+          if (!state.monuments.contains(poi)) {
+            monumentsToAdd.add(poi);
+          }
+        }
+        while (monumentsToAdd.length < perPage) {
+          page++;
+          final PoisResponse monumentsNextRounds =
+              await monumentRepository.getMonuments(
+            page: page,
+            perPage: 10,
+            position: event.position,
+            radius: event.radius,
+            sortByName: true,
+            order: AlphabeticalSortPossibility.ascending,
+          );
+          for (final Poi poi in monumentsNextRounds.data) {
+            if (!state.monuments.contains(poi) &&
+                !monumentsToAdd.contains(poi)) {
+              monumentsToAdd.add(poi);
+            }
+          }
+          if (monumentsNextRounds.data.length < perPage ||
+              monumentsToAdd.length == monumentsNextRounds.data.length) {
+            break;
+          }
+        }
+      } else {
+        monumentsToAdd.addAll(monumentsFirstRound.data);
+      }
+      final List<Poi> finalList = state.monuments + monumentsToAdd;
       emit(
         state.copyWith(
-          monuments: monuments.data,
+          monuments: finalList,
           status: MonumentStatus.notLoading,
         ),
       );
     });
   }
-
+  final int perPage = 10;
   final IMonumentRepository monumentRepository;
 }

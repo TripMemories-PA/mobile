@@ -2,6 +2,7 @@ import '../../api/monument/model/response/poi/poi.dart';
 import '../../api/monument/model/response/pois_response/pois_response.dart';
 import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../object/position.dart';
+import '../../object/radius.dart';
 import '../../object/sort_possibility.dart';
 import '../../service/monument/monument_remote_data_source.dart';
 import 'i_monument_repository.dart';
@@ -30,6 +31,7 @@ class MonumentRepository implements IMonumentRepository {
     required int page,
     required int perPage,
     String? searchingCriteria,
+    RadiusQueryInfos? radius,
   }) async {
     return monumentRemoteDataSource.getMonuments(
       position: position,
@@ -38,11 +40,16 @@ class MonumentRepository implements IMonumentRepository {
       page: page,
       perPage: perPage,
       searchingCriteria: searchingCriteria,
+      radius: radius,
     );
   }
 
   @override
-  Future<GetAllPostsResponse> getMonumentPosts({required int poiId, required int page, required int perPage}) {
+  Future<GetAllPostsResponse> getMonumentPosts({
+    required int poiId,
+    required int page,
+    required int perPage,
+  }) {
     return monumentRemoteDataSource.getMonumentPosts(
       poiId: poiId,
       page: page,

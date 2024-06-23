@@ -89,7 +89,6 @@ class MyFriendsRequests extends StatelessWidget {
         child: BlocBuilder<FriendRequestBloc, FriendRequestState>(
           builder: (context, state) {
             return ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               children: [
                 ...context
                         .read<FriendRequestBloc>()

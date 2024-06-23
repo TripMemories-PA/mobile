@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../api/monument/model/response/pois_response/pois_response.dart';
+import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../object/poi/poi.dart';
 import '../../object/position.dart';
+import '../../object/post/post.dart';
 import '../../object/radius.dart';
 import '../../object/sort_possibility.dart';
 import '../../repository/monument/i_monument_repository.dart';
@@ -106,6 +108,49 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
         state.copyWith(
           monuments: finalList,
           status: MonumentStatus.notLoading,
+        ),
+      );
+    });
+
+    on<GetMonumentEvent>((event, emit) async {
+      emit(
+        state.copyWith(
+          status: MonumentStatus.loading,
+        ),
+      );
+      final Poi monument = await monumentRepository.getMonument(event.id);
+      add(GetMonumentPostsEvent(id: event.id, isRefresh: true));
+      emit(
+        state.copyWith(
+          selectedMonument: monument,
+          status: MonumentStatus.notLoading,
+        ),
+      );
+    });
+
+    on<GetMonumentPostsEvent>((event, emit) async {
+      emit(
+        state.copyWith(
+          selectedPostGetMonumentsStatus: MonumentStatus.loading,
+        ),
+      );
+      final GetAllPostsResponse posts =
+          await monumentRepository.getMonumentPosts(
+        poiId: event.id,
+        page: event.isRefresh ? 1 : state.postMonumentPage + 1,
+        perPage: perPage,
+      );
+      emit(
+        state.copyWith(
+          selectedPostGetMonumentsStatus: MonumentStatus.notLoading,
+          selectedMonumentPosts: event.isRefresh
+              ? posts.data
+              : [
+                  ...state.selectedMonumentPosts,
+                  ...posts.data,
+                ],
+          getMonumentsHasMorePosts: posts.data.length == perPage,
+          postMonumentPage: event.isRefresh ? 0 : state.postMonumentPage + 1,
         ),
       );
     });

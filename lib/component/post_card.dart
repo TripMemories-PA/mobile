@@ -14,6 +14,7 @@ import '../bloc/post/post_bloc.dart';
 import '../constants/my_colors.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
+import '../num_extensions.dart';
 import '../object/post/post.dart';
 import 'comment_button.dart';
 import 'custom_card.dart';
@@ -28,8 +29,9 @@ class PostCard extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return CustomCard(
+      borderColor: Theme.of(context).colorScheme.tertiary,
       content: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
             Stack(
@@ -71,6 +73,8 @@ class PostCard extends HookWidget {
                   right: 10,
                   child: RatingBar(
                     ignoreGestures: true,
+                    itemSize: 15,
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 2),
                     glow: false,
                     initialRating: double.tryParse(post.note) ?? 0,
                     minRating: 1,
@@ -95,22 +99,44 @@ class PostCard extends HookWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            20.ph,
             Row(
               children: [
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '${post.poi.city?.name} - ${post.poi.city?.zipCode}',
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey,
+                      GestureDetector(
+                        onTap: () {
+                          final String? path =
+                              ModalRoute.of(context)?.settings.name;
+                          if (path != null &&
+                              !path.contains(post.poi.id.toString())) {
+                            context.push(
+                              '${RouteName.monumentPage}/${post.poi.id}',
+                              extra: post.poi,
+                            );
+                          }
+                        },
+                        child: Text(
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          post.poi.name,
+                          style: TextStyle(
+                            shadows: [
+                              Shadow(
+                                color: Theme.of(context).colorScheme.primary,
+                                offset: const Offset(0, -5),
+                              ),
+                            ],
+                            color: Colors.transparent,
+                            decoration: TextDecoration.underline,
+                            decorationColor:
+                                Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ),
+                      12.ph,
                       Text(
                         post.title,
                         style: const TextStyle(
@@ -124,6 +150,7 @@ class PostCard extends HookWidget {
                 ),
               ],
             ),
+            5.ph,
             SizedBox(
               width: double.infinity,
               child: Text(
@@ -131,13 +158,34 @@ class PostCard extends HookWidget {
                 style: const TextStyle(fontSize: 15),
               ),
             ),
+            5.ph,
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                GestureDetector(
+                  onTap: () {
+                    context.push(
+                      '${RouteName.profilePage}/${post.createdBy.id}',
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundImage: CachedNetworkImageProvider(
+                          post.createdBy.avatar?.url ?? '',
+                        ),
+                      ),
+                      5.pw,
+                      Text(post.createdBy.username),
+                    ],
+                  ),
+                ),
+                const Spacer(),
                 IconButton(
                   color: MyColors.purple,
                   icon: Icon(
                     post.isLiked ? Icons.favorite : Icons.favorite_border,
-                    color: Colors.red,
                   ),
                   onPressed: () async {
                     if (context.read<AuthBloc>().state.status ==
@@ -180,7 +228,6 @@ class PostCard extends HookWidget {
                   post.commentsCount.toString(),
                   style: const TextStyle(color: MyColors.purple),
                 ),
-                const Expanded(child: SizedBox()),
                 if (post.createdBy.id ==
                     context.read<AuthBloc>().state.user?.id)
                   IconButton(

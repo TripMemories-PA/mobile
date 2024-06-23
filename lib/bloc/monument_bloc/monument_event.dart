@@ -39,3 +39,13 @@ class GetMonumentEvent extends MonumentEvent {
 
   final int id;
 }
+
+class GetMonumentPostsEvent extends MonumentEvent {
+  GetMonumentPostsEvent({
+    required this.id,
+    this.isRefresh = false,
+  });
+
+  final int id;
+  final bool isRefresh;
+}

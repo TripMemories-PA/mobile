@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -183,7 +184,7 @@ class PostCard extends HookWidget {
                 ),
                 const Spacer(),
                 IconButton(
-                  color: MyColors.purple,
+                  color: Theme.of(context).colorScheme.primary,
                   icon: Icon(
                     post.isLiked ? Icons.favorite : Icons.favorite_border,
                   ),
@@ -204,13 +205,16 @@ class PostCard extends HookWidget {
                     } else {
                       if (context.read<AuthBloc>().state.user?.id !=
                           post.createdBy.id) {
-                        post.isLiked
-                            ? context
-                                .read<PostBloc>()
-                                .add(DislikePostEvent(post.id))
-                            : context
-                                .read<PostBloc>()
-                                .add(LikePostEvent(post.id));
+                        EasyDebounce.debounce('like_post', Durations.medium1,
+                            () async {
+                          post.isLiked
+                              ? context
+                                  .read<PostBloc>()
+                                  .add(DislikePostEvent(post.id))
+                              : context
+                                  .read<PostBloc>()
+                                  .add(LikePostEvent(post.id));
+                        });
                       }
                     }
                   },

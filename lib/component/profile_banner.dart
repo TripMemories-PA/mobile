@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/profile/profile_bloc.dart';
+import '../num_extensions.dart';
 import 'friends_and_visited_widget.dart';
 import 'popup/modify_user_infos_popup.dart';
 
@@ -30,27 +31,18 @@ class ProfileBanner extends StatelessWidget {
             children: [
               Column(
                 children: [
+                  10.ph,
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all(
-                          Theme.of(context).colorScheme.surface,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: IconButton(
+                        onPressed: () async {
+                          await modifyUserInfosPopup(context);
+                        },
+                        icon: const Icon(
+                          Icons.edit,
                         ),
-                        shape: WidgetStateProperty.all(
-                          CircleBorder(
-                            side: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                        ),
-                      ),
-                      onPressed: () async {
-                        await modifyUserInfosPopup(context);
-                      },
-                      icon: Icon(
-                        Icons.edit,
-                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),

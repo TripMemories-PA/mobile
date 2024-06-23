@@ -105,7 +105,7 @@ class PostCard extends HookWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${post.poi.city} - ${post.poi.zipCode}',
+                        '${post.poi.city?.name} - ${post.poi.city?.zipCode}',
                         style: const TextStyle(
                           fontSize: 15,
                           color: Colors.grey,

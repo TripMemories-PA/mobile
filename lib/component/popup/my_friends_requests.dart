@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../api/auth/model/response/friend_request_response/friend_request_response.dart';
 import '../../api/profile/profile_service.dart';
 import '../../bloc/friend_request_bloc/friend_request_bloc.dart';
 import '../../constants/my_colors.dart';
 import '../../constants/route_name.dart';
 import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
+import '../../object/friend_request/friend_request.dart';
 import '../../repository/profile/profile_repository.dart';
 import '../../service/profile/profile_remote_data_source.dart';
 import '../../utils/messenger.dart';
@@ -54,9 +54,9 @@ class MyFriendsRequests extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            'My Friends Requests',
-            style: TextStyle(
+          Text(
+            StringConstants().friendRequests,
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -88,53 +88,51 @@ class MyFriendsRequests extends StatelessWidget {
         )..add(GetFriendRequestEvent(isRefresh: true)),
         child: BlocBuilder<FriendRequestBloc, FriendRequestState>(
           builder: (context, state) {
-            return Padding(
+            return ListView(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Column(
-                children: [
-                  ...context
-                          .read<FriendRequestBloc>()
-                          .state
-                          .friendRequests
-                          ?.data
-                          .map(
-                            (friend) => Column(
-                              key: ObjectKey(friend),
-                              children: [
-                                _buildFriendCard(context, friend),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          )
-                          .toList() ??
-                      [],
-                  Center(
-                    child: context.read<FriendRequestBloc>().state.hasMoreTweets
-                        ? (context.read<FriendRequestBloc>().state.status !=
-                                FriendRequestStatus.error
-                            ? const Text('SHIMMER HERe')
-                            // TODO(nono): SHIMMER
-                            : _buildErrorWidget(context))
-                        : Text(StringConstants().noMoreFriends),
-                  ),
-                  BlocListener<FriendRequestBloc, FriendRequestState>(
-                    listener: (context, state) {
-                      if (state.status == FriendRequestStatus.accepted ||
-                          state.status == FriendRequestStatus.refused) {
-                        Messenger.showSnackBarQuickInfo(
-                          state.status == FriendRequestStatus.accepted
-                              ? StringConstants().friendRequestAccepted
-                              : StringConstants().friendRequestRefused,
-                          context,
-                        );
-                      }
-                    },
-                    child: const SizedBox.shrink(),
-                  ),
-                ],
-              ),
+              children: [
+                ...context
+                        .read<FriendRequestBloc>()
+                        .state
+                        .friendRequests
+                        ?.data
+                        .map(
+                          (friend) => Column(
+                            key: ObjectKey(friend),
+                            children: [
+                              _buildFriendCard(context, friend),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
+                        )
+                        .toList() ??
+                    [],
+                Center(
+                  child: context.read<FriendRequestBloc>().state.hasMoreTweets
+                      ? (context.read<FriendRequestBloc>().state.status !=
+                              FriendRequestStatus.error
+                          ? const Text('SHIMMER HERe')
+                          // TODO(nono): SHIMMER
+                          : _buildErrorWidget(context))
+                      : Text(StringConstants().noMoreFriends),
+                ),
+                BlocListener<FriendRequestBloc, FriendRequestState>(
+                  listener: (context, state) {
+                    if (state.status == FriendRequestStatus.accepted ||
+                        state.status == FriendRequestStatus.refused) {
+                      Messenger.showSnackBarQuickInfo(
+                        state.status == FriendRequestStatus.accepted
+                            ? StringConstants().friendRequestAccepted
+                            : StringConstants().friendRequestRefused,
+                        context,
+                      );
+                    }
+                  },
+                  child: const SizedBox.shrink(),
+                ),
+              ],
             );
           },
         ),
@@ -179,6 +177,7 @@ class MyFriendsRequests extends StatelessWidget {
                   ),
                   Text(
                     '@${friendRequest.sender.username}',
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 15,
                       color: Colors.grey,

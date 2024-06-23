@@ -22,6 +22,7 @@ _$ProfileImpl _$$ProfileImplFromJson(Map<String, dynamic> json) =>
       banner: json['banner'] == null
           ? null
           : UploadFile.fromJson(json['banner'] as Map<String, dynamic>),
+      poisCount: (json['poisCount'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$ProfileImplToJson(_$ProfileImpl instance) =>
@@ -36,4 +37,5 @@ Map<String, dynamic> _$$ProfileImplToJson(_$ProfileImpl instance) =>
       'isReceivedFriendRequest': instance.isReceivedFriendRequest,
       'avatar': instance.avatar?.toJson(),
       'banner': instance.banner?.toJson(),
+      'poisCount': instance.poisCount,
     };

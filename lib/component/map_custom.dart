@@ -12,11 +12,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../api/monument/model/response/poi/poi.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
+import '../object/poi/poi.dart';
 import '../object/position.dart';
 import 'search_bar_custom.dart';
 
@@ -121,6 +121,7 @@ class _MapCustomState extends State<MapCustom> {
                   icon: const Icon(Icons.close),
                   onPressed: () {
                     setState(() {
+                      _removeSelectedIconOnPoi();
                       selectedMarkerId = null;
                       selectedPoi = null;
                     });
@@ -131,6 +132,27 @@ class _MapCustomState extends State<MapCustom> {
         ),
       ),
     );
+  }
+
+  void _removeSelectedIconOnPoi() {
+    final String? lat = selectedPoi?.latitude;
+    final String? lng = selectedPoi?.longitude;
+    final MarkerId? tmpSelectedMarkerId = selectedMarkerId;
+    if (tmpSelectedMarkerId != null && lat != null && lng != null) {
+      final double latitude = double.parse(lat);
+      final double longitude = double.parse(lng);
+      markers[tmpSelectedMarkerId] = Marker(
+        icon: markerIcon,
+        markerId: tmpSelectedMarkerId,
+        position: LatLng(latitude, longitude),
+        onTap: () {
+          setState(() {
+            selectedPoi = null;
+            selectedMarkerId = null;
+          });
+        },
+      );
+    }
   }
 
   Positioned _buildSearchMonumentPart() {
@@ -199,6 +221,7 @@ class _MapCustomState extends State<MapCustom> {
       },
       onTap: (LatLng position) {
         setState(() {
+          _removeSelectedIconOnPoi();
           selectedMarkerId = null;
           selectedPoi = null;
         });
@@ -283,7 +306,7 @@ class _MapCustomState extends State<MapCustom> {
                     children: [
                       15.ph,
                       Text(
-                        selectedPoi?.city ?? 'Pas de ville',
+                        selectedPoi?.city?.name ?? 'Pas de ville',
                         style: TextStyle(
                           height: 1,
                           fontSize: 14,
@@ -311,7 +334,7 @@ class _MapCustomState extends State<MapCustom> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        '${selectedPoi?.zipCode}',
+                        '${selectedPoi?.city?.zipCode}',
                       ),
                       10.ph,
                       // TODO(nono): mettre la bonne note
@@ -427,6 +450,7 @@ class _SearchOnMap extends HookWidget {
       child: Column(
         children: [
           SearchBarCustom(
+            hintText: StringConstants().searchMonuments,
             searchController: searchController,
             context: context,
             searching: searching,

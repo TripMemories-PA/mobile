@@ -1,10 +1,9 @@
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../object/profile/profile.dart';
 
-part 'friend_request_response.freezed.dart';
-part 'friend_request_response.g.dart';
+part 'friend_request.freezed.dart';
+part 'friend_request.g.dart';
 
 @freezed
 class FriendRequest with _$FriendRequest {
@@ -17,5 +16,6 @@ class FriendRequest with _$FriendRequest {
     required Profile sender,
   }) = _FriendRequest;
 
-  factory FriendRequest.fromJson(Map<String, dynamic> json) => _$FriendRequestFromJson(json);
+  factory FriendRequest.fromJson(Map<String, dynamic> json) =>
+      _$FriendRequestFromJson(json);
 }

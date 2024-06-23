@@ -35,37 +35,30 @@ class FriendsAndVisitedWidget extends StatelessWidget {
     int? friendsCount = context.read<ProfileBloc>().state.friends?.meta.total;
     friendsCount ??= 0;
     return _buildCard(
-      context,
-      friendsCount.toString(),
       'amis ajoutés',
       friendsCount,
     );
   }
 
   Widget _buildVisitedBuildingCard(BuildContext context) {
-    const int visitedCount =
-        0; //context.read<ProfileBloc>().state.visitedBuildings?.meta.total;
-    //visitedCount ??= 0;
+    final int visitedCount =
+        context.read<ProfileBloc>().state.profile?.poisCount ?? 0;
     return _buildCard(
-      context,
-      visitedCount.toString(),
       'monuments visités',
       visitedCount,
     );
   }
 
   Widget _buildCard(
-    BuildContext context,
-    String mainText,
     String subText,
-    int? count,
+    int count,
   ) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            count?.toString() ?? '0',
+            count.toString(),
             style: const TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,

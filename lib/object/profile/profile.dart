@@ -19,6 +19,7 @@ class Profile with _$Profile {
     required bool? isReceivedFriendRequest,
     UploadFile? avatar,
     UploadFile? banner,
+    required int? poisCount,
   }) = _Profile;
 
   factory Profile.fromJson(Map<String, dynamic> json) =>

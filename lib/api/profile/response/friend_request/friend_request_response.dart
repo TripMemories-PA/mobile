@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../auth/model/response/friend_request_response/friend_request_response.dart';
+import '../../../../object/friend_request/friend_request.dart';
 import '../../../meta_object/meta.dart';
 
 part 'friend_request_response.freezed.dart';

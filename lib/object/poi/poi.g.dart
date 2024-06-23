@@ -14,13 +14,16 @@ _$PoiImpl _$$PoiImplFromJson(Map<String, dynamic> json) => _$PoiImpl(
       typeId: (json['typeId'] as num?)?.toInt(),
       latitude: json['latitude'] as String,
       longitude: json['longitude'] as String,
-      city: json['city'] as String,
-      zipCode: json['zipCode'] as String,
+      city: json['city'] == null
+          ? null
+          : City.fromJson(json['city'] as Map<String, dynamic>),
       address: json['address'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       cover: UploadFile.fromJson(json['cover'] as Map<String, dynamic>),
       type: Type.fromJson(json['type'] as Map<String, dynamic>),
+      postsCount: (json['postsCount'] as num?)?.toInt(),
+      averageNote: json['averageNote'] as num?,
     );
 
 Map<String, dynamic> _$$PoiImplToJson(_$PoiImpl instance) => <String, dynamic>{
@@ -32,12 +35,13 @@ Map<String, dynamic> _$$PoiImplToJson(_$PoiImpl instance) => <String, dynamic>{
       'latitude': instance.latitude,
       'longitude': instance.longitude,
       'city': instance.city,
-      'zipCode': instance.zipCode,
       'address': instance.address,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
       'cover': instance.cover,
       'type': instance.type,
+      'postsCount': instance.postsCount,
+      'averageNote': instance.averageNote,
     };
 
 _$TypeImpl _$$TypeImplFromJson(Map<String, dynamic> json) => _$TypeImpl(

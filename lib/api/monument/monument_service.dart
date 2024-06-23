@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../app.config.dart';
+import '../../object/poi/poi.dart';
 import '../../object/position.dart';
 import '../../object/radius.dart';
 import '../../object/sort_possibility.dart';
@@ -12,7 +13,6 @@ import '../exception/bad_request_exception.dart';
 import '../exception/parsing_response_exception.dart';
 import '../post/model/response/get_all_posts_response.dart';
 import 'i_monument_service.dart';
-import 'model/response/poi/poi.dart';
 import 'model/response/pois_response/pois_response.dart';
 
 class MonumentService implements IMonumentService, IMonumentRepository {

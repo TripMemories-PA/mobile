@@ -81,4 +81,5 @@ class StringConstants {
   String get result => 'résultat';
   String get searchMonuments => 'Rechercher des monuments';
   String get close => 'Fermer';
+  String get friendRequests => "Demandes d'amis";
 }

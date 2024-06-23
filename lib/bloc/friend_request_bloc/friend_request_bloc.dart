@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../api/auth/model/response/friend_request_response/friend_request_response.dart';
 import '../../api/error/api_error.dart';
 import '../../api/error/specific_error/auth_error.dart';
 import '../../api/exception/custom_exception.dart';
@@ -8,6 +7,7 @@ import '../../api/profile/i_profile_service.dart';
 import '../../api/profile/response/friend_request/friend_request_response.dart';
 import '../../api/profile/response/friends/get_friends_pagination_response.dart';
 import '../../local_storage/secure_storage/auth_token_handler.dart';
+import '../../object/friend_request/friend_request.dart';
 import '../../repository/profile/profile_repository.dart';
 
 part 'friend_request_event.dart';

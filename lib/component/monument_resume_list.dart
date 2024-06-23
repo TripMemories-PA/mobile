@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../api/monument/model/response/poi/poi.dart';
 import '../constants/route_name.dart';
+import '../object/poi/poi.dart';
 import 'monument_resume_card.dart';
 import 'searching_monuments_body.dart';
 

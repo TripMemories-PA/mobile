@@ -1,8 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
-import '../api/monument/model/response/poi/poi.dart';
+import '../object/poi/poi.dart';
 import 'custom_card.dart';
 
 class MonumentCard extends StatelessWidget {
@@ -13,7 +12,6 @@ class MonumentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      backgroundColor: Colors.blue,
       content: Column(
         children: [
           CachedNetworkImage(

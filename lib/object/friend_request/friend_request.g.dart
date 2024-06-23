@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'friend_request_response.dart';
+part of 'friend_request.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../api/monument/model/response/poi/poi.dart';
 import '../num_extensions.dart';
+import '../object/poi/poi.dart';
 import 'searching_monuments_body.dart';
 
 class MonumentResumeCard extends StatelessWidget {
@@ -18,6 +18,7 @@ class MonumentResumeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final num? averageRating = monument.averageNote;
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return SizedBox(
@@ -61,7 +62,7 @@ class MonumentResumeCard extends StatelessWidget {
               ),
               5.ph,
               Text(
-                monument.city,
+                monument.city?.name ?? '',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 10,
@@ -81,7 +82,8 @@ class MonumentResumeCard extends StatelessWidget {
                 children: [
                   RatingBar(
                     glow: false,
-                    initialRating: 2.5,
+                    initialRating:
+                        averageRating != null ? averageRating.toDouble() : 0,
                     itemPadding: const EdgeInsets.symmetric(horizontal: 1.5),
                     minRating: 1,
                     maxRating: 5,
@@ -106,7 +108,7 @@ class MonumentResumeCard extends StatelessWidget {
                     onRatingUpdate: (double value) {},
                   ),
                   Text(
-                    '(1245 avis)',
+                    '(${monument.postsCount} avis)',
                     style: TextStyle(
                       fontSize:
                           bodySize == SearchingMonumentBodySize.large ? 11 : 9,

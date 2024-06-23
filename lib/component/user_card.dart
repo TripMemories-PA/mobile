@@ -195,13 +195,11 @@ class UserCard extends StatelessWidget {
           child: Container(
             width: 20,
             height: 20,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.transparent,
               shape: BoxShape.circle,
               border: Border.fromBorderSide(
-                BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                BorderSide(),
               ),
             ),
             child: Theme(
@@ -214,7 +212,7 @@ class UserCard extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 iconSize: 10,
                 icon: const Icon(Icons.remove_red_eye_outlined),
-                color: Theme.of(context).colorScheme.primary,
+                color: Colors.black,
                 onPressed: () {
                   context.push('${RouteName.profilePage}/$userId');
                   if (needToPop) {

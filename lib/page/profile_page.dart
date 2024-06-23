@@ -15,7 +15,6 @@ import '../component/my_post_component.dart';
 import '../component/profile_infos.dart';
 import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
-import '../num_extensions.dart';
 import '../repository/post/post_repository.dart';
 import '../repository/profile/profile_repository.dart';
 import '../service/post/post_remote_data_source.dart';
@@ -136,7 +135,7 @@ class ProfilePage extends HookWidget {
                 isMyProfile: userId == null,
               ),
             ),
-            10.ph,
+            const SizedBox(height: 10),
             BlocListener<ProfileBloc, ProfileState>(
               listener: (context, state) {
                 if (state.status == ProfileStatus.error) {
@@ -179,7 +178,7 @@ class MyPostsAndMyFriends extends HookWidget {
   Widget build(BuildContext context) {
     final int? tmpUserId = userId;
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: const EdgeInsets.only(top: 10.0),
       child: tmpUserId == null
           ? TabBarView(
               controller: tabController,

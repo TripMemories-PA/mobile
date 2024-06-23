@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import 'api/auth/auth_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
+import 'bloc/auth_bloc/auth_state.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
@@ -183,11 +184,15 @@ class MyApp extends HookWidget {
         authService: AuthService(),
         authTokenHandler: AuthTokenHandler(),
       ),
-      child: MaterialApp.router(
-        scaffoldMessengerKey: messengerKey,
-        title: 'Flutter PA',
-        routerConfig: _router,
-        theme: ThemeGenerator.generate(),
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          return MaterialApp.router(
+            scaffoldMessengerKey: messengerKey,
+            title: 'Trip memories',
+            routerConfig: _router,
+            theme: ThemeGenerator.generate(),
+          );
+        },
       ),
     );
   }

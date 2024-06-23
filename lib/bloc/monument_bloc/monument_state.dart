@@ -11,6 +11,11 @@ class MonumentState {
     this.searchingMonumentByNameStatus = MonumentStatus.notLoading,
     this.searchMonumentsHasMoreMonuments = true,
     this.isRefresh = false,
+    this.selectedMonument,
+    this.selectedMonumentPosts = const [],
+    this.postMonumentPage = 0,
+    this.selectedPostGetMonumentsStatus = MonumentStatus.notLoading,
+    this.getMonumentsHasMorePosts = true,
   });
 
   MonumentState copyWith({
@@ -21,6 +26,11 @@ class MonumentState {
     MonumentStatus? searchingMonumentByNameStatus,
     bool? isRefresh,
     bool? searchMonumentsHasMoreMonuments,
+    Poi? selectedMonument,
+    List<Post>? selectedMonumentPosts,
+    int? postMonumentPage,
+    MonumentStatus? selectedPostGetMonumentsStatus,
+    bool? getMonumentsHasMorePosts,
   }) {
     return MonumentState(
       monuments: monuments ?? this.monuments,
@@ -32,6 +42,14 @@ class MonumentState {
       searchMonumentsHasMoreMonuments: searchMonumentsHasMoreMonuments ??
           this.searchMonumentsHasMoreMonuments,
       isRefresh: isRefresh ?? this.isRefresh,
+      selectedMonument: selectedMonument ?? this.selectedMonument,
+      selectedMonumentPosts:
+          selectedMonumentPosts ?? this.selectedMonumentPosts,
+      postMonumentPage: postMonumentPage ?? this.postMonumentPage,
+      selectedPostGetMonumentsStatus:
+          selectedPostGetMonumentsStatus ?? this.selectedPostGetMonumentsStatus,
+      getMonumentsHasMorePosts:
+          getMonumentsHasMorePosts ?? this.getMonumentsHasMorePosts,
     );
   }
 
@@ -42,4 +60,9 @@ class MonumentState {
   final MonumentStatus searchingMonumentByNameStatus;
   final bool searchMonumentsHasMoreMonuments;
   final bool isRefresh;
+  final Poi? selectedMonument;
+  final List<Post> selectedMonumentPosts;
+  final int postMonumentPage;
+  final MonumentStatus selectedPostGetMonumentsStatus;
+  final bool getMonumentsHasMorePosts;
 }

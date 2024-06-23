@@ -12,10 +12,12 @@ class ScaffoldWithNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          navigationShell,
-        ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            navigationShell,
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: true,

@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../api/monument/model/response/poi/poi.dart';
 import '../avatar/uploaded_file.dart';
+import '../poi/poi.dart';
 import '../profile/profile.dart';
 
 part 'post.freezed.dart';

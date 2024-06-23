@@ -41,6 +41,7 @@ const Profile me = Profile(
   email: 'test@mail.com',
   isSentFriendRequest: false,
   isReceivedFriendRequest: false,
+  poisCount: 0,
 );
 
 const Profile profile = Profile(
@@ -52,6 +53,7 @@ const Profile profile = Profile(
   email: 'test@mail.com',
   isSentFriendRequest: false,
   isReceivedFriendRequest: false,
+  poisCount: 0,
 );
 
 final Message message = Message(

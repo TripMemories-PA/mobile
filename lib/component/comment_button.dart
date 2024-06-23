@@ -186,7 +186,9 @@ class CommentButtonContent extends HookWidget {
                     ),
                   ),
                 ),
-                _buildCommentTextInput(context, commentController),
+                if (context.read<AuthBloc>().state.status ==
+                    AuthStatus.authenticated)
+                  _buildCommentTextInput(context, commentController),
               ],
             );
           }

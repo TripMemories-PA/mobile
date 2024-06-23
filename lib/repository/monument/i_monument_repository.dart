@@ -1,6 +1,6 @@
-import '../../api/monument/model/response/poi/poi.dart';
 import '../../api/monument/model/response/pois_response/pois_response.dart';
 import '../../api/post/model/response/get_all_posts_response.dart';
+import '../../object/poi/poi.dart';
 import '../../object/position.dart';
 import '../../object/radius.dart';
 import '../../object/sort_possibility.dart';

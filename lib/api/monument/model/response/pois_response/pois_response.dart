@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../../object/poi/poi.dart';
 import '../../../../meta_object/meta.dart';
-import '../poi/poi.dart';
 
 part 'pois_response.freezed.dart';
 part 'pois_response.g.dart';

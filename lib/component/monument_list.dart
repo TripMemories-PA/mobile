@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../api/monument/model/response/poi/poi.dart';
+import '../object/poi/poi.dart';
 import 'monument_card.dart';
 
 class MonumentList extends StatelessWidget {

@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../api/monument/model/response/poi/poi.dart';
 import '../../bloc/monument_bloc/monument_bloc.dart';
 import '../../constants/string_constants.dart';
+import '../../object/poi/poi.dart';
 import '../../repository/monument/monument_repository.dart';
 import '../../service/monument/monument_remote_data_source.dart';
 import '../custom_card.dart';

@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../object/avatar/uploaded_file.dart';
+import '../city/city.dart';
 
 part 'poi.freezed.dart';
 part 'poi.g.dart';
@@ -15,13 +16,14 @@ class Poi with _$Poi {
     required int? typeId,
     required String latitude,
     required String longitude,
-    required String city,
-    required String zipCode,
+    required City? city,
     required String? address,
     required DateTime createdAt,
     required DateTime updatedAt,
     required UploadFile cover,
     required Type type,
+    required int? postsCount,
+    required num? averageNote,
   }) = _Poi;
 
   factory Poi.fromJson(Map<String, dynamic> json) => _$PoiFromJson(json);

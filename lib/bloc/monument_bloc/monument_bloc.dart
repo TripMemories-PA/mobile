@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../api/monument/model/response/poi/poi.dart';
 import '../../api/monument/model/response/pois_response/pois_response.dart';
+import '../../object/poi/poi.dart';
 import '../../object/position.dart';
 import '../../object/radius.dart';
 import '../../object/sort_possibility.dart';

@@ -30,6 +30,7 @@ mixin _$Profile {
   bool? get isReceivedFriendRequest => throw _privateConstructorUsedError;
   UploadFile? get avatar => throw _privateConstructorUsedError;
   UploadFile? get banner => throw _privateConstructorUsedError;
+  int? get poisCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,7 +52,8 @@ abstract class $ProfileCopyWith<$Res> {
       bool? isSentFriendRequest,
       bool? isReceivedFriendRequest,
       UploadFile? avatar,
-      UploadFile? banner});
+      UploadFile? banner,
+      int? poisCount});
 
   $UploadFileCopyWith<$Res>? get avatar;
   $UploadFileCopyWith<$Res>? get banner;
@@ -80,6 +82,7 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
     Object? isReceivedFriendRequest = freezed,
     Object? avatar = freezed,
     Object? banner = freezed,
+    Object? poisCount = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -122,6 +125,10 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.banner
           : banner // ignore: cast_nullable_to_non_nullable
               as UploadFile?,
+      poisCount: freezed == poisCount
+          ? _value.poisCount
+          : poisCount // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 
@@ -167,7 +174,8 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       bool? isSentFriendRequest,
       bool? isReceivedFriendRequest,
       UploadFile? avatar,
-      UploadFile? banner});
+      UploadFile? banner,
+      int? poisCount});
 
   @override
   $UploadFileCopyWith<$Res>? get avatar;
@@ -196,6 +204,7 @@ class __$$ProfileImplCopyWithImpl<$Res>
     Object? isReceivedFriendRequest = freezed,
     Object? avatar = freezed,
     Object? banner = freezed,
+    Object? poisCount = freezed,
   }) {
     return _then(_$ProfileImpl(
       id: null == id
@@ -238,6 +247,10 @@ class __$$ProfileImplCopyWithImpl<$Res>
           ? _value.banner
           : banner // ignore: cast_nullable_to_non_nullable
               as UploadFile?,
+      poisCount: freezed == poisCount
+          ? _value.poisCount
+          : poisCount // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -256,7 +269,8 @@ class _$ProfileImpl implements _Profile {
       required this.isSentFriendRequest,
       required this.isReceivedFriendRequest,
       this.avatar,
-      this.banner});
+      this.banner,
+      required this.poisCount});
 
   factory _$ProfileImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProfileImplFromJson(json);
@@ -281,10 +295,12 @@ class _$ProfileImpl implements _Profile {
   final UploadFile? avatar;
   @override
   final UploadFile? banner;
+  @override
+  final int? poisCount;
 
   @override
   String toString() {
-    return 'Profile(id: $id, email: $email, username: $username, firstname: $firstname, lastname: $lastname, isFriend: $isFriend, isSentFriendRequest: $isSentFriendRequest, isReceivedFriendRequest: $isReceivedFriendRequest, avatar: $avatar, banner: $banner)';
+    return 'Profile(id: $id, email: $email, username: $username, firstname: $firstname, lastname: $lastname, isFriend: $isFriend, isSentFriendRequest: $isSentFriendRequest, isReceivedFriendRequest: $isReceivedFriendRequest, avatar: $avatar, banner: $banner, poisCount: $poisCount)';
   }
 
   @override
@@ -308,7 +324,9 @@ class _$ProfileImpl implements _Profile {
                     other.isReceivedFriendRequest, isReceivedFriendRequest) ||
                 other.isReceivedFriendRequest == isReceivedFriendRequest) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
-            (identical(other.banner, banner) || other.banner == banner));
+            (identical(other.banner, banner) || other.banner == banner) &&
+            (identical(other.poisCount, poisCount) ||
+                other.poisCount == poisCount));
   }
 
   @JsonKey(ignore: true)
@@ -324,7 +342,8 @@ class _$ProfileImpl implements _Profile {
       isSentFriendRequest,
       isReceivedFriendRequest,
       avatar,
-      banner);
+      banner,
+      poisCount);
 
   @JsonKey(ignore: true)
   @override
@@ -351,7 +370,8 @@ abstract class _Profile implements Profile {
       required final bool? isSentFriendRequest,
       required final bool? isReceivedFriendRequest,
       final UploadFile? avatar,
-      final UploadFile? banner}) = _$ProfileImpl;
+      final UploadFile? banner,
+      required final int? poisCount}) = _$ProfileImpl;
 
   factory _Profile.fromJson(Map<String, dynamic> json) = _$ProfileImpl.fromJson;
 
@@ -375,6 +395,8 @@ abstract class _Profile implements Profile {
   UploadFile? get avatar;
   @override
   UploadFile? get banner;
+  @override
+  int? get poisCount;
   @override
   @JsonKey(ignore: true)
   _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>

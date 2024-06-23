@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../object/avatar/uploaded_file.dart';
-import '../friend_request_response/friend_request_response.dart';
+import '../../../../../object/friend_request/friend_request.dart';
 
 part 'who_am_i_response.freezed.dart';
 part 'who_am_i_response.g.dart';

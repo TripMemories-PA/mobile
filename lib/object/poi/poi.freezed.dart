@@ -27,13 +27,14 @@ mixin _$Poi {
   int? get typeId => throw _privateConstructorUsedError;
   String get latitude => throw _privateConstructorUsedError;
   String get longitude => throw _privateConstructorUsedError;
-  String get city => throw _privateConstructorUsedError;
-  String get zipCode => throw _privateConstructorUsedError;
+  City? get city => throw _privateConstructorUsedError;
   String? get address => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
   UploadFile get cover => throw _privateConstructorUsedError;
   Type get type => throw _privateConstructorUsedError;
+  int? get postsCount => throw _privateConstructorUsedError;
+  num? get averageNote => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -53,14 +54,16 @@ abstract class $PoiCopyWith<$Res> {
       int? typeId,
       String latitude,
       String longitude,
-      String city,
-      String zipCode,
+      City? city,
       String? address,
       DateTime createdAt,
       DateTime updatedAt,
       UploadFile cover,
-      Type type});
+      Type type,
+      int? postsCount,
+      num? averageNote});
 
+  $CityCopyWith<$Res>? get city;
   $UploadFileCopyWith<$Res> get cover;
   $TypeCopyWith<$Res> get type;
 }
@@ -84,13 +87,14 @@ class _$PoiCopyWithImpl<$Res, $Val extends Poi> implements $PoiCopyWith<$Res> {
     Object? typeId = freezed,
     Object? latitude = null,
     Object? longitude = null,
-    Object? city = null,
-    Object? zipCode = null,
+    Object? city = freezed,
     Object? address = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? cover = null,
     Object? type = null,
+    Object? postsCount = freezed,
+    Object? averageNote = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -121,14 +125,10 @@ class _$PoiCopyWithImpl<$Res, $Val extends Poi> implements $PoiCopyWith<$Res> {
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as String,
-      city: null == city
+      city: freezed == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
-              as String,
-      zipCode: null == zipCode
-          ? _value.zipCode
-          : zipCode // ignore: cast_nullable_to_non_nullable
-              as String,
+              as City?,
       address: freezed == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -149,7 +149,27 @@ class _$PoiCopyWithImpl<$Res, $Val extends Poi> implements $PoiCopyWith<$Res> {
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as Type,
+      postsCount: freezed == postsCount
+          ? _value.postsCount
+          : postsCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      averageNote: freezed == averageNote
+          ? _value.averageNote
+          : averageNote // ignore: cast_nullable_to_non_nullable
+              as num?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CityCopyWith<$Res>? get city {
+    if (_value.city == null) {
+      return null;
+    }
+
+    return $CityCopyWith<$Res>(_value.city!, (value) {
+      return _then(_value.copyWith(city: value) as $Val);
+    });
   }
 
   @override
@@ -183,14 +203,17 @@ abstract class _$$PoiImplCopyWith<$Res> implements $PoiCopyWith<$Res> {
       int? typeId,
       String latitude,
       String longitude,
-      String city,
-      String zipCode,
+      City? city,
       String? address,
       DateTime createdAt,
       DateTime updatedAt,
       UploadFile cover,
-      Type type});
+      Type type,
+      int? postsCount,
+      num? averageNote});
 
+  @override
+  $CityCopyWith<$Res>? get city;
   @override
   $UploadFileCopyWith<$Res> get cover;
   @override
@@ -213,13 +236,14 @@ class __$$PoiImplCopyWithImpl<$Res> extends _$PoiCopyWithImpl<$Res, _$PoiImpl>
     Object? typeId = freezed,
     Object? latitude = null,
     Object? longitude = null,
-    Object? city = null,
-    Object? zipCode = null,
+    Object? city = freezed,
     Object? address = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? cover = null,
     Object? type = null,
+    Object? postsCount = freezed,
+    Object? averageNote = freezed,
   }) {
     return _then(_$PoiImpl(
       id: null == id
@@ -250,14 +274,10 @@ class __$$PoiImplCopyWithImpl<$Res> extends _$PoiCopyWithImpl<$Res, _$PoiImpl>
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as String,
-      city: null == city
+      city: freezed == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
-              as String,
-      zipCode: null == zipCode
-          ? _value.zipCode
-          : zipCode // ignore: cast_nullable_to_non_nullable
-              as String,
+              as City?,
       address: freezed == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -278,6 +298,14 @@ class __$$PoiImplCopyWithImpl<$Res> extends _$PoiCopyWithImpl<$Res, _$PoiImpl>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as Type,
+      postsCount: freezed == postsCount
+          ? _value.postsCount
+          : postsCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      averageNote: freezed == averageNote
+          ? _value.averageNote
+          : averageNote // ignore: cast_nullable_to_non_nullable
+              as num?,
     ));
   }
 }
@@ -294,12 +322,13 @@ class _$PoiImpl implements _Poi {
       required this.latitude,
       required this.longitude,
       required this.city,
-      required this.zipCode,
       required this.address,
       required this.createdAt,
       required this.updatedAt,
       required this.cover,
-      required this.type});
+      required this.type,
+      required this.postsCount,
+      required this.averageNote});
 
   factory _$PoiImpl.fromJson(Map<String, dynamic> json) =>
       _$$PoiImplFromJson(json);
@@ -319,9 +348,7 @@ class _$PoiImpl implements _Poi {
   @override
   final String longitude;
   @override
-  final String city;
-  @override
-  final String zipCode;
+  final City? city;
   @override
   final String? address;
   @override
@@ -332,10 +359,14 @@ class _$PoiImpl implements _Poi {
   final UploadFile cover;
   @override
   final Type type;
+  @override
+  final int? postsCount;
+  @override
+  final num? averageNote;
 
   @override
   String toString() {
-    return 'Poi(id: $id, name: $name, description: $description, coverId: $coverId, typeId: $typeId, latitude: $latitude, longitude: $longitude, city: $city, zipCode: $zipCode, address: $address, createdAt: $createdAt, updatedAt: $updatedAt, cover: $cover, type: $type)';
+    return 'Poi(id: $id, name: $name, description: $description, coverId: $coverId, typeId: $typeId, latitude: $latitude, longitude: $longitude, city: $city, address: $address, createdAt: $createdAt, updatedAt: $updatedAt, cover: $cover, type: $type, postsCount: $postsCount, averageNote: $averageNote)';
   }
 
   @override
@@ -354,14 +385,17 @@ class _$PoiImpl implements _Poi {
             (identical(other.longitude, longitude) ||
                 other.longitude == longitude) &&
             (identical(other.city, city) || other.city == city) &&
-            (identical(other.zipCode, zipCode) || other.zipCode == zipCode) &&
             (identical(other.address, address) || other.address == address) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.cover, cover) || other.cover == cover) &&
-            (identical(other.type, type) || other.type == type));
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.postsCount, postsCount) ||
+                other.postsCount == postsCount) &&
+            (identical(other.averageNote, averageNote) ||
+                other.averageNote == averageNote));
   }
 
   @JsonKey(ignore: true)
@@ -376,12 +410,13 @@ class _$PoiImpl implements _Poi {
       latitude,
       longitude,
       city,
-      zipCode,
       address,
       createdAt,
       updatedAt,
       cover,
-      type);
+      type,
+      postsCount,
+      averageNote);
 
   @JsonKey(ignore: true)
   @override
@@ -406,13 +441,14 @@ abstract class _Poi implements Poi {
       required final int? typeId,
       required final String latitude,
       required final String longitude,
-      required final String city,
-      required final String zipCode,
+      required final City? city,
       required final String? address,
       required final DateTime createdAt,
       required final DateTime updatedAt,
       required final UploadFile cover,
-      required final Type type}) = _$PoiImpl;
+      required final Type type,
+      required final int? postsCount,
+      required final num? averageNote}) = _$PoiImpl;
 
   factory _Poi.fromJson(Map<String, dynamic> json) = _$PoiImpl.fromJson;
 
@@ -431,9 +467,7 @@ abstract class _Poi implements Poi {
   @override
   String get longitude;
   @override
-  String get city;
-  @override
-  String get zipCode;
+  City? get city;
   @override
   String? get address;
   @override
@@ -444,6 +478,10 @@ abstract class _Poi implements Poi {
   UploadFile get cover;
   @override
   Type get type;
+  @override
+  int? get postsCount;
+  @override
+  num? get averageNote;
   @override
   @JsonKey(ignore: true)
   _$$PoiImplCopyWith<_$PoiImpl> get copyWith =>

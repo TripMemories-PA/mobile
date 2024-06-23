@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../api/monument/model/response/poi/poi.dart';
 import '../num_extensions.dart';
+import '../object/poi/poi.dart';
 import 'searching_monuments_body.dart';
 
 class MonumentResumeCard extends StatelessWidget {
@@ -32,36 +32,36 @@ class MonumentResumeCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
                   child: Image.network(
-                    monument.cover.url,
-                    loadingBuilder: (
-                      BuildContext context,
-                      Widget child,
-                      ImageChunkEvent? loadingProgress,
-                    ) {
-                      if (loadingProgress == null) {
-                        return child;
-                      } else {
-                        return const Center(
-                          child: CupertinoActivityIndicator(),
-                        );
-                      }
-                    },
-                    errorBuilder: (
-                      BuildContext context,
-                      Object error,
-                      StackTrace? stackTrace,
-                    ) {
-                      return const Icon(
-                        CupertinoIcons.exclamationmark_triangle,
-                      );
-                    },
-                    fit: BoxFit.cover,
-                  ),
+                          monument.cover.url,
+                          loadingBuilder: (
+                            BuildContext context,
+                            Widget child,
+                            ImageChunkEvent? loadingProgress,
+                          ) {
+                            if (loadingProgress == null) {
+                              return child;
+                            } else {
+                              return const Center(
+                                child: CupertinoActivityIndicator(),
+                              );
+                            }
+                          },
+                          errorBuilder: (
+                            BuildContext context,
+                            Object error,
+                            StackTrace? stackTrace,
+                          ) {
+                            return const Icon(
+                              CupertinoIcons.exclamationmark_triangle,
+                            );
+                          },
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
               5.ph,
               Text(
-                monument.city,
+                monument.city?.name ?? '',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 10,

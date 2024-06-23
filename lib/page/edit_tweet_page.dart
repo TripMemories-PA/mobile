@@ -8,13 +8,13 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../api/monument/model/response/poi/poi.dart';
 import '../api/post/post_service.dart';
 import '../bloc/edit_tweet_bloc/publish_post_bloc.dart';
 import '../component/custom_card.dart';
 import '../component/popup/search_monument_popup.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
+import '../object/poi/poi.dart';
 import '../utils/messenger.dart';
 
 class EditTweetPage extends HookWidget {
@@ -260,7 +260,7 @@ class EditTweetPage extends HookWidget {
                   ),
                 ),
                 Text(
-                  selectedMonument.value?.city ?? 'Une ville',
+                  selectedMonument.value?.city?.name ?? '',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 15,

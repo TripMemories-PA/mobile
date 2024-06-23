@@ -4,12 +4,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
 import 'api/auth/auth_service.dart';
-import 'api/monument/model/response/poi/poi.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
+import 'object/poi/poi.dart';
 import 'object/profile/profile.dart';
 import 'page/chat_page.dart';
 import 'page/edit_tweet_page.dart';

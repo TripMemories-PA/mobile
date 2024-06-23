@@ -157,10 +157,8 @@ class UserCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: avatarUrl != null
-              ? Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
                   child: CachedNetworkImage(
                     imageUrl: avatarUrl,
                     fit: BoxFit.cover,

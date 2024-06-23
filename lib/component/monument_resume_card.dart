@@ -18,6 +18,7 @@ class MonumentResumeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final num? averageRating = monument.averageNote;
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return SizedBox(
@@ -32,31 +33,31 @@ class MonumentResumeCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
                   child: Image.network(
-                          monument.cover.url,
-                          loadingBuilder: (
-                            BuildContext context,
-                            Widget child,
-                            ImageChunkEvent? loadingProgress,
-                          ) {
-                            if (loadingProgress == null) {
-                              return child;
-                            } else {
-                              return const Center(
-                                child: CupertinoActivityIndicator(),
-                              );
-                            }
-                          },
-                          errorBuilder: (
-                            BuildContext context,
-                            Object error,
-                            StackTrace? stackTrace,
-                          ) {
-                            return const Icon(
-                              CupertinoIcons.exclamationmark_triangle,
-                            );
-                          },
-                          fit: BoxFit.cover,
-                        ),
+                    monument.cover.url,
+                    loadingBuilder: (
+                      BuildContext context,
+                      Widget child,
+                      ImageChunkEvent? loadingProgress,
+                    ) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return const Center(
+                          child: CupertinoActivityIndicator(),
+                        );
+                      }
+                    },
+                    errorBuilder: (
+                      BuildContext context,
+                      Object error,
+                      StackTrace? stackTrace,
+                    ) {
+                      return const Icon(
+                        CupertinoIcons.exclamationmark_triangle,
+                      );
+                    },
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               5.ph,
@@ -81,7 +82,8 @@ class MonumentResumeCard extends StatelessWidget {
                 children: [
                   RatingBar(
                     glow: false,
-                    initialRating: 2.5,
+                    initialRating:
+                        averageRating != null ? averageRating.toDouble() : 0,
                     itemPadding: const EdgeInsets.symmetric(horizontal: 1.5),
                     minRating: 1,
                     maxRating: 5,
@@ -106,7 +108,7 @@ class MonumentResumeCard extends StatelessWidget {
                     onRatingUpdate: (double value) {},
                   ),
                   Text(
-                    '(1245 avis)',
+                    '(${monument.postsCount} avis)',
                     style: TextStyle(
                       fontSize:
                           bodySize == SearchingMonumentBodySize.large ? 11 : 9,

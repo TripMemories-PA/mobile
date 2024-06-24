@@ -428,17 +428,23 @@ class _SearchOnMap extends HookWidget {
             },
           ),
           if (searchContent.value.isNotEmpty)
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-              ),
-              child: Column(
-                children: [
-                  BlocBuilder<MonumentBloc, MonumentState>(
+            Column(
+              children: [
+                10.ph,
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 2,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: BlocBuilder<MonumentBloc, MonumentState>(
                     builder: (context, state) {
                       if (state.status == MonumentStatus.error) {
                         return _buildErrorWidget(context);
@@ -459,26 +465,24 @@ class _SearchOnMap extends HookWidget {
                                       onMonumentSelected(poi);
                                     },
                                     child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 15.0,
+                                        horizontal: 10.0,
+                                      ),
+                                      child: Row(
                                         children: [
-                                          8.ph,
+                                          15.pw,
+                                          Icon(
+                                            Icons.account_balance,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                          15.pw,
                                           Text(
                                             poi.name,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 3,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 8.0,
-                                            ),
-                                            child: Container(
-                                              height: 1,
-                                              width: 300,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSurface,
-                                            ),
                                           ),
                                         ],
                                       ),
@@ -515,8 +519,8 @@ class _SearchOnMap extends HookWidget {
                       }
                     },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
         ],
       ),

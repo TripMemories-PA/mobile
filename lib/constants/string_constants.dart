@@ -67,7 +67,8 @@ class StringConstants {
   String get sureToDeleteComment =>
       'Etes-vous sûr de vouloir supprimer ce commentaire ?';
   String get deleteAccount => 'Supprimer le compte';
-  String get sureToDeleteAccount => 'Etes-vous sûr de vouloir supprimer votre compte ?';
+  String get sureToDeleteAccount =>
+      'Etes-vous sûr de vouloir supprimer votre compte ?';
   String get pleaseLogin => 'Veuillez vous connecter';
   String get shareYourExperience => 'Partagez votre expérience';
   String get password => 'Mot de passe';
@@ -88,4 +89,12 @@ class StringConstants {
   String get myPosts => 'Mes posts';
   String get postedComment => 'Commentaires postés';
   String get logout => 'Se déconnecter';
+  String get addFriend => 'Ajouter un ami';
+  String get manageFriendsRequests => "Gérer les demandes d'amis";
+  String get noFriendAdded => 'Aucun ami ajouté';
+  String get showMoreResults => 'Afficher plus de résultats';
+  String get lastPostsFrom => 'Derniers posts de';
+  String get description => 'Description';
+  String get posts => 'Posts';
+  String get actu => 'Actualitées';
 }

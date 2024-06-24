@@ -16,7 +16,7 @@ import 'page/chat_page.dart';
 import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
-import 'page/monument_page.dart';
+import 'page/monument_page_v2.dart';
 import 'page/profile_page.dart';
 import 'page/search_page.dart';
 import 'page/splash_page.dart';
@@ -85,7 +85,7 @@ class MyApp extends HookWidget {
                   final Poi poi = state.extra! as Poi;
                   return CustomTransitionPage(
                     key: state.pageKey,
-                    child: MonumentPage(
+                    child: MonumentPageV2(
                       monument: poi,
                     ),
                     transitionsBuilder:
@@ -110,9 +110,13 @@ class MyApp extends HookWidget {
               GoRoute(
                 path: RouteName.editTweetPage,
                 pageBuilder: (context, state) {
+                  final extra = state.extra;
+                  final Poi? poi = extra is Poi ? extra : null;
                   return CustomTransitionPage(
                     key: state.pageKey,
-                    child: const EditTweetPage(),
+                    child: EditTweetPage(
+                      preSelectedMonument: poi,
+                    ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       return CustomTransition.buildRightToLeftPopTransition(

@@ -189,7 +189,7 @@ class PostCard extends HookWidget {
                   color: Theme.of(context).colorScheme.primary,
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(Colors.transparent),
+                        WidgetStateProperty.all(Colors.transparent),
                   ),
                   icon: Icon(
                     post.isLiked ? Icons.favorite : Icons.favorite_border,
@@ -244,7 +244,7 @@ class PostCard extends HookWidget {
                   IconButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Colors.transparent),
+                          WidgetStateProperty.all(Colors.transparent),
                     ),
                     icon: Icon(
                       Icons.delete_outline,

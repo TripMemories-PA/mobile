@@ -88,51 +88,53 @@ class MyFriendsRequests extends StatelessWidget {
         )..add(GetFriendRequestEvent(isRefresh: true)),
         child: BlocBuilder<FriendRequestBloc, FriendRequestState>(
           builder: (context, state) {
-            return ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              children: [
-                ...context
-                        .read<FriendRequestBloc>()
-                        .state
-                        .friendRequests
-                        ?.data
-                        .map(
-                          (friend) => Column(
-                            key: ObjectKey(friend),
-                            children: [
-                              _buildFriendCard(context, friend),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                        )
-                        .toList() ??
-                    [],
-                Center(
-                  child: context.read<FriendRequestBloc>().state.hasMoreTweets
-                      ? (context.read<FriendRequestBloc>().state.status !=
-                              FriendRequestStatus.error
-                          ? const Text('SHIMMER HERe')
-                          // TODO(nono): SHIMMER
-                          : _buildErrorWidget(context))
-                      : Text(StringConstants().noMoreFriends),
-                ),
-                BlocListener<FriendRequestBloc, FriendRequestState>(
-                  listener: (context, state) {
-                    if (state.status == FriendRequestStatus.accepted ||
-                        state.status == FriendRequestStatus.refused) {
-                      Messenger.showSnackBarQuickInfo(
-                        state.status == FriendRequestStatus.accepted
-                            ? StringConstants().friendRequestAccepted
-                            : StringConstants().friendRequestRefused,
-                        context,
-                      );
-                    }
-                  },
-                  child: const SizedBox.shrink(),
-                ),
-              ],
+            return Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                children: [
+                  ...context
+                          .read<FriendRequestBloc>()
+                          .state
+                          .friendRequests
+                          ?.data
+                          .map(
+                            (friend) => Column(
+                              key: ObjectKey(friend),
+                              children: [
+                                _buildFriendCard(context, friend),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                          )
+                          .toList() ??
+                      [],
+                  Center(
+                    child: context.read<FriendRequestBloc>().state.hasMoreTweets
+                        ? (context.read<FriendRequestBloc>().state.status !=
+                                FriendRequestStatus.error
+                            ? const Text('SHIMMER HERe')
+                            // TODO(nono): SHIMMER
+                            : _buildErrorWidget(context))
+                        : Text(StringConstants().noMoreFriends),
+                  ),
+                  BlocListener<FriendRequestBloc, FriendRequestState>(
+                    listener: (context, state) {
+                      if (state.status == FriendRequestStatus.accepted ||
+                          state.status == FriendRequestStatus.refused) {
+                        Messenger.showSnackBarQuickInfo(
+                          state.status == FriendRequestStatus.accepted
+                              ? StringConstants().friendRequestAccepted
+                              : StringConstants().friendRequestRefused,
+                          context,
+                        );
+                      }
+                    },
+                    child: const SizedBox.shrink(),
+                  ),
+                ],
+              ),
             );
           },
         ),
@@ -160,35 +162,34 @@ class MyFriendsRequests extends StatelessWidget {
         children: [
           Row(
             children: [
-              const SizedBox(
-                width: 10,
-              ),
-              _buildUserPhoto(avatarUrl),
-              const SizedBox(width: 10),
-              Column(
-                children: [
-                  Text(
-                    '${friendRequest.sender.firstname} '
-                    '${friendRequest.sender.lastname}',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
+              10.pw,
+              _buildUserPhoto(avatarUrl, context),
+              10.pw,
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.40,
+                child: Column(
+                  children: [
+                    Text(
+                      '${friendRequest.sender.firstname} '
+                      '${friendRequest.sender.lastname}',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '@${friendRequest.sender.username}',
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey,
+                    Text(
+                      '@${friendRequest.sender.username}',
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              const Expanded(child: SizedBox()),
               Container(
                 width: 25,
-                height: 25,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
@@ -255,9 +256,9 @@ class MyFriendsRequests extends StatelessWidget {
     );
   }
 
-  SizedBox _buildUserPhoto(String? avatarUrl) {
+  SizedBox _buildUserPhoto(String? avatarUrl, BuildContext context) {
     return SizedBox(
-      width: 80,
+      width: MediaQuery.of(context).size.width * 0.15,
       height: 65,
       child: ClipRRect(
         borderRadius: const BorderRadius.all(

@@ -44,12 +44,12 @@ class ScaffoldWithNavBar extends StatelessWidget {
             ),
             label: 'Feed',
           ),
-          BottomNavigationBarItem(
+          /*BottomNavigationBarItem(
             icon: Icon(
               Icons.shopping_cart_outlined,
             ),
             label: 'Shop',
-          ),
+          ),*/
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person_outline,

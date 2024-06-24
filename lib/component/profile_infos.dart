@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_event.dart';
+import '../constants/string_constants.dart';
 import 'banner_picture.dart';
 import 'bouncing_widget.dart';
 import 'custom_card.dart';
@@ -59,19 +60,49 @@ class ProfileInfos extends StatelessWidget {
                     }
                   }
                 },
-                child: const CustomCard(
+                child: CustomCard(
                   backgroundColor: Colors.white,
                   content: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: Text(
-                      'Se déconnecter',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      StringConstants().logout,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   borderColor: Colors.transparent,
                 ),
               ),
             ),
+          Positioned(
+            top: 10,
+            child: BouncingWidget(
+              onTap: () {
+                confirmationPopUp(
+                  context,
+                  title: StringConstants().sureToDeleteAccount,
+                ).then((bool result) {
+                  if (result) {
+                    context.read<AuthBloc>().add(
+                          DeleteAccountEvent(),
+                        );
+                  }
+                });
+              },
+              child: CustomCard(
+                backgroundColor: Colors.red,
+                width: 200,
+                height: 33,
+                content: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Text(
+                    StringConstants().deleteAccount,
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.surface),
+                  ),
+                ),
+                borderColor: Colors.transparent,
+              ),
+            ),
+          ),
           Positioned(
             top: 70,
             left: MediaQuery.of(context).size.width / 2 - 50,

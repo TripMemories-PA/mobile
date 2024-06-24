@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'constants/my_colors.dart';
 
@@ -24,7 +25,18 @@ class ThemeGenerator {
         ),
       );
 
-  static TextTheme get _textTheme => Typography.blackCupertino;
+  static TextTheme get _textTheme => TextTheme(
+    bodyLarge: TextStyle(
+      fontFamily: GoogleFonts.urbanist().fontFamily,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    ),
+    bodyMedium: TextStyle(
+      fontFamily: GoogleFonts.urbanist().fontFamily,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    ),
+  );
 
   static ColorScheme get _colorScheme => const ColorScheme(
         primary: Color(0xFF4169E1),

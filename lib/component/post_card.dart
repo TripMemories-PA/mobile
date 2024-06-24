@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -162,30 +163,37 @@ class PostCard extends HookWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    context.push(
-                      '${RouteName.profilePage}/${post.createdBy.id}',
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundImage: CachedNetworkImageProvider(
-                          post.createdBy.avatar?.url ?? '',
+                if (context.read<AuthBloc>().state.user?.id !=
+                    post.createdBy.id)
+                  GestureDetector(
+                    onTap: () {
+                      context.push(
+                        '${RouteName.profilePage}/${post.createdBy.id}',
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundImage: CachedNetworkImageProvider(
+                            post.createdBy.avatar?.url ?? '',
+                          ),
                         ),
-                      ),
-                      5.pw,
-                      Text(post.createdBy.username),
-                    ],
+                        5.pw,
+                        Text(post.createdBy.username),
+                      ],
+                    ),
                   ),
-                ),
                 const Spacer(),
                 IconButton(
-                  color: MyColors.purple,
+                  color: Theme.of(context).colorScheme.primary,
+                  style: ButtonStyle(
+                    backgroundColor:
+                        WidgetStateProperty.all(Colors.transparent),
+                  ),
                   icon: Icon(
                     post.isLiked ? Icons.favorite : Icons.favorite_border,
+                    color: Theme.of(context).primaryColor,
                   ),
                   onPressed: () async {
                     if (context.read<AuthBloc>().state.status ==
@@ -204,13 +212,16 @@ class PostCard extends HookWidget {
                     } else {
                       if (context.read<AuthBloc>().state.user?.id !=
                           post.createdBy.id) {
-                        post.isLiked
-                            ? context
-                                .read<PostBloc>()
-                                .add(DislikePostEvent(post.id))
-                            : context
-                                .read<PostBloc>()
-                                .add(LikePostEvent(post.id));
+                        EasyDebounce.debounce('like_post', Durations.medium1,
+                            () async {
+                          post.isLiked
+                              ? context
+                                  .read<PostBloc>()
+                                  .add(DislikePostEvent(post.id))
+                              : context
+                                  .read<PostBloc>()
+                                  .add(LikePostEvent(post.id));
+                        });
                       }
                     }
                   },
@@ -231,7 +242,14 @@ class PostCard extends HookWidget {
                 if (post.createdBy.id ==
                     context.read<AuthBloc>().state.user?.id)
                   IconButton(
-                    icon: const Icon(Icons.delete),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          WidgetStateProperty.all(Colors.transparent),
+                    ),
+                    icon: Icon(
+                      Icons.delete_outline,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                     onPressed: () async {
                       final bool result = await confirmationPopUp(
                         context,

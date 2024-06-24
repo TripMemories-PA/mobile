@@ -17,4 +17,6 @@ abstract class IAuthService {
   });
 
   Future<WhoAmIResponse> whoAmI({required String token});
+
+  Future<void> deleteAccount();
 }

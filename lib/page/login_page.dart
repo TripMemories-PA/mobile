@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../component/form/login_form.dart';
 import '../component/form/subscribe_form.dart';
 import '../component/no_indicator_scroll.dart';
-import '../constants/my_colors.dart';
 import '../num_extensions.dart';
 
 class LoginPage extends HookWidget {
@@ -69,6 +68,7 @@ class LoginPage extends HookWidget {
         children: [
           Column(
             children: [
+              20.ph,
               const Text(
                 'Bon retour parmi nous ! 👋🏻',
                 style: TextStyle(
@@ -78,51 +78,9 @@ class LoginPage extends HookWidget {
               ),
               15.ph,
               const Text(
-                'Continue avec Google ou entre tes infos',
+                'Entre tes infos',
                 style: TextStyle(
                   fontSize: 16,
-                ),
-              ),
-              15.ph,
-              Container(
-                height: 40,
-                width: MediaQuery.of(context).size.width * 0.60,
-                decoration: ShapeDecoration(
-                  color: MyColors.lightGrey,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    15.pw,
-                    const Icon(Icons.g_mobiledata_outlined),
-                    15.pw,
-                    const Text('Continuer avec Google'),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          15.ph,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 3,
-                width: MediaQuery.of(context).size.width * 0.40,
-                decoration: const BoxDecoration(
-                  color: MyColors.lightGrey,
-                ),
-              ),
-              15.pw,
-              const Text('ou'),
-              15.pw,
-              Container(
-                height: 3,
-                width: MediaQuery.of(context).size.width * 0.40,
-                decoration: const BoxDecoration(
-                  color: MyColors.lightGrey,
                 ),
               ),
             ],
@@ -158,51 +116,9 @@ class LoginPage extends HookWidget {
                   fontSize: 16,
                 ),
               ),
-              15.ph,
-              Container(
-                height: 40,
-                width: MediaQuery.of(context).size.width * 0.60,
-                decoration: ShapeDecoration(
-                  color: MyColors.lightGrey,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    15.pw,
-                    const Icon(Icons.g_mobiledata_outlined),
-                    15.pw,
-                    const Text('Continuer avec Google'),
-                  ],
-                ),
-              ),
             ],
           ),
           15.ph,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 3,
-                width: MediaQuery.of(context).size.width * 0.40,
-                decoration: const BoxDecoration(
-                  color: MyColors.lightGrey,
-                ),
-              ),
-              10.pw,
-              const Text('ou'),
-              10.pw,
-              Container(
-                height: 3,
-                width: MediaQuery.of(context).size.width * 0.40,
-                decoration: const BoxDecoration(
-                  color: MyColors.lightGrey,
-                ),
-              ),
-            ],
-          ),
-          5.ph,
           SubscribeForm(
             tabController: tabController,
           ),

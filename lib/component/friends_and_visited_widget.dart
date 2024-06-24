@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/profile/profile_bloc.dart';
 import '../constants/my_colors.dart';
-import '../num_extensions.dart';
 
 class FriendsAndVisitedWidget extends StatelessWidget {
   const FriendsAndVisitedWidget({super.key, this.itIsMe = false});
@@ -21,7 +20,6 @@ class FriendsAndVisitedWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 if (itIsMe) _buildFriendsCard(context),
-                20.pw,
                 _buildVisitedBuildingCard(context),
               ],
             ),
@@ -70,7 +68,7 @@ class FriendsAndVisitedWidget extends StatelessWidget {
             child: Container(
               color: MyColors.darkGrey,
               height: 1,
-              width: 140,
+              width: 130,
             ),
           ),
         ],

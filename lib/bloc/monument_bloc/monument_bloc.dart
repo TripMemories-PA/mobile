@@ -104,6 +104,9 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
         monumentsToAdd.addAll(monumentsFirstRound.data);
       }
       final List<Poi> finalList = state.monuments + monumentsToAdd;
+      if (finalList.length > 50) {
+        finalList.removeRange(0, 10);
+      }
       emit(
         state.copyWith(
           monuments: finalList,

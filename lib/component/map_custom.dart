@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:ui' as ui;
 
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -16,11 +14,11 @@ import '../bloc/monument_bloc/monument_bloc.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
+import '../object/map_style.dart';
+import '../object/marker_icons_custom.dart';
 import '../object/poi/poi.dart';
 import '../object/position.dart';
 import 'search_bar_custom.dart';
-
-final Completer<GoogleMapController> _controller = Completer();
 
 class MapCustom extends StatefulWidget {
   const MapCustom({
@@ -38,44 +36,12 @@ class _MapCustomState extends State<MapCustom> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Poi? selectedPoi;
   late GoogleMapController mapController;
-  String? _mapStyleString;
   final LatLng _center = const LatLng(48.84922330209508, 2.389781701197292);
-  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor selectedMarkerIcon = BitmapDescriptor.defaultMarker;
   MarkerId? selectedMarkerId;
-
-  Future<Uint8List?> getBytesFromAsset(String path, int width) async {
-    final ByteData data = await rootBundle.load(path);
-    final ui.Codec codec = await ui
-        .instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
-    final ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
-        ?.buffer
-        .asUint8List();
-  }
 
   @override
   void initState() {
     super.initState();
-    rootBundle.loadString('assets/map_styles/map_style.json').then((string) {
-      setState(() {
-        _mapStyleString = string;
-      });
-    });
-    getBytesFromAsset('assets/images/map_pin.png', 100).then((value) {
-      setState(() {
-        if (value != null) {
-          markerIcon = BitmapDescriptor.fromBytes(value);
-        }
-      });
-    });
-    getBytesFromAsset('assets/images/selected_map_pin.png', 150).then((value) {
-      setState(() {
-        if (value != null) {
-          selectedMarkerIcon = BitmapDescriptor.fromBytes(value);
-        }
-      });
-    });
   }
 
   @override
@@ -93,8 +59,8 @@ class _MapCustomState extends State<MapCustom> {
               final MarkerId markerId = MarkerId(poi.id.toString());
               final Marker marker = Marker(
                 icon: selectedMarkerId == markerId
-                    ? selectedMarkerIcon
-                    : markerIcon,
+                    ? MarkerIconsCustom.getMarkerIcon(poi.type.id, true)
+                    : MarkerIconsCustom.getMarkerIcon(poi.type.id, false),
                 markerId: MarkerId(poi.id.toString()),
                 position: LatLng(latitude, longitude),
                 onTap: () {
@@ -135,14 +101,13 @@ class _MapCustomState extends State<MapCustom> {
   }
 
   void _removeSelectedIconOnPoi() {
-    final String? lat = selectedPoi?.latitude;
-    final String? lng = selectedPoi?.longitude;
+    final Poi? tmpSelectedPoi = selectedPoi;
     final MarkerId? tmpSelectedMarkerId = selectedMarkerId;
-    if (tmpSelectedMarkerId != null && lat != null && lng != null) {
-      final double latitude = double.parse(lat);
-      final double longitude = double.parse(lng);
+    if (tmpSelectedMarkerId != null && tmpSelectedPoi != null) {
+      final double latitude = double.parse(tmpSelectedPoi.latitude);
+      final double longitude = double.parse(tmpSelectedPoi.longitude);
       markers[tmpSelectedMarkerId] = Marker(
-        icon: markerIcon,
+        icon: MarkerIconsCustom.getMarkerIcon(tmpSelectedPoi.type.id, false),
         markerId: tmpSelectedMarkerId,
         position: LatLng(latitude, longitude),
         onTap: () {
@@ -170,7 +135,7 @@ class _MapCustomState extends State<MapCustom> {
               final double longitude = double.parse(lng);
               final MarkerId markerId = MarkerId(poi.id.toString());
               final Marker marker = Marker(
-                icon: selectedMarkerIcon,
+                icon: MarkerIconsCustom.getMarkerIcon(poi.type.id, true),
                 markerId: MarkerId(poi.id.toString()),
                 position: LatLng(latitude, longitude),
                 onTap: () {
@@ -212,12 +177,9 @@ class _MapCustomState extends State<MapCustom> {
       ),
       markers: Set<Marker>.of(markers.values),
       onMapCreated: (GoogleMapController controller) {
-        _controller.complete(controller);
-        _controller.future.then((value) {
-          mapController = value;
-          // ignore: deprecated_member_use
-          mapController.setMapStyle(_mapStyleString);
-        });
+        mapController = controller;
+        // ignore: deprecated_member_use
+        mapController.setMapStyle(MapStyle.style);
       },
       onTap: (LatLng position) {
         setState(() {

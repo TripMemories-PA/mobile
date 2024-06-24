@@ -10,6 +10,8 @@ import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
+import 'object/map_style.dart';
+import 'object/marker_icons_custom.dart';
 import 'object/poi/poi.dart';
 import 'object/profile/profile.dart';
 import 'page/chat_page.dart';
@@ -26,7 +28,10 @@ import 'utils/messenger.dart';
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await MarkerIconsCustom.initialize();
+  await MapStyle.initialize();
   runApp(MyApp());
 }
 

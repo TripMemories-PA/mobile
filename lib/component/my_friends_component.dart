@@ -29,7 +29,7 @@ class MyFriendsComponent extends StatelessWidget {
                 await userSearchingPopup(context);
               },
               width: MediaQuery.of(context).size.width * 0.40,
-              height: 40,
+              height: 30,
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -41,6 +41,9 @@ class MyFriendsComponent extends StatelessWidget {
                   const Text(
                     'Ajouter un amis',
                     textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 10,
+                    ),
                   ),
                 ],
               ),
@@ -52,12 +55,12 @@ class MyFriendsComponent extends StatelessWidget {
                 await myFriendsRequestsPopup(context);
               },
               width: MediaQuery.of(context).size.width * 0.40,
-              height: 40,
+              height: 30,
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(
-                    Icons.groups,
+                    Icons.groups_2_outlined,
                     color: MyColors.purple,
                   ),
                   10.pw,
@@ -102,6 +105,8 @@ class MyFriendsComponent extends StatelessWidget {
           children: [
             UserList(
               users: state.friends!.data,
+              horizontalCellSpacing: 20,
+              padding: 20,
             ),
             Center(
               child: context.read<ProfileBloc>().state.hasMoreFriends

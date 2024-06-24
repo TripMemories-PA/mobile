@@ -163,30 +163,37 @@ class PostCard extends HookWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    context.push(
-                      '${RouteName.profilePage}/${post.createdBy.id}',
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundImage: CachedNetworkImageProvider(
-                          post.createdBy.avatar?.url ?? '',
+                if (context.read<AuthBloc>().state.user?.id !=
+                    post.createdBy.id)
+                  GestureDetector(
+                    onTap: () {
+                      context.push(
+                        '${RouteName.profilePage}/${post.createdBy.id}',
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundImage: CachedNetworkImageProvider(
+                            post.createdBy.avatar?.url ?? '',
+                          ),
                         ),
-                      ),
-                      5.pw,
-                      Text(post.createdBy.username),
-                    ],
+                        5.pw,
+                        Text(post.createdBy.username),
+                      ],
+                    ),
                   ),
-                ),
                 const Spacer(),
                 IconButton(
                   color: Theme.of(context).colorScheme.primary,
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.transparent),
+                  ),
                   icon: Icon(
                     post.isLiked ? Icons.favorite : Icons.favorite_border,
+                    color: Theme.of(context).primaryColor,
                   ),
                   onPressed: () async {
                     if (context.read<AuthBloc>().state.status ==
@@ -235,7 +242,14 @@ class PostCard extends HookWidget {
                 if (post.createdBy.id ==
                     context.read<AuthBloc>().state.user?.id)
                   IconButton(
-                    icon: const Icon(Icons.delete),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                    ),
+                    icon: Icon(
+                      Icons.delete_outline,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                     onPressed: () async {
                       final bool result = await confirmationPopUp(
                         context,

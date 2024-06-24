@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 
 import '../api/post/post_service.dart';
 import '../api/profile/profile_service.dart';
@@ -14,7 +15,9 @@ import '../component/my_friends_component.dart';
 import '../component/my_post_component.dart';
 import '../component/profile_infos.dart';
 import '../constants/my_colors.dart';
+import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
+import '../num_extensions.dart';
 import '../repository/post/post_repository.dart';
 import '../repository/profile/profile_repository.dart';
 import '../service/post/post_remote_data_source.dart';
@@ -61,6 +64,7 @@ class ProfilePage extends HookWidget {
           builder: (context, state) {
             return _buildScaffold(
               tabController,
+              context,
             );
           },
         ),
@@ -70,8 +74,16 @@ class ProfilePage extends HookWidget {
 
   Scaffold _buildScaffold(
     TabController tabController,
+    BuildContext context,
   ) {
     return Scaffold(
+      floatingActionButton:
+          context.read<AuthBloc>().state.status == AuthStatus.authenticated && userId == null
+              ? FloatingActionButton(
+                  onPressed: () => context.push(RouteName.editTweetPage),
+                  child: const Icon(Icons.add),
+                )
+              : null,
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       body: SafeArea(
@@ -113,9 +125,9 @@ class ProfilePage extends HookWidget {
             unselectedLabelColor: MyColors.darkGrey,
             controller: tabController,
             indicatorSize: TabBarIndicatorSize.tab,
-            tabs: const [
-              Tab(text: 'Mes amis'),
-              Tab(text: 'Mes posts'),
+            tabs: [
+              Tab(text: StringConstants().myFriends),
+              Tab(text: StringConstants().myPosts),
             ],
           ),
         ),
@@ -135,7 +147,7 @@ class ProfilePage extends HookWidget {
                 isMyProfile: userId == null,
               ),
             ),
-            const SizedBox(height: 10),
+            10.ph,
             BlocListener<ProfileBloc, ProfileState>(
               listener: (context, state) {
                 if (state.status == ProfileStatus.error) {
@@ -178,7 +190,7 @@ class MyPostsAndMyFriends extends HookWidget {
   Widget build(BuildContext context) {
     final int? tmpUserId = userId;
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
+      padding: const EdgeInsets.only(top: 20.0),
       child: tmpUserId == null
           ? TabBarView(
               controller: tabController,

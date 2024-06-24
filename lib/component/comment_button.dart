@@ -33,7 +33,15 @@ class CommentButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.chat_bubble_outline),
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.all(
+          Colors.transparent,
+        ),
+      ),
+      icon: Icon(
+        Icons.chat_bubble_outline,
+        color: Theme.of(context).colorScheme.primary,
+      ),
       onPressed: () {
         showModalBottomSheet(
           isScrollControlled: true,
@@ -147,7 +155,6 @@ class CommentButtonContent extends HookWidget {
                   height: 1,
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
-                20.ph,
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.5,
                   child: SingleChildScrollView(
@@ -213,7 +220,7 @@ class CommentButtonContent extends HookWidget {
                 );
               } else if (state.addCommentStatus ==
                   CommentStatus.commentPosted) {
-                Messenger.showSnackBarSuccess('Commentaire posté');
+                Messenger.showSnackBarSuccess(StringConstants().postedComment);
                 controller.clear();
               }
             },
@@ -268,7 +275,6 @@ class CommentButtonContent extends HookWidget {
           padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (imageUrl != null)
                 GestureDetector(
@@ -287,7 +293,6 @@ class CommentButtonContent extends HookWidget {
                   padding: const EdgeInsets.only(
                     left: 10.0,
                     right: 10.0,
-                    bottom: 10.0,
                   ),
                   child: Text(comment.content),
                 ),
@@ -297,7 +302,15 @@ class CommentButtonContent extends HookWidget {
                 if (comment.createdBy.id ==
                     context.read<AuthBloc>().state.user?.id)
                   IconButton(
-                    icon: const Icon(Icons.delete),
+                    icon: Icon(
+                      Icons.delete_outline,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(
+                        Colors.transparent,
+                      ),
+                    ),
                     onPressed: () async {
                       final bool result = await confirmationPopUp(
                         context,
@@ -318,6 +331,12 @@ class CommentButtonContent extends HookWidget {
                   IconButton(
                     icon: Icon(
                       comment.isLiked ? Icons.favorite : Icons.favorite_outline,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(
+                        Colors.transparent,
+                      ),
                     ),
                     onPressed: () async {
                       if (context.read<AuthBloc>().state.status ==

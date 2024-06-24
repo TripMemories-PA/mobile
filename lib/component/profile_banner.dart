@@ -36,12 +36,26 @@ class ProfileBanner extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
-                      child: IconButton(
-                        onPressed: () async {
-                          await modifyUserInfosPopup(context);
-                        },
-                        icon: const Icon(
-                          Icons.edit,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all(
+                              Colors.transparent,
+                            ),
+                          ),
+                          onPressed: () async {
+                            await modifyUserInfosPopup(context);
+                          },
+                          icon: Icon(
+                            Icons.edit_outlined,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ),
                     ),

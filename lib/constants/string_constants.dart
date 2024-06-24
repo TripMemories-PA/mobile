@@ -97,4 +97,8 @@ class StringConstants {
   String get description => 'Description';
   String get posts => 'Posts';
   String get actu => 'Actualitées';
+  String get minutes => 'minutes';
+  String get hour => 'heure';
+  String get thereIs => 'Il y a';
+  String get justNow => "À l'instant";
 }

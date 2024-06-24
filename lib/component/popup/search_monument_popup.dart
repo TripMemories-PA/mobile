@@ -63,54 +63,46 @@ class _Body extends HookWidget {
       },
       const [],
     );
-    return Builder(
-      builder: (context) => Dialog(
-        child: CustomCard(
-          width: MediaQuery.of(context).size.width * 0.90,
-          height: MediaQuery.of(context).size.height * 0.81,
-          content: SizedBox.expand(
-            child: Stack(
-              children: [
-                RefreshIndicator(
-                  onRefresh: () async {
-                    context.read<MonumentBloc>().add(
-                          GetMonumentsEvent(
-                            isRefresh: true,
-                            searchingCriteria: searchContent.value,
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Builder(
+        builder: (context) => Dialog(
+          insetPadding: EdgeInsets.zero,
+          child: CustomCard(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.9,
+            content: SizedBox.expand(
+              child: Stack(
+                children: [
+                  RefreshIndicator(
+                    onRefresh: () async {
+                      context.read<MonumentBloc>().add(
+                            GetMonumentsEvent(
+                              isRefresh: true,
+                              searchingCriteria: searchContent.value,
+                            ),
+                          );
+                    },
+                    child: Column(
+                      children: [
+                        _buildTitle(context),
+                        Expanded(
+                          child: SearchingMonumentBody(
+                            needToPop: true,
+                            padding: 10,
+                            bodySize: SearchingMonumentBodySize.small,
+                            searchController: searchController,
+                            searchContent: searchContent,
+                            searching: searching,
+                            monumentsScrollController:
+                                monumentsScrollController,
                           ),
-                        );
-                  },
-                  child: Column(
-                    children: [
-                      _buildTitle(),
-                      Expanded(
-                        child: SearchingMonumentBody(
-                          needToPop: true,
-                          padding: 10,
-                          bodySize: SearchingMonumentBodySize.small,
-                          searchController: searchController,
-                          searchContent: searchContent,
-                          searching: searching,
-                          monumentsScrollController: monumentsScrollController,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 30,
-                  right: 10,
-                  child: SizedBox(
-                    height: 25,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        context.pop();
-                      },
-                      child: Text(StringConstants().close),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -128,18 +120,29 @@ class _Body extends HookWidget {
     }
   }
 
-  Widget _buildTitle() {
+  Widget _buildTitle(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          StringConstants().searchMonuments,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+      child: Row(
+        children: [
+          Text(
+            StringConstants().searchMonuments,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            maxLines: 2,
           ),
-        ),
+          const Spacer(),
+          IconButton(
+            icon: const Icon(
+              Icons.close,
+            ),
+            onPressed: () {
+              context.pop();
+            },
+          ),
+        ],
       ),
     );
   }

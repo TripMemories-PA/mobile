@@ -11,9 +11,7 @@ _$CommentImpl _$$CommentImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       postId: (json['postId'] as num).toInt(),
       content: json['content'] as String,
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
+      createdAt: DateTime.parse(json['createdAt'] as String),
       createdBy: Profile.fromJson(json['createdBy'] as Map<String, dynamic>),
       likesCount: (json['likesCount'] as num).toInt(),
       isLiked: json['isLiked'] as bool,
@@ -24,7 +22,7 @@ Map<String, dynamic> _$$CommentImplToJson(_$CommentImpl instance) =>
       'id': instance.id,
       'postId': instance.postId,
       'content': instance.content,
-      'createdAt': instance.createdAt?.toIso8601String(),
+      'createdAt': instance.createdAt.toIso8601String(),
       'createdBy': instance.createdBy,
       'likesCount': instance.likesCount,
       'isLiked': instance.isLiked,

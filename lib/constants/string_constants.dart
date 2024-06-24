@@ -66,6 +66,8 @@ class StringConstants {
   String get noPostYet => 'Pas de post pour le moment';
   String get sureToDeleteComment =>
       'Etes-vous sûr de vouloir supprimer ce commentaire ?';
+  String get deleteAccount => 'Supprimer le compte';
+  String get sureToDeleteAccount => 'Etes-vous sûr de vouloir supprimer votre compte ?';
   String get pleaseLogin => 'Veuillez vous connecter';
   String get shareYourExperience => 'Partagez votre expérience';
   String get password => 'Mot de passe';
@@ -85,4 +87,5 @@ class StringConstants {
   String get myFriends => 'Mes amis';
   String get myPosts => 'Mes posts';
   String get postedComment => 'Commentaires postés';
+  String get logout => 'Se déconnecter';
 }

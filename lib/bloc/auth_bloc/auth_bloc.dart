@@ -59,6 +59,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         const AuthState.guest(),
       );
     });
+
+    on<DeleteAccountEvent>(
+      (event, emit) async {
+        try {
+          await authService.deleteAccount();
+          emit(
+            const AuthState.guest(),
+          );
+        } catch (e) {
+          emit(
+            AuthState.guest(
+              error: e is CustomException ? e.apiError : ApiError.unknown(),
+            ),
+          );
+        }
+      },
+    );
   }
 
   final IAuthService authService;

@@ -264,15 +264,4 @@ class ProfileService implements IProfileService, IProfileRepository {
       throw BadRequestException(AuthError.notAuthenticated());
     }
   }
-
-  @override
-  Future<void> deletePost({required int postId}) async {
-    try {
-      await DioClient.instance.delete(
-        '$apiPostUrl/$postId',
-      );
-    } on BadRequestException {
-      throw BadRequestException(AuthError.notAuthenticated());
-    }
-  }
 }

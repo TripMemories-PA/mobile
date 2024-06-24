@@ -18,3 +18,5 @@ class ChangeToLoggedInStatus extends AuthEvent {
 class ChangeToLoggedOutStatus extends AuthEvent {
   const ChangeToLoggedOutStatus();
 }
+
+class DeleteAccountEvent extends AuthEvent {}

@@ -102,4 +102,15 @@ class AuthService implements IAuthService {
       );
     }
   }
+
+  @override
+  Future<void> deleteAccount() async {
+    try {
+      await DioClient.instance.delete(
+        apiMeUrl,
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+  }
 }

@@ -17,6 +17,7 @@ import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/post/post.dart';
+import '../utils/date_time_service.dart';
 import 'comment_button.dart';
 import 'custom_card.dart';
 import 'popup/confirmation_logout_dialog.dart';
@@ -180,8 +181,27 @@ class PostCard extends HookWidget {
                           ),
                         ),
                         5.pw,
-                        Text(post.createdBy.username),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              DateTimeService.formatDateTime(post.createdAt),
+                              style: const TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(post.createdBy.username),
+                          ],
+                        ),
                       ],
+                    ),
+                  ),
+                if (context.read<AuthBloc>().state.user?.id ==
+                    post.createdBy.id)
+                  Text(
+                    DateTimeService.formatDateTime(post.createdAt),
+                    style: const TextStyle(
+                      fontSize: 12,
                     ),
                   ),
                 const Spacer(),

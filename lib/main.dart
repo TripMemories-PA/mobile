@@ -19,7 +19,6 @@ import 'page/map_page.dart';
 import 'page/monument_page.dart';
 import 'page/profile_page.dart';
 import 'page/search_page.dart';
-import 'page/shop_page.dart';
 import 'page/splash_page.dart';
 import 'theme_generator.dart';
 import 'utils/messenger.dart';
@@ -126,7 +125,7 @@ class MyApp extends HookWidget {
               ),
             ],
           ),
-          StatefulShellBranch(
+          /*StatefulShellBranch(
             routes: <RouteBase>[
               GoRoute(
                 path: RouteName.shopPage,
@@ -134,7 +133,7 @@ class MyApp extends HookWidget {
                     const ShopPage(),
               ),
             ],
-          ),
+          ),*/
           StatefulShellBranch(
             routes: <RouteBase>[
               GoRoute(

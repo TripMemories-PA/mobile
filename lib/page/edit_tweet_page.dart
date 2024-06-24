@@ -20,7 +20,9 @@ import '../utils/messenger.dart';
 class EditTweetPage extends HookWidget {
   const EditTweetPage({
     super.key,
+    this.preSelectedMonument,
   });
+  final Poi? preSelectedMonument;
 
   Future<void> _selectImage(ValueNotifier<XFile?> image) async {
     final picker = ImagePicker();
@@ -59,7 +61,7 @@ class EditTweetPage extends HookWidget {
     final TextEditingController contentController = useTextEditingController();
     final TextEditingController titleController = useTextEditingController();
 // TODO(nono): ajouter le poi de la publication quand pierre l'aura mis en place
-    final selectedMonument = useState<Poi?>(null);
+    final selectedMonument = useState<Poi?>(preSelectedMonument);
     final rating = useState<double>(0.0);
     return BlocProvider(
       create: (context) => PublishPostBloc(postService: PostService()),

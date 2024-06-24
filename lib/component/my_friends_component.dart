@@ -38,10 +38,10 @@ class MyFriendsComponent extends StatelessWidget {
                     color: MyColors.purple,
                   ),
                   10.pw,
-                  const Text(
-                    'Ajouter un amis',
+                  Text(
+                    StringConstants().addFriend,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 10,
                     ),
                   ),
@@ -64,10 +64,10 @@ class MyFriendsComponent extends StatelessWidget {
                     color: MyColors.purple,
                   ),
                   10.pw,
-                  const Text(
-                    'Gérer les demandes',
+                  Text(
+                    StringConstants().manageFriendsRequests,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 10,
                     ),
                   ),
@@ -97,7 +97,7 @@ class MyFriendsComponent extends StatelessWidget {
     final List<Profile>? friends =
         context.read<ProfileBloc>().state.friends?.data;
     if (friends == null || friends.isEmpty) {
-      return const Center(child: Text('Aucun amis ajouté'));
+      return Center(child: Text(StringConstants().noFriendAdded));
     }
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
@@ -136,7 +136,7 @@ class MyFriendsComponent extends StatelessWidget {
                 onPressed: () {
                   _getNextFriends(context: context);
                 },
-                child: const Text('Voir plus de résultats'),
+                child: Text(StringConstants().showMoreResults),
               );
       },
     );

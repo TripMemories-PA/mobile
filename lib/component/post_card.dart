@@ -329,44 +329,21 @@ class PostCardLikable extends HookWidget {
   Widget build(BuildContext context) {
     final showHeart = useState(false);
     final showDislike = useState(false);
+    final isAnimationRunning =
+        useState(false); // Ajouté pour suivre l'état de l'animation
     final controller = useAnimationController(
       duration: const Duration(milliseconds: 500),
     );
 
-    void handleDoubleTap() {
-      if (context.read<AuthBloc>().state.status != AuthStatus.authenticated ||
-          post.createdBy.id == context.read<AuthBloc>().state.user?.id) {
-        return;
-      }
-
-      if (post.isLiked) {
-        context.read<PostBloc>().add(
-              DislikePostEvent(post.id),
-            );
-        showDislike.value = true;
-        controller.forward().then((_) {
-          Future.delayed(const Duration(milliseconds: 1200), () {
-            showDislike.value = false;
-            controller.reset();
-          });
-        });
-        return;
-      }
-
-      context.read<PostBloc>().add(
-            LikePostEvent(post.id),
-          );
-      showHeart.value = true;
-      controller.forward().then((_) {
-        Future.delayed(const Duration(milliseconds: 2000), () {
-          showHeart.value = false;
-          controller.reset();
-        });
-      });
-    }
-
     return InkWell(
-      onDoubleTap: handleDoubleTap,
+      onDoubleTap: () => handleDoubleTap(
+        controller,
+        context,
+        post,
+        showHeart,
+        showDislike,
+        isAnimationRunning, // Ajouté pour passer l'état de l'animation
+      ),
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -391,5 +368,58 @@ class PostCardLikable extends HookWidget {
         ],
       ),
     );
+  }
+
+  void handleDoubleTap(
+    AnimationController controller,
+    BuildContext context,
+    Post post,
+    ValueNotifier<bool> showHeart,
+    ValueNotifier<bool> showDislike,
+    ValueNotifier<bool>
+        isAnimationRunning, // Ajouté pour suivre l'état de l'animation
+  ) {
+    if (isAnimationRunning.value) {
+      return;
+    }
+
+    if (context.read<AuthBloc>().state.status != AuthStatus.authenticated ||
+        post.createdBy.id == context.read<AuthBloc>().state.user?.id) {
+      return;
+    }
+
+    isAnimationRunning.value = true;
+
+    if (post.isLiked) {
+      context.read<PostBloc>().add(
+            DislikePostEvent(post.id),
+          );
+      showDislike.value = true;
+
+      controller.forward().then((_) {
+        Future.delayed(const Duration(milliseconds: 1200), () {
+          showDislike.value = false;
+          controller.reset();
+          isAnimationRunning.value =
+              false; // Réinitialisation de l'état de l'animation
+        });
+      });
+      return;
+    }
+
+    context.read<PostBloc>().add(
+          LikePostEvent(post.id),
+        );
+    showHeart.value = true;
+
+    controller.forward().then((_) {
+      Future.delayed(const Duration(milliseconds: 2000), () {
+        showHeart.value = false;
+        controller.reset();
+        isAnimationRunning.value =
+            false; // Réinitialisation de l'état de l'animation
+      });
+    });
+    return;
   }
 }

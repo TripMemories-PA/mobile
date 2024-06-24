@@ -300,10 +300,11 @@ class CommentButtonContent extends HookWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                            DateTimeService.formatDateTime(comment.createdAt),
-                            style: const TextStyle(
-                              fontSize: 10,
-                            )),
+                          DateTimeService.formatDateTime(comment.createdAt),
+                          style: const TextStyle(
+                            fontSize: 10,
+                          ),
+                        ),
                       ),
                       Text(comment.content),
                     ],

@@ -12,6 +12,7 @@ import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../bloc/post/post_bloc.dart';
 import '../bloc/profile/profile_bloc.dart';
+import '../component/map_mini.dart';
 import '../component/my_friends_component.dart';
 import '../component/my_post_component.dart';
 import '../component/post_card.dart';
@@ -331,6 +332,14 @@ class _PageContent extends HookWidget {
           monument.description ?? '',
           style: const TextStyle(
             fontSize: 15,
+          ),
+        ),
+        15.ph,
+        Center(
+          child: MiniMap(
+            poi: monument,
+            width: MediaQuery.of(context).size.width - 40,
+            height: 300,
           ),
         ),
       ],

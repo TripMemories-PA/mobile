@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:ui' as ui;
 
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -16,39 +14,11 @@ import '../bloc/monument_bloc/monument_bloc.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
+import '../object/map_style.dart';
+import '../object/marker_icons_custom.dart';
 import '../object/poi/poi.dart';
 import '../object/position.dart';
 import 'search_bar_custom.dart';
-
-class _MarkerIconsCustom {
-  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor selectedMarkerIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor museumMarkerIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor selectedMuseumMarkerIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor churchMarkerIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor selectedChurchMarkerIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor gardenMarkerIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor selectedGardenMarkerIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor monumentMarkerIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor selectedMonumentMarkerIcon = BitmapDescriptor.defaultMarker;
-
-  BitmapDescriptor getMarkerIcon(int type, bool isSelected) {
-    switch (type) {
-      case 1:
-        return isSelected ? selectedMuseumMarkerIcon : museumMarkerIcon;
-      case 2:
-        return isSelected ? selectedChurchMarkerIcon : churchMarkerIcon;
-      case 3:
-        return isSelected ? selectedGardenMarkerIcon : gardenMarkerIcon;
-      case 4:
-        return isSelected ? selectedMonumentMarkerIcon : monumentMarkerIcon;
-      default:
-        return isSelected ? selectedMarkerIcon : markerIcon;
-    }
-  }
-}
-
-final Completer<GoogleMapController> _controller = Completer();
 
 class MapCustom extends StatefulWidget {
   const MapCustom({
@@ -66,25 +36,12 @@ class _MapCustomState extends State<MapCustom> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Poi? selectedPoi;
   late GoogleMapController mapController;
-  String? _mapStyleString;
   final LatLng _center = const LatLng(48.84922330209508, 2.389781701197292);
-  _MarkerIconsCustom markerIconsCustom = _MarkerIconsCustom();
   MarkerId? selectedMarkerId;
-
-  Future<Uint8List?> getBytesFromAsset(String path, int width) async {
-    final ByteData data = await rootBundle.load(path);
-    final ui.Codec codec = await ui
-        .instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
-    final ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
-        ?.buffer
-        .asUint8List();
-  }
 
   @override
   void initState() {
     super.initState();
-    _assetsInitialisation();
   }
 
   @override
@@ -102,8 +59,8 @@ class _MapCustomState extends State<MapCustom> {
               final MarkerId markerId = MarkerId(poi.id.toString());
               final Marker marker = Marker(
                 icon: selectedMarkerId == markerId
-                    ? markerIconsCustom.getMarkerIcon(poi.type.id, true)
-                    : markerIconsCustom.getMarkerIcon(poi.type.id, false),
+                    ? MarkerIconsCustom.getMarkerIcon(poi.type.id, true)
+                    : MarkerIconsCustom.getMarkerIcon(poi.type.id, false),
                 markerId: MarkerId(poi.id.toString()),
                 position: LatLng(latitude, longitude),
                 onTap: () {
@@ -143,82 +100,6 @@ class _MapCustomState extends State<MapCustom> {
     );
   }
 
-  void _assetsInitialisation() {
-    rootBundle.loadString('assets/map_styles/map_style.json').then((string) {
-      setState(() {
-        _mapStyleString = string;
-      });
-    });
-    getBytesFromAsset('assets/images/pin_museum.png', 100).then((value) {
-      setState(() {
-        if (value != null) {
-          markerIconsCustom.museumMarkerIcon =
-              BitmapDescriptor.fromBytes(value);
-        }
-      });
-    });
-    getBytesFromAsset('assets/images/pin_museum_selected.png', 150)
-        .then((value) {
-      setState(() {
-        if (value != null) {
-          markerIconsCustom.selectedMuseumMarkerIcon =
-              BitmapDescriptor.fromBytes(value);
-        }
-      });
-    });
-    getBytesFromAsset('assets/images/pin_church.png', 100).then((value) {
-      setState(() {
-        if (value != null) {
-          markerIconsCustom.churchMarkerIcon =
-              BitmapDescriptor.fromBytes(value);
-        }
-      });
-    });
-    getBytesFromAsset('assets/images/pin_church_selected.png', 150)
-        .then((value) {
-      setState(() {
-        if (value != null) {
-          markerIconsCustom.selectedChurchMarkerIcon =
-              BitmapDescriptor.fromBytes(value);
-        }
-      });
-    });
-    getBytesFromAsset('assets/images/pin_garden.png', 100).then((value) {
-      setState(() {
-        if (value != null) {
-          markerIconsCustom.gardenMarkerIcon =
-              BitmapDescriptor.fromBytes(value);
-        }
-      });
-    });
-    getBytesFromAsset('assets/images/pin_garden_selected.png', 150)
-        .then((value) {
-      setState(() {
-        if (value != null) {
-          markerIconsCustom.selectedGardenMarkerIcon =
-              BitmapDescriptor.fromBytes(value);
-        }
-      });
-    });
-    getBytesFromAsset('assets/images/pin_monument.png', 100).then((value) {
-      setState(() {
-        if (value != null) {
-          markerIconsCustom.monumentMarkerIcon =
-              BitmapDescriptor.fromBytes(value);
-        }
-      });
-    });
-    getBytesFromAsset('assets/images/pin_monument_selected.png', 150)
-        .then((value) {
-      setState(() {
-        if (value != null) {
-          markerIconsCustom.selectedMonumentMarkerIcon =
-              BitmapDescriptor.fromBytes(value);
-        }
-      });
-    });
-  }
-
   void _removeSelectedIconOnPoi() {
     final Poi? tmpSelectedPoi = selectedPoi;
     final MarkerId? tmpSelectedMarkerId = selectedMarkerId;
@@ -226,7 +107,7 @@ class _MapCustomState extends State<MapCustom> {
       final double latitude = double.parse(tmpSelectedPoi.latitude);
       final double longitude = double.parse(tmpSelectedPoi.longitude);
       markers[tmpSelectedMarkerId] = Marker(
-        icon: markerIconsCustom.getMarkerIcon(tmpSelectedPoi.type.id, false),
+        icon: MarkerIconsCustom.getMarkerIcon(tmpSelectedPoi.type.id, false),
         markerId: tmpSelectedMarkerId,
         position: LatLng(latitude, longitude),
         onTap: () {
@@ -254,7 +135,7 @@ class _MapCustomState extends State<MapCustom> {
               final double longitude = double.parse(lng);
               final MarkerId markerId = MarkerId(poi.id.toString());
               final Marker marker = Marker(
-                icon: markerIconsCustom.getMarkerIcon(poi.type.id, true),
+                icon: MarkerIconsCustom.getMarkerIcon(poi.type.id, true),
                 markerId: MarkerId(poi.id.toString()),
                 position: LatLng(latitude, longitude),
                 onTap: () {
@@ -296,12 +177,9 @@ class _MapCustomState extends State<MapCustom> {
       ),
       markers: Set<Marker>.of(markers.values),
       onMapCreated: (GoogleMapController controller) {
-        _controller.complete(controller);
-        _controller.future.then((value) {
-          mapController = value;
-          // ignore: deprecated_member_use
-          mapController.setMapStyle(_mapStyleString);
-        });
+        mapController = controller;
+        // ignore: deprecated_member_use
+        mapController.setMapStyle(MapStyle.style);
       },
       onTap: (LatLng position) {
         setState(() {

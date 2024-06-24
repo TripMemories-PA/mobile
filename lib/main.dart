@@ -187,6 +187,7 @@ class MyApp extends HookWidget {
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
             scaffoldMessengerKey: messengerKey,
             title: 'Trip memories',
             routerConfig: _router,

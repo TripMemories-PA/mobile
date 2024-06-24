@@ -23,7 +23,7 @@ mixin _$Comment {
   int get id => throw _privateConstructorUsedError;
   int get postId => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
   Profile get createdBy => throw _privateConstructorUsedError;
   int get likesCount => throw _privateConstructorUsedError;
   bool get isLiked => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $CommentCopyWith<$Res> {
       {int id,
       int postId,
       String content,
-      DateTime? createdAt,
+      DateTime createdAt,
       Profile createdBy,
       int likesCount,
       bool isLiked});
@@ -66,7 +66,7 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
     Object? id = null,
     Object? postId = null,
     Object? content = null,
-    Object? createdAt = freezed,
+    Object? createdAt = null,
     Object? createdBy = null,
     Object? likesCount = null,
     Object? isLiked = null,
@@ -84,10 +84,10 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: freezed == createdAt
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as DateTime,
       createdBy: null == createdBy
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -123,7 +123,7 @@ abstract class _$$CommentImplCopyWith<$Res> implements $CommentCopyWith<$Res> {
       {int id,
       int postId,
       String content,
-      DateTime? createdAt,
+      DateTime createdAt,
       Profile createdBy,
       int likesCount,
       bool isLiked});
@@ -146,7 +146,7 @@ class __$$CommentImplCopyWithImpl<$Res>
     Object? id = null,
     Object? postId = null,
     Object? content = null,
-    Object? createdAt = freezed,
+    Object? createdAt = null,
     Object? createdBy = null,
     Object? likesCount = null,
     Object? isLiked = null,
@@ -164,10 +164,10 @@ class __$$CommentImplCopyWithImpl<$Res>
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: freezed == createdAt
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as DateTime,
       createdBy: null == createdBy
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -191,7 +191,7 @@ class _$CommentImpl implements _Comment {
       {required this.id,
       required this.postId,
       required this.content,
-      this.createdAt,
+      required this.createdAt,
       required this.createdBy,
       required this.likesCount,
       required this.isLiked});
@@ -206,7 +206,7 @@ class _$CommentImpl implements _Comment {
   @override
   final String content;
   @override
-  final DateTime? createdAt;
+  final DateTime createdAt;
   @override
   final Profile createdBy;
   @override
@@ -260,7 +260,7 @@ abstract class _Comment implements Comment {
       {required final int id,
       required final int postId,
       required final String content,
-      final DateTime? createdAt,
+      required final DateTime createdAt,
       required final Profile createdBy,
       required final int likesCount,
       required final bool isLiked}) = _$CommentImpl;
@@ -274,7 +274,7 @@ abstract class _Comment implements Comment {
   @override
   String get content;
   @override
-  DateTime? get createdAt;
+  DateTime get createdAt;
   @override
   Profile get createdBy;
   @override

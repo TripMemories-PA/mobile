@@ -16,6 +16,7 @@ import '../object/comment/comment.dart';
 import '../object/post/post.dart';
 import '../repository/comment/comment_repository.dart';
 import '../service/comment/comment_remote_data_source.dart';
+import '../utils/date_time_service.dart';
 import '../utils/messenger.dart';
 import 'popup/confirmation_logout_dialog.dart';
 import 'text_field_custom.dart';
@@ -92,18 +93,6 @@ class CommentButtonContent extends HookWidget {
         GetCommentsEvent(),
       );
     }
-  }
-
-  Widget _buildErrorWidget(BuildContext context) {
-    return Column(
-      children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
-        ElevatedButton(
-          onPressed: () => _getComments(context),
-          child: Text(StringConstants().retry),
-        ),
-      ],
-    );
   }
 
   @override
@@ -204,6 +193,18 @@ class CommentButtonContent extends HookWidget {
     );
   }
 
+  Widget _buildErrorWidget(BuildContext context) {
+    return Column(
+      children: [
+        Text(StringConstants().errorAppendedWhileGettingData),
+        ElevatedButton(
+          onPressed: () => _getComments(context),
+          child: Text(StringConstants().retry),
+        ),
+      ],
+    );
+  }
+
   Padding _buildCommentTextInput(
     BuildContext context,
     TextEditingController controller,
@@ -294,7 +295,19 @@ class CommentButtonContent extends HookWidget {
                     left: 10.0,
                     right: 10.0,
                   ),
-                  child: Text(comment.content),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                            DateTimeService.formatDateTime(comment.createdAt),
+                            style: const TextStyle(
+                              fontSize: 10,
+                            )),
+                      ),
+                      Text(comment.content),
+                    ],
+                  ),
                 ),
               ),
               if (context.read<AuthBloc>().state.status ==

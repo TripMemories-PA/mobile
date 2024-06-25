@@ -11,7 +11,7 @@ class Comment with _$Comment {
     required int id,
     required int postId,
     required String content,
-    DateTime? createdAt,
+    required DateTime createdAt,
     required Profile createdBy,
     required int likesCount,
     required bool isLiked,

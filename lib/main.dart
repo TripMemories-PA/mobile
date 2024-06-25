@@ -10,13 +10,15 @@ import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
+import 'object/map_style.dart';
+import 'object/marker_icons_custom.dart';
 import 'object/poi/poi.dart';
 import 'object/profile/profile.dart';
 import 'page/chat_page.dart';
 import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
-import 'page/monument_page.dart';
+import 'page/monument_page_v2.dart';
 import 'page/profile_page.dart';
 import 'page/search_page.dart';
 import 'page/splash_page.dart';
@@ -26,7 +28,10 @@ import 'utils/messenger.dart';
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await MarkerIconsCustom.initialize();
+  await MapStyle.initialize();
   runApp(MyApp());
 }
 
@@ -85,7 +90,7 @@ class MyApp extends HookWidget {
                   final Poi poi = state.extra! as Poi;
                   return CustomTransitionPage(
                     key: state.pageKey,
-                    child: MonumentPage(
+                    child: MonumentPageV2(
                       monument: poi,
                     ),
                     transitionsBuilder:
@@ -110,9 +115,13 @@ class MyApp extends HookWidget {
               GoRoute(
                 path: RouteName.editTweetPage,
                 pageBuilder: (context, state) {
+                  final extra = state.extra;
+                  final Poi? poi = extra is Poi ? extra : null;
                   return CustomTransitionPage(
                     key: state.pageKey,
-                    child: const EditTweetPage(),
+                    child: EditTweetPage(
+                      preSelectedMonument: poi,
+                    ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       return CustomTransition.buildRightToLeftPopTransition(

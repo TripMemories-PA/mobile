@@ -66,7 +66,7 @@ class MyFriendsRequests extends StatelessWidget {
               Icons.close,
             ),
             onPressed: () {
-              Navigator.of(context).pop();
+              context.pop();
             },
           ),
         ],

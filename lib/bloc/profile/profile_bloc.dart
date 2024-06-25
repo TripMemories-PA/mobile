@@ -53,9 +53,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               ),
             );
           }
-          add(
-            GetFriendsEvent(isRefresh: true),
-          );
+          if (event.userId == null) {
+            add(
+              GetFriendsEvent(isRefresh: true),
+            );
+          }
         } catch (e) {
           // TODO(nono): implement profileLocalDataSource
           /* try {

@@ -11,6 +11,11 @@ class StringConstants {
   String get invalidPassword => 'Invalid password';
   String get passwordNotMatch => 'The passwords do not match';
   String get requiredField => 'Required field';
+  String get or => 'ou';
+  String get welcomeBack => 'Bon retour parmi nous !';
+  String get rememberMe => 'Se souvenir de moi';
+  String get forgotPassword => 'Mot de passe oublié ?';
+  String get connectMe => 'Se connecter';
 
   // Error Messages
   String get hostUnreachable => 'Host unreachable';
@@ -67,7 +72,8 @@ class StringConstants {
   String get sureToDeleteComment =>
       'Etes-vous sûr de vouloir supprimer ce commentaire ?';
   String get deleteAccount => 'Supprimer le compte';
-  String get sureToDeleteAccount => 'Etes-vous sûr de vouloir supprimer votre compte ?';
+  String get sureToDeleteAccount =>
+      'Etes-vous sûr de vouloir supprimer votre compte ?';
   String get pleaseLogin => 'Veuillez vous connecter';
   String get shareYourExperience => 'Partagez votre expérience';
   String get password => 'Mot de passe';
@@ -88,4 +94,16 @@ class StringConstants {
   String get myPosts => 'Mes posts';
   String get postedComment => 'Commentaires postés';
   String get logout => 'Se déconnecter';
+  String get addFriend => 'Ajouter un ami';
+  String get manageFriendsRequests => "Gérer les demandes d'amis";
+  String get noFriendAdded => 'Aucun ami ajouté';
+  String get showMoreResults => 'Afficher plus de résultats';
+  String get lastPostsFrom => 'Derniers posts de';
+  String get description => 'Description';
+  String get posts => 'Posts';
+  String get actu => 'Actualitées';
+  String get minutes => 'minutes';
+  String get hour => 'heure';
+  String get thereIs => 'Il y a';
+  String get justNow => "À l'instant";
 }

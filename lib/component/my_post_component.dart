@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trip_memories_mobile/component/shimmer/shimmer_post_and_monument_resume_grid.dart';
 
 import '../bloc/post/post_bloc.dart';
 import '../constants/string_constants.dart';
 import '../object/post/post.dart';
 import 'post_card.dart';
+import 'shimmer/shimmer_post_and_monument_resume_grid.dart';
 
 class MyPostsComponents extends StatelessWidget {
   const MyPostsComponents({super.key});

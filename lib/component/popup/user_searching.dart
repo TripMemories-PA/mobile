@@ -240,7 +240,7 @@ class SearchingUsersBody extends HookWidget {
                   width: MediaQuery.of(context).size.width * 0.90,
                   height: MediaQuery.of(context).size.height * 0.30,
                   child: const ShimmerPostAndMonumentResumeGrid(),
-                )
+                ),
             ],
           );
         }

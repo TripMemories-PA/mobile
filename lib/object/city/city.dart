@@ -15,6 +15,7 @@ class City with _$City {
     required int coverId,
     required UploadFile? cover,
     required num? averageNote,
+    required num? postsCount,
   }) = _City;
 
   factory City.fromJson(Map<String, dynamic> json) => _$CityFromJson(json);

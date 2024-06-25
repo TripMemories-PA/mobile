@@ -19,16 +19,6 @@ abstract class IMonumentRepository {
     RadiusQueryInfos? radius,
   });
 
-  Future<PoisResponse> getCities({
-    Position? position,
-    required bool sortByName,
-    required AlphabeticalSortPossibility order,
-    required int page,
-    required int perPage,
-    String? searchingCriteria,
-    RadiusQueryInfos? radius,
-  });
-
   Future<GetAllPostsResponse> getMonumentPosts({
     required int poiId,
     required int page,

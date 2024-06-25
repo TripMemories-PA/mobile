@@ -89,6 +89,7 @@ class StringConstants {
   String get addLocation => 'Ajouter un lieu';
   String get addPhoto => 'Ajouter une photo';
   String get noMonumentFound => 'Aucun monument trouvé';
+  String get noCityFound => 'Aucune ville trouvée';
   String get result => 'résultat';
   String get searchMonuments => 'Rechercher des monuments';
   String get close => 'Fermer';

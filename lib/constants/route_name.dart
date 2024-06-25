@@ -10,6 +10,6 @@ class RouteName {
   static const String chatPage = '/chat';
   static const String splashPage = '/splash';
   static const String monumentPage = '/monument';
+  static const String cityPage = '/city';
   static const String editTweetPage = '/editTweet';
-
 }

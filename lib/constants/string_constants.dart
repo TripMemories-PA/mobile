@@ -111,4 +111,6 @@ class StringConstants {
   String get justNow => "À l'instant";
   String get addFriends => 'Ajouter des amis';
   String get youCouldKnow => 'Vous pourriez connaître...';
+  String get searchByName => 'Rechercher par nom';
+  String get searchByCity => 'Rechercher par ville';
 }

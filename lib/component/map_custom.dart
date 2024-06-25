@@ -479,10 +479,12 @@ class _SearchOnMap extends HookWidget {
                                                 .primary,
                                           ),
                                           15.pw,
-                                          Text(
-                                            poi.name,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 3,
+                                          Expanded(
+                                            child: Text(
+                                              poi.name,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                            ),
                                           ),
                                         ],
                                       ),

@@ -47,9 +47,6 @@ jobs:
       - name: Replace string with GitHub secret
         run: sed -i 's/{GOOGLE_MAP_API_KEY}/${{ secrets.GOOGLE_MAP_API_KEY }}/g' android/app/src/main/AndroidManifest.xml
 
-      - name: Replace string with GitHub secret IOS
-        run: sed -i 's/{GOOGLE_MAP_API_KEY}/${{ secrets.GOOGLE_MAP_API_KEY }}/g' ios/Runner/AppDelegate.swift
-
       - name: Build APK
         run: flutter build apk --release
 
@@ -68,6 +65,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Replace string with GitHub secret IOS
+        run: sed -i 's/{GOOGLE_MAP_API_KEY}/${{ secrets.GOOGLE_MAP_API_KEY }}/g' ios/Runner/AppDelegate.swift
 
       - uses: cedvdb/action-flutter-build-ios@v1
         with:

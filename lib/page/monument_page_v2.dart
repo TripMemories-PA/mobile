@@ -249,19 +249,16 @@ class _PageContent extends HookWidget {
                   _buildSliverMenuForPostsAndFriends(),
                 ];
               },
-              body: Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: TabBarView(
-                  controller: tabController,
-                  children: [
-                    SingleChildScrollView(child: _buildDescription(context)),
-                    SingleChildScrollView(
-                      controller: monumentPostsScrollController,
-                      child: _buildPostPart(),
-                    ),
-                    SingleChildScrollView(child: _buildActuPart()),
-                  ],
-                ),
+              body: TabBarView(
+                controller: tabController,
+                children: [
+                  SingleChildScrollView(child: _buildDescription(context)),
+                  SingleChildScrollView(
+                    controller: monumentPostsScrollController,
+                    child: _buildPostPart(),
+                  ),
+                  SingleChildScrollView(child: _buildActuPart()),
+                ],
               ),
             ),
           ),
@@ -307,107 +304,113 @@ class _PageContent extends HookWidget {
     }
   }
 
-  Column _buildDescription(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          monument.name,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.primary,
-            height: 1,
+  Padding _buildDescription(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(30.0),
+      child: Column(
+        children: [
+          Text(
+            monument.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.primary,
+              height: 1,
+            ),
           ),
-        ),
-        15.ph,
-        Text(
-          monument.city?.name ?? '',
-          style: const TextStyle(
-            fontSize: 20,
+          15.ph,
+          Text(
+            monument.city?.name ?? '',
+            style: const TextStyle(
+              fontSize: 20,
+            ),
           ),
-        ),
-        15.ph,
-        Text(
-          monument.description ?? '',
-          style: const TextStyle(
-            fontSize: 15,
+          15.ph,
+          Text(
+            monument.description ?? '',
+            style: const TextStyle(
+              fontSize: 15,
+            ),
           ),
-        ),
-        15.ph,
-        Center(
-          child: MiniMap(
-            poi: monument,
-            width: MediaQuery.of(context).size.width - 40,
-            height: 300,
+          15.ph,
+          Center(
+            child: MiniMap(
+              poi: monument,
+              width: MediaQuery.of(context).size.width - 40,
+              height: 300,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildPostPart() {
-    return Column(
-      children: [
-        Text(
-          '${StringConstants().lastPostsFrom} ${monument.name}',
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        15.ph,
-        RepositoryProvider(
-          create: (context) => PostRepository(
-            postRemoteDataSource: PostRemoteDataSource(),
-          ),
-          child: BlocProvider(
-            create: (context) => PostBloc(
-              postRepository: RepositoryProvider.of<PostRepository>(context),
-              postService: PostService(),
+    return Padding(
+      padding: const EdgeInsets.all(30.0),
+      child: Column(
+        children: [
+          Text(
+            '${StringConstants().lastPostsFrom} ${monument.name}',
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-            child: BlocBuilder<PostBloc, PostState>(
-              builder: (context, state) {
-                return BlocBuilder<MonumentBloc, MonumentState>(
-                  builder: (context, state) {
-                    return Column(
-                      children: [
-                        ...context
-                            .read<MonumentBloc>()
-                            .state
-                            .selectedMonumentPosts
-                            .map(
-                              (post) => Column(
-                                children: [
-                                  PostCardLikable(
-                                    post: post,
-                                  ),
-                                  20.ph,
-                                ],
+          ),
+          15.ph,
+          RepositoryProvider(
+            create: (context) => PostRepository(
+              postRemoteDataSource: PostRemoteDataSource(),
+            ),
+            child: BlocProvider(
+              create: (context) => PostBloc(
+                postRepository: RepositoryProvider.of<PostRepository>(context),
+                postService: PostService(),
+              ),
+              child: BlocBuilder<PostBloc, PostState>(
+                builder: (context, state) {
+                  return BlocBuilder<MonumentBloc, MonumentState>(
+                    builder: (context, state) {
+                      return Column(
+                        children: [
+                          ...context
+                              .read<MonumentBloc>()
+                              .state
+                              .selectedMonumentPosts
+                              .map(
+                                (post) => Column(
+                                  children: [
+                                    PostCardLikable(
+                                      post: post,
+                                    ),
+                                    20.ph,
+                                  ],
+                                ),
                               ),
-                            ),
-                        Center(
-                          child: context
-                                  .read<MonumentBloc>()
-                                  .state
-                                  .getMonumentsHasMorePosts
-                              ? (context.read<MonumentBloc>().state.status !=
-                                      MonumentStatus.error
-                                  ? const Text(
-                                      'SHIMMER HERE',
-                                    ) // TODO(nono): Add Shimmer effect here
-                                  : _buildErrorWidget(context))
-                              : Text(StringConstants().noMorePosts),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
+                          Center(
+                            child: context
+                                    .read<MonumentBloc>()
+                                    .state
+                                    .getMonumentsHasMorePosts
+                                ? (context.read<MonumentBloc>().state.status !=
+                                        MonumentStatus.error
+                                    ? const Text(
+                                        'SHIMMER HERE',
+                                      ) // TODO(nono): Add Shimmer effect here
+                                    : _buildErrorWidget(context))
+                                : Text(StringConstants().noMorePosts),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

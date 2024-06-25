@@ -36,7 +36,9 @@ Future<void> main() async {
   runApp(
     BlocProvider(
       create: (context) => AuthBloc(
-          authService: AuthService(), authTokenHandler: AuthTokenHandler()),
+        authService: AuthService(),
+        authTokenHandler: AuthTokenHandler(),
+      ),
       child: MyApp(),
     ),
   );

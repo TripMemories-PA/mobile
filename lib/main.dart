@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import 'api/auth/auth_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
+import 'bloc/auth_bloc/auth_event.dart';
 import 'bloc/auth_bloc/auth_state.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
@@ -32,7 +33,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MarkerIconsCustom.initialize();
   await MapStyle.initialize();
-  runApp(MyApp());
+  runApp(
+    BlocProvider(
+      create: (context) => AuthBloc(
+          authService: AuthService(), authTokenHandler: AuthTokenHandler()),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends HookWidget {
@@ -178,7 +185,7 @@ class MyApp extends HookWidget {
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldMessengerState> messengerKey =
         useMemoized(GlobalKey<ScaffoldMessengerState>.new, <Object?>[]);
-
+    context.read<AuthBloc>().add(AppStarted());
     useEffect(
       () {
         Messenger.setMessengerKey(messengerKey);
@@ -187,22 +194,16 @@ class MyApp extends HookWidget {
       <Object?>[],
     );
 
-    return BlocProvider(
-      create: (context) => AuthBloc(
-        authService: AuthService(),
-        authTokenHandler: AuthTokenHandler(),
-      ),
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          return MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            scaffoldMessengerKey: messengerKey,
-            title: 'Trip memories',
-            routerConfig: _router,
-            theme: ThemeGenerator.generate(),
-          );
-        },
-      ),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          scaffoldMessengerKey: messengerKey,
+          title: 'Trip memories',
+          routerConfig: _router,
+          theme: ThemeGenerator.generate(),
+        );
+      },
     );
   }
 }

@@ -60,9 +60,12 @@ class StringConstants {
   String get noMoreComments => 'Plus de commentaires à afficher.';
   String get noMorePosts => 'Plus de posts à afficher.';
   String get retry => 'Réessayer';
+  String get noUserFound => 'Aucun utilisateur trouvé';
+  String get searchFriends => 'Rechercher des amis';
 
   String get friendRequestAccepted => "Demande d'ami acceptée";
   String get friendRequestRefused => "Demande d'ami refusée";
+  String get friendRequestSent => "Demande d'ami envoyée";
   String get comments => 'Commentaires';
   String get noComments => 'Pas de commentaires';
   String get loadMoreResults => 'Charger plus de résultats';
@@ -106,4 +109,6 @@ class StringConstants {
   String get hour => 'heure';
   String get thereIs => 'Il y a';
   String get justNow => "À l'instant";
+  String get addFriends => 'Ajouter des amis';
+  String get youCouldKnow => 'Vous pourriez connaître...';
 }

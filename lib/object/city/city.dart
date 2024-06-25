@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../avatar/uploaded_file.dart';
+
 part 'city.freezed.dart';
 part 'city.g.dart';
 
@@ -11,6 +13,8 @@ class City with _$City {
     required String name,
     required String zipCode,
     required int coverId,
+    required UploadFile? cover,
+    required num? averageNote,
   }) = _City;
 
   factory City.fromJson(Map<String, dynamic> json) => _$CityFromJson(json);

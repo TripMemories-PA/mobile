@@ -11,6 +11,11 @@ class StringConstants {
   String get invalidPassword => 'Invalid password';
   String get passwordNotMatch => 'The passwords do not match';
   String get requiredField => 'Required field';
+  String get or => 'ou';
+  String get welcomeBack => 'Bon retour parmi nous !';
+  String get rememberMe => 'Se souvenir de moi';
+  String get forgotPassword => 'Mot de passe oublié ?';
+  String get connectMe => 'Se connecter';
 
   // Error Messages
   String get hostUnreachable => 'Host unreachable';

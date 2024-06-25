@@ -245,7 +245,7 @@ class _PageContent extends HookWidget {
             child: NestedScrollView(
               headerSliverBuilder: (context, value) {
                 return [
-                  _buildHeader(),
+                  _buildHeader(context),
                   _buildSliverMenuForPostsAndFriends(),
                 ];
               },
@@ -432,8 +432,12 @@ class _PageContent extends HookWidget {
     );
   }
 
-  SliverAppBar _buildHeader() {
+  SliverAppBar _buildHeader(BuildContext context) {
     return SliverAppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.chevron_left),
+        onPressed: () => context.pop(),
+      ),
       expandedHeight: 300,
       flexibleSpace: FlexibleSpaceBar(
         background: SizedBox(

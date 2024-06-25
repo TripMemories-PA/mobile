@@ -33,7 +33,7 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>This app requires access to the photo library to share their experience with others while the app is a social network.</string>
+    <string>App requires access to photo library to create social posts or customize their profile. App uploaded photos will be visible by all users.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

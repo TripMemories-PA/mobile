@@ -205,6 +205,7 @@ class _MapCustomState extends State<MapCustom> {
   }
 
   Positioned _buildMonumentPopupCard(BuildContext context) {
+    final Poi? selectedPoi = this.selectedPoi;
     return Positioned(
       left: 0,
       right: 0,
@@ -213,7 +214,7 @@ class _MapCustomState extends State<MapCustom> {
         child: GestureDetector(
           onTap: () {
             context.push(
-              '${RouteName.monumentPage}/${selectedPoi?.id}',
+              '${RouteName.monumentPage}/${selectedPoi.id}',
               extra: selectedPoi,
             );
           },
@@ -291,12 +292,12 @@ class _MapCustomState extends State<MapCustom> {
                       ),
                       5.ph,
                       Text(
-                        selectedPoi?.address ?? "Pas d'adresse",
+                        selectedPoi.address ?? "Pas d'adresse",
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        '${selectedPoi?.city?.zipCode}',
+                        '${selectedPoi.city?.zipCode}',
                       ),
                       10.ph,
                       // TODO(nono): mettre la bonne note
@@ -305,7 +306,8 @@ class _MapCustomState extends State<MapCustom> {
                         children: [
                           RatingBar(
                             glow: false,
-                            initialRating: 2.5,
+                            initialRating:
+                                selectedPoi.averageNote?.toDouble() ?? 0,
                             itemPadding: const EdgeInsets.symmetric(
                               horizontal: 1.5,
                             ),
@@ -331,7 +333,7 @@ class _MapCustomState extends State<MapCustom> {
                             onRatingUpdate: (double value) {},
                           ),
                           Text(
-                            '(1245 avis)',
+                            '(${selectedPoi.postsCount} avis)',
                             style: TextStyle(
                               fontSize: 9,
                               color: Theme.of(context).colorScheme.primary,

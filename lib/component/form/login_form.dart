@@ -8,6 +8,7 @@ import '../../bloc/login_bloc/login_bloc.dart';
 import '../../bloc/login_bloc/login_event.dart';
 import '../../bloc/login_bloc/login_state.dart';
 import '../../constants/my_colors.dart';
+import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
 import '../../utils/field_validator.dart';
 import '../../utils/messenger.dart';
@@ -40,10 +41,10 @@ class LoginForm extends HookWidget {
                 children: [
                   TextFormField(
                     readOnly: context.read<LoginBloc>().state.loading,
-                    decoration: const InputDecoration(
-                      hintText: 'Adresse e-mail',
+                    decoration: InputDecoration(
+                      hintText: '${StringConstants().email} ${StringConstants().or} ${StringConstants().username}',
                     ),
-                    validator: (value) => FieldValidator.validateEmail(value!),
+                    validator: (value) => FieldValidator.validateRequired(value),
                     controller: emailController,
                   ),
                   15.ph,
@@ -52,7 +53,7 @@ class LoginForm extends HookWidget {
                     obscureText: hidePassword.value,
                     decoration: InputDecoration(
                       errorMaxLines: 4,
-                      hintText: 'Mot de passe',
+                      hintText: StringConstants().password,
                       suffixIcon: InkWell(
                         child: Icon(
                           hidePassword.value
@@ -91,7 +92,7 @@ class LoginForm extends HookWidget {
                         listener: (context, state) {
                           if (state.status == AuthStatus.authenticated) {
                             Messenger.showSnackBarSuccess(
-                              'Bon retour parmi nous !',
+                              StringConstants().welcomeBack,
                             );
                           }
                         },
@@ -107,14 +108,14 @@ class LoginForm extends HookWidget {
                         checkColor: Colors.black,
                       ),
                       Text(
-                        'Se souvenir de moi',
+                        StringConstants().rememberMe,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       const Spacer(),
                       // TODO(nono): Add the forgot password feature
                       InkWell(
                         child: Text(
-                          'Mot de passe oublié ?',
+                          StringConstants().forgotPassword,
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall!
@@ -160,10 +161,10 @@ class LoginForm extends HookWidget {
                                     );
                               }
                             },
-                      child: const Center(
+                      child: Center(
                         child: Text(
-                          'Se connecter',
-                          style: TextStyle(color: Colors.white),
+                          StringConstants().connectMe,
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ),

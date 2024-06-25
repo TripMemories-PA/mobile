@@ -14,7 +14,7 @@ import '../../repository/profile/profile_repository.dart';
 import '../../service/profile/profile_remote_data_source.dart';
 import '../../utils/messenger.dart';
 import '../custom_card.dart';
-import '../shimmer/friend_request_shimmer.dart';
+import '../shimmer/shimmer_friend_request_list.dart';
 
 class MyFriendsRequests extends StatelessWidget {
   const MyFriendsRequests({
@@ -115,8 +115,7 @@ class MyFriendsRequests extends StatelessWidget {
                     child: context.read<FriendRequestBloc>().state.hasMoreTweets
                         ? (context.read<FriendRequestBloc>().state.status !=
                                 FriendRequestStatus.error
-                            ? const ShimmerFriendRequest()
-                            // TODO(nono): SHIMMER
+                            ? const ShimmerFriendRequestList()
                             : _buildErrorWidget(context))
                         : Text(StringConstants().noMoreFriends),
                   ),

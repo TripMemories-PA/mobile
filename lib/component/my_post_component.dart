@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trip_memories_mobile/component/shimmer/shimmer_post_and_monument_resume_grid.dart';
 
 import '../bloc/post/post_bloc.dart';
 import '../constants/string_constants.dart';
@@ -36,8 +37,14 @@ class MyPostsComponents extends StatelessWidget {
           } else {
             return Center(child: Text(StringConstants().noPostYet));
           }
-        } else if (state.getMorePostsStatus == PostStatus.loading) {
-          return const Center(child: CircularProgressIndicator());
+        } else if (state.status == PostStatus.loading) {
+          return Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.90,
+              height: MediaQuery.of(context).size.height * 0.30,
+              child: const ShimmerPostAndMonumentResumeGrid(),
+            ),
+          );
         } else if (state.getMorePostsStatus == PostStatus.error) {
           return Center(
             child: Text(StringConstants().errorWhileLoadingPosts),

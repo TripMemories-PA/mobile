@@ -9,6 +9,7 @@ import '../object/profile/profile.dart';
 import 'custom_card.dart';
 import 'popup/my_friends_requests.dart';
 import 'popup/user_searching.dart';
+import 'shimmer/shimmer_post_and_monument_resume_grid.dart';
 import 'user_list.dart';
 
 class MyFriendsComponent extends StatelessWidget {
@@ -83,7 +84,11 @@ class MyFriendsComponent extends StatelessWidget {
           builder: (context, state) {
             if (context.read<ProfileBloc>().state.status ==
                 ProfileStatus.loading) {
-              return const CircularProgressIndicator();
+              return SizedBox(
+                width: MediaQuery.of(context).size.width * 0.90,
+                height: MediaQuery.of(context).size.height * 0.60,
+                child: const ShimmerPostAndMonumentResumeGrid(),
+              );
             } else {
               return _buildFriendsList(context);
             }
@@ -98,6 +103,13 @@ class MyFriendsComponent extends StatelessWidget {
         context.read<ProfileBloc>().state.friends?.data;
     if (friends == null || friends.isEmpty) {
       return Center(child: Text(StringConstants().noFriendAdded));
+    }
+    if (context.read<ProfileBloc>().state.status == ProfileStatus.loading) {
+      return SizedBox(
+        width: MediaQuery.of(context).size.width * 0.90,
+        height: MediaQuery.of(context).size.height * 0.30,
+        child: const ShimmerPostAndMonumentResumeGrid(),
+      );
     }
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
@@ -123,7 +135,6 @@ class MyFriendsComponent extends StatelessWidget {
     return context.read<ProfileBloc>().state.getMoreFriendsStatus !=
             ProfileStatus.error
         ? _buildGetTweets(context)
-        // TODO(nono): SHIMMER
         : _buildErrorWidget(context);
   }
 
@@ -131,7 +142,11 @@ class MyFriendsComponent extends StatelessWidget {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         return state.getMoreFriendsStatus == ProfileStatus.loading
-            ? const CircularProgressIndicator()
+            ? SizedBox(
+                width: MediaQuery.of(context).size.width * 0.90,
+                height: MediaQuery.of(context).size.height * 0.30,
+                child: const ShimmerPostAndMonumentResumeGrid(),
+              )
             : ElevatedButton(
                 onPressed: () {
                   _getNextFriends(context: context);

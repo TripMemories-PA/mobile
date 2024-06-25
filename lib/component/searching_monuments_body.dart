@@ -9,6 +9,7 @@ import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import 'monument_resume_list.dart';
 import 'search_bar_custom.dart';
+import 'shimmer/shimmer_post_and_monument_resume_grid.dart';
 
 enum SearchingMonumentBodySize { small, large }
 
@@ -68,7 +69,7 @@ class SearchingMonumentBody extends HookWidget {
         if (state.status == MonumentStatus.error) {
           return _buildErrorWidget(context);
         } else if (state.status == MonumentStatus.loading) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: ShimmerPostAndMonumentResumeGrid());
         } else if (state.monuments.isEmpty) {
           return Text(StringConstants().noMonumentFound);
         } else {

@@ -278,7 +278,6 @@ class _MapCustomState extends State<MapCustom> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-
                       5.ph,
                       Text(
                         selectedPoi?.name ?? 'Pas de nom',
@@ -300,7 +299,6 @@ class _MapCustomState extends State<MapCustom> {
                         '${selectedPoi.city?.zipCode}',
                       ),
                       10.ph,
-                      // TODO(nono): mettre la bonne note
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

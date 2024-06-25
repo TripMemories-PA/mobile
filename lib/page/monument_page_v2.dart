@@ -11,11 +11,9 @@ import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../bloc/post/post_bloc.dart';
-import '../bloc/profile/profile_bloc.dart';
 import '../component/map_mini.dart';
-import '../component/my_friends_component.dart';
-import '../component/my_post_component.dart';
 import '../component/post_card.dart';
+import '../component/shimmer/shimmer_post_and_monument_resume.dart';
 import '../constants/my_colors.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
@@ -52,112 +50,6 @@ class MonumentPageV2 extends HookWidget {
             return _PageContent(
               monument: monument,
               tabController: tabController,
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class MyPostsAndMyFriends extends HookWidget {
-  const MyPostsAndMyFriends({
-    super.key,
-    this.userId,
-    required this.tabController,
-  });
-
-  final int? userId;
-  final TabController tabController;
-
-  @override
-  Widget build(BuildContext context) {
-    final int? tmpUserId = userId;
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: tmpUserId == null
-          ? TabBarView(
-              controller: tabController,
-              children: [
-                RefreshIndicator(
-                  onRefresh: () async {
-                    context
-                        .read<ProfileBloc>()
-                        .add(GetFriendsEvent(isRefresh: true));
-                  },
-                  child: const SingleChildScrollView(
-                    child: MyFriendsComponent(),
-                  ),
-                ),
-                _buildMyPostsPart(),
-              ],
-            )
-          : _buildOtherUsersPosts(tmpUserId),
-    );
-  }
-
-  RepositoryProvider<PostRepository> _buildMyPostsPart() {
-    return RepositoryProvider(
-      create: (context) =>
-          PostRepository(postRemoteDataSource: PostRemoteDataSource()),
-      child: BlocProvider(
-        create: (context) => PostBloc(
-          postRepository: RepositoryProvider.of<PostRepository>(
-            context,
-          ),
-          postService: PostService(),
-        )..add(
-            GetPostsEvent(
-              isRefresh: true,
-              myPosts: true,
-            ),
-          ),
-        child: BlocBuilder<PostBloc, PostState>(
-          builder: (context, state) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context
-                    .read<PostBloc>()
-                    .add(GetPostsEvent(isRefresh: true, myPosts: true));
-              },
-              child: const SingleChildScrollView(
-                child: MyPostsComponents(),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  RepositoryProvider<PostRepository> _buildOtherUsersPosts(int userId) {
-    return RepositoryProvider(
-      create: (context) => PostRepository(
-        postRemoteDataSource: PostRemoteDataSource(),
-      ),
-      child: BlocProvider(
-        create: (context) => PostBloc(
-          postRepository: RepositoryProvider.of<PostRepository>(
-            context,
-          ),
-          postService: PostService(),
-        )..add(
-            GetPostsEvent(
-              isRefresh: true,
-              userId: userId,
-            ),
-          ),
-        child: BlocBuilder<PostBloc, PostState>(
-          builder: (context, state) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context
-                    .read<PostBloc>()
-                    .add(GetPostsEvent(isRefresh: true, userId: userId));
-              },
-              child: const SingleChildScrollView(
-                child: MyPostsComponents(),
-              ),
             );
           },
         ),
@@ -395,9 +287,7 @@ class _PageContent extends HookWidget {
                                     .getMonumentsHasMorePosts
                                 ? (context.read<MonumentBloc>().state.status !=
                                         MonumentStatus.error
-                                    ? const Text(
-                                        'SHIMMER HERE',
-                                      ) // TODO(nono): Add Shimmer effect here
+                                    ? const ShimmerPostAndMonumentResume()
                                     : _buildErrorWidget(context))
                                 : Text(StringConstants().noMorePosts),
                           ),

@@ -21,6 +21,7 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
         emit(
           state.copyWith(
             searchingMonumentByNameStatus: MonumentStatus.loading,
+            status: MonumentStatus.loading,
           ),
         );
       } else {

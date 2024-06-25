@@ -5,6 +5,7 @@ import '../bloc/post/post_bloc.dart';
 import '../constants/string_constants.dart';
 import '../object/post/post.dart';
 import 'post_card.dart';
+import 'shimmer/shimmer_post_and_monument_resume_grid.dart';
 
 class MyPostsComponents extends StatelessWidget {
   const MyPostsComponents({super.key});
@@ -36,8 +37,14 @@ class MyPostsComponents extends StatelessWidget {
           } else {
             return Center(child: Text(StringConstants().noPostYet));
           }
-        } else if (state.getMorePostsStatus == PostStatus.loading) {
-          return const Center(child: CircularProgressIndicator());
+        } else if (state.status == PostStatus.loading) {
+          return Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.90,
+              height: MediaQuery.of(context).size.height * 0.30,
+              child: const ShimmerPostAndMonumentResumeGrid(),
+            ),
+          );
         } else if (state.getMorePostsStatus == PostStatus.error) {
           return Center(
             child: Text(StringConstants().errorWhileLoadingPosts),

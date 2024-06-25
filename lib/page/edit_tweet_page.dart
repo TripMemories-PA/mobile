@@ -60,7 +60,6 @@ class EditTweetPage extends HookWidget {
     final ValueNotifier<XFile?> image = useState(null);
     final TextEditingController contentController = useTextEditingController();
     final TextEditingController titleController = useTextEditingController();
-// TODO(nono): ajouter le poi de la publication quand pierre l'aura mis en place
     final selectedMonument = useState<Poi?>(preSelectedMonument);
     final rating = useState<double>(0.0);
     return BlocProvider(

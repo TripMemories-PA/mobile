@@ -13,6 +13,7 @@ import '../../service/profile/profile_remote_data_source.dart';
 import '../../utils/messenger.dart';
 import '../custom_card.dart';
 import '../search_bar_custom.dart';
+import '../shimmer/shimmer_post_and_monument_resume_grid.dart';
 import '../user_list.dart';
 
 class UserSearching extends HookWidget {
@@ -187,7 +188,13 @@ class SearchingUsersBody extends HookWidget {
           return _buildErrorWidget(context);
         } else if (state.searchingUserByNameStatus ==
             UserSearchingStatus.loading) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.90,
+              height: MediaQuery.of(context).size.height * 0.30,
+              child: const ShimmerPostAndMonumentResumeGrid(),
+            ),
+          );
         } else if (state.usersSearchByName?.data == null) {
           return const Text('Aucun utilisateur trouvé');
         } else {
@@ -224,11 +231,16 @@ class SearchingUsersBody extends HookWidget {
                             },
                             child: const Text('Voir plus de résultats'),
                           )
-
-                        // TODO(nono): SHIMMER
                         : _buildErrorWidget(context))
                     : Text(StringConstants().noMoreUsers),
               ),
+              if (state.searchingUserByNameStatus ==
+                  UserSearchingStatus.loading)
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.90,
+                  height: MediaQuery.of(context).size.height * 0.30,
+                  child: const ShimmerPostAndMonumentResumeGrid(),
+                ),
             ],
           );
         }
@@ -278,8 +290,13 @@ class SearchingUsersBody extends HookWidget {
               child: context.read<UserSearchingBloc>().state.hasMoreUsers
                   ? (context.read<UserSearchingBloc>().state.status !=
                           UserSearchingStatus.error
-                      ? const Text('SHIMMER HERe')
-                      // TODO(nono): SHIMMER
+                      ? Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.90,
+                            height: MediaQuery.of(context).size.height * 0.20,
+                            child: const ShimmerPostAndMonumentResumeGrid(),
+                          ),
+                        )
                       : _buildErrorWidget(context))
                   : Text(StringConstants().noMoreUsers),
             ),

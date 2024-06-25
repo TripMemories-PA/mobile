@@ -9,6 +9,7 @@ import '../object/post/post.dart';
 import '../repository/post/post_repository.dart';
 import '../service/post/post_remote_data_source.dart';
 import 'post_card.dart';
+import 'shimmer/shimmer_post_and_monument_resume_list.dart';
 
 class PostList extends HookWidget {
   const PostList({
@@ -88,9 +89,7 @@ class _PostListContent extends HookWidget {
                     child: context.read<PostBloc>().state.hasMorePosts
                         ? (context.read<PostBloc>().state.status !=
                                 PostStatus.error
-                            ? const Text(
-                                'SHIMMER HERE',
-                              ) // TODO(nono): Add Shimmer effect here
+                            ? const ShimmerPostAndMonumentResumeList()
                             : _buildErrorWidget(context))
                         : Text(StringConstants().noMorePosts),
                   ),
@@ -101,7 +100,7 @@ class _PostListContent extends HookWidget {
             return Center(child: Text(StringConstants().noPostYet));
           }
         } else if (state.getMorePostsStatus == PostStatus.loading) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: ShimmerPostAndMonumentResumeList());
         } else if (state.getMorePostsStatus == PostStatus.error) {
           return Center(
             child: Text(StringConstants().errorWhileLoadingPosts),
@@ -164,7 +163,7 @@ class _PostListContent extends HookWidget {
           child: state.status == PostStatus.loading
               // TODO(nono): shimmer
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: ShimmerPostAndMonumentResumeList(),
                 )
               : SingleChildScrollView(
                   controller: postScrollController,

@@ -233,6 +233,25 @@ class _PageContent extends HookWidget {
               height: 300,
             ),
           ),
+          10.ph,
+          Text(
+            monument.address ?? '',
+            style: const TextStyle(
+              fontSize: 15,
+            ),
+          ),
+          Text(
+            monument.city?.name ?? '',
+            style: const TextStyle(
+              fontSize: 15,
+            ),
+          ),
+          Text(
+            monument.city?.zipCode ?? '',
+            style: const TextStyle(
+              fontSize: 15,
+            ),
+          ),
         ],
       ),
     );

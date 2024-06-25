@@ -56,7 +56,7 @@ class UserSearching extends HookWidget {
                               onPressed: () {
                                 context.pop();
                               },
-                              child: const Text('Fermer'),
+                              child: Text(StringConstants().close),
                             ),
                           ),
                         ),
@@ -134,7 +134,7 @@ class SearchingUsersBody extends HookWidget {
               context: context,
               searching: searching,
               searchContent: searchContent,
-              hintText: 'Rechercher des amis',
+              hintText: StringConstants().searchFriends,
               onSearch: (value) {
                 context.read<UserSearchingBloc>().add(
                       SearchUsersEvent(
@@ -160,7 +160,7 @@ class SearchingUsersBody extends HookWidget {
                       ),
                     ),
                     15.pw,
-                    const Text('ou'),
+                    Text(StringConstants().or),
                     15.pw,
                     Container(
                       height: 3,
@@ -196,7 +196,7 @@ class SearchingUsersBody extends HookWidget {
             ),
           );
         } else if (state.usersSearchByName?.data == null) {
-          return const Text('Aucun utilisateur trouvé');
+          return Text(StringConstants().noUserFound);
         } else {
           return Column(
             children: [
@@ -205,7 +205,7 @@ class SearchingUsersBody extends HookWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    '${state.usersSearchByName!.data.length} résultat${state.usersSearchByName!.data.length > 1 ? 's' : ''}',
+                    '${state.usersSearchByName!.data.length} ${StringConstants().result}${state.usersSearchByName!.data.length > 1 ? 's' : ''}',
                     style: const TextStyle(
                       color: MyColors.darkGrey,
                     ),
@@ -229,7 +229,7 @@ class SearchingUsersBody extends HookWidget {
                                     ),
                                   );
                             },
-                            child: const Text('Voir plus de résultats'),
+                            child: Text(StringConstants().showMoreResults),
                           )
                         : _buildErrorWidget(context))
                     : Text(StringConstants().noMoreUsers),
@@ -259,7 +259,7 @@ class SearchingUsersBody extends HookWidget {
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          'Ajouter des amis',
+          '',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -274,11 +274,11 @@ class SearchingUsersBody extends HookWidget {
       builder: (context, state) {
         return Column(
           children: [
-            const Align(
+            Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Vous pourriez connaître...',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                StringConstants().youCouldKnow,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 10),
@@ -304,7 +304,7 @@ class SearchingUsersBody extends HookWidget {
               listener: (context, state) {
                 if (state.status == UserSearchingStatus.requestSent) {
                   Messenger.showSnackBarQuickInfo(
-                    "Demande d'ami envoyée",
+                    StringConstants().friendRequestSent,
                     context,
                   );
                 }

@@ -21,7 +21,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: true,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Colors.grey,
         elevation: 0,
         type: BottomNavigationBarType.fixed,

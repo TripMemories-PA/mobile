@@ -15,7 +15,8 @@ _$CitiesResponseImpl _$$CitiesResponseImplFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$$CitiesResponseImplToJson(
-        _$CitiesResponseImpl instance) =>
+  _$CitiesResponseImpl instance,
+) =>
     <String, dynamic>{
       'meta': instance.meta,
       'data': instance.data,

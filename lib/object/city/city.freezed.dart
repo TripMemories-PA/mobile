@@ -26,6 +26,7 @@ mixin _$City {
   int get coverId => throw _privateConstructorUsedError;
   UploadFile? get cover => throw _privateConstructorUsedError;
   num? get averageNote => throw _privateConstructorUsedError;
+  num? get postsCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +44,8 @@ abstract class $CityCopyWith<$Res> {
       String zipCode,
       int coverId,
       UploadFile? cover,
-      num? averageNote});
+      num? averageNote,
+      num? postsCount});
 
   $UploadFileCopyWith<$Res>? get cover;
 }
@@ -67,6 +69,7 @@ class _$CityCopyWithImpl<$Res, $Val extends City>
     Object? coverId = null,
     Object? cover = freezed,
     Object? averageNote = freezed,
+    Object? postsCount = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -92,6 +95,10 @@ class _$CityCopyWithImpl<$Res, $Val extends City>
       averageNote: freezed == averageNote
           ? _value.averageNote
           : averageNote // ignore: cast_nullable_to_non_nullable
+              as num?,
+      postsCount: freezed == postsCount
+          ? _value.postsCount
+          : postsCount // ignore: cast_nullable_to_non_nullable
               as num?,
     ) as $Val);
   }
@@ -122,7 +129,8 @@ abstract class _$$CityImplCopyWith<$Res> implements $CityCopyWith<$Res> {
       String zipCode,
       int coverId,
       UploadFile? cover,
-      num? averageNote});
+      num? averageNote,
+      num? postsCount});
 
   @override
   $UploadFileCopyWith<$Res>? get cover;
@@ -144,6 +152,7 @@ class __$$CityImplCopyWithImpl<$Res>
     Object? coverId = null,
     Object? cover = freezed,
     Object? averageNote = freezed,
+    Object? postsCount = freezed,
   }) {
     return _then(_$CityImpl(
       id: null == id
@@ -170,6 +179,10 @@ class __$$CityImplCopyWithImpl<$Res>
           ? _value.averageNote
           : averageNote // ignore: cast_nullable_to_non_nullable
               as num?,
+      postsCount: freezed == postsCount
+          ? _value.postsCount
+          : postsCount // ignore: cast_nullable_to_non_nullable
+              as num?,
     ));
   }
 }
@@ -184,7 +197,8 @@ class _$CityImpl implements _City {
       required this.zipCode,
       required this.coverId,
       required this.cover,
-      required this.averageNote});
+      required this.averageNote,
+      required this.postsCount});
 
   factory _$CityImpl.fromJson(Map<String, dynamic> json) =>
       _$$CityImplFromJson(json);
@@ -201,10 +215,12 @@ class _$CityImpl implements _City {
   final UploadFile? cover;
   @override
   final num? averageNote;
+  @override
+  final num? postsCount;
 
   @override
   String toString() {
-    return 'City(id: $id, name: $name, zipCode: $zipCode, coverId: $coverId, cover: $cover, averageNote: $averageNote)';
+    return 'City(id: $id, name: $name, zipCode: $zipCode, coverId: $coverId, cover: $cover, averageNote: $averageNote, postsCount: $postsCount)';
   }
 
   @override
@@ -218,13 +234,15 @@ class _$CityImpl implements _City {
             (identical(other.coverId, coverId) || other.coverId == coverId) &&
             (identical(other.cover, cover) || other.cover == cover) &&
             (identical(other.averageNote, averageNote) ||
-                other.averageNote == averageNote));
+                other.averageNote == averageNote) &&
+            (identical(other.postsCount, postsCount) ||
+                other.postsCount == postsCount));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, zipCode, coverId, cover, averageNote);
+  int get hashCode => Object.hash(
+      runtimeType, id, name, zipCode, coverId, cover, averageNote, postsCount);
 
   @JsonKey(ignore: true)
   @override
@@ -247,7 +265,8 @@ abstract class _City implements City {
       required final String zipCode,
       required final int coverId,
       required final UploadFile? cover,
-      required final num? averageNote}) = _$CityImpl;
+      required final num? averageNote,
+      required final num? postsCount}) = _$CityImpl;
 
   factory _City.fromJson(Map<String, dynamic> json) = _$CityImpl.fromJson;
 
@@ -263,6 +282,8 @@ abstract class _City implements City {
   UploadFile? get cover;
   @override
   num? get averageNote;
+  @override
+  num? get postsCount;
   @override
   @JsonKey(ignore: true)
   _$$CityImplCopyWith<_$CityImpl> get copyWith =>

@@ -114,4 +114,5 @@ class StringConstants {
   String get youCouldKnow => 'Vous pourriez connaître...';
   String get searchByName => 'Rechercher par nom';
   String get searchByCity => 'Rechercher par ville';
+  String get monuments => 'Monuments';
 }

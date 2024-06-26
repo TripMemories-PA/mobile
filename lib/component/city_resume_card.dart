@@ -5,7 +5,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../num_extensions.dart';
 import '../object/city/city.dart';
 import 'searching_cities_body.dart';
-import 'searching_monuments_body.dart';
 
 class CityResumeCard extends StatelessWidget {
   const CityResumeCard({
@@ -83,8 +82,7 @@ class CityResumeCard extends StatelessWidget {
                     maxRating: 5,
                     updateOnDrag: true,
                     allowHalfRating: true,
-                    itemSize:
-                        bodySize == SearchingMonumentBodySize.large ? 19 : 14,
+                    itemSize: bodySize == SearchingCityBodySize.large ? 19 : 14,
                     ratingWidget: RatingWidget(
                       full: Icon(
                         Icons.star,
@@ -105,7 +103,7 @@ class CityResumeCard extends StatelessWidget {
                     '(${city.postsCount} avis)',
                     style: TextStyle(
                       fontSize:
-                          bodySize == SearchingMonumentBodySize.large ? 11 : 9,
+                          bodySize == SearchingCityBodySize.large ? 11 : 9,
                       color: Theme.of(context).colorScheme.primary,
                     ),
                   ),

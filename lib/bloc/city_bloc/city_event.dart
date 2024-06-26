@@ -19,3 +19,21 @@ class GetCitiesEvent extends CityEvent {
   final bool isRefresh;
   final String? searchingCriteria;
 }
+
+class GetCityEvent extends CityEvent {
+  GetCityEvent({
+    required this.id,
+  });
+
+  final int id;
+}
+
+class GetCityPoiEvent extends CityEvent {
+  GetCityPoiEvent({
+    required this.id,
+    this.isRefresh = false,
+  });
+
+  final int id;
+  final bool isRefresh;
+}

@@ -2,39 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../bloc/city_bloc/city_bloc.dart';
+import '../bloc/monument_bloc/monument_bloc.dart';
 import '../num_extensions.dart';
-import 'searching_cities_body.dart';
+import 'searching_monuments_body.dart';
 
-class SearchByCity extends HookWidget {
-  const SearchByCity({super.key});
+class SearchByMonument extends HookWidget {
+  const SearchByMonument({super.key});
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController searchController = useTextEditingController();
     final searching = useState(false);
     final searchContent = useState('');
-    final ScrollController citiesScrollController = useScrollController();
+    final ScrollController monumentsScrollController = useScrollController();
     useEffect(
       () {
         void createScrollListener() {
-          if (citiesScrollController.position.atEdge) {
-            if (citiesScrollController.position.pixels != 0) {
+          if (monumentsScrollController.position.atEdge) {
+            if (monumentsScrollController.position.pixels != 0) {
               _getMonuments(context, searchContent.value);
             }
           }
         }
 
-        citiesScrollController.addListener(createScrollListener);
+        monumentsScrollController.addListener(createScrollListener);
         return () =>
-            citiesScrollController.removeListener(createScrollListener);
+            monumentsScrollController.removeListener(createScrollListener);
       },
       const [],
     );
     return RefreshIndicator(
       onRefresh: () async {
-        context.read<CityBloc>().add(
-              GetCitiesEvent(
+        context.read<MonumentBloc>().add(
+              GetMonumentsEvent(
                 isRefresh: true,
                 searchingCriteria: searchContent.value,
               ),
@@ -45,12 +45,12 @@ class SearchByCity extends HookWidget {
           _buildHeader(),
           20.ph,
           Expanded(
-            child: SearchingCityBody(
+            child: SearchingMonumentBody(
               padding: 20,
               searchController: searchController,
               searchContent: searchContent,
               searching: searching,
-              monumentsScrollController: citiesScrollController,
+              monumentsScrollController: monumentsScrollController,
             ),
           ),
         ],
@@ -59,11 +59,11 @@ class SearchByCity extends HookWidget {
   }
 
   void _getMonuments(BuildContext context, String searchContent) {
-    final monumentBloc = context.read<CityBloc>();
+    final monumentBloc = context.read<MonumentBloc>();
 
-    if (monumentBloc.state.status != CityStatus.loading) {
+    if (monumentBloc.state.status != MonumentStatus.loading) {
       monumentBloc.add(
-        GetCitiesEvent(searchingCriteria: searchContent),
+        GetMonumentsEvent(searchingCriteria: searchContent),
       );
     }
   }
@@ -75,7 +75,7 @@ class SearchByCity extends HookWidget {
           width: double.infinity,
           height: 180,
           child: Image.asset(
-            'assets/images/panorama_city.png',
+            'assets/images/panorama.png',
             fit: BoxFit.cover,
           ),
         ),
@@ -95,14 +95,14 @@ class SearchByCity extends HookWidget {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'villes',
+                        text: 'monuments',
                         style: TextStyle(
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       TextSpan(
-                        text: ' que cache la France',
+                        text: ' dont recèle la France',
                       ),
                     ],
                   ),

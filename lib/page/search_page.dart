@@ -7,10 +7,9 @@ import '../../repository/monument/monument_repository.dart';
 import '../../service/monument/monument_remote_data_source.dart';
 import '../bloc/city_bloc/city_bloc.dart';
 import '../component/search_by_city.dart';
-import '../component/searching_monuments_body.dart';
+import '../component/search_by_monument.dart';
 import '../constants/string_constants.dart';
-import '../num_extensions.dart';
-import '../repository/cities/cities_repository.dart';
+import '../repository/city/cities_repository.dart';
 import '../service/cities/cities_remote_data_source.dart';
 
 class SearchPage extends HookWidget {
@@ -51,7 +50,7 @@ class SearchPage extends HookWidget {
           ),
           BlocProvider(
             create: (context) => CityBloc(
-              citiesRepository: RepositoryProvider.of<CityRepository>(context),
+              cityRepository: RepositoryProvider.of<CityRepository>(context),
             )..add(
                 GetCitiesEvent(
                   isRefresh: true,
@@ -120,124 +119,14 @@ class SlidePage extends HookWidget {
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            child: const SearchByName(),
+            child: const SearchByMonument(),
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            child: const _SearchByCity(),
+            child: const SearchByCity(),
           ),
         ],
       ),
-    );
-  }
-}
-
-class _SearchByCity extends HookWidget {
-  const _SearchByCity();
-
-  @override
-  Widget build(BuildContext context) {
-    final TextEditingController searchController = useTextEditingController();
-    final searching = useState(false);
-    final searchContent = useState('');
-    final ScrollController monumentsScrollController = useScrollController();
-    useEffect(
-      () {
-        void createScrollListener() {
-          if (monumentsScrollController.position.atEdge) {
-            if (monumentsScrollController.position.pixels != 0) {
-              _getMonuments(context, searchContent.value);
-            }
-          }
-        }
-
-        monumentsScrollController.addListener(createScrollListener);
-        return () =>
-            monumentsScrollController.removeListener(createScrollListener);
-      },
-      const [],
-    );
-    return RefreshIndicator(
-      onRefresh: () async {
-        context.read<MonumentBloc>().add(
-              GetMonumentsEvent(
-                isRefresh: true,
-                searchingCriteria: searchContent.value,
-              ),
-            );
-      },
-      child: Column(
-        children: [
-          _buildHeader(),
-          20.ph,
-          Expanded(
-            child: SearchingMonumentBody(
-              padding: 20,
-              searchController: searchController,
-              searchContent: searchContent,
-              searching: searching,
-              monumentsScrollController: monumentsScrollController,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _getMonuments(BuildContext context, String searchContent) {
-    final monumentBloc = context.read<MonumentBloc>();
-
-    if (monumentBloc.state.status != MonumentStatus.loading) {
-      monumentBloc.add(
-        GetMonumentsEvent(searchingCriteria: searchContent),
-      );
-    }
-  }
-
-  Widget _buildHeader() {
-    return Stack(
-      children: [
-        SizedBox(
-          width: double.infinity,
-          height: 180,
-          child: Image.asset(
-            'assets/images/panorama_city.png',
-            fit: BoxFit.cover,
-          ),
-        ),
-        Column(
-          children: [
-            30.ph,
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 50, left: 50, right: 50),
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: const TextSpan(
-                    text: 'Découvre les incroyables ',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'villes',
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' que cache la France',
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }

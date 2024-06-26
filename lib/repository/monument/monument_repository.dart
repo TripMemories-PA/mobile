@@ -56,17 +56,4 @@ class MonumentRepository implements IMonumentRepository {
       perPage: perPage,
     );
   }
-
-  @override
-  Future<PoisResponse> getCities(
-      {Position? position,
-      required bool sortByName,
-      required AlphabeticalSortPossibility order,
-      required int page,
-      required int perPage,
-      String? searchingCriteria,
-      RadiusQueryInfos? radius}) {
-    // TODO: implement getCities
-    throw UnimplementedError();
-  }
 }

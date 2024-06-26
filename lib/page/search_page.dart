@@ -114,8 +114,10 @@ class SlidePage extends HookWidget {
         centerTitle: true,
       ),
       body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
+        onPageChanged: (index) {
+          citySearchSelected.value = index == 1;
+        },
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width,

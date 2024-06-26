@@ -100,7 +100,7 @@ class CityResumeCard extends StatelessWidget {
                     onRatingUpdate: (double value) {},
                   ),
                   Text(
-                    '(${city.postsCount} avis)',
+                    '(${city.postsCount ?? 0} avis)',
                     style: TextStyle(
                       fontSize:
                           bodySize == SearchingCityBodySize.large ? 11 : 9,

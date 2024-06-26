@@ -63,7 +63,8 @@ class ProfileInfos extends StatelessWidget {
                 child: CustomCard(
                   backgroundColor: Colors.white,
                   content: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: Text(
                       StringConstants().logout,
                       style: const TextStyle(fontWeight: FontWeight.bold),
@@ -73,36 +74,41 @@ class ProfileInfos extends StatelessWidget {
                 ),
               ),
             ),
-          Positioned(
-            top: 10,
-            child: BouncingWidget(
-              onTap: () {
-                confirmationPopUp(
-                  context,
-                  title: StringConstants().sureToDeleteAccount,
-                ).then((bool result) {
-                  if (result) {
-                    context.read<AuthBloc>().add(
-                          DeleteAccountEvent(),
-                        );
-                  }
-                });
-              },
-              child: CustomCard(
-                backgroundColor: Colors.red,
-                width: 200,
-                height: 33,
-                content: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Text(
-                    StringConstants().deleteAccount,
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.surface),
+          if (isMyProfile)
+            Positioned(
+              top: 10,
+              left: 60,
+              child: BouncingWidget(
+                onTap: () {
+                  confirmationPopUp(
+                    context,
+                    title: StringConstants().sureToDeleteAccount,
+                  ).then((bool result) {
+                    if (result) {
+                      context.read<AuthBloc>().add(
+                            DeleteAccountEvent(),
+                          );
+                    }
+                  });
+                },
+                child: CustomCard(
+                  backgroundColor: Colors.red,
+                  width: 170,
+                  height: 33,
+                  content: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Text(
+                      StringConstants().deleteAccount,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.surface),
+                    ),
                   ),
+                  borderColor: Colors.transparent,
                 ),
-                borderColor: Colors.transparent,
               ),
             ),
-          ),
           Positioned(
             top: 70,
             left: MediaQuery.of(context).size.width / 2 - 50,

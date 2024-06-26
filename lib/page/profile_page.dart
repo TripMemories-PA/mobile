@@ -78,13 +78,14 @@ class ProfilePage extends HookWidget {
   ) {
     return Scaffold(
       floatingActionButton:
-          context.read<AuthBloc>().state.status == AuthStatus.authenticated && userId == null
+          context.read<AuthBloc>().state.status == AuthStatus.authenticated &&
+                  userId == null
               ? FloatingActionButton(
                   onPressed: () => context.push(RouteName.editTweetPage),
                   child: const Icon(Icons.add),
                 )
               : null,
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       extendBodyBehindAppBar: true,
       body: SafeArea(
         child: Stack(
@@ -96,7 +97,10 @@ class ProfilePage extends HookWidget {
                   return [
                     _buildUserProfileInfosSliverAppBar(context),
                     if (userId == null)
-                      _buildSliverMenuForPostsAndFriends(tabController),
+                      _buildSliverMenuForPostsAndFriends(
+                        tabController,
+                        context,
+                      ),
                   ];
                 },
                 body: MyPostsAndMyFriends(
@@ -113,6 +117,7 @@ class ProfilePage extends HookWidget {
 
   SliverPersistentHeader _buildSliverMenuForPostsAndFriends(
     TabController tabController,
+    BuildContext context,
   ) {
     return SliverPersistentHeader(
       pinned: true,
@@ -120,7 +125,7 @@ class ProfilePage extends HookWidget {
         minHeight: 50,
         maxHeight: 50,
         child: ColoredBox(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           child: TabBar(
             unselectedLabelColor: MyColors.darkGrey,
             controller: tabController,
@@ -137,6 +142,10 @@ class ProfilePage extends HookWidget {
 
   SliverAppBar _buildUserProfileInfosSliverAppBar(BuildContext context) {
     return SliverAppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.chevron_left),
+        onPressed: () => context.pop(),
+      ),
       expandedHeight: 300,
       flexibleSpace: FlexibleSpaceBar(
         background: ListView(

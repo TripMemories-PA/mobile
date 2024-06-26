@@ -1,7 +1,7 @@
 class StringConstants {
   // Basic
-  String get yes => 'Yes';
-  String get no => 'No';
+  String get yes => 'Oui';
+  String get no => 'Non';
 
   // Authentication
   String get notAuthenticated => 'Not authenticated';

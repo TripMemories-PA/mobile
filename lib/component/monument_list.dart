@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../constants/route_name.dart';
 import '../object/poi/poi.dart';
 import 'monument_resume_card.dart';
 
@@ -15,8 +17,15 @@ class MonumentList extends StatelessWidget {
       runSpacing: 10,
       children: monuments
           .map(
-            (monument) => MonumentResumeCard(
-              monument: monument,
+            (monument) => GestureDetector(
+              onTap: () {
+                context.push(
+                  '${RouteName.monumentPage}/${monument.id}',
+                  extra: monument,
+                );
+              },              child: MonumentResumeCard(
+                monument: monument,
+              ),
             ),
           )
           .toList(),

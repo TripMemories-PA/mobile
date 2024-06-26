@@ -45,7 +45,7 @@ class SearchingCityBody extends HookWidget {
             context: context,
             searching: searching,
             searchContent: searchContent,
-            hintText: StringConstants().searchMonuments,
+            hintText: StringConstants().searchCities,
             onSearch: (value) {
               context.read<CityBloc>().add(
                     GetCitiesEvent(

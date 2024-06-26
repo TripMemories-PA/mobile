@@ -18,10 +18,8 @@ class SplashPage extends HookWidget {
       },
       const [],
     );
-    return SafeArea(
-      child: Scaffold(
-        body: Image.asset('assets/images/splash.png'),
-      ),
+    return Scaffold(
+      body: Center(child: Image.asset('assets/images/splash.png')),
     );
   }
 }

@@ -24,6 +24,9 @@ mixin _$City {
   String get name => throw _privateConstructorUsedError;
   String get zipCode => throw _privateConstructorUsedError;
   int get coverId => throw _privateConstructorUsedError;
+  UploadFile? get cover => throw _privateConstructorUsedError;
+  num? get averageNote => throw _privateConstructorUsedError;
+  num? get postsCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +38,16 @@ abstract class $CityCopyWith<$Res> {
   factory $CityCopyWith(City value, $Res Function(City) then) =
       _$CityCopyWithImpl<$Res, City>;
   @useResult
-  $Res call({int id, String name, String zipCode, int coverId});
+  $Res call(
+      {int id,
+      String name,
+      String zipCode,
+      int coverId,
+      UploadFile? cover,
+      num? averageNote,
+      num? postsCount});
+
+  $UploadFileCopyWith<$Res>? get cover;
 }
 
 /// @nodoc
@@ -55,6 +67,9 @@ class _$CityCopyWithImpl<$Res, $Val extends City>
     Object? name = null,
     Object? zipCode = null,
     Object? coverId = null,
+    Object? cover = freezed,
+    Object? averageNote = freezed,
+    Object? postsCount = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -73,7 +88,31 @@ class _$CityCopyWithImpl<$Res, $Val extends City>
           ? _value.coverId
           : coverId // ignore: cast_nullable_to_non_nullable
               as int,
+      cover: freezed == cover
+          ? _value.cover
+          : cover // ignore: cast_nullable_to_non_nullable
+              as UploadFile?,
+      averageNote: freezed == averageNote
+          ? _value.averageNote
+          : averageNote // ignore: cast_nullable_to_non_nullable
+              as num?,
+      postsCount: freezed == postsCount
+          ? _value.postsCount
+          : postsCount // ignore: cast_nullable_to_non_nullable
+              as num?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UploadFileCopyWith<$Res>? get cover {
+    if (_value.cover == null) {
+      return null;
+    }
+
+    return $UploadFileCopyWith<$Res>(_value.cover!, (value) {
+      return _then(_value.copyWith(cover: value) as $Val);
+    });
   }
 }
 
@@ -84,7 +123,17 @@ abstract class _$$CityImplCopyWith<$Res> implements $CityCopyWith<$Res> {
       __$$CityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name, String zipCode, int coverId});
+  $Res call(
+      {int id,
+      String name,
+      String zipCode,
+      int coverId,
+      UploadFile? cover,
+      num? averageNote,
+      num? postsCount});
+
+  @override
+  $UploadFileCopyWith<$Res>? get cover;
 }
 
 /// @nodoc
@@ -101,6 +150,9 @@ class __$$CityImplCopyWithImpl<$Res>
     Object? name = null,
     Object? zipCode = null,
     Object? coverId = null,
+    Object? cover = freezed,
+    Object? averageNote = freezed,
+    Object? postsCount = freezed,
   }) {
     return _then(_$CityImpl(
       id: null == id
@@ -119,6 +171,18 @@ class __$$CityImplCopyWithImpl<$Res>
           ? _value.coverId
           : coverId // ignore: cast_nullable_to_non_nullable
               as int,
+      cover: freezed == cover
+          ? _value.cover
+          : cover // ignore: cast_nullable_to_non_nullable
+              as UploadFile?,
+      averageNote: freezed == averageNote
+          ? _value.averageNote
+          : averageNote // ignore: cast_nullable_to_non_nullable
+              as num?,
+      postsCount: freezed == postsCount
+          ? _value.postsCount
+          : postsCount // ignore: cast_nullable_to_non_nullable
+              as num?,
     ));
   }
 }
@@ -131,7 +195,10 @@ class _$CityImpl implements _City {
       {required this.id,
       required this.name,
       required this.zipCode,
-      required this.coverId});
+      required this.coverId,
+      required this.cover,
+      required this.averageNote,
+      required this.postsCount});
 
   factory _$CityImpl.fromJson(Map<String, dynamic> json) =>
       _$$CityImplFromJson(json);
@@ -144,10 +211,16 @@ class _$CityImpl implements _City {
   final String zipCode;
   @override
   final int coverId;
+  @override
+  final UploadFile? cover;
+  @override
+  final num? averageNote;
+  @override
+  final num? postsCount;
 
   @override
   String toString() {
-    return 'City(id: $id, name: $name, zipCode: $zipCode, coverId: $coverId)';
+    return 'City(id: $id, name: $name, zipCode: $zipCode, coverId: $coverId, cover: $cover, averageNote: $averageNote, postsCount: $postsCount)';
   }
 
   @override
@@ -158,12 +231,18 @@ class _$CityImpl implements _City {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.zipCode, zipCode) || other.zipCode == zipCode) &&
-            (identical(other.coverId, coverId) || other.coverId == coverId));
+            (identical(other.coverId, coverId) || other.coverId == coverId) &&
+            (identical(other.cover, cover) || other.cover == cover) &&
+            (identical(other.averageNote, averageNote) ||
+                other.averageNote == averageNote) &&
+            (identical(other.postsCount, postsCount) ||
+                other.postsCount == postsCount));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, zipCode, coverId);
+  int get hashCode => Object.hash(
+      runtimeType, id, name, zipCode, coverId, cover, averageNote, postsCount);
 
   @JsonKey(ignore: true)
   @override
@@ -184,7 +263,10 @@ abstract class _City implements City {
       {required final int id,
       required final String name,
       required final String zipCode,
-      required final int coverId}) = _$CityImpl;
+      required final int coverId,
+      required final UploadFile? cover,
+      required final num? averageNote,
+      required final num? postsCount}) = _$CityImpl;
 
   factory _City.fromJson(Map<String, dynamic> json) = _$CityImpl.fromJson;
 
@@ -196,6 +278,12 @@ abstract class _City implements City {
   String get zipCode;
   @override
   int get coverId;
+  @override
+  UploadFile? get cover;
+  @override
+  num? get averageNote;
+  @override
+  num? get postsCount;
   @override
   @JsonKey(ignore: true)
   _$$CityImplCopyWith<_$CityImpl> get copyWith =>

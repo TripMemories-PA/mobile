@@ -89,6 +89,7 @@ class StringConstants {
   String get addLocation => 'Ajouter un lieu';
   String get addPhoto => 'Ajouter une photo';
   String get noMonumentFound => 'Aucun monument trouvé';
+  String get noCityFound => 'Aucune ville trouvée';
   String get result => 'résultat';
   String get searchMonuments => 'Rechercher des monuments';
   String get close => 'Fermer';
@@ -111,4 +112,7 @@ class StringConstants {
   String get justNow => "À l'instant";
   String get addFriends => 'Ajouter des amis';
   String get youCouldKnow => 'Vous pourriez connaître...';
+  String get searchByName => 'Rechercher par nom';
+  String get searchByCity => 'Rechercher par ville';
+  String get monuments => 'Monuments';
 }

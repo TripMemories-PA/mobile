@@ -11,11 +11,13 @@ import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
+import 'object/city/city.dart';
 import 'object/map_style.dart';
 import 'object/marker_icons_custom.dart';
 import 'object/poi/poi.dart';
 import 'object/profile/profile.dart';
 import 'page/chat_page.dart';
+import 'page/city_page.dart';
 import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
@@ -101,6 +103,25 @@ class MyApp extends HookWidget {
                     key: state.pageKey,
                     child: MonumentPageV2(
                       monument: poi,
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return CustomTransition.buildBottomToTopPopTransition(
+                        animation,
+                        child,
+                      );
+                    },
+                  );
+                },
+              ),
+              GoRoute(
+                path: '${RouteName.cityPage}/:cityId',
+                pageBuilder: (context, state) {
+                  final City city = state.extra! as City;
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: CityPage(
+                      city: city,
                     ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {

@@ -8,6 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
+import 'package:progressive_image/progressive_image.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
@@ -61,11 +62,26 @@ class PostCard extends HookWidget {
                       borderRadius: const BorderRadius.all(
                         Radius.circular(15.0),
                       ),
-                      child: CachedNetworkImage(
-                        imageUrl: post.image?.url ?? '',
+                      child:
+                      SizedBox(
                         height: 200,
                         width: double.infinity,
-                        fit: BoxFit.cover,
+                        child: LayoutBuilder(
+                          builder:
+                              (BuildContext context, BoxConstraints constraints) {
+                            return ProgressiveImage(
+                              placeholder: null,
+                              // size: 1.87KB
+                              thumbnail:
+                              const AssetImage('assets/images/placeholder.jpg'),
+                              // size: 1.29MB
+                              image: NetworkImage(post.image?.url ?? ''),
+                              height: constraints.maxHeight,
+                              width: constraints.maxWidth,
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),

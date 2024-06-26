@@ -9,6 +9,7 @@ import '../object/post/post.dart';
 import '../repository/post/post_repository.dart';
 import '../service/post/post_remote_data_source.dart';
 import 'post_card.dart';
+import 'shimmer/shimmer_post_and_monument_resume.dart';
 import 'shimmer/shimmer_post_and_monument_resume_list.dart';
 
 class PostList extends HookWidget {
@@ -89,7 +90,7 @@ class _PostListContent extends HookWidget {
                     child: context.read<PostBloc>().state.hasMorePosts
                         ? (context.read<PostBloc>().state.status !=
                                 PostStatus.error
-                            ? const ShimmerPostAndMonumentResumeList()
+                            ? const ShimmerPostAndMonumentResume()
                             : _buildErrorWidget(context))
                         : Text(StringConstants().noMorePosts),
                   ),
@@ -100,7 +101,7 @@ class _PostListContent extends HookWidget {
             return Center(child: Text(StringConstants().noPostYet));
           }
         } else if (state.getMorePostsStatus == PostStatus.loading) {
-          return const Center(child: ShimmerPostAndMonumentResumeList());
+          return const Center(child: ShimmerPostAndMonumentResume());
         } else if (state.getMorePostsStatus == PostStatus.error) {
           return Center(
             child: Text(StringConstants().errorWhileLoadingPosts),

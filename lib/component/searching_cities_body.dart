@@ -3,22 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+import '../bloc/city_bloc/city_bloc.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
-import 'monument_resume_list.dart';
+import 'city_resume_list.dart';
 import 'search_bar_custom.dart';
 import 'shimmer/shimmer_post_and_monument_resume_grid.dart';
 
-enum SearchingMonumentBodySize { small, large }
+enum SearchingCityBodySize { small, large }
 
-class SearchingMonumentBody extends HookWidget {
-  const SearchingMonumentBody({
+class SearchingCityBody extends HookWidget {
+  const SearchingCityBody({
     super.key,
     this.needToPop = false,
     this.padding = 0.0,
-    this.bodySize = SearchingMonumentBodySize.large,
+    this.bodySize = SearchingCityBodySize.large,
     required this.searchController,
     required this.searchContent,
     required this.searching,
@@ -27,7 +28,7 @@ class SearchingMonumentBody extends HookWidget {
 
   final bool needToPop;
   final double padding;
-  final SearchingMonumentBodySize bodySize;
+  final SearchingCityBodySize bodySize;
   final TextEditingController searchController;
   final ValueNotifier<String> searchContent;
   final ValueNotifier<bool> searching;
@@ -46,8 +47,8 @@ class SearchingMonumentBody extends HookWidget {
             searchContent: searchContent,
             hintText: StringConstants().searchMonuments,
             onSearch: (value) {
-              context.read<MonumentBloc>().add(
-                    GetMonumentsEvent(
+              context.read<CityBloc>().add(
+                    GetCitiesEvent(
                       searchingCriteria: value,
                       isRefresh: true,
                     ),
@@ -55,23 +56,23 @@ class SearchingMonumentBody extends HookWidget {
             },
           ),
           10.ph,
-          Expanded(child: _buildSearchMonumentList(searchContent)),
+          Expanded(child: _buildSearchCityList(searchContent)),
         ],
       ),
     );
   }
 
-  BlocBuilder<MonumentBloc, MonumentState> _buildSearchMonumentList(
+  BlocBuilder<CityBloc, CityState> _buildSearchCityList(
     ValueNotifier<String> searchContent,
   ) {
-    return BlocBuilder<MonumentBloc, MonumentState>(
+    return BlocBuilder<CityBloc, CityState>(
       builder: (context, state) {
-        if (state.status == MonumentStatus.error) {
+        if (state.status == CityStatus.error) {
           return _buildErrorWidget(context);
-        } else if (state.status == MonumentStatus.loading) {
+        } else if (state.status == CityStatus.loading) {
           return const Center(child: ShimmerPostAndMonumentResumeGrid());
-        } else if (state.monuments.isEmpty) {
-          return Text(StringConstants().noMonumentFound);
+        } else if (state.cities.isEmpty) {
+          return Text(StringConstants().noCityFound);
         } else {
           return Column(
             children: [
@@ -80,7 +81,7 @@ class SearchingMonumentBody extends HookWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    '${state.monuments.length} ${StringConstants().result}${state.monuments.length > 1 ? 's' : ''}',
+                    '${state.cities.length} ${StringConstants().result}${state.cities.length > 1 ? 's' : ''}',
                     style: const TextStyle(
                       color: MyColors.darkGrey,
                     ),
@@ -88,22 +89,21 @@ class SearchingMonumentBody extends HookWidget {
                 ),
               ),
               Expanded(
-                child: MonumentResumeList(
-                  monuments: state.monuments,
+                child: CityResumeList(
+                  cities: state.cities,
                   needToPop: needToPop,
                   bodySize: bodySize,
-                  monumentsScrollController: monumentsScrollController,
+                  citiesScrollController: monumentsScrollController,
                 ),
               ),
               Center(
-                child: state.searchMonumentsHasMoreMonuments
-                    ? (state.searchingMonumentByNameStatus ==
-                            MonumentStatus.loading
+                child: state.searchCitiesHasMoreMonuments
+                    ? (state.searchingCitiesByNameStatus == CityStatus.loading
                         ? SpinKitThreeBounce(
                             color: Theme.of(context).colorScheme.onSurface,
                             size: 20,
                           )
-                        : (state.status == MonumentStatus.error
+                        : (state.status == CityStatus.error
                             ? _buildErrorWidget(context)
                             : const SizedBox.shrink()))
                     : Padding(

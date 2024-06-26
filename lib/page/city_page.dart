@@ -9,46 +9,42 @@ import 'package:go_router/go_router.dart';
 import '../api/post/post_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
-import '../bloc/monument_bloc/monument_bloc.dart';
+import '../bloc/city_bloc/city_bloc.dart';
 import '../bloc/post/post_bloc.dart';
-import '../component/map_mini.dart';
-import '../component/post_card.dart';
+import '../component/monument_list.dart';
 import '../component/shimmer/shimmer_post_and_monument_resume.dart';
 import '../constants/my_colors.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
-import '../object/poi/poi.dart';
-import '../repository/monument/monument_repository.dart';
+import '../object/city/city.dart';
+import '../repository/city/cities_repository.dart';
 import '../repository/post/post_repository.dart';
-import '../service/monument/monument_remote_data_source.dart';
+import '../service/cities/cities_remote_data_source.dart';
 import '../service/post/post_remote_data_source.dart';
 
-class MonumentPageV2 extends HookWidget {
-  const MonumentPageV2({super.key, required this.monument});
+class CityPage extends HookWidget {
+  const CityPage({super.key, required this.city});
 
-  final Poi monument;
+  final City city;
 
   @override
   Widget build(BuildContext context) {
     final TabController tabController = useTabController(initialLength: 3);
     return RepositoryProvider(
-      create: (context) => MonumentRepository(
-        monumentRemoteDataSource: MonumentRemoteDataSource(),
+      create: (context) => CityRepository(
+        citiesRemoteDataSource: CityRemoteDataSource(),
       ),
       child: BlocProvider(
-        create: (context) => MonumentBloc(
-          monumentRepository:
-              RepositoryProvider.of<MonumentRepository>(context),
+        create: (context) => CityBloc(
+          cityRepository: RepositoryProvider.of<CityRepository>(context),
         )..add(
-            GetMonumentEvent(
-              id: monument.id,
-            ),
+            GetCityPoiEvent(id: city.id, isRefresh: true),
           ),
-        child: BlocBuilder<MonumentBloc, MonumentState>(
+        child: BlocBuilder<CityBloc, CityState>(
           builder: (context, state) {
             return _PageContent(
-              monument: monument,
+              city: city,
               tabController: tabController,
             );
           },
@@ -94,30 +90,29 @@ class _CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
 class _PageContent extends HookWidget {
   const _PageContent({
-    required this.monument,
+    required this.city,
     required this.tabController,
   });
 
-  final Poi monument;
+  final City city;
   final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController monumentPostsScrollController =
-        useScrollController();
+    final ScrollController cityPostsScrollController = useScrollController();
     useEffect(
       () {
         void createScrollListener() {
-          if (monumentPostsScrollController.position.atEdge) {
-            if (monumentPostsScrollController.position.pixels != 0) {
+          if (cityPostsScrollController.position.atEdge) {
+            if (cityPostsScrollController.position.pixels != 0) {
               _getPosts(context, false);
             }
           }
         }
 
-        monumentPostsScrollController.addListener(createScrollListener);
+        cityPostsScrollController.addListener(createScrollListener);
         return () =>
-            monumentPostsScrollController.removeListener(createScrollListener);
+            cityPostsScrollController.removeListener(createScrollListener);
       },
       const [],
     );
@@ -126,7 +121,7 @@ class _PageContent extends HookWidget {
           context.read<AuthBloc>().state.status == AuthStatus.authenticated
               ? FloatingActionButton(
                   onPressed: () =>
-                      context.push(RouteName.editTweetPage, extra: monument),
+                      context.push(RouteName.editTweetPage, extra: city),
                   child: const Icon(Icons.add),
                 )
               : null,
@@ -146,8 +141,8 @@ class _PageContent extends HookWidget {
                 children: [
                   SingleChildScrollView(child: _buildDescription(context)),
                   SingleChildScrollView(
-                    controller: monumentPostsScrollController,
-                    child: _buildPostPart(),
+                    controller: cityPostsScrollController,
+                    child: _buildMonumentPart(),
                   ),
                   SingleChildScrollView(child: _buildActuPart()),
                 ],
@@ -173,7 +168,7 @@ class _PageContent extends HookWidget {
             indicatorSize: TabBarIndicatorSize.tab,
             tabs: [
               Tab(text: StringConstants().description),
-              Tab(text: StringConstants().posts),
+              Tab(text: StringConstants().monuments),
               Tab(text: StringConstants().actu),
             ],
           ),
@@ -183,13 +178,12 @@ class _PageContent extends HookWidget {
   }
 
   void _getPosts(BuildContext context, bool isRefresh) {
-    final monumentBloc = context.read<MonumentBloc>();
+    final cityBloc = context.read<CityBloc>();
 
-    if (monumentBloc.state.selectedPostGetMonumentsStatus !=
-        MonumentStatus.loading) {
-      monumentBloc.add(
-        GetMonumentPostsEvent(
-          id: monument.id,
+    if (cityBloc.state.selectedCityGetMonumentsStatus != CityStatus.loading) {
+      cityBloc.add(
+        GetCityPoiEvent(
+          id: city.id,
           isRefresh: isRefresh,
         ),
       );
@@ -202,7 +196,7 @@ class _PageContent extends HookWidget {
       child: Column(
         children: [
           Text(
-            monument.name,
+            city.name,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 30,
@@ -211,43 +205,9 @@ class _PageContent extends HookWidget {
               height: 1,
             ),
           ),
-          15.ph,
-          Text(
-            monument.city?.name ?? '',
-            style: const TextStyle(
-              fontSize: 20,
-            ),
-          ),
-          15.ph,
-          Text(
-            monument.description ?? '',
-            style: const TextStyle(
-              fontSize: 15,
-            ),
-          ),
-          15.ph,
-          Center(
-            child: MiniMap(
-              poi: monument,
-              width: MediaQuery.of(context).size.width - 40,
-              height: 300,
-            ),
-          ),
           10.ph,
           Text(
-            monument.address ?? '',
-            style: const TextStyle(
-              fontSize: 15,
-            ),
-          ),
-          Text(
-            monument.city?.name ?? '',
-            style: const TextStyle(
-              fontSize: 15,
-            ),
-          ),
-          Text(
-            monument.city?.zipCode ?? '',
+            city.zipCode,
             style: const TextStyle(
               fontSize: 15,
             ),
@@ -257,13 +217,13 @@ class _PageContent extends HookWidget {
     );
   }
 
-  Widget _buildPostPart() {
+  Widget _buildMonumentPart() {
     return Padding(
       padding: const EdgeInsets.all(30.0),
       child: Column(
         children: [
           Text(
-            '${StringConstants().lastPostsFrom} ${monument.name}',
+            '${StringConstants().lastPostsFrom} ${city.name}',
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -281,31 +241,23 @@ class _PageContent extends HookWidget {
               ),
               child: BlocBuilder<PostBloc, PostState>(
                 builder: (context, state) {
-                  return BlocBuilder<MonumentBloc, MonumentState>(
+                  return BlocBuilder<CityBloc, CityState>(
                     builder: (context, state) {
                       return Column(
                         children: [
-                          ...context
-                              .read<MonumentBloc>()
-                              .state
-                              .selectedMonumentPosts
-                              .map(
-                                (post) => Column(
-                                  children: [
-                                    PostCardLikable(
-                                      post: post,
-                                    ),
-                                    20.ph,
-                                  ],
-                                ),
-                              ),
+                          MonumentList(
+                            monuments: context
+                                .read<CityBloc>()
+                                .state
+                                .selectedCityMonument,
+                          ),
                           Center(
                             child: context
-                                    .read<MonumentBloc>()
+                                    .read<CityBloc>()
                                     .state
-                                    .getMonumentsHasMorePosts
-                                ? (context.read<MonumentBloc>().state.status !=
-                                        MonumentStatus.error
+                                    .getCityHasMoreMonuments
+                                ? (context.read<CityBloc>().state.status !=
+                                        CityStatus.error
                                     ? const ShimmerPostAndMonumentResume()
                                     : _buildErrorWidget(context))
                                 : Text(StringConstants().noMorePosts),
@@ -353,7 +305,7 @@ class _PageContent extends HookWidget {
           height: 180,
           width: double.infinity,
           child: CachedNetworkImage(
-            imageUrl: monument.cover.url,
+            imageUrl: city.cover?.url ?? '',
             fit: BoxFit.cover,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 Center(

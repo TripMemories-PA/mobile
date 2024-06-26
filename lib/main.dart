@@ -5,16 +5,19 @@ import 'package:go_router/go_router.dart';
 
 import 'api/auth/auth_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
+import 'bloc/auth_bloc/auth_event.dart';
 import 'bloc/auth_bloc/auth_state.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
+import 'object/city/city.dart';
 import 'object/map_style.dart';
 import 'object/marker_icons_custom.dart';
 import 'object/poi/poi.dart';
 import 'object/profile/profile.dart';
 import 'page/chat_page.dart';
+import 'page/city_page.dart';
 import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
@@ -32,7 +35,15 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MarkerIconsCustom.initialize();
   await MapStyle.initialize();
-  runApp(MyApp());
+  runApp(
+    BlocProvider(
+      create: (context) => AuthBloc(
+        authService: AuthService(),
+        authTokenHandler: AuthTokenHandler(),
+      ),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends HookWidget {
@@ -92,6 +103,25 @@ class MyApp extends HookWidget {
                     key: state.pageKey,
                     child: MonumentPageV2(
                       monument: poi,
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return CustomTransition.buildBottomToTopPopTransition(
+                        animation,
+                        child,
+                      );
+                    },
+                  );
+                },
+              ),
+              GoRoute(
+                path: '${RouteName.cityPage}/:cityId',
+                pageBuilder: (context, state) {
+                  final City city = state.extra! as City;
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: CityPage(
+                      city: city,
                     ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
@@ -178,7 +208,7 @@ class MyApp extends HookWidget {
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldMessengerState> messengerKey =
         useMemoized(GlobalKey<ScaffoldMessengerState>.new, <Object?>[]);
-
+    context.read<AuthBloc>().add(AppStarted());
     useEffect(
       () {
         Messenger.setMessengerKey(messengerKey);
@@ -187,22 +217,16 @@ class MyApp extends HookWidget {
       <Object?>[],
     );
 
-    return BlocProvider(
-      create: (context) => AuthBloc(
-        authService: AuthService(),
-        authTokenHandler: AuthTokenHandler(),
-      ),
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          return MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            scaffoldMessengerKey: messengerKey,
-            title: 'Trip memories',
-            routerConfig: _router,
-            theme: ThemeGenerator.generate(),
-          );
-        },
-      ),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          scaffoldMessengerKey: messengerKey,
+          title: 'Trip memories',
+          routerConfig: _router,
+          theme: ThemeGenerator.generate(),
+        );
+      },
     );
   }
 }

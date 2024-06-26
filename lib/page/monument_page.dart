@@ -7,6 +7,7 @@ import '../api/post/post_service.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../bloc/post/post_bloc.dart';
 import '../component/post_card.dart';
+import '../component/shimmer/shimmer_post_and_monument_resume.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/poi/poi.dart';
@@ -175,9 +176,7 @@ class _PageContent extends HookWidget {
                                   .getMonumentsHasMorePosts
                               ? (context.read<MonumentBloc>().state.status !=
                                       MonumentStatus.error
-                                  ? const Text(
-                                      'SHIMMER HERE',
-                                    ) // TODO(nono): Add Shimmer effect here
+                                  ? const ShimmerPostAndMonumentResume()
                                   : _buildErrorWidget(context))
                               : Text(StringConstants().noMorePosts),
                         ),

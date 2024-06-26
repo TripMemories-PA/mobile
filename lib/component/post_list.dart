@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:trip_memories_mobile/component/shimmer/shimmer_post_and_monument_resume.dart';
 
 import '../api/post/post_service.dart';
 import '../bloc/post/post_bloc.dart';
@@ -89,7 +90,7 @@ class _PostListContent extends HookWidget {
                     child: context.read<PostBloc>().state.hasMorePosts
                         ? (context.read<PostBloc>().state.status !=
                                 PostStatus.error
-                            ? const ShimmerPostAndMonumentResumeList()
+                            ? const ShimmerPostAndMonumentResume()
                             : _buildErrorWidget(context))
                         : Text(StringConstants().noMorePosts),
                   ),
@@ -100,7 +101,7 @@ class _PostListContent extends HookWidget {
             return Center(child: Text(StringConstants().noPostYet));
           }
         } else if (state.getMorePostsStatus == PostStatus.loading) {
-          return const Center(child: ShimmerPostAndMonumentResumeList());
+          return const Center(child: ShimmerPostAndMonumentResume());
         } else if (state.getMorePostsStatus == PostStatus.error) {
           return Center(
             child: Text(StringConstants().errorWhileLoadingPosts),

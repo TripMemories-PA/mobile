@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:progressive_image/progressive_image.dart';
 
 import '../num_extensions.dart';
 import '../object/city/city.dart';
@@ -32,31 +32,21 @@ class CityResumeCard extends StatelessWidget {
                 width: constraints.maxWidth,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
-                  child: Image.network(
-                    city.cover?.url ?? '',
-                    loadingBuilder: (
-                      BuildContext context,
-                      Widget child,
-                      ImageChunkEvent? loadingProgress,
-                    ) {
-                      if (loadingProgress == null) {
-                        return child;
-                      } else {
-                        return const Center(
-                          child: CupertinoActivityIndicator(),
-                        );
-                      }
-                    },
-                    errorBuilder: (
-                      BuildContext context,
-                      Object error,
-                      StackTrace? stackTrace,
-                    ) {
-                      return const Icon(
-                        CupertinoIcons.exclamationmark_triangle,
+                  child: LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      return ProgressiveImage(
+                        placeholder: null,
+                        // size: 1.87KB
+                        thumbnail:
+                            const AssetImage('assets/images/placeholder.jpg'),
+                        // size: 1.29MB
+                        image: NetworkImage(city.cover?.url ?? ''),
+                        height: constraints.maxHeight,
+                        width: constraints.maxWidth,
+                        fit: BoxFit.cover,
                       );
                     },
-                    fit: BoxFit.cover,
                   ),
                 ),
               ),

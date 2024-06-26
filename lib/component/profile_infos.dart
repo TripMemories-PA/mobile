@@ -101,8 +101,9 @@ class ProfileInfos extends StatelessWidget {
                     child: Text(
                       StringConstants().deleteAccount,
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.surface),
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.surface,
+                      ),
                     ),
                   ),
                   borderColor: Colors.transparent,

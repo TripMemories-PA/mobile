@@ -58,30 +58,30 @@ jobs:
           token: ${{ secrets.TOKEN }}
 
 
-  build_and_release_ios:
-    name: Build and Release new ipa
-    runs-on: macos-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Replace string with GitHub secret IOS
-        run: sed -i 's/{GOOGLE_MAP_API_KEY}/${{ secrets.GOOGLE_MAP_API_KEY }}/g' ios/Runner/AppDelegate.swift
-
-      - uses: cedvdb/action-flutter-build-ios@v1
-        with:
-          build-cmd: flutter build ipa --release --flavor dev --export-options-plist=ios/GithubActionsExportOptions.plist
-          certificate-base64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
-          certificate-password: ${{ secrets.IOS_BUILD_CERTIFICATE_PASSWORD }}
-          provisioning-profile-base64: ${{ secrets.IOS_MOBILE_PROVISIONING_PROFILE_BASE64 }}
-          keychain-password: ${{ secrets.IOS_GITHUB_KEYCHAIN_PASSWORD }}
-
-      - name: Archive IPA
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-ipa
-          path: 'build/ios/ipa/Trip memories.ipa'
+#  build_and_release_ios:
+#    name: Build and Release new ipa
+#    runs-on: macos-latest
+#    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      - name: Replace string with GitHub secret IOS
+#        run: sed -i 's/{GOOGLE_MAP_API_KEY}/${{ secrets.GOOGLE_MAP_API_KEY }}/g' ios/Runner/AppDelegate.swift
+#
+#      - uses: cedvdb/action-flutter-build-ios@v1
+#        with:
+#          build-cmd: flutter build ipa --release --flavor dev --export-options-plist=ios/GithubActionsExportOptions.plist
+#          certificate-base64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
+#          certificate-password: ${{ secrets.IOS_BUILD_CERTIFICATE_PASSWORD }}
+#          provisioning-profile-base64: ${{ secrets.IOS_MOBILE_PROVISIONING_PROFILE_BASE64 }}
+#          keychain-password: ${{ secrets.IOS_GITHUB_KEYCHAIN_PASSWORD }}
+#
+#      - name: Archive IPA
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: release-ipa
+#          path: 'build/ios/ipa/Trip memories.ipa'
 
 
   analyze_project:

@@ -142,10 +142,10 @@ class ProfilePage extends HookWidget {
 
   SliverAppBar _buildUserProfileInfosSliverAppBar(BuildContext context) {
     return SliverAppBar(
-      leading: IconButton(
+      leading: userId != null ? IconButton(
         icon: const Icon(Icons.chevron_left),
         onPressed: () => context.pop(),
-      ),
+      ) : null,
       expandedHeight: 300,
       flexibleSpace: FlexibleSpaceBar(
         background: ListView(

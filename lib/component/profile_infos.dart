@@ -77,7 +77,7 @@ class ProfileInfos extends StatelessWidget {
           if (isMyProfile)
             Positioned(
               top: 10,
-              left: 60,
+              left: 10,
               child: BouncingWidget(
                 onTap: () {
                   confirmationPopUp(

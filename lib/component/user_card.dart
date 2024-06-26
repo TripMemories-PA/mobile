@@ -166,7 +166,8 @@ class UserCard extends StatelessWidget {
                         placeholder: null,
                         // size: 1.87KB
                         thumbnail: const AssetImage(
-                            'assets/images/user_placeholder.jpg'),
+                          'assets/images/user_placeholder.jpg',
+                        ),
                         // size: 1.29MB
                         image: NetworkImage(avatarUrl),
                         height: constraints.maxHeight,

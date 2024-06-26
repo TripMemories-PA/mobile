@@ -22,7 +22,6 @@ class MonumentResumeCard extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return SizedBox(
-          height: 300,
           width: constraints.maxWidth / 2 - 5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,8 +86,8 @@ class MonumentResumeCard extends StatelessWidget {
                     itemPadding: const EdgeInsets.symmetric(horizontal: 1.5),
                     minRating: 1,
                     maxRating: 5,
-                    updateOnDrag: true,
                     allowHalfRating: true,
+                    ignoreGestures: true,
                     itemSize:
                         bodySize == SearchingMonumentBodySize.large ? 19 : 14,
                     ratingWidget: RatingWidget(

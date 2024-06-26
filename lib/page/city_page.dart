@@ -6,22 +6,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
-import '../api/post/post_service.dart';
-import '../bloc/auth_bloc/auth_bloc.dart';
-import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/city_bloc/city_bloc.dart';
-import '../bloc/post/post_bloc.dart';
+import '../component/city_post_list.dart';
 import '../component/monument_list.dart';
 import '../component/shimmer/shimmer_post_and_monument_resume.dart';
 import '../constants/my_colors.dart';
-import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/city/city.dart';
 import '../repository/city/cities_repository.dart';
-import '../repository/post/post_repository.dart';
 import '../service/cities/cities_remote_data_source.dart';
-import '../service/post/post_remote_data_source.dart';
 
 class CityPage extends HookWidget {
   const CityPage({super.key, required this.city});
@@ -30,7 +24,7 @@ class CityPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TabController tabController = useTabController(initialLength: 3);
+    final TabController tabController = useTabController(initialLength: 2);
     return RepositoryProvider(
       create: (context) => CityRepository(
         citiesRemoteDataSource: CityRemoteDataSource(),
@@ -117,18 +111,10 @@ class _PageContent extends HookWidget {
       const [],
     );
     return Scaffold(
-      floatingActionButton:
-          context.read<AuthBloc>().state.status == AuthStatus.authenticated
-              ? FloatingActionButton(
-                  onPressed: () =>
-                      context.push(RouteName.editTweetPage, extra: city),
-                  child: const Icon(Icons.add),
-                )
-              : null,
       body: Stack(
         children: [
           DefaultTabController(
-            length: 3,
+            length: 2,
             child: NestedScrollView(
               headerSliverBuilder: (context, value) {
                 return [
@@ -139,10 +125,9 @@ class _PageContent extends HookWidget {
               body: TabBarView(
                 controller: tabController,
                 children: [
-                  SingleChildScrollView(child: _buildDescription(context)),
                   SingleChildScrollView(
                     controller: cityPostsScrollController,
-                    child: _buildMonumentPart(),
+                    child: _buildMonumentPart(context),
                   ),
                   SingleChildScrollView(child: _buildActuPart()),
                 ],
@@ -167,7 +152,6 @@ class _PageContent extends HookWidget {
             controller: tabController,
             indicatorSize: TabBarIndicatorSize.tab,
             tabs: [
-              Tab(text: StringConstants().description),
               Tab(text: StringConstants().monuments),
               Tab(text: StringConstants().actu),
             ],
@@ -190,9 +174,9 @@ class _PageContent extends HookWidget {
     }
   }
 
-  Padding _buildDescription(BuildContext context) {
+  Widget _buildMonumentPart(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(30.0),
+      padding: const EdgeInsets.all(15.0),
       child: Column(
         children: [
           Text(
@@ -212,63 +196,37 @@ class _PageContent extends HookWidget {
               fontSize: 15,
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMonumentPart() {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: Column(
-        children: [
           Text(
-            '${StringConstants().lastPostsFrom} ${city.name}',
+            '${StringConstants().monuments} ${StringConstants().of} ${city.name}',
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
           15.ph,
-          RepositoryProvider(
-            create: (context) => PostRepository(
-              postRemoteDataSource: PostRemoteDataSource(),
-            ),
-            child: BlocProvider(
-              create: (context) => PostBloc(
-                postRepository: RepositoryProvider.of<PostRepository>(context),
-                postService: PostService(),
-              ),
-              child: BlocBuilder<PostBloc, PostState>(
-                builder: (context, state) {
-                  return BlocBuilder<CityBloc, CityState>(
-                    builder: (context, state) {
-                      return Column(
-                        children: [
-                          MonumentList(
-                            monuments: context
-                                .read<CityBloc>()
-                                .state
-                                .selectedCityMonument,
-                          ),
-                          Center(
-                            child: context
-                                    .read<CityBloc>()
-                                    .state
-                                    .getCityHasMoreMonuments
-                                ? (context.read<CityBloc>().state.status !=
-                                        CityStatus.error
-                                    ? const ShimmerPostAndMonumentResume()
-                                    : _buildErrorWidget(context))
-                                : Text(StringConstants().noMorePosts),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
+          BlocBuilder<CityBloc, CityState>(
+            builder: (context, state) {
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: MonumentList(
+                      monuments:
+                          context.read<CityBloc>().state.selectedCityMonument,
+                    ),
+                  ),
+                  Center(
+                    child:
+                        context.read<CityBloc>().state.getCityHasMoreMonuments
+                            ? (context.read<CityBloc>().state.status !=
+                                    CityStatus.error
+                                ? const ShimmerPostAndMonumentResume()
+                                : _buildErrorWidget(context))
+                            : Text(StringConstants().noMorePosts),
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),
@@ -276,8 +234,10 @@ class _PageContent extends HookWidget {
   }
 
   Widget _buildActuPart() {
-    return const Center(
-      child: Text('Actu'),
+    return Center(
+      child: CityPostList(
+        city: city,
+      ),
     );
   }
 

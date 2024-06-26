@@ -108,7 +108,7 @@ class SearchingCityBody extends HookWidget {
                             : const SizedBox.shrink()))
                     : Padding(
                         padding: const EdgeInsets.all(15.0),
-                        child: Text(StringConstants().noMoreMonuments),
+                        child: Text(StringConstants().noMoreCities),
                       ),
               ),
             ],

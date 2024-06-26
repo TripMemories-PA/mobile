@@ -59,16 +59,16 @@ class MarkerIconsCustom {
             : _instance.museumMarkerIcon;
       case 2:
         return isSelected
-            ? _instance.selectedChurchMarkerIcon
-            : _instance.churchMarkerIcon;
-      case 3:
-        return isSelected
             ? _instance.selectedGardenMarkerIcon
             : _instance.gardenMarkerIcon;
-      case 4:
+      case 3  :
         return isSelected
             ? _instance.selectedMonumentMarkerIcon
             : _instance.monumentMarkerIcon;
+      case 4:
+        return isSelected
+            ? _instance.selectedChurchMarkerIcon
+            : _instance.churchMarkerIcon;
       default:
         return isSelected ? _instance.selectedMarkerIcon : _instance.markerIcon;
     }

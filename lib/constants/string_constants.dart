@@ -93,6 +93,7 @@ class StringConstants {
   String get noCityFound => 'Aucune ville trouvée';
   String get result => 'résultat';
   String get searchMonuments => 'Rechercher des monuments';
+  String get searchCities => 'Rechercher des villes';
   String get close => 'Fermer';
   String get friendRequests => "Demandes d'amis";
   String get myFriends => 'Mes amis';

@@ -26,9 +26,9 @@ class SubscribeForm extends HookWidget {
     final TextEditingController lastNameController = useTextEditingController();
     final TextEditingController userNameController = useTextEditingController();
     final TextEditingController emailController =
-        useTextEditingController(text: 'test@mail.com');
+        useTextEditingController();
     final TextEditingController passwordController =
-        useTextEditingController(text: 'Test1234!');
+        useTextEditingController();
     final TextEditingController confirmPasswordController =
         useTextEditingController(text: 'Test1234!');
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();

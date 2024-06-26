@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:progressive_image/progressive_image.dart';
 
 import '../num_extensions.dart';
 import '../object/poi/poi.dart';
@@ -22,7 +22,6 @@ class MonumentResumeCard extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return SizedBox(
-          height: 300,
           width: constraints.maxWidth / 2 - 5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,31 +31,20 @@ class MonumentResumeCard extends StatelessWidget {
                 width: constraints.maxWidth,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
-                  child: Image.network(
-                    monument.cover.url,
-                    loadingBuilder: (
-                      BuildContext context,
-                      Widget child,
-                      ImageChunkEvent? loadingProgress,
-                    ) {
-                      if (loadingProgress == null) {
-                        return child;
-                      } else {
-                        return const Center(
-                          child: CupertinoActivityIndicator(),
-                        );
-                      }
-                    },
-                    errorBuilder: (
-                      BuildContext context,
-                      Object error,
-                      StackTrace? stackTrace,
-                    ) {
-                      return const Icon(
-                        CupertinoIcons.exclamationmark_triangle,
+                  child:
+                  LayoutBuilder(
+                    builder: (BuildContext context, BoxConstraints constraints) {
+                      return ProgressiveImage(
+                        placeholder: null,
+                        // size: 1.87KB
+                        thumbnail: const AssetImage('assets/images/placeholder.jpg'),
+                        // size: 1.29MB
+                        image: NetworkImage(monument.cover.url),
+                        height: constraints.maxHeight,
+                        width: constraints.maxWidth,
+                        fit: BoxFit.cover,
                       );
                     },
-                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -87,8 +75,8 @@ class MonumentResumeCard extends StatelessWidget {
                     itemPadding: const EdgeInsets.symmetric(horizontal: 1.5),
                     minRating: 1,
                     maxRating: 5,
-                    updateOnDrag: true,
                     allowHalfRating: true,
+                    ignoreGestures: true,
                     itemSize:
                         bodySize == SearchingMonumentBodySize.large ? 19 : 14,
                     ratingWidget: RatingWidget(

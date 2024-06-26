@@ -57,6 +57,7 @@ class StringConstants {
   String get noMoreFriends => "Plus d'amis à afficher.";
   String get noMoreUsers => "Plus d'utilisateurs à afficher.";
   String get noMoreMonuments => 'Plus de monuments à afficher.';
+  String get noMoreCities => 'Plus de monuments à afficher.';
   String get noMoreComments => 'Plus de commentaires à afficher.';
   String get noMorePosts => 'Plus de posts à afficher.';
   String get retry => 'Réessayer';
@@ -115,4 +116,5 @@ class StringConstants {
   String get searchByName => 'Rechercher par nom';
   String get searchByCity => 'Rechercher par ville';
   String get monuments => 'Monuments';
+  String get of => 'de';
 }

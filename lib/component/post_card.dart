@@ -75,7 +75,7 @@ class PostCard extends HookWidget {
                               thumbnail:
                               const AssetImage('assets/images/placeholder.jpg'),
                               // size: 1.29MB
-                              image: NetworkImage(post.image?.url ?? '' ?? ''),
+                              image: NetworkImage(post.image?.url ?? ''),
                               height: constraints.maxHeight,
                               width: constraints.maxWidth,
                               fit: BoxFit.cover,

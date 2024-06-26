@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:trip_memories_mobile/component/shimmer/shimmer_post_and_monument_resume.dart';
 
 import '../api/post/post_service.dart';
 import '../bloc/post/post_bloc.dart';
@@ -10,6 +9,7 @@ import '../object/post/post.dart';
 import '../repository/post/post_repository.dart';
 import '../service/post/post_remote_data_source.dart';
 import 'post_card.dart';
+import 'shimmer/shimmer_post_and_monument_resume.dart';
 import 'shimmer/shimmer_post_and_monument_resume_list.dart';
 
 class PostList extends HookWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../object/poi/poi.dart';
-import 'monument_card.dart';
+import 'monument_resume_card.dart';
 
 class MonumentList extends StatelessWidget {
   const MonumentList({super.key, required this.monuments});
@@ -11,11 +11,13 @@ class MonumentList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 10.0,
-      runSpacing: 10.0,
+      spacing: 10,
+      runSpacing: 10,
       children: monuments
           .map(
-            (monument) => MonumentCard(monument: monument),
+            (monument) => MonumentResumeCard(
+              monument: monument,
+            ),
           )
           .toList(),
     );

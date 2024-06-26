@@ -83,6 +83,7 @@ class CityResumeCard extends StatelessWidget {
                     updateOnDrag: true,
                     allowHalfRating: true,
                     itemSize: bodySize == SearchingCityBodySize.large ? 19 : 14,
+                    ignoreGestures: true,
                     ratingWidget: RatingWidget(
                       full: Icon(
                         Icons.star,

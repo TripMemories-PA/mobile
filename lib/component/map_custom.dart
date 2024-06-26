@@ -163,6 +163,7 @@ class _MapCustomState extends State<MapCustom> {
 
   GoogleMap _buildGoogleMap() {
     return GoogleMap(
+      myLocationButtonEnabled: false,
       mapToolbarEnabled: false,
       onCameraIdle: () async {
         EasyDebounce.debounce('search_map_monuments', Durations.medium1,

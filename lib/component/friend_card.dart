@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:progressive_image/progressive_image.dart';
 
 import '../constants/my_colors.dart';
 import '../constants/route_name.dart';
@@ -96,19 +96,21 @@ class FriendCard extends StatelessWidget {
           Radius.circular(50.0),
         ),
         child: avatarUrl != null
-            ? CachedNetworkImage(
-                imageUrl: avatarUrl,
-                fit: BoxFit.cover,
-                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    Center(
-                  child: CircularProgressIndicator(
-                    value: downloadProgress.progress,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).colorScheme.error,
+            ? LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return ProgressiveImage(
+                    placeholder: null,
+                    // size: 1.87KB
+                    thumbnail: const AssetImage(
+                      'assets/images/user_placeholder.jpg',
                     ),
-                  ),
-                ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                    // size: 1.29MB
+                    image: NetworkImage(avatarUrl),
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth,
+                    fit: BoxFit.cover,
+                  );
+                },
               )
             : const CircleAvatar(
                 backgroundColor: MyColors.lightGrey,

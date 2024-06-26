@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:progressive_image/progressive_image.dart';
 
 import '../bloc/user_searching_bloc/user_searching_bloc.dart';
 import '../constants/my_colors.dart';
@@ -159,20 +159,21 @@ class UserCard extends StatelessWidget {
           child: avatarUrl != null
               ? ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
-                  child: CachedNetworkImage(
-                    imageUrl: avatarUrl,
-                    fit: BoxFit.cover,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) => Center(
-                      child: CircularProgressIndicator(
-                        value: downloadProgress.progress,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).colorScheme.error,
-                        ),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                  child: LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      return ProgressiveImage(
+                        placeholder: null,
+                        // size: 1.87KB
+                        thumbnail: const AssetImage(
+                            'assets/images/user_placeholder.jpg'),
+                        // size: 1.29MB
+                        image: NetworkImage(avatarUrl),
+                        height: constraints.maxHeight,
+                        width: constraints.maxWidth,
+                        fit: BoxFit.cover,
+                      );
+                    },
                   ),
                 )
               : Container(

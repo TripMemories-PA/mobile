@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:progressive_image/progressive_image.dart';
 
 import '../bloc/profile/profile_bloc.dart';
 import '../object/avatar/uploaded_file.dart';
@@ -65,20 +65,21 @@ class ProfilePictureInteractive extends StatelessWidget {
                   Radius.circular(50.0),
                 ),
                 child: avatarUrl != null
-                    ? CachedNetworkImage(
-                        imageUrl: avatarUrl,
-                        fit: BoxFit.cover,
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) => Center(
-                          child: CircularProgressIndicator(
-                            value: downloadProgress.progress,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Theme.of(context).colorScheme.error,
-                            ),
-                          ),
-                        ),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                    ? LayoutBuilder(
+                        builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          return ProgressiveImage(
+                            placeholder: null,
+                            // size: 1.87KB
+                            thumbnail: const AssetImage(
+                                'assets/images/user_placeholder.jpg'),
+                            // size: 1.29MB
+                            image: NetworkImage(avatarUrl),
+                            height: constraints.maxHeight,
+                            width: constraints.maxWidth,
+                            fit: BoxFit.cover,
+                          );
+                        },
                       )
                     : const CircleAvatar(
                         backgroundColor: Colors.grey,
@@ -128,19 +129,21 @@ class ProfilePicture extends StatelessWidget {
             Radius.circular(50.0),
           ),
           child: uploadedFile != null
-              ? CachedNetworkImage(
-                  imageUrl: uploadedFile.url,
-                  fit: BoxFit.cover,
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      Center(
-                    child: CircularProgressIndicator(
-                      value: downloadProgress.progress,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Theme.of(context).colorScheme.error,
+              ? LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    return ProgressiveImage(
+                      placeholder: null,
+                      // size: 1.87KB
+                      thumbnail: const AssetImage(
+                        'assets/images/user_placeholder.jpg',
                       ),
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                      // size: 1.29MB
+                      image: NetworkImage(uploadedFile.url),
+                      height: constraints.maxHeight,
+                      width: constraints.maxWidth,
+                      fit: BoxFit.cover,
+                    );
+                  },
                 )
               : const CircleAvatar(
                   backgroundColor: Colors.grey,

@@ -13,7 +13,9 @@ import '../object/profile/profile.dart';
 import '../repository/profile/profile_repository.dart';
 import '../utils/messenger.dart';
 import 'friends_and_visited_widget.dart';
+import 'popup/confirmation_logout_dialog.dart';
 import 'popup/modify_user_infos_popup.dart';
+import 'popup/my_friends_requests.dart';
 
 class ProfileBanner extends StatelessWidget {
   const ProfileBanner({
@@ -74,15 +76,27 @@ class ProfileBanner extends StatelessWidget {
                                       listener: (context, state) {
                                         if (state.status ==
                                             FriendRequestStatus.accepted) {
-                                          context
-                                              .read<ProfileBloc>()
-                                              .add(GetProfileEvent(userId: context.read<ProfileBloc>().state.profile?.id));
+                                          context.read<ProfileBloc>().add(
+                                                GetProfileEvent(
+                                                  userId: context
+                                                      .read<ProfileBloc>()
+                                                      .state
+                                                      .profile
+                                                      ?.id,
+                                                ),
+                                              );
                                         } else if (state.status ==
                                             FriendRequestStatus
                                                 .friendShipDeleted) {
-                                          context
-                                              .read<ProfileBloc>()
-                                              .add(GetProfileEvent(userId: context.read<ProfileBloc>().state.profile?.id));
+                                          context.read<ProfileBloc>().add(
+                                                GetProfileEvent(
+                                                  userId: context
+                                                      .read<ProfileBloc>()
+                                                      .state
+                                                      .profile
+                                                      ?.id,
+                                                ),
+                                              );
                                           Messenger.showSnackBarQuickInfo(
                                             StringConstants().friendDeleted,
                                             context,
@@ -95,9 +109,15 @@ class ProfileBanner extends StatelessWidget {
                                       listener: (context, state) {
                                         if (state.status ==
                                             UserSearchingStatus.requestSent) {
-                                          context
-                                              .read<ProfileBloc>()
-                                              .add(GetProfileEvent(userId: context.read<ProfileBloc>().state.profile?.id));
+                                          context.read<ProfileBloc>().add(
+                                                GetProfileEvent(
+                                                  userId: context
+                                                      .read<ProfileBloc>()
+                                                      .state
+                                                      .profile
+                                                      ?.id,
+                                                ),
+                                              );
                                           Messenger.showSnackBarQuickInfo(
                                             StringConstants().friendRequestSent,
                                             context,
@@ -142,7 +162,7 @@ class ProfileBanner extends StatelessWidget {
     );
   }
 
-  Container _buildProfileActionButton(BuildContext context) {
+  Widget _buildProfileActionButton(BuildContext context) {
     final Profile? profile = context.read<ProfileBloc>().state.profile;
     final bool imLoggedIn =
         context.read<AuthBloc>().state.status == AuthStatus.authenticated;
@@ -151,13 +171,14 @@ class ProfileBanner extends StatelessWidget {
         height: 30,
       );
     } else {
-      Icon icon = Icon(
-        Icons.edit_outlined,
-        color: Theme.of(context).colorScheme.primary,
-      );
+      Icon? icon;
+      Widget? widgetToDisplay;
       Function() onPressed = () {};
       if (isMyProfile) {
-        //we keep the same icon
+        icon = Icon(
+          Icons.edit_outlined,
+          color: Theme.of(context).colorScheme.primary,
+        );
         onPressed = () async {
           await modifyUserInfosPopup(context);
         };
@@ -167,51 +188,78 @@ class ProfileBanner extends StatelessWidget {
             Icons.person_remove_outlined,
             color: Theme.of(context).colorScheme.primary,
           );
-          onPressed = () {
-            context
-                .read<FriendRequestBloc>()
-                .add(DeleteFriendEvent(profile.id));
+          onPressed = () async {
+            confirmationPopUp(
+              context,
+              title: StringConstants().sureToDeleteAccount,
+            ).then((bool result) {
+              if (result) {
+                context
+                    .read<FriendRequestBloc>()
+                    .add(DeleteFriendEvent(profile.id));
+              }
+            });
           };
-        } else if ((profile.isReceivedFriendRequest ?? false) ||
-            (profile.isSentFriendRequest ?? false)) {
-          icon = Icon(
-            Icons.person_add_outlined,
-            color: Theme.of(context).colorScheme.secondary,
+        } else if (profile.hasReceivedFriendRequest ?? false) {
+          widgetToDisplay = SizedBox(
+            width: 110,
+            child: Text(
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              StringConstants().friendRequestSent,
+            ),
           );
-          onPressed = () {
-            print('coucou');
-          };
+          onPressed = () {};
+        } else if (profile.hasSentFriendRequest ?? false) {
+          widgetToDisplay = SizedBox(
+            width: MediaQuery.of(context).size.width * 0.30,
+            child: Column(
+              children: [
+                Text(StringConstants().friendRequestReceived),
+                10.ph,
+                ElevatedButton(
+                  onPressed: () async {
+                    await myFriendsRequestsPopup(context);
+                  },
+                  child: Text(StringConstants().seeMyFriendRequests),
+                ),
+              ],
+            ),
+          );
+          onPressed = () {};
         } else {
           icon = Icon(
             Icons.person_add_outlined,
             color: Theme.of(context).colorScheme.primary,
           );
           onPressed = () {
-            print('coucou');
-            print(profile);
             context
                 .read<UserSearchingBloc>()
                 .add(SendFriendRequestEvent(userId: profile.id.toString()));
           };
         }
       }
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).primaryColor,
-          ),
-          shape: BoxShape.circle,
-        ),
-        child: IconButton(
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(
-              Colors.transparent,
-            ),
-          ),
-          onPressed: () => onPressed(),
-          icon: icon,
-        ),
-      );
+      return icon != null
+          ? Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).primaryColor,
+                ),
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(
+                    Colors.transparent,
+                  ),
+                ),
+                onPressed: () => onPressed(),
+                icon: icon,
+              ),
+            )
+          : (widgetToDisplay ?? Container());
     }
   }
 }

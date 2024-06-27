@@ -31,7 +31,8 @@ class FieldValidator {
 
     if (password.length < 8 ||
         password.length > 16 ||
-        !password.contains(RegExp(r'[a-zA-Z]')) ||
+        !password.contains(RegExp(r'[a-z]')) ||
+        !password.contains(RegExp(r'[A-Z]')) ||
         !password.contains(RegExp(r'[0-9]')) ||
         password.contains(RegExp(r'\s')) ||
         !password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {

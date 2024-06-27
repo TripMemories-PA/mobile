@@ -264,4 +264,16 @@ class ProfileService implements IProfileService, IProfileRepository {
       throw BadRequestException(AuthError.notAuthenticated());
     }
   }
+
+  @override
+  Future<void> removeFriend({required int friendId}) async {
+    try {
+      final String url = '$apiMeUrl/friends/$friendId';
+      await DioClient.instance.delete(
+        url,
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+  }
 }

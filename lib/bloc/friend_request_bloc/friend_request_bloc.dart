@@ -134,6 +134,23 @@ class FriendRequestBloc extends Bloc<FriendRequestEvent, FriendRequestState> {
         );
       }
     });
+
+
+    on<DeleteFriendEvent>((event, emit) async {
+      try {
+        emit(state.copyWith(status: FriendRequestStatus.loading));
+        await profileService.removeFriend(friendId: event.friendId);
+        emit(state.copyWith(status: FriendRequestStatus.friendShipDeleted));
+      } catch (e) {
+        emit(
+          state.copyWith(
+            status: FriendRequestStatus.error,
+            error: e is CustomException ? e.apiError : ApiError.unknown(),
+          ),
+        );
+      }
+    });
+
   }
 
   final IProfileService profileService;

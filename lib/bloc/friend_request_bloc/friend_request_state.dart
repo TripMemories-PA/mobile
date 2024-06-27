@@ -6,6 +6,7 @@ enum FriendRequestStatus {
   accepted,
   refused,
   error,
+  friendShipDeleted,
 }
 
 class FriendRequestState {

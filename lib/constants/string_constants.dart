@@ -68,6 +68,7 @@ class StringConstants {
   String get friendRequestAccepted => "Demande d'ami acceptée";
   String get friendRequestRefused => "Demande d'ami refusée";
   String get friendRequestSent => "Demande d'ami envoyée";
+  String get friendDeleted => 'Ami supprimé';
   String get comments => 'Commentaires';
   String get noComments => 'Pas de commentaires';
   String get loadMoreResults => 'Charger plus de résultats';

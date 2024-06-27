@@ -43,7 +43,7 @@ class FieldValidator {
   }
 
   static String? validateSamePassword(
-      dynamic password, dynamic confirmPassword) {
+      dynamic password, dynamic confirmPassword,) {
     final String? valid = validateRequired(value: confirmPassword);
     if (valid != null) {
       return valid;

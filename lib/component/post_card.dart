@@ -66,13 +66,16 @@ class PostCard extends HookWidget {
                         height: 200,
                         width: double.infinity,
                         child: LayoutBuilder(
-                          builder: (BuildContext context,
-                              BoxConstraints constraints) {
+                          builder: (
+                            BuildContext context,
+                            BoxConstraints constraints,
+                          ) {
                             return ProgressiveImage(
                               placeholder: null,
                               // size: 1.87KB
                               thumbnail: const AssetImage(
-                                  'assets/images/placeholder.jpg'),
+                                'assets/images/placeholder.jpg',
+                              ),
                               // size: 1.29MB
                               image: NetworkImage(post.image?.url ?? ''),
                               height: constraints.maxHeight,
@@ -191,9 +194,14 @@ class PostCard extends HookWidget {
                       children: [
                         CircleAvatar(
                           radius: 20,
-                          backgroundImage: CachedNetworkImageProvider(
-                            post.createdBy.avatar?.url ?? '',
-                          ),
+                          backgroundImage: post.createdBy.avatar?.url != null
+                              ? CachedNetworkImageProvider(
+                                  post.createdBy.avatar!.url,
+                                )
+                              : null,
+                          child: post.createdBy.avatar?.url == null
+                              ? const Icon(Icons.person)
+                              : null,
                         ),
                         5.pw,
                         Column(

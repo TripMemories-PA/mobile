@@ -39,8 +39,8 @@ const Profile me = Profile(
   firstname: 'John',
   lastname: 'Doe',
   email: 'test@mail.com',
-  isSentFriendRequest: false,
-  isReceivedFriendRequest: false,
+  hasSentFriendRequest: false,
+  hasReceivedFriendRequest: false,
   poisCount: 0,
 );
 
@@ -51,8 +51,8 @@ const Profile profile = Profile(
   firstname: 'John',
   lastname: 'Doe',
   email: 'test@mail.com',
-  isSentFriendRequest: false,
-  isReceivedFriendRequest: false,
+  hasSentFriendRequest: false,
+  hasReceivedFriendRequest: false,
   poisCount: 0,
 );
 

@@ -44,7 +44,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       keyboardType: TextInputType.visiblePassword,
       validator: (value) => widget.needPasswordControl
           ? FieldValidator.validatePassword(value)
-          : FieldValidator.validateRequired(value),
+          : FieldValidator.validateRequired(value: value),
     );
   }
 }

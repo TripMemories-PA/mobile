@@ -62,18 +62,17 @@ class PostCard extends HookWidget {
                       borderRadius: const BorderRadius.all(
                         Radius.circular(15.0),
                       ),
-                      child:
-                      SizedBox(
+                      child: SizedBox(
                         height: 200,
                         width: double.infinity,
                         child: LayoutBuilder(
-                          builder:
-                              (BuildContext context, BoxConstraints constraints) {
+                          builder: (BuildContext context,
+                              BoxConstraints constraints) {
                             return ProgressiveImage(
                               placeholder: null,
                               // size: 1.87KB
-                              thumbnail:
-                              const AssetImage('assets/images/placeholder.jpg'),
+                              thumbnail: const AssetImage(
+                                  'assets/images/placeholder.jpg'),
                               // size: 1.29MB
                               image: NetworkImage(post.image?.url ?? ''),
                               height: constraints.maxHeight,
@@ -234,17 +233,11 @@ class PostCard extends HookWidget {
                   onPressed: () async {
                     if (context.read<AuthBloc>().state.status ==
                         AuthStatus.guest) {
-                      final bool result = await confirmationPopUp(
+                      await confirmationPopUp(
                         context,
                         title: StringConstants().pleaseLogin,
+                        isOkPopUp: true,
                       );
-                      if (!result) {
-                        return;
-                      } else {
-                        if (context.mounted) {
-                          context.go(RouteName.loginPage);
-                        }
-                      }
                     } else {
                       if (context.read<AuthBloc>().state.user?.id !=
                           post.createdBy.id) {

@@ -30,7 +30,7 @@ class SubscribeForm extends HookWidget {
     final TextEditingController passwordController =
         useTextEditingController();
     final TextEditingController confirmPasswordController =
-        useTextEditingController(text: 'Test1234!');
+        useTextEditingController();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return BlocProvider(
       create: (context) => SubscribeBloc(
@@ -56,7 +56,7 @@ class SubscribeForm extends HookWidget {
                       hintText: "Nom d'utilisateur",
                     ),
                     validator: (value) =>
-                        FieldValidator.validateRequired(value),
+                        FieldValidator.validateRequired(value: value),
                     controller: userNameController,
                   ),
                   12.ph,
@@ -126,7 +126,7 @@ class SubscribeForm extends HookWidget {
             decoration: const InputDecoration(
               hintText: 'Prénom',
             ),
-            validator: (value) => FieldValidator.validateRequired(value),
+            validator: (value) => FieldValidator.validateRequired(value: value, minLenghtValue: 3),
             controller: firstNameController,
           ),
         ),
@@ -138,7 +138,7 @@ class SubscribeForm extends HookWidget {
             decoration: const InputDecoration(
               hintText: 'Nom',
             ),
-            validator: (value) => FieldValidator.validateRequired(value),
+            validator: (value) => FieldValidator.validateRequired(value: value, minLenghtValue: 3),
             controller: lastNameController,
           ),
         ),

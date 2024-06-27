@@ -4,11 +4,16 @@ import 'package:flutter/cupertino.dart';
 class FieldValidator {
   const FieldValidator._();
 
-  static String? validateRequired(
+  static String? validateRequired({
     dynamic value,
-  ) {
+    int? minLenghtValue,
+  }) {
     if (value == null || value.isEmpty) {
       return 'Champs obligatoire';
+    }
+
+    if (minLenghtValue != null && value.length < minLenghtValue) {
+      return 'Le champ doit contenir au moins $minLenghtValue caractères';
     }
     return null;
   }
@@ -36,8 +41,9 @@ class FieldValidator {
     return null;
   }
 
-  static String? validateSamePassword(dynamic password, dynamic confirmPassword) {
-    final String? valid = validateRequired(confirmPassword);
+  static String? validateSamePassword(
+      dynamic password, dynamic confirmPassword) {
+    final String? valid = validateRequired(value: confirmPassword);
     if (valid != null) {
       return valid;
     }

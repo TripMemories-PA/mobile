@@ -16,7 +16,6 @@ import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/map_style.dart';
-import '../object/marker_icons_custom.dart';
 import '../object/poi/poi.dart';
 import '../object/position.dart';
 import 'search_bar_custom.dart';
@@ -60,8 +59,8 @@ class _MapCustomState extends State<MapCustom> {
               final MarkerId markerId = MarkerId(poi.id.toString());
               final Marker marker = Marker(
                 icon: selectedMarkerId == markerId
-                    ? MarkerIconsCustom.getMarkerIcon(poi.type.id, true)
-                    : MarkerIconsCustom.getMarkerIcon(poi.type.id, false),
+                    ? poi.selectedMarkerIcon
+                    : poi.markerIcon,
                 markerId: MarkerId(poi.id.toString()),
                 position: LatLng(latitude, longitude),
                 onTap: () {
@@ -108,7 +107,7 @@ class _MapCustomState extends State<MapCustom> {
       final double latitude = double.parse(tmpSelectedPoi.latitude);
       final double longitude = double.parse(tmpSelectedPoi.longitude);
       markers[tmpSelectedMarkerId] = Marker(
-        icon: MarkerIconsCustom.getMarkerIcon(tmpSelectedPoi.type.id, false),
+        icon: tmpSelectedPoi.markerIcon,
         markerId: tmpSelectedMarkerId,
         position: LatLng(latitude, longitude),
         onTap: () {
@@ -136,7 +135,7 @@ class _MapCustomState extends State<MapCustom> {
               final double longitude = double.parse(lng);
               final MarkerId markerId = MarkerId(poi.id.toString());
               final Marker marker = Marker(
-                icon: MarkerIconsCustom.getMarkerIcon(poi.type.id, true),
+                icon: poi.selectedMarkerIcon,
                 markerId: MarkerId(poi.id.toString()),
                 position: LatLng(latitude, longitude),
                 onTap: () {

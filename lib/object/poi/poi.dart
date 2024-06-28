@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../../object/avatar/uploaded_file.dart';
 import '../../constants/my_colors.dart';
 import '../city/city.dart';
+import '../marker_icons_custom.dart';
 import 'poi_icon.dart';
 import 'poi_type.dart';
 
@@ -12,7 +14,7 @@ class Poi {
     required this.name,
     this.description,
     this.coverId,
-    this.typeId,
+    required this.typeId,
     required this.latitude,
     required this.longitude,
     this.city,
@@ -31,7 +33,7 @@ class Poi {
       name: json['name'] as String,
       description: json['description'] as String?,
       coverId: json['coverId'] as int?,
-      typeId: json['typeId'] as int?,
+      typeId: json['typeId'] as int,
       latitude: json['latitude'] as String,
       longitude: json['longitude'] as String,
       city: json['city'] == null
@@ -110,11 +112,19 @@ class Poi {
     }
   }
 
+  BitmapDescriptor get markerIcon {
+    return MarkerIconsCustom.getMarkerIcon(typeId, false);
+  }
+
+  BitmapDescriptor get selectedMarkerIcon {
+    return MarkerIconsCustom.getMarkerIcon(typeId, true);
+  }
+
   final int id;
   final String name;
   final String? description;
   final int? coverId;
-  final int? typeId;
+  final int typeId;
   final String latitude;
   final String longitude;
   final City? city;

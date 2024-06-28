@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -217,13 +218,23 @@ class ProfileBanner extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.30,
             child: Column(
               children: [
-                Text(StringConstants().friendRequestReceived),
+                Text(
+                  StringConstants().friendRequestReceived,
+                  textAlign: TextAlign.center,
+                ),
                 10.ph,
                 ElevatedButton(
                   onPressed: () async {
                     await myFriendsRequestsPopup(context);
                   },
-                  child: Text(StringConstants().seeMyFriendRequests),
+                  child: AutoSizeText(
+                    StringConstants().seeMyFriendRequests,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 20,
+                    ),
+                    maxLines: 2,
+                  ),
                 ),
               ],
             ),

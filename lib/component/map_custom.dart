@@ -459,37 +459,37 @@ class _SearchOnMap extends HookWidget {
                             child: Column(
                               children: [
                                 ...state.monuments.map(
-                                  (Poi poi) => GestureDetector(
-                                    onTap: () {
-                                      searchContent.value = '';
-                                      searchController.clear();
-                                      onMonumentSelected(poi);
+                                  (Poi poi) => Builder(
+                                    builder: (context) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          searchContent.value = '';
+                                          searchController.clear();
+                                          onMonumentSelected(poi);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 15.0,
+                                            horizontal: 10.0,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              15.pw,
+                                              poi.icon,
+                                              15.pw,
+                                              Expanded(
+                                                child: Text(
+                                                  poi.name,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 3,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
                                     },
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 15.0,
-                                        horizontal: 10.0,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          15.pw,
-                                          Icon(
-                                            Icons.account_balance,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                          ),
-                                          15.pw,
-                                          Expanded(
-                                            child: Text(
-                                              poi.name,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 3,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
                                   ),
                                 ),
                                 Center(

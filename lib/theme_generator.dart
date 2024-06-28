@@ -26,20 +26,20 @@ class ThemeGenerator {
       );
 
   static TextTheme get _textTheme => TextTheme(
-    bodyLarge: TextStyle(
-      fontFamily: GoogleFonts.urbanist().fontFamily,
-      fontWeight: FontWeight.bold,
-      color: Colors.black,
-    ),
-    bodyMedium: TextStyle(
-      fontFamily: GoogleFonts.urbanist().fontFamily,
-      fontWeight: FontWeight.bold,
-      color: Colors.black,
-    ),
-  );
+        bodyLarge: TextStyle(
+          fontFamily: GoogleFonts.urbanist().fontFamily,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        bodyMedium: TextStyle(
+          fontFamily: GoogleFonts.urbanist().fontFamily,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      );
 
   static ColorScheme get _colorScheme => const ColorScheme(
-        primary: Color(0xFF4169E1),
+        primary: MyColors.purple,
         onPrimary: Colors.white,
         secondary: Color(0x1a5569e1),
         onSecondary: Colors.black,

@@ -288,7 +288,7 @@ class CommentButtonContent extends HookWidget {
                   ),
                 )
               else
-                const Icon(Icons.account_circle),
+                const Icon(Icons.account_circle, size: 40),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -342,26 +342,34 @@ class CommentButtonContent extends HookWidget {
                     },
                   )
                 else
-                  IconButton(
-                    icon: Icon(
-                      comment.isLiked ? Icons.favorite : Icons.favorite_outline,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(
-                        Colors.transparent,
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          comment.isLiked
+                              ? Icons.favorite
+                              : Icons.favorite_outline,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all(
+                            Colors.transparent,
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (context.read<AuthBloc>().state.status ==
+                              AuthStatus.authenticated) {
+                            context.read<CommentBloc>().add(
+                                  comment.isLiked
+                                      ? DislikeCommentEvent(comment.id)
+                                      : LikeCommentEvent(comment.id),
+                                );
+                          }
+                        },
                       ),
-                    ),
-                    onPressed: () async {
-                      if (context.read<AuthBloc>().state.status ==
-                          AuthStatus.authenticated) {
-                        context.read<CommentBloc>().add(
-                              comment.isLiked
-                                  ? DislikeCommentEvent(comment.id)
-                                  : LikeCommentEvent(comment.id),
-                            );
-                      }
-                    },
+                      Text(comment.likesCount.toString()),
+                      10.pw,
+                    ],
                   ),
             ],
           ),

@@ -6,6 +6,7 @@ import '../../bloc/auth_bloc/auth_bloc.dart';
 import '../../bloc/subscribe_bloc/subscribe_bloc.dart';
 import '../../bloc/subscribe_bloc/subscribe_event.dart';
 import '../../bloc/subscribe_bloc/subscribe_state.dart';
+import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
 import '../../utils/field_validator.dart';
 import '../../utils/messenger.dart';
@@ -25,12 +26,10 @@ class SubscribeForm extends HookWidget {
         useTextEditingController();
     final TextEditingController lastNameController = useTextEditingController();
     final TextEditingController userNameController = useTextEditingController();
-    final TextEditingController emailController =
-        useTextEditingController();
-    final TextEditingController passwordController =
-        useTextEditingController();
+    final TextEditingController emailController = useTextEditingController();
+    final TextEditingController passwordController = useTextEditingController();
     final TextEditingController confirmPasswordController =
-        useTextEditingController(text: 'Test1234!');
+        useTextEditingController();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return BlocProvider(
       create: (context) => SubscribeBloc(
@@ -52,18 +51,18 @@ class SubscribeForm extends HookWidget {
                   12.ph,
                   TextFormField(
                     readOnly: context.read<SubscribeBloc>().state.loading,
-                    decoration: const InputDecoration(
-                      hintText: "Nom d'utilisateur",
+                    decoration: InputDecoration(
+                      hintText: StringConstants().username,
                     ),
                     validator: (value) =>
-                        FieldValidator.validateRequired(value),
+                        FieldValidator.validateRequired(value: value),
                     controller: userNameController,
                   ),
                   12.ph,
                   TextFormField(
                     readOnly: context.read<SubscribeBloc>().state.loading,
-                    decoration: const InputDecoration(
-                      hintText: 'Adresse e-mail',
+                    decoration: InputDecoration(
+                      hintText: StringConstants().email,
                     ),
                     validator: (value) => FieldValidator.validateEmail(value!),
                     controller: emailController,
@@ -123,10 +122,13 @@ class SubscribeForm extends HookWidget {
           flex: 2,
           child: TextFormField(
             readOnly: context.read<SubscribeBloc>().state.loading,
-            decoration: const InputDecoration(
-              hintText: 'Prénom',
+            decoration: InputDecoration(
+              hintText: StringConstants().firstName,
             ),
-            validator: (value) => FieldValidator.validateRequired(value),
+            validator: (value) => FieldValidator.validateRequired(
+              value: value,
+              minLenghtValue: 3,
+            ),
             controller: firstNameController,
           ),
         ),
@@ -135,10 +137,13 @@ class SubscribeForm extends HookWidget {
           flex: 3,
           child: TextFormField(
             readOnly: context.read<SubscribeBloc>().state.loading,
-            decoration: const InputDecoration(
-              hintText: 'Nom',
+            decoration: InputDecoration(
+              hintText: StringConstants().lastName,
             ),
-            validator: (value) => FieldValidator.validateRequired(value),
+            validator: (value) => FieldValidator.validateRequired(
+              value: value,
+              minLenghtValue: 3,
+            ),
             controller: lastNameController,
           ),
         ),
@@ -188,15 +193,17 @@ class SubscribeForm extends HookWidget {
                   Messenger.showSnackBarError(state.error!.getDescription());
                 }
                 if (state.subscribed) {
-                  Messenger.showSnackBarSuccess('Inscription réussie ✅');
+                  Messenger.showSnackBarSuccess(
+                    StringConstants().successfullSubscription,
+                  );
                 }
               },
               child: const SizedBox.shrink(),
             ),
-            const Center(
+            Center(
               child: Text(
-                "S'inscrire",
-                style: TextStyle(color: Colors.white),
+                StringConstants().subscribe,
+                style: const TextStyle(color: Colors.white),
               ),
             ),
           ],

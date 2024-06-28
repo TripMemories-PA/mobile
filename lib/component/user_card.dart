@@ -83,8 +83,8 @@ class UserCard extends StatelessWidget {
   }
 
   StatelessWidget _buildNotFriendButton(BuildContext context, Profile user) {
-    final bool isReceivedFriendRequest = user.isReceivedFriendRequest ?? false;
-    final bool isSentFriendRequest = user.isSentFriendRequest ?? false;
+    final bool isReceivedFriendRequest = user.hasReceivedFriendRequest ?? false;
+    final bool isSentFriendRequest = user.hasSentFriendRequest ?? false;
     if (isSentFriendRequest || isReceivedFriendRequest) {
       return _buildDisableButton(
         isReceivedFriendRequest: isReceivedFriendRequest,

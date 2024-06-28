@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../bloc/subscribe_bloc/subscribe_bloc.dart';
 import '../../../constants/my_colors.dart';
+import '../../../constants/string_constants.dart';
 import '../../../utils/field_validator.dart';
 
 class PasswordTextField extends HookWidget {
@@ -24,7 +25,7 @@ class PasswordTextField extends HookWidget {
       obscureText: hidePassword.value,
       decoration: InputDecoration(
         errorMaxLines: 4,
-        hintText: 'Mot de passe',
+        hintText: StringConstants().password,
         suffixIcon: InkWell(
           child: Icon(
             hidePassword.value ? Icons.remove_red_eye : Icons.visibility_off,

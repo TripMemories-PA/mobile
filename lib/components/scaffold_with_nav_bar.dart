@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../constants/string_constants.dart';
+
 class ScaffoldWithNavBar extends StatelessWidget {
   const ScaffoldWithNavBar({
     required this.navigationShell,
@@ -25,24 +27,24 @@ class ScaffoldWithNavBar extends StatelessWidget {
         unselectedItemColor: Colors.grey,
         elevation: 0,
         type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.search_outlined,
             ),
-            label: 'Search',
+            label: StringConstants().search,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.location_on_outlined,
             ),
-            label: 'Map',
+            label: StringConstants().map,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.notifications_outlined,
             ),
-            label: 'Feed',
+            label: StringConstants().feed,
           ),
           /*BottomNavigationBarItem(
             icon: Icon(
@@ -51,10 +53,10 @@ class ScaffoldWithNavBar extends StatelessWidget {
             label: 'Shop',
           ),*/
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.person_outline,
             ),
-            label: 'Profile',
+            label: StringConstants().profile,
           ),
         ],
         currentIndex: navigationShell.currentIndex,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -206,6 +207,10 @@ class MyApp extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     final GlobalKey<ScaffoldMessengerState> messengerKey =
         useMemoized(GlobalKey<ScaffoldMessengerState>.new, <Object?>[]);
     context.read<AuthBloc>().add(AppStarted());

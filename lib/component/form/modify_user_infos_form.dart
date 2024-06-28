@@ -50,7 +50,10 @@ class ModifyUserInfosForm extends HookWidget {
                 prefixIcon: const Icon(Icons.person_outline),
               ),
               textAlignVertical: TextAlignVertical.center,
-              validator: (value) => FieldValidator.validateRequired(value),
+              validator: (value) => FieldValidator.validateRequired(
+                value: value,
+                minLenghtValue: 3,
+              ),
               controller: usernameController,
             ),
           ),
@@ -72,7 +75,10 @@ class ModifyUserInfosForm extends HookWidget {
                 prefixIcon: const Icon(Icons.person_outline),
               ),
               textAlignVertical: TextAlignVertical.center,
-              validator: (value) => FieldValidator.validateRequired(value),
+              validator: (value) => FieldValidator.validateRequired(
+                value: value,
+                minLenghtValue: 3,
+              ),
               controller: lastName,
             ),
           ),
@@ -94,7 +100,10 @@ class ModifyUserInfosForm extends HookWidget {
                 prefixIcon: const Icon(Icons.person_outline),
               ),
               textAlignVertical: TextAlignVertical.center,
-              validator: (value) => FieldValidator.validateRequired(value),
+              validator: (value) => FieldValidator.validateRequired(
+                value: value,
+                minLenghtValue: 3,
+              ),
               controller: firstNameController,
             ),
           ),
@@ -143,10 +152,10 @@ class ModifyUserInfosForm extends HookWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  'Modifier les informations',
-                  style: TextStyle(color: Colors.white),
+                  StringConstants().modifyInfos,
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
             ),

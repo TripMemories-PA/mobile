@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../utils/field_validator.dart';
+import '../constants/string_constants.dart';
 
 class PasswordFormField extends StatefulWidget {
   const PasswordFormField({
@@ -25,7 +26,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       controller: widget.passwordController,
       obscureText: hidePassword,
       decoration: InputDecoration(
-        hintText: 'Mot de passe',
+        hintText: StringConstants().password,
         prefixIcon: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.0),
           child: Icon(Icons.lock_outline),
@@ -44,7 +45,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       keyboardType: TextInputType.visiblePassword,
       validator: (value) => widget.needPasswordControl
           ? FieldValidator.validatePassword(value)
-          : FieldValidator.validateRequired(value),
+          : FieldValidator.validateRequired(value: value),
     );
   }
 }

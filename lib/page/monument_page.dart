@@ -132,7 +132,7 @@ class _PageContent extends HookWidget {
         ),
         15.ph,
         Text(
-          'Derniers posts de ${monument.name}',
+          '${StringConstants().lastPostsFrom} ${monument.name}',
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,

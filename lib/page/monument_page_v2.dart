@@ -324,8 +324,8 @@ class _PageContent extends HookWidget {
   }
 
   Widget _buildActuPart() {
-    return const Center(
-      child: Text('Actu'),
+    return Center(
+      child: Text(StringConstants().actu),
     );
   }
 
@@ -352,9 +352,7 @@ class _PageContent extends HookWidget {
         background: SizedBox(
           height: 180,
           width: double.infinity,
-          child:
-
-          CachedNetworkImage(
+          child: CachedNetworkImage(
             imageUrl: monument.cover.url,
             fit: BoxFit.cover,
             progressIndicatorBuilder: (context, url, downloadProgress) =>

@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../component/form/login_form.dart';
 import '../component/form/subscribe_form.dart';
 import '../component/no_indicator_scroll.dart';
+import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 
 class LoginPage extends HookWidget {
@@ -19,12 +20,15 @@ class LoginPage extends HookWidget {
         body: Column(
           children: [
             _buildHeader(),
-            const SizedBox(
+            SizedBox(
               height: 60,
               child: TabBar(
                 tabs: [
-                  Tab(icon: Text('Connexion'), iconMargin: EdgeInsets.zero),
-                  Tab(icon: Text('Inscription')),
+                  Tab(
+                    icon: Text(StringConstants().login),
+                    iconMargin: EdgeInsets.zero,
+                  ),
+                  Tab(icon: Text(StringConstants().subscribe)),
                 ],
               ),
             ),
@@ -69,17 +73,17 @@ class LoginPage extends HookWidget {
           Column(
             children: [
               20.ph,
-              const Text(
-                'Bon retour parmi nous ! 👋🏻',
-                style: TextStyle(
+              Text(
+                StringConstants().welcomeBack,
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               15.ph,
-              const Text(
-                'Entre tes infos',
-                style: TextStyle(
+              Text(
+                StringConstants().typeYourInfos,
+                style: const TextStyle(
                   fontSize: 16,
                 ),
               ),
@@ -102,17 +106,17 @@ class LoginPage extends HookWidget {
         children: [
           Column(
             children: [
-              const Text(
-                'Prêt à monter à bord ? 👋🏻',
-                style: TextStyle(
+              Text(
+                StringConstants().readyToComeAboard,
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               15.ph,
-              const Text(
-                'Entre tes infos pour créer  ton compte Tripmemories',
-                style: TextStyle(
+              Text(
+                StringConstants().subscribeText,
+                style: const TextStyle(
                   fontSize: 16,
                 ),
               ),

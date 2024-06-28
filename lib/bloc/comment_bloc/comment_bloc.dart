@@ -123,6 +123,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
               }
               return comment;
             }).toList();
+
             emit(
               state.copyWith(
                 commentResponse:

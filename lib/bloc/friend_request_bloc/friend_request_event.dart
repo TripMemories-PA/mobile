@@ -25,3 +25,9 @@ class RejectFriendRequestEvent extends FriendRequestEvent {
 
   final String friendRequestId;
 }
+
+class DeleteFriendEvent extends FriendRequestEvent {
+  DeleteFriendEvent(this.friendId);
+
+  final int friendId;
+}

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../bloc/monument_bloc/monument_bloc.dart';
+import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import 'searching_monuments_body.dart';
 
@@ -87,22 +88,23 @@ class SearchByMonument extends HookWidget {
                 padding: const EdgeInsets.only(top: 50, left: 50, right: 50),
                 child: RichText(
                   textAlign: TextAlign.center,
-                  text: const TextSpan(
-                    text: 'Découvre les incroyables ',
-                    style: TextStyle(
+                  text: TextSpan(
+                    text: StringConstants().discoverTheIncredible,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'monuments',
-                        style: TextStyle(
+                        text: StringConstants().monuments,
+                        style: const TextStyle(
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       TextSpan(
-                        text: ' dont recèle la France',
+                        text:
+                            ' ${StringConstants().theTreasuresThatFranceHarbors}',
                       ),
                     ],
                   ),

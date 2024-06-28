@@ -101,7 +101,7 @@ class SlidePage extends HookWidget {
             selectedBorderColor: Theme.of(context).colorScheme.onSecondary,
             constraints: const BoxConstraints(
               minHeight: 30.0,
-              minWidth: 180.0,
+              minWidth: 170.0,
             ),
             isSelected:
                 citySearchSelected.value ? [false, true] : [true, false],

@@ -44,7 +44,7 @@ class LoginForm extends HookWidget {
                     decoration: InputDecoration(
                       hintText: '${StringConstants().email} ${StringConstants().or} ${StringConstants().username}',
                     ),
-                    validator: (value) => FieldValidator.validateRequired(value),
+                    validator: (value) => FieldValidator.validateRequired(value: value),
                     controller: emailController,
                   ),
                   15.ph,

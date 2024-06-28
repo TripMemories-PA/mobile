@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../object/map_style.dart';
-import '../object/marker_icons_custom.dart';
 import '../object/poi/poi.dart';
 
 class MiniMap extends StatefulWidget {
@@ -44,7 +43,7 @@ class _MiniMapState extends State<MiniMap> {
     final String lng = widget.poi.longitude;
     final double longitude = double.parse(lng);
     final Marker marker = Marker(
-      icon: MarkerIconsCustom.getMarkerIcon(widget.poi.type.id, true),
+      icon: widget.poi.selectedMarkerIcon,
       markerId: MarkerId(widget.poi.id.toString()),
       position: LatLng(latitude, longitude),
     );

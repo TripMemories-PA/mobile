@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -207,6 +208,16 @@ class _MapCustomState extends State<MapCustom> {
 
   Positioned _buildMonumentPopupCard(BuildContext context) {
     final Poi? selectedPoi = this.selectedPoi;
+    if (selectedPoi == null) {
+      return const Positioned(
+        left: 0,
+        right: 0,
+        bottom: 30,
+        child: Center(
+          child: SizedBox.shrink(),
+        ),
+      );
+    }
     return Positioned(
       left: 0,
       right: 0,
@@ -235,7 +246,7 @@ class _MapCustomState extends State<MapCustom> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
                     child: Image.network(
-                      selectedPoi?.cover.url ?? '',
+                      selectedPoi.cover.url,
                       loadingBuilder: (
                         BuildContext context,
                         Widget child,
@@ -270,7 +281,7 @@ class _MapCustomState extends State<MapCustom> {
                     children: [
                       15.ph,
                       Text(
-                        selectedPoi?.city?.name ?? 'Pas de ville',
+                        selectedPoi.city?.name ?? 'Pas de ville',
                         style: TextStyle(
                           height: 1,
                           fontSize: 14,
@@ -280,21 +291,19 @@ class _MapCustomState extends State<MapCustom> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       5.ph,
-                      Text(
-                        selectedPoi?.name ?? 'Pas de nom',
+                      AutoSizeText(
+                        selectedPoi.name,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: const TextStyle(
                           height: 1,
                           fontWeight: FontWeight.bold,
-                          fontSize: _manageFontSize(selectedPoi!.name),
                         ),
                       ),
                       5.ph,
-                      Text(
+                      AutoSizeText(
                         selectedPoi.address ?? "Pas d'adresse",
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                       ),
                       Text(
                         '${selectedPoi.city?.zipCode}',
@@ -351,18 +360,6 @@ class _MapCustomState extends State<MapCustom> {
         ),
       ),
     );
-  }
-
-  double _manageFontSize(String text) {
-    if (text.length > 20) {
-      return 15;
-    } else {
-      if (text.length > 15) {
-        return 20;
-      } else {
-        return 23;
-      }
-    }
   }
 
   void _getNewMonuments(Position position) {

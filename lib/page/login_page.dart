@@ -25,8 +25,9 @@ class LoginPage extends HookWidget {
               child: TabBar(
                 tabs: [
                   Tab(
-                      icon: Text(StringConstants().login),
-                      iconMargin: EdgeInsets.zero),
+                    icon: Text(StringConstants().login),
+                    iconMargin: EdgeInsets.zero,
+                  ),
                   Tab(icon: Text(StringConstants().subscribe)),
                 ],
               ),
@@ -74,7 +75,7 @@ class LoginPage extends HookWidget {
               20.ph,
               Text(
                 StringConstants().welcomeBack,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),

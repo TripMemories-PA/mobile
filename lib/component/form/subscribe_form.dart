@@ -126,7 +126,9 @@ class SubscribeForm extends HookWidget {
               hintText: StringConstants().firstName,
             ),
             validator: (value) => FieldValidator.validateRequired(
-                value: value, minLenghtValue: 3),
+              value: value,
+              minLenghtValue: 3,
+            ),
             controller: firstNameController,
           ),
         ),
@@ -139,7 +141,9 @@ class SubscribeForm extends HookWidget {
               hintText: StringConstants().lastName,
             ),
             validator: (value) => FieldValidator.validateRequired(
-                value: value, minLenghtValue: 3),
+              value: value,
+              minLenghtValue: 3,
+            ),
             controller: lastNameController,
           ),
         ),
@@ -190,7 +194,8 @@ class SubscribeForm extends HookWidget {
                 }
                 if (state.subscribed) {
                   Messenger.showSnackBarSuccess(
-                      StringConstants().successfullSubscription);
+                    StringConstants().successfullSubscription,
+                  );
                 }
               },
               child: const SizedBox.shrink(),

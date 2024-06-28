@@ -51,7 +51,9 @@ class ModifyUserInfosForm extends HookWidget {
               ),
               textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validateRequired(
-                  value: value, minLenghtValue: 3),
+                value: value,
+                minLenghtValue: 3,
+              ),
               controller: usernameController,
             ),
           ),
@@ -74,7 +76,9 @@ class ModifyUserInfosForm extends HookWidget {
               ),
               textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validateRequired(
-                  value: value, minLenghtValue: 3),
+                value: value,
+                minLenghtValue: 3,
+              ),
               controller: lastName,
             ),
           ),
@@ -97,7 +101,9 @@ class ModifyUserInfosForm extends HookWidget {
               ),
               textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validateRequired(
-                  value: value, minLenghtValue: 3),
+                value: value,
+                minLenghtValue: 3,
+              ),
               controller: firstNameController,
             ),
           ),

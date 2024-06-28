@@ -80,7 +80,8 @@ class EditTweetPage extends HookWidget {
                           );
                         } else if (state.status == EditTweetStatus.posted) {
                           Messenger.showSnackBarSuccess(
-                              StringConstants().tweetPosted);
+                            StringConstants().tweetPosted,
+                          );
                           context.pop();
                         }
                       },

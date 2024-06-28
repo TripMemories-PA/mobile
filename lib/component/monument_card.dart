@@ -21,7 +21,7 @@ class MonumentCard extends StatelessWidget {
                 const Icon(CupertinoIcons.exclamationmark_triangle),
           ),
           Text(monument.name),
-          Text(monument.description ?? 'PAS DE DESCRIPTION'),
+          Text(monument.description ?? ''),
         ],
       ),
     );

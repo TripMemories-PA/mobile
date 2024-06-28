@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/profile/profile_bloc.dart';
 import '../constants/my_colors.dart';
+import '../constants/string_constants.dart';
 
 class FriendsAndVisitedWidget extends StatelessWidget {
   const FriendsAndVisitedWidget({super.key, this.itIsMe = false});
@@ -33,7 +34,7 @@ class FriendsAndVisitedWidget extends StatelessWidget {
     int? friendsCount = context.read<ProfileBloc>().state.friends?.meta.total;
     friendsCount ??= 0;
     return _buildCard(
-      'amis ajoutés',
+      StringConstants().friendAdded,
       friendsCount,
     );
   }
@@ -42,7 +43,7 @@ class FriendsAndVisitedWidget extends StatelessWidget {
     final int visitedCount =
         context.read<ProfileBloc>().state.profile?.poisCount ?? 0;
     return _buildCard(
-      'monuments visités',
+      StringConstants().visitedBuildings,
       visitedCount,
     );
   }

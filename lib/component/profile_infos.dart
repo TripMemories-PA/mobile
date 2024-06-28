@@ -48,7 +48,7 @@ class ProfileInfos extends StatelessWidget {
                 onTap: () async {
                   final bool result = await confirmationPopUp(
                     context,
-                    title: 'Etes-vous sûr de vouloir vous déconnecter ?',
+                    title: StringConstants().logoutConfirmation,
                   );
                   if (!result) {
                     return;

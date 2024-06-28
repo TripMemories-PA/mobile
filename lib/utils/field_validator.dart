@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
+import '../constants/string_constants.dart';
+
 @immutable
 class FieldValidator {
   const FieldValidator._();
@@ -9,25 +11,23 @@ class FieldValidator {
     int? minLenghtValue,
   }) {
     if (value == null || value.isEmpty) {
-      return 'Champs obligatoire';
+      return StringConstants().requiredField;
     }
 
     if (minLenghtValue != null && value.length < minLenghtValue) {
-      return 'Le champ doit contenir au moins $minLenghtValue caractères';
+      return '${StringConstants().fieldMustContainsAtLeast} $minLenghtValue ${StringConstants().characters}';
     }
     return null;
   }
 
   static String? validatePassword(dynamic value) {
     if (value == null || value.isEmpty) {
-      return 'Champs obligatoire';
+      return StringConstants().requiredField;
     }
 
     final password = value.toString();
 
-    const String phrase = r'''
-  Pour un mot de passe valide, assurez-vous qu'il contienne entre 8 et 16 caractères, au moins une lettre, une majuscule, au moins un chiffre, aucun espace, et au moins un caractère spécial parmi !@#$%^&*(),.?":{}|<>.
-''';
+    final String phrase = StringConstants().passwordValidator;
 
     if (password.length < 8 ||
         password.length > 16 ||
@@ -43,25 +43,27 @@ class FieldValidator {
   }
 
   static String? validateSamePassword(
-      dynamic password, dynamic confirmPassword,) {
+    dynamic password,
+    dynamic confirmPassword,
+  ) {
     final String? valid = validateRequired(value: confirmPassword);
     if (valid != null) {
       return valid;
     }
     if (password != confirmPassword) {
-      return 'Les mots de passe ne correspondent pas';
+      return StringConstants().passwordsDoNotMatch;
     }
     return null;
   }
 
   static String? validateEmail(String email) {
     if (email.isEmpty) {
-      return 'Champs obligatoire';
+      return StringConstants().requiredField;
     } else {
       final isValidEmail =
           RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(email);
       if (!isValidEmail) {
-        return 'Adresse email invalide';
+        return StringConstants().invalidEmail;
       }
       return null;
     }

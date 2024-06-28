@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../bloc/city_bloc/city_bloc.dart';
+import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import 'searching_cities_body.dart';
 
@@ -87,22 +88,22 @@ class SearchByCity extends HookWidget {
                 padding: const EdgeInsets.only(top: 50, left: 50, right: 50),
                 child: RichText(
                   textAlign: TextAlign.center,
-                  text: const TextSpan(
-                    text: 'Découvre les incroyables ',
-                    style: TextStyle(
+                  text: TextSpan(
+                    text: StringConstants().discoverTheIncredible,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'villes',
-                        style: TextStyle(
+                        text: StringConstants().cities,
+                        style: const TextStyle(
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       TextSpan(
-                        text: ' que cache la France',
+                        text: ' ${StringConstants().thatFranceIsHiding}',
                       ),
                     ],
                   ),

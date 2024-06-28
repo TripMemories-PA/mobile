@@ -280,7 +280,7 @@ class _MapCustomState extends State<MapCustom> {
                     children: [
                       15.ph,
                       Text(
-                        selectedPoi.city?.name ?? 'Pas de ville',
+                        selectedPoi.city?.name ?? '',
                         style: TextStyle(
                           height: 1,
                           fontSize: 14,
@@ -301,7 +301,7 @@ class _MapCustomState extends State<MapCustom> {
                       ),
                       5.ph,
                       AutoSizeText(
-                        selectedPoi.address ?? "Pas d'adresse",
+                        selectedPoi.address ?? '',
                         maxLines: 2,
                       ),
                       Text(
@@ -340,7 +340,7 @@ class _MapCustomState extends State<MapCustom> {
                             onRatingUpdate: (double value) {},
                           ),
                           Text(
-                            '(${selectedPoi.postsCount} avis)',
+                            '(${selectedPoi.postsCount} ${StringConstants().reviews}',
                             style: TextStyle(
                               fontSize: 9,
                               color: Theme.of(context).colorScheme.primary,

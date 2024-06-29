@@ -10,10 +10,12 @@ class ConfirmationDialog extends StatelessWidget {
     super.key,
     this.title,
     this.subtitle,
+    this.isOkPopUp = false,
   });
 
   final String? title;
   final String? subtitle;
+  final bool? isOkPopUp;
 
   @override
   Widget build(BuildContext context) => Dialog(
@@ -26,7 +28,12 @@ class ConfirmationDialog extends StatelessWidget {
               children: <Widget>[
                 Text(title ?? StringConstants().confirmAction),
                 16.ph,
-                Row(
+                if (isOkPopUp ?? false) Center(
+                  child: TextButton(
+                    child: Text(StringConstants().ok),
+                    onPressed: () => context.pop(),
+                  ),
+                ) else Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     TextButton(
@@ -50,9 +57,10 @@ Future<bool> confirmationPopUp(
   BuildContext context, {
   String? title,
   String? subtitle,
+      bool? isOkPopUp,
 }) async =>
     await showDialog<bool>(
       context: context,
-      builder: (_) => ConfirmationDialog(title: title, subtitle: subtitle),
+      builder: (_) => ConfirmationDialog(title: title, subtitle: subtitle, isOkPopUp: isOkPopUp),
     ) ??
     false;

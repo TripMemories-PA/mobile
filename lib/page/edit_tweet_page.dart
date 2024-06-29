@@ -79,7 +79,9 @@ class EditTweetPage extends HookWidget {
                             state.error!.getDescription(),
                           );
                         } else if (state.status == EditTweetStatus.posted) {
-                          Messenger.showSnackBarSuccess('Tweet publié');
+                          Messenger.showSnackBarSuccess(
+                            StringConstants().tweetPosted,
+                          );
                           context.pop();
                         }
                       },
@@ -139,14 +141,14 @@ class EditTweetPage extends HookWidget {
                         children: [
                           _buildTitle(context, titleController),
                           10.ph,
-                          const Text(
-                            'Evaluez votre expérience',
+                          Text(
+                            StringConstants().rateYourExperience,
                             textAlign: TextAlign.left,
                           ),
                           _buildRatingBar(context, rating),
                           10.ph,
                           Text(
-                            'Mon expérience',
+                            StringConstants().myExperience,
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onSurface,
                               fontSize: 25,
@@ -157,7 +159,7 @@ class EditTweetPage extends HookWidget {
                           _buildPostText(context, contentController),
                           10.ph,
                           Text(
-                            'Localisation',
+                            StringConstants().location,
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onSurface,
                               fontSize: 25,
@@ -415,7 +417,7 @@ class EditTweetPage extends HookWidget {
               ),
               10.pw,
               Text(
-                'Retour',
+                StringConstants().back,
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
                   fontSize: 11,
@@ -435,7 +437,7 @@ class EditTweetPage extends HookWidget {
           content: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
-              'Valider',
+              StringConstants().publish,
               style: TextStyle(color: Theme.of(context).colorScheme.surface),
             ),
           ),

@@ -6,6 +6,7 @@ enum FriendRequestStatus {
   accepted,
   refused,
   error,
+  friendShipDeleted,
 }
 
 class FriendRequestState {
@@ -13,7 +14,7 @@ class FriendRequestState {
     this.friendRequests,
     this.status = FriendRequestStatus.notLoading,
     this.error,
-    this.friendsPerPage = 10,
+    this.friendsPerPage = 30,
     this.friendsPage = 0,
     this.hasMoreTweets = true,
     this.isRefresh = false,

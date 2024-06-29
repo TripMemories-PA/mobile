@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -9,6 +10,7 @@ class MarkerIconsCustom {
   }
 
   MarkerIconsCustom._internal();
+
   static final MarkerIconsCustom _instance = MarkerIconsCustom._internal();
 
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
@@ -30,25 +32,34 @@ class MarkerIconsCustom {
     museumMarkerIcon =
         await _loadMarkerIcon('assets/images/pin_museum.png', 100);
     selectedMuseumMarkerIcon =
-        await _loadMarkerIcon('assets/images/pin_museum_selected.png', 150);
+        await _loadMarkerIcon('assets/images/pin_museum_selected.png', 125);
     churchMarkerIcon =
         await _loadMarkerIcon('assets/images/pin_church.png', 100);
     selectedChurchMarkerIcon =
-        await _loadMarkerIcon('assets/images/pin_church_selected.png', 150);
+        await _loadMarkerIcon('assets/images/pin_church_selected.png', 125);
     gardenMarkerIcon =
         await _loadMarkerIcon('assets/images/pin_garden.png', 100);
     selectedGardenMarkerIcon =
-        await _loadMarkerIcon('assets/images/pin_garden_selected.png', 150);
+        await _loadMarkerIcon('assets/images/pin_garden_selected.png', 125);
     monumentMarkerIcon =
         await _loadMarkerIcon('assets/images/pin_monument.png', 100);
     selectedMonumentMarkerIcon =
-        await _loadMarkerIcon('assets/images/pin_monument_selected.png', 150);
+        await _loadMarkerIcon('assets/images/pin_monument_selected.png', 125);
   }
 
   Future<BitmapDescriptor> _loadMarkerIcon(String path, int width) async {
     final ByteData data = await rootBundle.load(path);
-    final Uint8List bytes = data.buffer.asUint8List();
-    return BitmapDescriptor.fromBytes(bytes);
+    final ui.Codec codec = await ui
+        .instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    final ui.FrameInfo fi = await codec.getNextFrame();
+    final Uint8List? bytes = (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+        ?.buffer
+        .asUint8List();
+    if(bytes == null) {
+      return BitmapDescriptor.defaultMarker;
+    }
+    return BitmapDescriptor.fromBytes(bytes,
+        size: Size(width.toDouble(), width.toDouble()),);
   }
 
   static BitmapDescriptor getMarkerIcon(int type, bool isSelected) {
@@ -61,7 +72,7 @@ class MarkerIconsCustom {
         return isSelected
             ? _instance.selectedGardenMarkerIcon
             : _instance.gardenMarkerIcon;
-      case 3  :
+      case 3:
         return isSelected
             ? _instance.selectedMonumentMarkerIcon
             : _instance.monumentMarkerIcon;

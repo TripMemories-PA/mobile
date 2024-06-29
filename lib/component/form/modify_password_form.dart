@@ -89,10 +89,10 @@ class UpdatePasswordForm extends HookWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  'Modifier le mot de passe',
-                  style: TextStyle(color: Colors.white),
+                  StringConstants().updatePassword,
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
             ),

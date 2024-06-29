@@ -42,7 +42,7 @@ class UserInfosFormPopup extends StatelessWidget {
     final String? avatarUrl = profile.avatar?.url;
     final String? bannerUrl = profile.banner?.url;
     return SizedBox.expand(
-      child: ListView(
+      child: Column(
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.23,

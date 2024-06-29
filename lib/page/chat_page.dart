@@ -7,6 +7,7 @@ import '../bloc/chat/chat_bloc.dart';
 import '../component/profile_picture.dart';
 import '../component/text_field_custom.dart';
 import '../constants/my_colors.dart';
+import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/profile/profile.dart';
 
@@ -66,7 +67,7 @@ class ChatPage extends HookWidget {
           Expanded(
             child: TextFieldCustom(
               controller: messageController,
-              hintText: 'Ecrire un message',
+              hintText: StringConstants().writeMessage,
             ),
           ),
           IconButton(

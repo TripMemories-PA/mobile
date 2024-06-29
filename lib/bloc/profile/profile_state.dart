@@ -7,6 +7,8 @@ enum ProfileStatus {
   updated,
   error,
   postDeleted,
+  friendShipDeleted,
+  friendRequestSent,
 }
 
 class ProfileState {

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/map_style.dart';
-import '../object/marker_icons_custom.dart';
 import '../object/poi/poi.dart';
 import '../object/position.dart';
 import 'search_bar_custom.dart';
@@ -59,8 +59,8 @@ class _MapCustomState extends State<MapCustom> {
               final MarkerId markerId = MarkerId(poi.id.toString());
               final Marker marker = Marker(
                 icon: selectedMarkerId == markerId
-                    ? MarkerIconsCustom.getMarkerIcon(poi.type.id, true)
-                    : MarkerIconsCustom.getMarkerIcon(poi.type.id, false),
+                    ? poi.selectedMarkerIcon
+                    : poi.markerIcon,
                 markerId: MarkerId(poi.id.toString()),
                 position: LatLng(latitude, longitude),
                 onTap: () {
@@ -107,7 +107,7 @@ class _MapCustomState extends State<MapCustom> {
       final double latitude = double.parse(tmpSelectedPoi.latitude);
       final double longitude = double.parse(tmpSelectedPoi.longitude);
       markers[tmpSelectedMarkerId] = Marker(
-        icon: MarkerIconsCustom.getMarkerIcon(tmpSelectedPoi.type.id, false),
+        icon: tmpSelectedPoi.markerIcon,
         markerId: tmpSelectedMarkerId,
         position: LatLng(latitude, longitude),
         onTap: () {
@@ -135,7 +135,7 @@ class _MapCustomState extends State<MapCustom> {
               final double longitude = double.parse(lng);
               final MarkerId markerId = MarkerId(poi.id.toString());
               final Marker marker = Marker(
-                icon: MarkerIconsCustom.getMarkerIcon(poi.type.id, true),
+                icon: poi.selectedMarkerIcon,
                 markerId: MarkerId(poi.id.toString()),
                 position: LatLng(latitude, longitude),
                 onTap: () {
@@ -207,6 +207,16 @@ class _MapCustomState extends State<MapCustom> {
 
   Positioned _buildMonumentPopupCard(BuildContext context) {
     final Poi? selectedPoi = this.selectedPoi;
+    if (selectedPoi == null) {
+      return const Positioned(
+        left: 0,
+        right: 0,
+        bottom: 30,
+        child: Center(
+          child: SizedBox.shrink(),
+        ),
+      );
+    }
     return Positioned(
       left: 0,
       right: 0,
@@ -235,7 +245,7 @@ class _MapCustomState extends State<MapCustom> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
                     child: Image.network(
-                      selectedPoi?.cover.url ?? '',
+                      selectedPoi.cover.url,
                       loadingBuilder: (
                         BuildContext context,
                         Widget child,
@@ -270,7 +280,7 @@ class _MapCustomState extends State<MapCustom> {
                     children: [
                       15.ph,
                       Text(
-                        selectedPoi?.city?.name ?? 'Pas de ville',
+                        selectedPoi.city?.name ?? '',
                         style: TextStyle(
                           height: 1,
                           fontSize: 14,
@@ -280,21 +290,19 @@ class _MapCustomState extends State<MapCustom> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       5.ph,
-                      Text(
-                        selectedPoi?.name ?? 'Pas de nom',
+                      AutoSizeText(
+                        selectedPoi.name,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: const TextStyle(
                           height: 1,
                           fontWeight: FontWeight.bold,
-                          fontSize: _manageFontSize(selectedPoi!.name),
                         ),
                       ),
                       5.ph,
-                      Text(
-                        selectedPoi.address ?? "Pas d'adresse",
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
+                      AutoSizeText(
+                        selectedPoi.address ?? '',
+                        maxLines: 2,
                       ),
                       Text(
                         '${selectedPoi.city?.zipCode}',
@@ -332,7 +340,7 @@ class _MapCustomState extends State<MapCustom> {
                             onRatingUpdate: (double value) {},
                           ),
                           Text(
-                            '(${selectedPoi.postsCount} avis)',
+                            '(${selectedPoi.postsCount} ${StringConstants().reviews}',
                             style: TextStyle(
                               fontSize: 9,
                               color: Theme.of(context).colorScheme.primary,
@@ -351,18 +359,6 @@ class _MapCustomState extends State<MapCustom> {
         ),
       ),
     );
-  }
-
-  double _manageFontSize(String text) {
-    if (text.length > 20) {
-      return 15;
-    } else {
-      if (text.length > 15) {
-        return 20;
-      } else {
-        return 23;
-      }
-    }
   }
 
   void _getNewMonuments(Position position) {
@@ -459,37 +455,37 @@ class _SearchOnMap extends HookWidget {
                             child: Column(
                               children: [
                                 ...state.monuments.map(
-                                  (Poi poi) => GestureDetector(
-                                    onTap: () {
-                                      searchContent.value = '';
-                                      searchController.clear();
-                                      onMonumentSelected(poi);
+                                  (Poi poi) => Builder(
+                                    builder: (context) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          searchContent.value = '';
+                                          searchController.clear();
+                                          onMonumentSelected(poi);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 15.0,
+                                            horizontal: 10.0,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              15.pw,
+                                              poi.icon,
+                                              15.pw,
+                                              Expanded(
+                                                child: Text(
+                                                  poi.name,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 3,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
                                     },
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 15.0,
-                                        horizontal: 10.0,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          15.pw,
-                                          Icon(
-                                            Icons.account_balance,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                          ),
-                                          15.pw,
-                                          Expanded(
-                                            child: Text(
-                                              poi.name,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 3,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
                                   ),
                                 ),
                                 Center(

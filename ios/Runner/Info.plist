@@ -28,6 +28,8 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>App requires access to photo library to create social posts or customize their profile. App uploaded photos will be visible by all users.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>App requires access to location, to display places near the user and optimize the trip, location will only be use at this purpose</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

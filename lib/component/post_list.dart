@@ -7,7 +7,6 @@ import '../bloc/post/post_bloc.dart';
 import '../constants/string_constants.dart';
 import '../object/post/post.dart';
 import '../repository/post/post_repository.dart';
-import '../service/post/post_remote_data_source.dart';
 import 'post_card.dart';
 import 'shimmer/shimmer_post_and_monument_resume.dart';
 import 'shimmer/shimmer_post_and_monument_resume_list.dart';
@@ -24,24 +23,20 @@ class PostList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) =>
-          PostRepository(postRemoteDataSource: PostRemoteDataSource()),
-      child: BlocProvider(
-        create: (context) => PostBloc(
-          postRepository: RepositoryProvider.of<PostRepository>(
-            context,
+    return BlocProvider(
+      create: (context) => PostBloc(
+        postRepository: RepositoryProvider.of<PostRepository>(
+          context,
+        ),
+        postService: PostService(),
+      )..add(
+          GetPostsEvent(
+            isRefresh: true,
+            myPosts: myPosts,
+            userId: userId,
           ),
-          postService: PostService(),
-        )..add(
-            GetPostsEvent(
-              isRefresh: true,
-              myPosts: myPosts,
-              userId: userId,
-            ),
-          ),
-        child: _PostListContent(myPosts, userId),
-      ),
+        ),
+      child: _PostListContent(myPosts, userId),
     );
   }
 }

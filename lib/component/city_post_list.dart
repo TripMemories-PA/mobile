@@ -7,7 +7,6 @@ import '../constants/string_constants.dart';
 import '../object/city/city.dart';
 import '../object/post/post.dart';
 import '../repository/city/cities_repository.dart';
-import '../service/cities/cities_remote_data_source.dart';
 import 'post_card.dart';
 import 'shimmer/shimmer_post_and_monument_resume_list.dart';
 
@@ -21,23 +20,19 @@ class CityPostList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) =>
-          CityRepository(citiesRemoteDataSource: CityRemoteDataSource()),
-      child: BlocProvider(
-        create: (context) => CityBloc(
-          cityRepository: RepositoryProvider.of<CityRepository>(
-            context,
-          ),
-        )..add(
-            GetCityPostEvent(
-              id: city.id,
-              isRefresh: true,
-            ),
-          ),
-        child: _PostListContent(
-          cityId: city.id,
+    return BlocProvider(
+      create: (context) => CityBloc(
+        cityRepository: RepositoryProvider.of<CityRepository>(
+          context,
         ),
+      )..add(
+          GetCityPostEvent(
+            id: city.id,
+            isRefresh: true,
+          ),
+        ),
+      child: _PostListContent(
+        cityId: city.id,
       ),
     );
   }
@@ -119,7 +114,9 @@ class _PostListContent extends HookWidget {
     );
   }
 
-  void _getPostsRequest(BuildContext context,) {
+  void _getPostsRequest(
+    BuildContext context,
+  ) {
     context.read<CityBloc>().add(
           GetCityPostEvent(
             id: cityId,

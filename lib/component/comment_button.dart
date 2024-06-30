@@ -15,7 +15,6 @@ import '../num_extensions.dart';
 import '../object/comment/comment.dart';
 import '../object/post/post.dart';
 import '../repository/comment/comment_repository.dart';
-import '../service/comment/comment_remote_data_source.dart';
 import '../utils/date_time_service.dart';
 import '../utils/messenger.dart';
 import 'popup/confirmation_logout_dialog.dart';
@@ -48,26 +47,21 @@ class CommentButton extends HookWidget {
           isScrollControlled: true,
           context: context,
           builder: (context) {
-            return RepositoryProvider(
-              create: (context) => CommentRepository(
-                CommentRemoteDataSource(),
-              ),
-              child: BlocProvider(
-                create: (context) => CommentBloc(
-                  commentRepository: RepositoryProvider.of<CommentRepository>(
-                    context,
-                  ),
-                  commentService: CommentService(),
-                  postId: post.id,
-                  postBloc: postBloc,
-                )..add(GetCommentsEvent(isRefresh: true)),
-                child: BlocBuilder<CommentBloc, CommentState>(
-                  builder: (context, state) {
-                    return CommentButtonContent(
-                      postId: post.id,
-                    );
-                  },
+            return BlocProvider(
+              create: (context) => CommentBloc(
+                commentRepository: RepositoryProvider.of<CommentRepository>(
+                  context,
                 ),
+                commentService: CommentService(),
+                postId: post.id,
+                postBloc: postBloc,
+              )..add(GetCommentsEvent(isRefresh: true)),
+              child: BlocBuilder<CommentBloc, CommentState>(
+                builder: (context, state) {
+                  return CommentButtonContent(
+                    postId: post.id,
+                  );
+                },
               ),
             );
           },

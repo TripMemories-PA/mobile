@@ -13,8 +13,6 @@ import '../num_extensions.dart';
 import '../object/poi/poi.dart';
 import '../repository/monument/monument_repository.dart';
 import '../repository/post/post_repository.dart';
-import '../service/monument/monument_remote_data_source.dart';
-import '../service/post/post_remote_data_source.dart';
 
 class MonumentPage extends StatelessWidget {
   const MonumentPage({super.key, required this.monument});
@@ -23,26 +21,20 @@ class MonumentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => MonumentRepository(
-        monumentRemoteDataSource: MonumentRemoteDataSource(),
-      ),
-      child: BlocProvider(
-        create: (context) => MonumentBloc(
-          monumentRepository:
-              RepositoryProvider.of<MonumentRepository>(context),
-        )..add(
-            GetMonumentEvent(
-              id: monument.id,
-            ),
+    return BlocProvider(
+      create: (context) => MonumentBloc(
+        monumentRepository: RepositoryProvider.of<MonumentRepository>(context),
+      )..add(
+          GetMonumentEvent(
+            id: monument.id,
           ),
-        child: BlocBuilder<MonumentBloc, MonumentState>(
-          builder: (context, state) {
-            return _PageContent(
-              monument: monument,
-            );
-          },
         ),
+      child: BlocBuilder<MonumentBloc, MonumentState>(
+        builder: (context, state) {
+          return _PageContent(
+            monument: monument,
+          );
+        },
       ),
     );
   }
@@ -139,53 +131,48 @@ class _PageContent extends HookWidget {
           ),
         ),
         15.ph,
-        RepositoryProvider(
-          create: (context) => PostRepository(
-            postRemoteDataSource: PostRemoteDataSource(),
+        BlocProvider(
+          create: (context) => PostBloc(
+            postRepository: RepositoryProvider.of<PostRepository>(context),
+            postService: PostService(),
           ),
-          child: BlocProvider(
-            create: (context) => PostBloc(
-              postRepository: RepositoryProvider.of<PostRepository>(context),
-              postService: PostService(),
-            ),
-            child: BlocBuilder<PostBloc, PostState>(
-              builder: (context, state) {
-                return BlocBuilder<MonumentBloc, MonumentState>(
-                  builder: (context, state) {
-                    return Column(
-                      children: [
-                        ...context
-                            .read<MonumentBloc>()
-                            .state
-                            .selectedMonumentPosts
-                            .map(
-                              (post) => Column(
-                                children: [
-                                  PostCard(
-                                    post: post,
-                                    postBloc: context.read<PostBloc>(),
-                                  ),
-                                  20.ph,
-                                ],
-                              ),
+          child: BlocBuilder<PostBloc, PostState>(
+            builder: (context, state) {
+              return BlocBuilder<MonumentBloc, MonumentState>(
+                builder: (context, state) {
+                  return Column(
+                    children: [
+                      ...context
+                          .read<MonumentBloc>()
+                          .state
+                          .selectedMonumentPosts
+                          .map(
+                            (post) => Column(
+                              children: [
+                                PostCard(
+                                  post: post,
+                                  postBloc: context.read<PostBloc>(),
+                                ),
+                                20.ph,
+                              ],
                             ),
-                        Center(
-                          child: context
-                                  .read<MonumentBloc>()
-                                  .state
-                                  .getMonumentsHasMorePosts
-                              ? (context.read<MonumentBloc>().state.status !=
-                                      MonumentStatus.error
-                                  ? const ShimmerPostAndMonumentResume()
-                                  : _buildErrorWidget(context))
-                              : Text(StringConstants().noMorePosts),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
+                          ),
+                      Center(
+                        child: context
+                                .read<MonumentBloc>()
+                                .state
+                                .getMonumentsHasMorePosts
+                            ? (context.read<MonumentBloc>().state.status !=
+                                    MonumentStatus.error
+                                ? const ShimmerPostAndMonumentResume()
+                                : _buildErrorWidget(context))
+                            : Text(StringConstants().noMorePosts),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
         ),
       ],

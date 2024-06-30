@@ -20,8 +20,6 @@ import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../repository/post/post_repository.dart';
 import '../repository/profile/profile_repository.dart';
-import '../service/post/post_remote_data_source.dart';
-import '../service/profile/profile_remote_data_source.dart';
 import '../utils/messenger.dart';
 import 'login_page.dart';
 
@@ -46,28 +44,21 @@ class ProfilePage extends HookWidget {
     );
   }
 
-  RepositoryProvider<ProfileRepository> _buildProfilePage(
+  BlocProvider<ProfileBloc> _buildProfilePage(
     TabController tabController,
   ) {
-    return RepositoryProvider<ProfileRepository>(
-      create: (context) => ProfileRepository(
-        profileRemoteDataSource: ProfileRemoteDataSource(),
-        // TODO(nono): Implement ProfileLocalDataSource
-        //profilelocalDataSource: ProfileLocalDataSource(),
-      ),
-      child: BlocProvider(
-        create: (context) => ProfileBloc(
-          profileRepository: RepositoryProvider.of<ProfileRepository>(context),
-          profileService: ProfileService(),
-        )..add(GetProfileEvent(userId: userId)),
-        child: BlocBuilder<ProfileBloc, ProfileState>(
-          builder: (context, state) {
-            return _buildScaffold(
-              tabController,
-              context,
-            );
-          },
-        ),
+    return BlocProvider(
+      create: (context) => ProfileBloc(
+        profileRepository: RepositoryProvider.of<ProfileRepository>(context),
+        profileService: ProfileService(),
+      )..add(GetProfileEvent(userId: userId)),
+      child: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, state) {
+          return _buildScaffold(
+            tabController,
+            context,
+          );
+        },
       ),
     );
   }
@@ -142,10 +133,12 @@ class ProfilePage extends HookWidget {
 
   SliverAppBar _buildUserProfileInfosSliverAppBar(BuildContext context) {
     return SliverAppBar(
-      leading: userId != null ? IconButton(
-        icon: const Icon(Icons.chevron_left),
-        onPressed: () => context.pop(),
-      ) : null,
+      leading: userId != null
+          ? IconButton(
+              icon: const Icon(Icons.chevron_left),
+              onPressed: () => context.pop(),
+            )
+          : null,
       expandedHeight: 300,
       flexibleSpace: FlexibleSpaceBar(
         background: ListView(
@@ -221,71 +214,62 @@ class MyPostsAndMyFriends extends HookWidget {
     );
   }
 
-  RepositoryProvider<PostRepository> _buildMyPostsPart() {
-    return RepositoryProvider(
-      create: (context) =>
-          PostRepository(postRemoteDataSource: PostRemoteDataSource()),
-      child: BlocProvider(
-        create: (context) => PostBloc(
-          postRepository: RepositoryProvider.of<PostRepository>(
-            context,
-          ),
-          postService: PostService(),
-        )..add(
-            GetPostsEvent(
-              isRefresh: true,
-              myPosts: true,
-            ),
-          ),
-        child: BlocBuilder<PostBloc, PostState>(
-          builder: (context, state) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context
-                    .read<PostBloc>()
-                    .add(GetPostsEvent(isRefresh: true, myPosts: true));
-              },
-              child: const SingleChildScrollView(
-                child: MyPostsComponents(),
-              ),
-            );
-          },
+  BlocProvider<PostBloc> _buildMyPostsPart() {
+    return BlocProvider(
+      create: (context) => PostBloc(
+        postRepository: RepositoryProvider.of<PostRepository>(
+          context,
         ),
+        postService: PostService(),
+      )..add(
+          GetPostsEvent(
+            isRefresh: true,
+            myPosts: true,
+          ),
+        ),
+      child: BlocBuilder<PostBloc, PostState>(
+        builder: (context, state) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              context
+                  .read<PostBloc>()
+                  .add(GetPostsEvent(isRefresh: true, myPosts: true));
+            },
+            child: const SingleChildScrollView(
+              child: MyPostsComponents(),
+            ),
+          );
+        },
       ),
     );
   }
 
-  RepositoryProvider<PostRepository> _buildOtherUsersPosts(int userId) {
-    return RepositoryProvider(
-      create: (context) => PostRepository(
-        postRemoteDataSource: PostRemoteDataSource(),
-      ),
-      child: BlocProvider(
-        create: (context) => PostBloc(
-          postRepository: RepositoryProvider.of<PostRepository>(
-            context,
-          ),
-          postService: PostService(),
-        )..add(
-            GetPostsEvent(
-              isRefresh: true,
-              userId: userId,
-            ),
-          ),
-        child: BlocBuilder<PostBloc, PostState>(
-          builder: (context, state) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context
-                    .read<PostBloc>()
-                    .add(GetPostsEvent(isRefresh: true, userId: userId));
-              },
-              child: const SingleChildScrollView(
-                child: MyPostsComponents(),
-              ),
-            );
-          },
+  BlocProvider<PostBloc> _buildOtherUsersPosts(int userId) {
+    return BlocProvider(
+      create: (context) => PostBloc(
+        postRepository: RepositoryProvider.of<PostRepository>(
+          context,
         ),
+        postService: PostService(),
+      )..add(
+          GetPostsEvent(
+            isRefresh: true,
+            userId: userId,
+          ),
+        ),
+      child: BlocBuilder<PostBloc, PostState>(
+        builder: (context, state) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              context
+                  .read<PostBloc>()
+                  .add(GetPostsEvent(isRefresh: true, userId: userId));
+            },
+            child: const SingleChildScrollView(
+              child: MyPostsComponents(),
+            ),
+          );
+        },
       ),
     );
   }

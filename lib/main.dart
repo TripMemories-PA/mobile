@@ -26,6 +26,16 @@ import 'page/monument_page_v2.dart';
 import 'page/profile_page.dart';
 import 'page/search_page.dart';
 import 'page/splash_page.dart';
+import 'repository/city/cities_repository.dart';
+import 'repository/comment/comment_repository.dart';
+import 'repository/monument/monument_repository.dart';
+import 'repository/post/post_repository.dart';
+import 'repository/profile/profile_repository.dart';
+import 'service/cities/cities_remote_data_source.dart';
+import 'service/comment/comment_remote_data_source.dart';
+import 'service/monument/monument_remote_data_source.dart';
+import 'service/post/post_remote_data_source.dart';
+import 'service/profile/profile_remote_data_source.dart';
 import 'theme_generator.dart';
 import 'utils/messenger.dart';
 
@@ -37,12 +47,47 @@ Future<void> main() async {
   await MarkerIconsCustom.initialize();
   await MapStyle.initialize();
   runApp(
-    BlocProvider(
-      create: (context) => AuthBloc(
-        authService: AuthService(),
-        authTokenHandler: AuthTokenHandler(),
+    MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => CityRepository(
+            citiesRemoteDataSource: CityRemoteDataSource(),
+            // TODO(nono): Implement ProfileLocalDataSource
+            //profilelocalDataSource: ProfileLocalDataSource(),
+          ),
+        ),
+        RepositoryProvider(
+          create: (context) => MonumentRepository(
+            monumentRemoteDataSource: MonumentRemoteDataSource(),
+            // TODO(nono): Implement ProfileLocalDataSource
+            //profilelocalDataSource: ProfileLocalDataSource(),
+          ),
+        ),
+        RepositoryProvider(
+          create: (context) => PostRepository(
+            postRemoteDataSource: PostRemoteDataSource(),
+          ),
+        ),
+        RepositoryProvider(
+          create: (context) => CommentRepository(
+            CommentRemoteDataSource(),
+          ),
+        ),
+        RepositoryProvider(
+          create: (context) => ProfileRepository(
+            profileRemoteDataSource: ProfileRemoteDataSource(),
+            // TODO(nono): Implement ProfileLocalDataSource
+            //profilelocalDataSource: ProfileLocalDataSource(),
+          ),
+        ),
+      ],
+      child: BlocProvider(
+        create: (context) => AuthBloc(
+          authService: AuthService(),
+          authTokenHandler: AuthTokenHandler(),
+        ),
+        child: MyApp(),
       ),
-      child: MyApp(),
     ),
   );
 }

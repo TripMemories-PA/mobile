@@ -11,7 +11,6 @@ import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
 import '../../object/friend_request/friend_request.dart';
 import '../../repository/profile/profile_repository.dart';
-import '../../service/profile/profile_remote_data_source.dart';
 import '../../utils/messenger.dart';
 import '../custom_card.dart';
 import '../shimmer/shimmer_friend_request_list.dart';
@@ -76,68 +75,61 @@ class MyFriendsRequests extends StatelessWidget {
   }
 
   Widget _buildFriendsList(BuildContext context) {
-    return RepositoryProvider<ProfileRepository>(
-      create: (context) => ProfileRepository(
-        profileRemoteDataSource: ProfileRemoteDataSource(),
-        // TODO(nono): Implement ProfileLocalDataSource
-        //profilelocalDataSource: ProfileLocalDataSource(),
-      ),
-      child: BlocProvider(
-        create: (context) => FriendRequestBloc(
-          profileRepository: RepositoryProvider.of<ProfileRepository>(context),
-          profileService: ProfileService(),
-        )..add(GetFriendRequestEvent(isRefresh: true)),
-        child: BlocBuilder<FriendRequestBloc, FriendRequestState>(
-          builder: (context, state) {
-            return Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                children: [
-                  ...context
-                          .read<FriendRequestBloc>()
-                          .state
-                          .friendRequests
-                          ?.data
-                          .map(
-                            (friend) => Column(
-                              key: ObjectKey(friend),
-                              children: [
-                                _buildFriendCard(context, friend),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          )
-                          .toList() ??
-                      [],
-                  Center(
-                    child: context.read<FriendRequestBloc>().state.hasMoreTweets
-                        ? (context.read<FriendRequestBloc>().state.status !=
-                                FriendRequestStatus.error
-                            ? const ShimmerFriendRequestList()
-                            : _buildErrorWidget(context))
-                        : Text(StringConstants().noMoreFriends),
-                  ),
-                  BlocListener<FriendRequestBloc, FriendRequestState>(
-                    listener: (context, state) {
-                      if (state.status == FriendRequestStatus.accepted ||
-                          state.status == FriendRequestStatus.refused) {
-                        Messenger.showSnackBarQuickInfo(
-                          state.status == FriendRequestStatus.accepted
-                              ? StringConstants().friendRequestAccepted
-                              : StringConstants().friendRequestRefused,
-                          context,
-                        );
-                      }
-                    },
-                    child: const SizedBox.shrink(),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
+    return BlocProvider(
+      create: (context) => FriendRequestBloc(
+        profileRepository: RepositoryProvider.of<ProfileRepository>(context),
+        profileService: ProfileService(),
+      )..add(GetFriendRequestEvent(isRefresh: true)),
+      child: BlocBuilder<FriendRequestBloc, FriendRequestState>(
+        builder: (context, state) {
+          return Expanded(
+            child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              children: [
+                ...context
+                        .read<FriendRequestBloc>()
+                        .state
+                        .friendRequests
+                        ?.data
+                        .map(
+                          (friend) => Column(
+                            key: ObjectKey(friend),
+                            children: [
+                              _buildFriendCard(context, friend),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
+                        )
+                        .toList() ??
+                    [],
+                Center(
+                  child: context.read<FriendRequestBloc>().state.hasMoreTweets
+                      ? (context.read<FriendRequestBloc>().state.status !=
+                              FriendRequestStatus.error
+                          ? const ShimmerFriendRequestList()
+                          : _buildErrorWidget(context))
+                      : Text(StringConstants().noMoreFriends),
+                ),
+                BlocListener<FriendRequestBloc, FriendRequestState>(
+                  listener: (context, state) {
+                    if (state.status == FriendRequestStatus.accepted ||
+                        state.status == FriendRequestStatus.refused) {
+                      Messenger.showSnackBarQuickInfo(
+                        state.status == FriendRequestStatus.accepted
+                            ? StringConstants().friendRequestAccepted
+                            : StringConstants().friendRequestRefused,
+                        context,
+                      );
+                    }
+                  },
+                  child: const SizedBox.shrink(),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

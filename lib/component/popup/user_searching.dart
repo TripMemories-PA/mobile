@@ -9,7 +9,6 @@ import '../../constants/my_colors.dart';
 import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
 import '../../repository/profile/profile_repository.dart';
-import '../../service/profile/profile_remote_data_source.dart';
 import '../../utils/messenger.dart';
 import '../custom_card.dart';
 import '../search_bar_custom.dart';
@@ -23,50 +22,43 @@ class UserSearching extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<ProfileRepository>(
-      create: (context) => ProfileRepository(
-        profileRemoteDataSource: ProfileRemoteDataSource(),
-        // TODO(nono): Implement ProfileLocalDataSource
-        //profilelocalDataSource: ProfileLocalDataSource(),
-      ),
-      child: BlocProvider(
-        create: (context) => UserSearchingBloc(
-          profileRepository: RepositoryProvider.of<ProfileRepository>(context),
-          profileService: ProfileService(),
-        )..add(GetUsersRequestEvent(isRefresh: true)),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Builder(
-            builder: (context) {
-              return Dialog(
-                insetPadding: EdgeInsets.zero,
-                child: CustomCard(
-                  width: MediaQuery.of(context).size.width * 0.90,
-                  height: MediaQuery.of(context).size.height * 0.81,
-                  content: SizedBox.expand(
-                    child: Stack(
-                      children: [
-                        const SearchingUsersBody(),
-                        Positioned(
-                          top: 30,
-                          right: 10,
-                          child: SizedBox(
-                            height: 25,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                context.pop();
-                              },
-                              child: Text(StringConstants().close),
-                            ),
+    return BlocProvider(
+      create: (context) => UserSearchingBloc(
+        profileRepository: RepositoryProvider.of<ProfileRepository>(context),
+        profileService: ProfileService(),
+      )..add(GetUsersRequestEvent(isRefresh: true)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Builder(
+          builder: (context) {
+            return Dialog(
+              insetPadding: EdgeInsets.zero,
+              child: CustomCard(
+                width: MediaQuery.of(context).size.width * 0.90,
+                height: MediaQuery.of(context).size.height * 0.81,
+                content: SizedBox.expand(
+                  child: Stack(
+                    children: [
+                      const SearchingUsersBody(),
+                      Positioned(
+                        top: 30,
+                        right: 10,
+                        child: SizedBox(
+                          height: 25,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              context.pop();
+                            },
+                            child: Text(StringConstants().close),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

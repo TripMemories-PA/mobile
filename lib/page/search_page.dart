@@ -4,13 +4,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../bloc/monument_bloc/monument_bloc.dart';
 import '../../repository/monument/monument_repository.dart';
-import '../../service/monument/monument_remote_data_source.dart';
 import '../bloc/city_bloc/city_bloc.dart';
 import '../component/search_by_city.dart';
 import '../component/search_by_monument.dart';
 import '../constants/string_constants.dart';
 import '../repository/city/cities_repository.dart';
-import '../service/cities/cities_remote_data_source.dart';
 
 class SearchPage extends HookWidget {
   const SearchPage({
@@ -19,47 +17,29 @@ class SearchPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
+    return MultiBlocProvider(
       providers: [
-        RepositoryProvider<MonumentRepository>(
-          create: (context) => MonumentRepository(
-            monumentRemoteDataSource: MonumentRemoteDataSource(),
-            // TODO(nono): Implement ProfileLocalDataSource
-            //profilelocalDataSource: ProfileLocalDataSource(),
-          ),
+        BlocProvider(
+          create: (context) => MonumentBloc(
+            monumentRepository:
+                RepositoryProvider.of<MonumentRepository>(context),
+          )..add(
+              GetMonumentsEvent(
+                isRefresh: true,
+              ),
+            ),
         ),
-        RepositoryProvider<CityRepository>(
-          create: (context) => CityRepository(
-            citiesRemoteDataSource: CityRemoteDataSource(),
-            // TODO(nono): Implement ProfileLocalDataSource
-            //profilelocalDataSource: ProfileLocalDataSource(),
-          ),
+        BlocProvider(
+          create: (context) => CityBloc(
+            cityRepository: RepositoryProvider.of<CityRepository>(context),
+          )..add(
+              GetCitiesEvent(
+                isRefresh: true,
+              ),
+            ),
         ),
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => MonumentBloc(
-              monumentRepository:
-                  RepositoryProvider.of<MonumentRepository>(context),
-            )..add(
-                GetMonumentsEvent(
-                  isRefresh: true,
-                ),
-              ),
-          ),
-          BlocProvider(
-            create: (context) => CityBloc(
-              cityRepository: RepositoryProvider.of<CityRepository>(context),
-            )..add(
-                GetCitiesEvent(
-                  isRefresh: true,
-                ),
-              ),
-          ),
-        ],
-        child: const SlidePage(),
-      ),
+      child: const SlidePage(),
     );
   }
 }

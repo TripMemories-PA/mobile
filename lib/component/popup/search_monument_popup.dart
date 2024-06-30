@@ -7,7 +7,6 @@ import '../../bloc/monument_bloc/monument_bloc.dart';
 import '../../constants/string_constants.dart';
 import '../../object/poi/poi.dart';
 import '../../repository/monument/monument_repository.dart';
-import '../../service/monument/monument_remote_data_source.dart';
 import '../custom_card.dart';
 import '../searching_monuments_body.dart';
 
@@ -18,21 +17,13 @@ class SearchMonumentPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<MonumentRepository>(
-      create: (context) => MonumentRepository(
-        monumentRemoteDataSource: MonumentRemoteDataSource(),
-        // TODO(nono): Implement ProfileLocalDataSource
-        //profilelocalDataSource: ProfileLocalDataSource(),
-      ),
-      child: BlocProvider(
-        create: (context) => MonumentBloc(
-          monumentRepository:
-              RepositoryProvider.of<MonumentRepository>(context),
-        )..add(GetMonumentsEvent(isRefresh: true)),
-        child: const Scaffold(
-          backgroundColor: Colors.transparent,
-          body: _Body(),
-        ),
+    return BlocProvider(
+      create: (context) => MonumentBloc(
+        monumentRepository: RepositoryProvider.of<MonumentRepository>(context),
+      )..add(GetMonumentsEvent(isRefresh: true)),
+      child: const Scaffold(
+        backgroundColor: Colors.transparent,
+        body: _Body(),
       ),
     );
   }

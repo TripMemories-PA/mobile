@@ -15,7 +15,6 @@ import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/city/city.dart';
 import '../repository/city/cities_repository.dart';
-import '../service/cities/cities_remote_data_source.dart';
 
 class CityPage extends HookWidget {
   const CityPage({super.key, required this.city});
@@ -25,24 +24,19 @@ class CityPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final TabController tabController = useTabController(initialLength: 2);
-    return RepositoryProvider(
-      create: (context) => CityRepository(
-        citiesRemoteDataSource: CityRemoteDataSource(),
-      ),
-      child: BlocProvider(
-        create: (context) => CityBloc(
-          cityRepository: RepositoryProvider.of<CityRepository>(context),
-        )..add(
-            GetCityPoiEvent(id: city.id, isRefresh: true),
-          ),
-        child: BlocBuilder<CityBloc, CityState>(
-          builder: (context, state) {
-            return _PageContent(
-              city: city,
-              tabController: tabController,
-            );
-          },
+    return BlocProvider(
+      create: (context) => CityBloc(
+        cityRepository: RepositoryProvider.of<CityRepository>(context),
+      )..add(
+          GetCityPoiEvent(id: city.id, isRefresh: true),
         ),
+      child: BlocBuilder<CityBloc, CityState>(
+        builder: (context, state) {
+          return _PageContent(
+            city: city,
+            tabController: tabController,
+          );
+        },
       ),
     );
   }

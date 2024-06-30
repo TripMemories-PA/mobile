@@ -6,7 +6,6 @@ import '../bloc/monument_bloc/monument_bloc.dart';
 import '../component/map_custom.dart';
 import '../object/radius.dart';
 import '../repository/monument/monument_repository.dart';
-import '../service/monument/monument_remote_data_source.dart';
 
 class MapPage extends StatelessWidget {
   const MapPage({super.key});
@@ -16,31 +15,26 @@ class MapPage extends StatelessWidget {
     const LatLng center = LatLng(48.84922330209508, 2.389781701197292);
     return Scaffold(
       body: SafeArea(
-        child: RepositoryProvider(
-          create: (context) => MonumentRepository(
-            monumentRemoteDataSource: MonumentRemoteDataSource(),
-          ),
-          child: BlocProvider(
-            create: (context) => MonumentBloc(
-              monumentRepository:
-                  RepositoryProvider.of<MonumentRepository>(context),
-            )..add(
-                GetMonumentsOnMapEvent(
-                  isRefresh: true,
-                  radius: RadiusQueryInfos(
-                    km: 10,
-                    lat: center.latitude,
-                    lng: center.longitude,
-                  ),
+        child: BlocProvider(
+          create: (context) => MonumentBloc(
+            monumentRepository:
+                RepositoryProvider.of<MonumentRepository>(context),
+          )..add(
+              GetMonumentsOnMapEvent(
+                isRefresh: true,
+                radius: RadiusQueryInfos(
+                  km: 10,
+                  lat: center.latitude,
+                  lng: center.longitude,
                 ),
               ),
-            child: BlocBuilder<MonumentBloc, MonumentState>(
-              builder: (context, state) {
-                return MapCustom(
-                  monumentBloc: BlocProvider.of<MonumentBloc>(context),
-                );
-              },
             ),
+          child: BlocBuilder<MonumentBloc, MonumentState>(
+            builder: (context, state) {
+              return MapCustom(
+                monumentBloc: BlocProvider.of<MonumentBloc>(context),
+              );
+            },
           ),
         ),
       ),

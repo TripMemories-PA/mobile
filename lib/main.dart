@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:trip_memories_mobile/page/shop_page.dart';
 
 import 'api/auth/auth_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
@@ -210,7 +211,7 @@ class MyApp extends HookWidget {
               ),
             ],
           ),
-          /*StatefulShellBranch(
+          StatefulShellBranch(
             routes: <RouteBase>[
               GoRoute(
                 path: RouteName.shopPage,
@@ -218,7 +219,7 @@ class MyApp extends HookWidget {
                     const ShopPage(),
               ),
             ],
-          ),*/
+          ),
           StatefulShellBranch(
             routes: <RouteBase>[
               GoRoute(

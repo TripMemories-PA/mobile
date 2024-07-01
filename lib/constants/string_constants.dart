@@ -9,14 +9,26 @@ class StringConstants {
   // Authentication
   String get notAuthenticated => 'Pas connecté';
 
+  String get modifyArticle => "Modifier l'article";
+
+  String get addArticle => 'Ajouter un article';
+
   String get tokenExpired => 'Session expirée';
 
   String get wrongEmailOrPassword => 'Mauvaise email ou mot de passe';
 
+  String get title => 'Titre';
+
+  String get price => 'Prix';
+
   String get emailOrUsernameAlreadyExists =>
       "Email ou nom d'utilisateur déjà utilisé";
 
+  String get myProducts => 'Mes produits';
+
   String get invalidEmail => 'Email invalide';
+
+  String get shop => 'Boutique';
 
   String get invalidPassword => 'Invalid password';
 
@@ -275,6 +287,8 @@ class StringConstants {
   String get discoverTheIncredible => 'Découvrez les incroyables';
 
   String get cities => 'villes';
+
+  String get validate => 'Valider';
 
   String get thatFranceIsHiding => 'que la France cache';
 

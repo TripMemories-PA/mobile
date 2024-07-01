@@ -46,12 +46,12 @@ class ScaffoldWithNavBar extends StatelessWidget {
             ),
             label: StringConstants().feed,
           ),
-          /*BottomNavigationBarItem(
-            icon: Icon(
+          BottomNavigationBarItem(
+            icon: const Icon(
               Icons.shopping_cart_outlined,
             ),
-            label: 'Shop',
-          ),*/
+            label: StringConstants().shop,
+          ),
           BottomNavigationBarItem(
             icon: const Icon(
               Icons.person_outline,

@@ -12,4 +12,5 @@ class RouteName {
   static const String monumentPage = '/monument';
   static const String cityPage = '/city';
   static const String editTweetPage = '/editTweet';
+  static const String buy = '/buy';
 }

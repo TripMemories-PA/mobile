@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trip_memories_mobile/page/shop_page.dart';
 
+import '.env.dart';
 import 'api/auth/auth_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
 import 'bloc/auth_bloc/auth_event.dart';
 import 'bloc/auth_bloc/auth_state.dart';
 import 'bloc/cart/cart_bloc.dart';
+import 'component/stripe/payment_sheet_screen.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
@@ -27,6 +29,7 @@ import 'page/map_page.dart';
 import 'page/monument_page_v2.dart';
 import 'page/profile_page.dart';
 import 'page/search_page.dart';
+import 'page/shop_page.dart';
 import 'page/splash_page.dart';
 import 'repository/city/cities_repository.dart';
 import 'repository/comment/comment_repository.dart';
@@ -48,6 +51,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MarkerIconsCustom.initialize();
   await MapStyle.initialize();
+  Stripe.publishableKey = stripePublishableKey;
+  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  Stripe.urlScheme = 'flutterstripe';
+  await Stripe.instance.applySettings();
   runApp(
     MultiRepositoryProvider(
       providers: [
@@ -131,6 +138,22 @@ class MyApp extends HookWidget {
                   return CustomTransitionPage(
                     key: state.pageKey,
                     child: const SearchPage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return CustomTransition.buildFadeTransition(
+                        animation,
+                        child,
+                      );
+                    },
+                  );
+                },
+              ),
+              GoRoute(
+                path: RouteName.buy,
+                pageBuilder: (context, state) {
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: const PaymentScreen(),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       return CustomTransition.buildFadeTransition(

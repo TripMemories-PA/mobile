@@ -1,4 +1,13 @@
 class Article {
+  Article({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.price,
+    required this.imageUrl,
+    required this.museumId,
+    required this.stock,
+  });
   factory Article.fromJson(Map<String, dynamic> json) {
     return Article(
       id: json['id'] as int,
@@ -10,16 +19,6 @@ class Article {
       stock: json['stock'] as int,
     );
   }
-
-  Article({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.price,
-    required this.imageUrl,
-    required this.museumId,
-    required this.stock,
-  });
   int id;
   String title;
   String description;

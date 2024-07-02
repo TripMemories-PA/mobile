@@ -77,8 +77,8 @@ class ArticleFormPopup extends HookWidget {
                               content: Text(
                                 StringConstants().close,
                                 style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
                               ),
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary,
@@ -90,50 +90,51 @@ class ArticleFormPopup extends HookWidget {
                         ),
                         20.ph,
                         SizedBox(
-                            height: 200,
-                            child: Builder(
-                              builder: (context) {
-                                if (loadingImage.value) {
-                                  return const Center(
-                                    child: CupertinoActivityIndicator(),
-                                  );
-                                } else {
-                                  return image.value != null
-                                      ? Stack(
-                                          children: [
-                                            Container(
-                                              width: double.infinity,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                                image: DecorationImage(
-                                                  image: FileImage(
-                                                    File(image.value!.path),
-                                                  ),
-                                                  fit: BoxFit.cover,
+                          height: 200,
+                          child: Builder(
+                            builder: (context) {
+                              if (loadingImage.value) {
+                                return const Center(
+                                  child: CupertinoActivityIndicator(),
+                                );
+                              } else {
+                                return image.value != null
+                                    ? Stack(
+                                        children: [
+                                          Container(
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                              image: DecorationImage(
+                                                image: FileImage(
+                                                  File(image.value!.path),
                                                 ),
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
-                                            Positioned(
-                                              top: 0,
-                                              right: 0,
-                                              child: IconButton(
-                                                icon: const Icon(
-                                                  Icons.close,
-                                                ),
-                                                onPressed: () {
-                                                  if (context.mounted) {
-                                                    image.value = null;
-                                                  }
-                                                },
+                                          ),
+                                          Positioned(
+                                            top: 0,
+                                            right: 0,
+                                            child: IconButton(
+                                              icon: const Icon(
+                                                Icons.close,
                                               ),
+                                              onPressed: () {
+                                                if (context.mounted) {
+                                                  image.value = null;
+                                                }
+                                              },
                                             ),
-                                          ],
-                                        )
-                                      : _buildImagePicker(image, context);
-                                }
-                              },
-                            )),
+                                          ),
+                                        ],
+                                      )
+                                    : _buildImagePicker(image, context);
+                              }
+                            },
+                          ),
+                        ),
                         10.ph,
                         Column(
                           children: [
@@ -170,9 +171,10 @@ class ArticleFormPopup extends HookWidget {
                                           ? StringConstants().modifyArticle
                                           : StringConstants().addArticle,
                                       style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .surface),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surface,
+                                      ),
                                     ),
                                     backgroundColor:
                                         Theme.of(context).colorScheme.primary,

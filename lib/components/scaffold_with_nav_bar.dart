@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../bloc/cart/cart_bloc.dart';
+import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 
@@ -65,7 +66,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
                               textAlign: TextAlign.center,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   )
@@ -200,8 +201,9 @@ class ScaffoldWithNavBar extends StatelessWidget {
                                           child: IconButton(
                                             onPressed: () => {
                                               context.read<CartBloc>().add(
-                                                    RemoveArticle(cartElement
-                                                        .articles[0]),
+                                                    RemoveArticle(
+                                                      cartElement.articles[0],
+                                                    ),
                                                   ),
                                             },
                                             icon: const Icon(
@@ -223,7 +225,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
                                   color: Colors.grey,
                                   width: double.infinity,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                       ],
@@ -231,10 +233,20 @@ class ScaffoldWithNavBar extends StatelessWidget {
                   ),
                 ),
                 Text(
-                    '${StringConstants().total}: ${context.read<CartBloc>().state.totalPrice}',
-                    style: const TextStyle(
-                      fontSize: 20,
-                    )),
+                  '${StringConstants().total}: ${context.read<CartBloc>().state.totalPrice}',
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                10.ph,
+                ElevatedButton(
+                  onPressed: () {
+                    context.push(RouteName.buy);
+                  },
+                  child: Text(
+                    StringConstants().buy,
+                  ),
+                ),
                 10.ph,
               ],
             ),

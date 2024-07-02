@@ -23,6 +23,8 @@ class StringConstants {
 
   String get myCart => 'Mon panier';
 
+  String get buy => 'Payer';
+
   String get addArticle => 'Ajouter un article';
 
   String get tokenExpired => 'Session expirée';

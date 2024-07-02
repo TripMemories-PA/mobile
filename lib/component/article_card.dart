@@ -1,13 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trip_memories_mobile/component/popup/modify_article_popup.dart';
 
 import '../bloc/cart/cart_bloc.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/article.dart';
 import '../utils/messenger.dart';
+import 'popup/modify_article_popup.dart';
 
 class ArticleCardAdmin extends StatelessWidget {
   const ArticleCardAdmin({super.key, required this.article});
@@ -113,22 +113,24 @@ class ArticleCardAdmin extends StatelessWidget {
                         Column(
                           children: [
                             Text(
-                                '${StringConstants().price}: ${article.price}'),
+                              '${StringConstants().price}: ${article.price}',
+                            ),
                             5.ph,
                             Text(
-                                '${StringConstants().stock}: ${article.stock}'),
+                              '${StringConstants().stock}: ${article.stock}',
+                            ),
                           ],
                         ),
                         const Spacer(),
                         IconButton(
-                            onPressed: () => {
-                                  Messenger.showSnackBarSuccess(
-                                      StringConstants().addedToCart),
-                                  context
-                                      .read<CartBloc>()
-                                      .add(AddArticle(article)),
-                                },
-                            icon: const Icon(Icons.add_shopping_cart)),
+                          onPressed: () => {
+                            Messenger.showSnackBarSuccess(
+                              StringConstants().addedToCart,
+                            ),
+                            context.read<CartBloc>().add(AddArticle(article)),
+                          },
+                          icon: const Icon(Icons.add_shopping_cart),
+                        ),
                       ],
                     ),
                   ],

@@ -9,6 +9,7 @@ import 'api/auth/auth_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
 import 'bloc/auth_bloc/auth_event.dart';
 import 'bloc/auth_bloc/auth_state.dart';
+import 'bloc/cart/cart_bloc.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
@@ -82,11 +83,18 @@ Future<void> main() async {
           ),
         ),
       ],
-      child: BlocProvider(
-        create: (context) => AuthBloc(
-          authService: AuthService(),
-          authTokenHandler: AuthTokenHandler(),
-        ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AuthBloc(
+              authService: AuthService(),
+              authTokenHandler: AuthTokenHandler(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => CartBloc(),
+          ),
+        ],
         child: MyApp(),
       ),
     ),

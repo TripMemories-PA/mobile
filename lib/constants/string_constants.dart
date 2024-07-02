@@ -11,6 +11,18 @@ class StringConstants {
 
   String get modifyArticle => "Modifier l'article";
 
+  String get modifiedArticle => 'Article modifié';
+
+  String get quantity => 'Quantité';
+
+  String get total => 'Total';
+
+  String get addedToCart => 'Ajouté au panier';
+
+  String get stock => 'Stock';
+
+  String get myCart => 'Mon panier';
+
   String get addArticle => 'Ajouter un article';
 
   String get tokenExpired => 'Session expirée';

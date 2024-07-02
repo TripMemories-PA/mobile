@@ -77,17 +77,17 @@ class ArticleFormPopup extends HookWidget {
                               content: Text(
                                 StringConstants().close,
                                 style: TextStyle(
-                                    color: Theme.of(context).colorScheme.surface),
+                                    color:
+                                        Theme.of(context).colorScheme.surface),
                               ),
                               backgroundColor:
-                              Theme.of(context).colorScheme.primary,
+                                  Theme.of(context).colorScheme.primary,
                               onTap: () {
                                 context.pop();
                               },
                             ),
                           ],
                         ),
-
                         20.ph,
                         SizedBox(
                             height: 200,
@@ -181,10 +181,12 @@ class ArticleFormPopup extends HookWidget {
                                         Messenger.showSnackBarSuccess(
                                           'Modify article',
                                         );
+                                        context.pop(true);
                                       } else {
                                         Messenger.showSnackBarSuccess(
                                           'Add article',
                                         );
+                                        context.pop(true);
                                       }
                                     },
                                   ),

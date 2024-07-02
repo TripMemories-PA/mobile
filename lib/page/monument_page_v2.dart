@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:trip_memories_mobile/page/shop_page.dart';
 
 import '../api/post/post_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../bloc/post/post_bloc.dart';
+import '../component/article_card.dart';
 import '../component/map_mini.dart';
 import '../component/post_card.dart';
 import '../component/shimmer/shimmer_post_and_monument_resume.dart';
@@ -29,7 +31,7 @@ class MonumentPageV2 extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TabController tabController = useTabController(initialLength: 3);
+    final TabController tabController = useTabController(initialLength: 4);
     return BlocProvider(
       create: (context) => MonumentBloc(
         monumentRepository: RepositoryProvider.of<MonumentRepository>(context),
@@ -125,7 +127,7 @@ class _PageContent extends HookWidget {
       body: Stack(
         children: [
           DefaultTabController(
-            length: 3,
+            length: 4,
             child: NestedScrollView(
               headerSliverBuilder: (context, value) {
                 return [
@@ -142,6 +144,7 @@ class _PageContent extends HookWidget {
                     child: _buildPostPart(),
                   ),
                   SingleChildScrollView(child: _buildActuPart()),
+                  SingleChildScrollView(child: _buildShop(context)),
                 ],
               ),
             ),
@@ -167,6 +170,7 @@ class _PageContent extends HookWidget {
               Tab(text: StringConstants().description),
               Tab(text: StringConstants().posts),
               Tab(text: StringConstants().actu),
+              Tab(text: StringConstants().shop),
             ],
           ),
         ),
@@ -313,6 +317,31 @@ class _PageContent extends HookWidget {
   Widget _buildActuPart() {
     return Center(
       child: Text(StringConstants().actu),
+    );
+  }
+
+  Widget _buildShop(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          for (var i = 0; i < tmpArticles.length; i += 2)
+            Row(
+              children: [
+                Expanded(
+                  child: ArticleCardAdmin(
+                    article: tmpArticles[i],
+                  ),
+                ),
+                if (i + 1 < tmpArticles.length)
+                  Expanded(
+                    child: ArticleCardAdmin(
+                      article: tmpArticles[i + 1],
+                    ),
+                  ),
+              ],
+            ),
+        ],
+      ),
     );
   }
 

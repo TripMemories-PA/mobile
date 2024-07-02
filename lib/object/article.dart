@@ -1,4 +1,15 @@
 class Article {
+  factory Article.fromJson(Map<String, dynamic> json) {
+    return Article(
+      id: json['id'] as int,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      price: json['price'] as double,
+      imageUrl: json['imageUrl'] as String,
+      museumId: json['museumId'] as int,
+      stock: json['stock'] as int,
+    );
+  }
 
   Article({
     required this.id,
@@ -16,18 +27,6 @@ class Article {
   String imageUrl;
   int museumId;
   int stock;
-
-  factory Article.fromJson(Map<String, dynamic> json) {
-    return Article(
-      id: json['id'] as int,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      price: json['price'] as double,
-      imageUrl: json['imageUrl'] as String,
-      museumId: json['museumId'] as int,
-      stock: json['stock'] as int,
-    );
-  }
 
   Map<String, dynamic> toJson() {
     return {

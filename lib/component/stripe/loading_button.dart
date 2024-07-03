@@ -30,11 +30,12 @@ class _LoadingButtonState extends State<LoadingButton> {
             onPressed:
                 (_isLoading || widget.onPressed == null) ? null : _loadFuture,
             child: _isLoading
-                ? const SizedBox(
+                ? SizedBox(
                     height: 22,
                     width: 22,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   )
                 : Text(widget.text),

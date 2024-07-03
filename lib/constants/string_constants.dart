@@ -55,6 +55,8 @@ class StringConstants {
   String get fillBillingDetails =>
       'Veuillez remplir les détails de facturation';
 
+  String get payNow => 'Payer maintenant';
+
   String get paymentSuccess => 'Paiement réussi ✅';
 
   String get initPayment => 'Initialiser le paiement';

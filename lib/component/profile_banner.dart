@@ -163,7 +163,7 @@ class ProfileBanner extends StatelessWidget {
                                                   },
                                                 ),
                                                 Positioned(
-                                                  right: 0,
+                                                  left: 0,
                                                   child: Container(
                                                     padding:
                                                         const EdgeInsets.all(1),
@@ -171,7 +171,8 @@ class ProfileBanner extends StatelessWidget {
                                                       color: Colors.red,
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              6),
+                                                        6,
+                                                      ),
                                                     ),
                                                     constraints:
                                                         const BoxConstraints(

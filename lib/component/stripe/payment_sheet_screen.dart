@@ -52,6 +52,10 @@ class PaymentScreen extends HookWidget {
         child: Column(
           children: [
             10.ph,
+            Text(
+              '${StringConstants().total}: ${totalToPay.toStringAsFixed(2)} €',
+            ),
+            10.ph,
             Stepper(
               controlsBuilder: emptyControlBuilder,
               currentStep: step.value,
@@ -140,6 +144,10 @@ class PaymentScreen extends HookWidget {
       headers: {
         'Content-Type': 'application/json',
       },
+      body: json.encode({
+        'currency': 'eur',
+        'amount': (totalToPay * 100).toInt(),
+      }),
     );
     final body = json.decode(response.body);
     if (body['error'] != null) {
@@ -164,20 +172,18 @@ class PaymentScreen extends HookWidget {
         paymentSheetParameters: SetupPaymentSheetParameters(
           // Main params
           paymentIntentClientSecret: data['paymentIntent'],
-          merchantDisplayName: 'Flutter Stripe Store Demo',
-          preferredNetworks: [CardBrand.Amex],
+          merchantDisplayName: 'Trip Memories payment [DEMO]',
           // Customer params
           customerId: data['customer'],
-          customerEphemeralKeySecret: data['ephemeralKey'],
           returnURL: 'flutterstripe://redirect',
 
           // Extra params
-          primaryButtonLabel: 'Pay now',
+          primaryButtonLabel: StringConstants().payNow,
           applePay: const PaymentSheetApplePay(
-            merchantCountryCode: 'DE',
+            merchantCountryCode: 'FR',
           ),
           googlePay: const PaymentSheetGooglePay(
-            merchantCountryCode: 'DE',
+            merchantCountryCode: 'FR',
             testEnv: true,
           ),
           appearance: PaymentSheetAppearance(
@@ -211,13 +217,14 @@ class PaymentScreen extends HookWidget {
     }
   }
 
-  Future<void> confirmPayment(ValueNotifier<int> step) async {
+  Future<void> confirmPayment(
+    ValueNotifier<int> step,
+  ) async {
     try {
       // 3. display the payment sheet.
       await Stripe.instance.presentPaymentSheet();
 
       step.value = 0;
-
       Messenger.showSnackBarSuccess(StringConstants().paymentSuccess);
     } on Exception catch (e) {
       if (e is StripeException) {

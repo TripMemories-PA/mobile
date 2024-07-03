@@ -13,6 +13,8 @@ class StringConstants {
 
   String get modifiedArticle => 'Article modifié';
 
+  String get payment => 'Paiement';
+
   String get quantity => 'Quantité';
 
   String get total => 'Total';
@@ -32,6 +34,30 @@ class StringConstants {
   String get wrongEmailOrPassword => 'Mauvaise email ou mot de passe';
 
   String get title => 'Titre';
+
+  String get name => 'Nom';
+
+  String get phoneNumber => 'Numéro de téléphone';
+
+  String get city => 'Ville';
+
+  String get country => 'Pays';
+
+  String get address => 'Adresse';
+
+  String get zipCode => 'Code postal';
+
+  String get billingDetails => 'Détails de facturation';
+  String get errorOccurredFromStripe => 'Erreur survenue depuis Stripe';
+
+  String get deleteBillingDetails => 'Supprimer les détails de facturation';
+
+  String get fillBillingDetails =>
+      'Veuillez remplir les détails de facturation';
+
+  String get paymentSuccess => 'Paiement réussi ✅';
+
+  String get initPayment => 'Initialiser le paiement';
 
   String get price => 'Prix';
 

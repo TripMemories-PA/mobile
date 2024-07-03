@@ -17,43 +17,52 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
     required this.monumentRepository,
   }) : super(const MonumentState()) {
     on<GetMonumentsEvent>((event, emit) async {
-      if (event.isRefresh) {
+      try {
+        if (event.isRefresh) {
+          emit(
+            state.copyWith(
+              searchingMonumentByNameStatus: MonumentStatus.loading,
+              status: MonumentStatus.loading,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              searchingMonumentByNameStatus: MonumentStatus.loading,
+            ),
+          );
+        }
+        final PoisResponse monuments = await monumentRepository.getMonuments(
+          page: event.isRefresh ? 1 : state.monumentsPage + 1,
+          perPage: state.monumentsPerPage,
+          position: event.position,
+          sortByName: event.sortByName,
+          order: event.order ?? AlphabeticalSortPossibility.ascending,
+          searchingCriteria: event.searchingCriteria,
+        );
         emit(
           state.copyWith(
-            searchingMonumentByNameStatus: MonumentStatus.loading,
-            status: MonumentStatus.loading,
+            monumentsPage: state.isRefresh ? 0 : state.monumentsPage + 1,
+            monuments: event.isRefresh
+                ? monuments.data
+                : [
+                    ...state.monuments,
+                    ...monuments.data,
+                  ],
+            searchMonumentsHasMoreMonuments:
+                monuments.data.length == state.monumentsPerPage,
+            searchingMonumentByNameStatus: MonumentStatus.notLoading,
+            status: MonumentStatus.notLoading,
           ),
         );
-      } else {
+      } catch (e) {
         emit(
           state.copyWith(
-            searchingMonumentByNameStatus: MonumentStatus.loading,
+            searchingMonumentByNameStatus: MonumentStatus.error,
+            status: MonumentStatus.error,
           ),
         );
       }
-      final PoisResponse monuments = await monumentRepository.getMonuments(
-        page: event.isRefresh ? 1 : state.monumentsPage + 1,
-        perPage: state.monumentsPerPage,
-        position: event.position,
-        sortByName: event.sortByName,
-        order: event.order ?? AlphabeticalSortPossibility.ascending,
-        searchingCriteria: event.searchingCriteria,
-      );
-      emit(
-        state.copyWith(
-          monumentsPage: state.isRefresh ? 0 : state.monumentsPage + 1,
-          monuments: event.isRefresh
-              ? monuments.data
-              : [
-                  ...state.monuments,
-                  ...monuments.data,
-                ],
-          searchMonumentsHasMoreMonuments:
-              monuments.data.length == state.monumentsPerPage,
-          searchingMonumentByNameStatus: MonumentStatus.notLoading,
-          status: MonumentStatus.notLoading,
-        ),
-      );
     });
 
     on<GetMonumentsOnMapEvent>((event, emit) async {

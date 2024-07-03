@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
+import '../../utils/messenger.dart';
+
 class LoadingButton extends StatefulWidget {
   const LoadingButton({super.key, required this.onPressed, required this.text});
 
@@ -49,9 +51,8 @@ class _LoadingButtonState extends State<LoadingButton> {
     try {
       await widget.onPressed!();
     } catch (e, s) {
+      Messenger.showSnackBarError('Error $e');
       log(e.toString(), error: e, stackTrace: s);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Error $e')));
       rethrow;
     } finally {
       setState(() {

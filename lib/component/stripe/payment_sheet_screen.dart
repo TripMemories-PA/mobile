@@ -1,43 +1,83 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 
+import '../../constants/string_constants.dart';
+import '../../num_extensions.dart';
+import '../../utils/messenger.dart';
+import 'billing_adress_form.dart';
 import 'example_scaffold.dart';
 import 'loading_button.dart';
 
-class PaymentScreen extends StatefulWidget {
+class PaymentScreen extends HookWidget {
   const PaymentScreen({super.key});
 
   @override
-  State<PaymentScreen> createState() => _PaymentScreenState();
-}
-
-class _PaymentScreenState extends State<PaymentScreen> {
-  int step = 0;
-
-  @override
   Widget build(BuildContext context) {
+    final nameController = useTextEditingController();
+    final emailController = useTextEditingController();
+    final phoneController = useTextEditingController();
+    final cityController = useTextEditingController();
+    final countryController = useTextEditingController();
+    final line1Controller = useTextEditingController();
+    final line2Controller = useTextEditingController();
+    final stateController = useTextEditingController();
+    final postalCodeController = useTextEditingController();
+    final BillingDetailsControllers controllers = BillingDetailsControllers(
+      nameController: nameController,
+      emailController: emailController,
+      phoneController: phoneController,
+      cityController: cityController,
+      countryController: countryController,
+      line1Controller: line1Controller,
+      line2Controller: line2Controller,
+      stateController: stateController,
+      postalCodeController: postalCodeController,
+    );
+    final step = useState(0);
+    final billingDetails = useState<BillingDetails?>(null);
     return ExampleScaffold(
-      title: 'Payment',
-      tags: const ['Single Step'],
+      title: StringConstants().payment,
       children: [
+        10.ph,
         Stepper(
           controlsBuilder: emptyControlBuilder,
-          currentStep: step,
+          currentStep: step.value,
           steps: [
             Step(
-              title: const Text('Init payment'),
-              content: LoadingButton(
-                onPressed: initPaymentSheet,
-                text: 'Init payment sheet',
+              title: Text(
+                StringConstants().billingDetails,
+              ),
+              content: Column(
+                children: [
+                  _buildBillingDetails(billingDetails, controllers),
+                  LoadingButton(
+                    onPressed: () async {
+                      final BillingDetails? billingDetailsValue =
+                          billingDetails.value;
+                      if (billingDetailsValue == null) {
+                        Messenger.showSnackBarError(
+                            StringConstants().fillBillingDetails);
+                      } else {
+                        initPaymentSheet(
+                          step,
+                          billingDetailsValue,
+                          context,
+                        );
+                      }
+                    },
+                    text: StringConstants().initPayment,
+                  ),
+                ],
               ),
             ),
             Step(
               title: const Text('Confirm payment'),
               content: LoadingButton(
-                onPressed: confirmPayment,
+                onPressed: () => confirmPayment(step),
                 text: 'Pay now',
               ),
             ),
@@ -47,6 +87,41 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 
+  Widget _buildBillingDetails(
+    ValueNotifier<BillingDetails?> billingDetails,
+    BillingDetailsControllers controllers,
+  ) {
+    if (billingDetails.value != null) {
+      return Column(
+        children: [
+          Text('Name: ${billingDetails.value?.name}'),
+          10.ph,
+          Text('Email: ${billingDetails.value?.email}'),
+          10.ph,
+          Text('Phone: ${billingDetails.value?.phone}'),
+          10.ph,
+          Text('Address: ${billingDetails.value?.address?.city}'),
+          10.ph,
+          Text('Country: ${billingDetails.value?.address?.country}'),
+          10.ph,
+          Text('Line 1: ${billingDetails.value?.address?.line1}'),
+          20.ph,
+          ElevatedButton(
+            onPressed: () => billingDetails.value = null,
+            child: Text(StringConstants().deleteBillingDetails),
+          ),
+        ],
+      );
+    } else {
+      return BillingDetailsForm(
+        onSubmit: (BillingDetails value) {
+          billingDetails.value = value;
+        },
+        controllers: controllers,
+      );
+    }
+  }
+
   Future<Map<String, dynamic>> _createTestPaymentSheet() async {
     final url = Uri.parse('http://10.0.2.2:4242/payment-sheet');
     final response = await http.post(
@@ -54,9 +129,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: json.encode({
-        'a': 'a',
-      }),
     );
     final body = json.decode(response.body);
     if (body['error'] != null) {
@@ -65,25 +137,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return body;
   }
 
-  Future<void> initPaymentSheet() async {
+  Future<void> initPaymentSheet(
+    ValueNotifier<int> step,
+    BillingDetails billingDetails,
+    BuildContext context,
+  ) async {
     try {
+      final Color primaryColor = Theme.of(context).colorScheme.primary;
+      final Color surfaceColor = Theme.of(context).colorScheme.surface;
       // 1. create payment intent on the server
       final data = await _createTestPaymentSheet();
-
-      // create some billingdetails
-      const billingDetails = BillingDetails(
-        name: 'Flutter Stripe',
-        email: 'email@stripe.com',
-        phone: '+48888000888',
-        address: Address(
-          city: 'Houston',
-          country: 'US',
-          line1: '1459  Circle Drive',
-          line2: '',
-          state: 'Texas',
-          postalCode: '77063',
-        ),
-      ); // mocked data for tests
 
       // 2. initialize the payment sheet
       await Stripe.instance.initPaymentSheet(
@@ -106,24 +169,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
             merchantCountryCode: 'DE',
             testEnv: true,
           ),
-          style: ThemeMode.dark,
-          appearance: const PaymentSheetAppearance(
+          appearance: PaymentSheetAppearance(
             colors: PaymentSheetAppearanceColors(
-              background: Colors.lightBlue,
-              primary: Colors.blue,
-              componentBorder: Colors.red,
+              background: surfaceColor,
+              primary: primaryColor,
+              componentBorder: Colors.black,
             ),
             shapes: PaymentSheetShape(
               borderWidth: 4,
-              shadow: PaymentSheetShadowParams(color: Colors.red),
+              shadow: PaymentSheetShadowParams(color: primaryColor),
             ),
             primaryButton: PaymentSheetPrimaryButtonAppearance(
-              shapes: PaymentSheetPrimaryButtonShape(blurRadius: 8),
+              shapes: const PaymentSheetPrimaryButtonShape(blurRadius: 8),
               colors: PaymentSheetPrimaryButtonTheme(
                 light: PaymentSheetPrimaryButtonThemeColors(
-                  background: Color.fromARGB(255, 231, 235, 30),
-                  text: Color.fromARGB(255, 235, 92, 30),
-                  border: Color.fromARGB(255, 235, 92, 30),
+                  background: surfaceColor,
+                  text: primaryColor,
+                  border: Colors.black,
                 ),
               ),
             ),
@@ -131,44 +193,28 @@ class _PaymentScreenState extends State<PaymentScreen> {
           billingDetails: billingDetails,
         ),
       );
-      setState(() {
-        step = 1;
-      });
+      step.value = 1;
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      Messenger.showSnackBarError(StringConstants().errorOccurred);
       rethrow;
     }
   }
 
-  Future<void> confirmPayment() async {
+  Future<void> confirmPayment(ValueNotifier<int> step) async {
     try {
       // 3. display the payment sheet.
       await Stripe.instance.presentPaymentSheet();
 
-      setState(() {
-        step = 0;
-      });
+      step.value = 0;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Payment succesfully completed'),
-        ),
-      );
+      Messenger.showSnackBarSuccess(StringConstants().paymentSuccess);
     } on Exception catch (e) {
       if (e is StripeException) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error from Stripe: ${e.error.localizedMessage}'),
-          ),
+        Messenger.showSnackBarError(
+          StringConstants().errorOccurredFromStripe,
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Unforeseen error: $e'),
-          ),
-        );
+        Messenger.showSnackBarError(StringConstants().errorOccurred);
       }
     }
   }
@@ -176,4 +222,28 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
 Container emptyControlBuilder(_, __) {
   return Container();
+}
+
+class BillingDetailsControllers {
+  BillingDetailsControllers({
+    required this.nameController,
+    required this.emailController,
+    required this.phoneController,
+    required this.cityController,
+    required this.countryController,
+    required this.line1Controller,
+    required this.line2Controller,
+    required this.stateController,
+    required this.postalCodeController,
+  });
+
+  final TextEditingController nameController;
+  final TextEditingController emailController;
+  final TextEditingController phoneController;
+  final TextEditingController cityController;
+  final TextEditingController countryController;
+  final TextEditingController line1Controller;
+  final TextEditingController line2Controller;
+  final TextEditingController stateController;
+  final TextEditingController postalCodeController;
 }

@@ -9,7 +9,6 @@ import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
 import '../../utils/messenger.dart';
 import 'billing_adress_form.dart';
-import 'example_scaffold.dart';
 import 'loading_button.dart';
 
 class PaymentScreen extends HookWidget {
@@ -39,51 +38,57 @@ class PaymentScreen extends HookWidget {
     );
     final step = useState(0);
     final billingDetails = useState<BillingDetails?>(null);
-    return ExampleScaffold(
-      title: StringConstants().payment,
-      children: [
-        10.ph,
-        Stepper(
-          controlsBuilder: emptyControlBuilder,
-          currentStep: step.value,
-          steps: [
-            Step(
-              title: Text(
-                StringConstants().billingDetails,
-              ),
-              content: Column(
-                children: [
-                  _buildBillingDetails(billingDetails, controllers),
-                  LoadingButton(
-                    onPressed: () async {
-                      final BillingDetails? billingDetailsValue =
-                          billingDetails.value;
-                      if (billingDetailsValue == null) {
-                        Messenger.showSnackBarError(
-                            StringConstants().fillBillingDetails);
-                      } else {
-                        initPaymentSheet(
-                          step,
-                          billingDetailsValue,
-                          context,
-                        );
-                      }
-                    },
-                    text: StringConstants().initPayment,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(StringConstants().payment),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            10.ph,
+            Stepper(
+              controlsBuilder: emptyControlBuilder,
+              currentStep: step.value,
+              steps: [
+                Step(
+                  title: Text(
+                    StringConstants().billingDetails,
                   ),
-                ],
-              ),
-            ),
-            Step(
-              title: const Text('Confirm payment'),
-              content: LoadingButton(
-                onPressed: () => confirmPayment(step),
-                text: 'Pay now',
-              ),
+                  content: Column(
+                    children: [
+                      _buildBillingDetails(billingDetails, controllers),
+                      LoadingButton(
+                        onPressed: () async {
+                          final BillingDetails? billingDetailsValue =
+                              billingDetails.value;
+                          if (billingDetailsValue == null) {
+                            Messenger.showSnackBarError(
+                                StringConstants().fillBillingDetails);
+                          } else {
+                            initPaymentSheet(
+                              step,
+                              billingDetailsValue,
+                              context,
+                            );
+                          }
+                        },
+                        text: StringConstants().initPayment,
+                      ),
+                    ],
+                  ),
+                ),
+                Step(
+                  title: const Text('Confirm payment'),
+                  content: LoadingButton(
+                    onPressed: () => confirmPayment(step),
+                    text: 'Pay now',
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 

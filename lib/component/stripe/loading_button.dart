@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
+import '../../constants/string_constants.dart';
 import '../../utils/messenger.dart';
 
 class LoadingButton extends StatefulWidget {
@@ -51,7 +52,7 @@ class _LoadingButtonState extends State<LoadingButton> {
     try {
       await widget.onPressed!();
     } catch (e, s) {
-      Messenger.showSnackBarError('Error $e');
+      Messenger.showSnackBarError(StringConstants().errorOccurred);
       log(e.toString(), error: e, stackTrace: s);
       rethrow;
     } finally {

@@ -1,13 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../api/profile/profile_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
+import '../bloc/cart/cart_bloc.dart';
 import '../bloc/friend_request_bloc/friend_request_bloc.dart';
 import '../bloc/profile/profile_bloc.dart';
 import '../bloc/user_searching_bloc/user_searching_bloc.dart';
+import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/profile/profile.dart';
@@ -127,7 +130,71 @@ class ProfileBanner extends StatelessWidget {
                                       },
                                     ),
                                   ],
-                                  child: _buildProfileActionButton(context),
+                                  child: Row(
+                                    children: [
+                                      _buildProfileActionButton(context),
+                                      if (isMyProfile) const Spacer(),
+                                      if (isMyProfile)
+                                        BlocBuilder<CartBloc, CartState>(
+                                          builder: (context, state) {
+                                            final int total = context
+                                                .read<CartBloc>()
+                                                .state
+                                                .cartElements
+                                                .fold(
+                                                  0,
+                                                  (previousValue, element) =>
+                                                      previousValue +
+                                                      element.articles.length,
+                                                );
+                                            return Stack(
+                                              children: [
+                                                IconButton(
+                                                  icon: const Icon(Icons
+                                                      .shopping_cart_outlined),
+                                                  onPressed: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return _buildCart();
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                                Positioned(
+                                                  right: 0,
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(1),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.red,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6),
+                                                    ),
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                      minWidth: 15,
+                                                      minHeight: 15,
+                                                    ),
+                                                    child: Text(
+                                                      '$total',
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 10,
+                                                      ),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
@@ -160,6 +227,145 @@ class ProfileBanner extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Dialog _buildCart() {
+    return Dialog(
+      insetPadding: const EdgeInsets.all(10),
+      child: BlocBuilder<CartBloc, CartState>(
+        builder: (context, state) {
+          return Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+              border: Border.fromBorderSide(
+                BorderSide(),
+              ),
+            ),
+            width: MediaQuery.of(context).size.width * 0.90,
+            height: MediaQuery.of(context).size.height * 0.90,
+            child: Column(
+              children: [
+                TextButton(
+                  child: Text(StringConstants().close),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        for (final cartElement
+                            in context.read<CartBloc>().state.cartElements)
+                          Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                height: 80,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 50,
+                                      width: 50,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          10,
+                                        ),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          15.0,
+                                        ),
+                                        child: Image.network(
+                                          cartElement.articles[0].imageUrl,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    10.pw,
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.50,
+                                      child: Text(
+                                        cartElement.articles[0].title,
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      '${cartElement.articles.length}',
+                                    ),
+                                    const Spacer(),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          '${StringConstants().price}: ${cartElement.articles[0].price}',
+                                        ),
+                                        SizedBox(
+                                          height: 40,
+                                          width: 40,
+                                          child: IconButton(
+                                            onPressed: () => {
+                                              context.read<CartBloc>().add(
+                                                    RemoveArticle(
+                                                      cartElement.articles[0],
+                                                    ),
+                                                  ),
+                                            },
+                                            icon: const Icon(
+                                              Icons.delete,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 5.0,
+                                ),
+                                child: Container(
+                                  height: 1,
+                                  color: Colors.grey,
+                                  width: double.infinity,
+                                ),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                Text(
+                  '${StringConstants().total}: ${context.read<CartBloc>().state.totalPrice}',
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                10.ph,
+                ElevatedButton(
+                  onPressed: () {
+                    context.pop();
+                    context.push(
+                      RouteName.buy,
+                      extra: context.read<CartBloc>().state.totalPrice,
+                    );
+                  },
+                  child: Text(
+                    StringConstants().buy,
+                  ),
+                ),
+                10.ph,
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 

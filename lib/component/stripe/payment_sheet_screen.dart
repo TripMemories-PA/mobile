@@ -12,7 +12,9 @@ import 'billing_adress_form.dart';
 import 'loading_button.dart';
 
 class PaymentScreen extends HookWidget {
-  const PaymentScreen({super.key});
+  const PaymentScreen({super.key, required this.totalToPay});
+
+  final double totalToPay;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,10 @@ class PaymentScreen extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(StringConstants().payment),
+        leading: IconButton(
+          icon: const Icon(Icons.chevron_left),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(

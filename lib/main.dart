@@ -151,9 +151,25 @@ class MyApp extends HookWidget {
               GoRoute(
                 path: RouteName.buy,
                 pageBuilder: (context, state) {
+                  final double? totalToPay = state.extra as double?;
+                  if (totalToPay == null) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      context.go(RouteName.searchPage);
+                    });
+                    return CustomTransitionPage(
+                      child: const SizedBox.shrink(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return CustomTransition.buildFadeTransition(
+                          animation,
+                          child,
+                        );
+                      },
+                    );
+                  }
                   return CustomTransitionPage(
                     key: state.pageKey,
-                    child: const PaymentScreen(),
+                    child: PaymentScreen(totalToPay: totalToPay),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       return CustomTransition.buildFadeTransition(

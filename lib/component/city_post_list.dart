@@ -6,7 +6,6 @@ import '../api/post/post_service.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/string_constants.dart';
 import '../object/city/city.dart';
-import '../object/post/post.dart';
 import '../repository/post/post_repository.dart';
 import 'post_card.dart';
 import 'shimmer/shimmer_post_and_monument_resume_list.dart';

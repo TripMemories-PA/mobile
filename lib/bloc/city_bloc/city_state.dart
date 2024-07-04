@@ -15,10 +15,6 @@ class CityState {
     this.monumentsCityPage = 0,
     this.selectedCityGetMonumentsStatus = CityStatus.notLoading,
     this.getCityHasMoreMonuments = true,
-    this.selectedCityPosts = const [],
-    this.postCityPage = 0,
-    this.selectedCityGetPostsStatus = CityStatus.notLoading,
-    this.getCityHasMorePosts = true,
   });
 
   CityState copyWith({
@@ -34,11 +30,6 @@ class CityState {
     int? monumentsCityPage,
     CityStatus? selectedCityGetMonumentsStatus,
     bool? getCityHasMoreMonuments,
-    List<Post>? selectedCityPosts,
-    int? postCityPage,
-    CityStatus? selectedCityGetPostsStatus,
-    bool? getCityHasMorePosts,
-
   }) {
     return CityState(
       cities: cities ?? this.cities,
@@ -56,12 +47,6 @@ class CityState {
           selectedCityGetMonumentsStatus ?? this.selectedCityGetMonumentsStatus,
       getCityHasMoreMonuments:
           getCityHasMoreMonuments ?? this.getCityHasMoreMonuments,
-
-      selectedCityPosts: selectedCityPosts ?? this.selectedCityPosts,
-      postCityPage: postCityPage ?? this.postCityPage,
-      selectedCityGetPostsStatus:
-          selectedCityGetPostsStatus ?? this.selectedCityGetPostsStatus,
-      getCityHasMorePosts: getCityHasMorePosts ?? this.getCityHasMorePosts,
     );
   }
 
@@ -76,9 +61,4 @@ class CityState {
   final int monumentsCityPage;
   final CityStatus selectedCityGetMonumentsStatus;
   final bool getCityHasMoreMonuments;
-
-  final List<Post> selectedCityPosts;
-  final int postCityPage;
-  final CityStatus selectedCityGetPostsStatus;
-  final bool getCityHasMorePosts;
 }

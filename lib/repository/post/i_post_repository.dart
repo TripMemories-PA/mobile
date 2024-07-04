@@ -16,4 +16,10 @@ abstract class IPostRepository {
     required int page,
     required int perPage,
   });
+
+  Future<GetAllPostsResponse> getCityPosts({
+    required int cityId,
+    required int page,
+    required int perPage,
+  });
 }

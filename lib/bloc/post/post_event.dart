@@ -55,3 +55,13 @@ class DecrementLikeCounterEvent extends PostEvent {
 
   final int postId;
 }
+
+class GetCityPostEvent extends PostEvent {
+  GetCityPostEvent({
+    required this.id,
+    this.isRefresh = false,
+  });
+
+  final int id;
+  final bool isRefresh;
+}

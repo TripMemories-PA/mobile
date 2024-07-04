@@ -19,6 +19,7 @@ class PostService implements IPostService, IPostRepository {
   static const String apiPostBaseUrl = '${AppConfig.apiUrl}/posts';
   static const String apiGetUserPostUrl =
       '${AppConfig.apiUrl}/users/[user_id]/posts';
+  static const String apiCitiesBaseUrl = '${AppConfig.apiUrl}/cities';
 
   @override
   Future<CreatePostResponse> createPost({
@@ -163,6 +164,31 @@ class PostService implements IPostService, IPostRepository {
       await DioClient.instance.delete('$apiPostBaseUrl/$postId/like');
     } on BadRequestException {
       throw BadRequestException(ApiError.errorOccurred());
+    }
+  }
+
+  @override
+  Future<GetAllPostsResponse> getCityPosts({
+    required int cityId,
+    required int page,
+    required int perPage,
+  }) async {
+    Response response;
+    try {
+      final String url =
+          '$apiCitiesBaseUrl/$cityId/posts?page=$page&perPage=$perPage&sortBy=name&order=desc';
+      response = await DioClient.instance.get(
+        url,
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      return GetAllPostsResponse.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
     }
   }
 }

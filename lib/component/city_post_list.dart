@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../bloc/city_bloc/city_bloc.dart';
+import '../api/post/post_service.dart';
+import '../bloc/post/post_bloc.dart';
 import '../constants/string_constants.dart';
 import '../object/city/city.dart';
-import '../object/post/post.dart';
-import '../repository/city/cities_repository.dart';
+import '../repository/post/post_repository.dart';
 import 'post_card.dart';
 import 'shimmer/shimmer_post_and_monument_resume_list.dart';
 
@@ -21,10 +21,10 @@ class CityPostList extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CityBloc(
-        cityRepository: RepositoryProvider.of<CityRepository>(
+      create: (context) => PostBloc(
+        postRepository: RepositoryProvider.of<PostRepository>(
           context,
-        ),
+        ), postService: PostService(),
       )..add(
           GetCityPostEvent(
             id: city.id,
@@ -46,10 +46,10 @@ class _PostListContent extends HookWidget {
   final int cityId;
 
   void _getPosts(BuildContext context) {
-    final cityBloc = context.read<CityBloc>();
+    final postBloc = context.read<PostBloc>();
 
-    if (cityBloc.state.status != CityStatus.loading) {
-      cityBloc.add(
+    if (postBloc.state.status != PostStatus.loading) {
+      postBloc.add(
         GetCityPostEvent(
           id: cityId,
         ),
@@ -58,16 +58,15 @@ class _PostListContent extends HookWidget {
   }
 
   Widget _buildPostList(BuildContext context) {
-    return BlocBuilder<CityBloc, CityState>(
+    return BlocBuilder<PostBloc, PostState>(
       builder: (context, state) {
-        if (state.status == CityStatus.notLoading) {
-          final List<Post> posts = state.selectedCityPosts;
-          if (posts.isNotEmpty) {
+        if (state.selectedCityGetPostsStatus == PostStatus.notLoading) {
+          if (state.selectedCityPosts.isNotEmpty) {
             return Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-                  ...posts.map((post) {
+                  ...state.selectedCityPosts.map((post) {
                     return Column(
                       children: [
                         PostCardLikable(post: post),
@@ -76,9 +75,9 @@ class _PostListContent extends HookWidget {
                     );
                   }),
                   Center(
-                    child: context.read<CityBloc>().state.getCityHasMorePosts
-                        ? (context.read<CityBloc>().state.status !=
-                                CityStatus.error
+                    child: context.read<PostBloc>().state.getCityHasMorePosts
+                        ? (context.read<PostBloc>().state.status !=
+                                PostStatus.error
                             ? const ShimmerPostAndMonumentResumeList()
                             : _buildErrorWidget(context))
                         : Text(StringConstants().noMorePosts),
@@ -89,15 +88,16 @@ class _PostListContent extends HookWidget {
           } else {
             return Center(child: Text(StringConstants().noPostYet));
           }
-        } else if (state.selectedCityGetPostsStatus == CityStatus.loading) {
+        } else if (state.selectedCityGetPostsStatus == PostStatus.loading) {
           return const Center(child: ShimmerPostAndMonumentResumeList());
-        } else if (state.selectedCityGetPostsStatus == CityStatus.error) {
+        } else if (state.selectedCityGetPostsStatus == PostStatus.error) {
           return Center(
             child: Text(StringConstants().errorWhileLoadingPosts),
           );
         } else {
           return Container();
-        }
+
+      }
       },
     );
   }
@@ -117,7 +117,7 @@ class _PostListContent extends HookWidget {
   void _getPostsRequest(
     BuildContext context,
   ) {
-    context.read<CityBloc>().add(
+    context.read<PostBloc>().add(
           GetCityPostEvent(
             id: cityId,
           ),
@@ -142,15 +142,15 @@ class _PostListContent extends HookWidget {
       },
       const [],
     );
-    return BlocBuilder<CityBloc, CityState>(
+    return BlocBuilder<PostBloc, PostState>(
       builder: (context, state) {
         return RefreshIndicator(
           onRefresh: () async {
             context
-                .read<CityBloc>()
+                .read<PostBloc>()
                 .add(GetCityPostEvent(isRefresh: true, id: cityId));
           },
-          child: state.status == CityStatus.loading
+          child: state.status == PostStatus.loading
               // TODO(nono): shimmer
               ? const Center(
                   child: ShimmerPostAndMonumentResumeList(),

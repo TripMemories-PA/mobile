@@ -37,13 +37,3 @@ class GetCityPoiEvent extends CityEvent {
   final int id;
   final bool isRefresh;
 }
-
-class GetCityPostEvent extends CityEvent {
-  GetCityPostEvent({
-    required this.id,
-    this.isRefresh = false,
-  });
-
-  final int id;
-  final bool isRefresh;
-}

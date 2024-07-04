@@ -4,13 +4,13 @@ import '../../object/post/post.dart';
 import '../../repository/post/i_post_repository.dart';
 
 class PostRemoteDataSource extends IPostRepository {
-  final PostService _profileService = PostService();
+  final PostService _postService = PostService();
 
   @override
   Future<Post> getPostById({
     required int postId,
   }) async {
-    final Post post = await _profileService.getPostById(postId: postId);
+    final Post post = await _postService.getPostById(postId: postId);
     return post;
   }
 
@@ -20,7 +20,7 @@ class PostRemoteDataSource extends IPostRepository {
     required int perPage,
     int? userId,
   }) async {
-    final GetAllPostsResponse posts = await _profileService.getPosts(
+    final GetAllPostsResponse posts = await _postService.getPosts(
       page: page,
       perPage: perPage,
       userId: userId,
@@ -33,10 +33,23 @@ class PostRemoteDataSource extends IPostRepository {
     required int page,
     required int perPage,
   }) async {
-    final GetAllPostsResponse posts = await _profileService.getMyPosts(
+    final GetAllPostsResponse posts = await _postService.getMyPosts(
       page: page,
       perPage: perPage,
     );
     return posts;
+  }
+
+  @override
+  Future<GetAllPostsResponse> getCityPosts({
+    required int cityId,
+    required int page,
+    required int perPage,
+  }) {
+    return _postService.getCityPosts(
+      cityId: cityId,
+      page: page,
+      perPage: perPage,
+    );
   }
 }

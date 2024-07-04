@@ -8,6 +8,7 @@ import '../../object/post/post.dart';
 import '../../repository/post/i_post_repository.dart';
 
 part 'post_event.dart';
+
 part 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
@@ -36,7 +37,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
                   page: event.isRefresh ? 1 : state.postsPage + 1,
                   perPage: state.postsPerPage,
                   userId: event.userId,
+                  isMyFeed: event.isMyFeed,
                 );
+
           emit(
             state.copyWith(
               posts: event.isRefresh
@@ -266,7 +269,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         ),
       );
       final GetAllPostsResponse postsResponse =
-      await postRepository.getCityPosts(
+          await postRepository.getCityPosts(
         cityId: event.id,
         page: event.isRefresh ? 1 : state.postCityPage + 1,
         perPage: state.postsPerPage,
@@ -277,15 +280,14 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           selectedCityPosts: event.isRefresh
               ? postsResponse.data
               : [
-            ...state.selectedCityPosts,
-            ...postsResponse.data,
-          ],
+                  ...state.selectedCityPosts,
+                  ...postsResponse.data,
+                ],
           getCityHasMorePosts: postsResponse.data.length == state.postsPage,
           postCityPage: event.isRefresh ? 0 : state.postCityPage + 1,
         ),
       );
     });
-
   }
 
   final IPostRepository postRepository;

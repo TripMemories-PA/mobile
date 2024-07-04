@@ -18,11 +18,13 @@ class PostRepository implements IPostRepository {
     required int page,
     required int perPage,
     int? userId,
+    bool isMyFeed = false,
   }) async {
     return postRemoteDataSource.getPosts(
       page: page,
       perPage: perPage,
       userId: userId,
+      isMyFeed: isMyFeed,
     );
   }
 

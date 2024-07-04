@@ -55,6 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<ChangeToLoggedOutStatus>((event, emit) {
+      authTokenHandler.logout();
       emit(
         const AuthState.guest(),
       );

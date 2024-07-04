@@ -78,15 +78,20 @@ class PostService implements IPostService, IPostRepository {
     required int page,
     required int perPage,
     int? userId,
+    bool isMyFeed = false,
   }) async {
     Response response;
     try {
       String url;
-      if (userId != null) {
-        url = '$apiGetUserPostUrl?page=$page&perPage=$perPage';
-        url = url.replaceAll('[user_id]', userId.toString());
+      if(isMyFeed) {
+        url = '${AppConfig.apiUrl}/me/friends/posts?page=$page&perPage=$perPage';
       } else {
-        url = '$apiPostBaseUrl?page=$page&perPage=$perPage';
+        if (userId != null) {
+          url = '$apiGetUserPostUrl?page=$page&perPage=$perPage';
+          url = url.replaceAll('[user_id]', userId.toString());
+        } else {
+          url = '$apiPostBaseUrl?page=$page&perPage=$perPage';
+        }
       }
       response = await DioClient.instance.get(
         url,

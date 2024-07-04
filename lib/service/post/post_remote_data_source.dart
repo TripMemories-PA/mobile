@@ -19,11 +19,13 @@ class PostRemoteDataSource extends IPostRepository {
     required int page,
     required int perPage,
     int? userId,
+    bool isMyFeed = false,
   }) async {
     final GetAllPostsResponse posts = await _postService.getPosts(
       page: page,
       perPage: perPage,
       userId: userId,
+      isMyFeed: isMyFeed,
     );
     return posts;
   }

@@ -7,11 +7,13 @@ class GetPostsEvent extends PostEvent {
     this.isRefresh = false,
     this.userId,
     this.myPosts = false,
+    this.isMyFeed = false,
   });
 
   final bool myPosts;
   final bool isRefresh;
   final int? userId;
+  final bool isMyFeed;
 }
 
 class DeletePostEvent extends PostEvent {

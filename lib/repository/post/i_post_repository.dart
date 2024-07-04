@@ -10,6 +10,7 @@ abstract class IPostRepository {
     required int page,
     required int perPage,
     int? userId,
+    bool isMyFeed = false,
   });
 
   Future<GetAllPostsResponse> getMyPosts({

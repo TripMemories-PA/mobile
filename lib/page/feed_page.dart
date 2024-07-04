@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
-import '../component/post_list.dart';
+import '../component/feed.dart';
 import '../constants/route_name.dart';
 
 class FeedPage extends StatelessWidget {
@@ -28,7 +28,7 @@ class FeedPage extends StatelessWidget {
                 : null,
             body: const Padding(
               padding: EdgeInsets.all(8.0),
-              child: PostList(),
+              child: FeedComponent(),
             ),
           ),
         );

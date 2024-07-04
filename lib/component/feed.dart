@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../api/post/post_service.dart';
+import '../bloc/auth_bloc/auth_bloc.dart';
+import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/string_constants.dart';
 import '../object/post/post.dart';
@@ -11,8 +13,8 @@ import 'post_card.dart';
 import 'shimmer/shimmer_post_and_monument_resume.dart';
 import 'shimmer/shimmer_post_and_monument_resume_list.dart';
 
-class PostList extends HookWidget {
-  const PostList({
+class FeedComponent extends HookWidget {
+  const FeedComponent({
     super.key,
     this.userId,
     this.myPosts = false,
@@ -25,18 +27,34 @@ class PostList extends HookWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PostBloc(
-        postRepository: RepositoryProvider.of<PostRepository>(
-          context,
-        ),
+        postRepository: RepositoryProvider.of<PostRepository>(context),
         postService: PostService(),
       )..add(
           GetPostsEvent(
             isRefresh: true,
             myPosts: myPosts,
             userId: userId,
+            isMyFeed: context.read<AuthBloc>().state.status ==
+                AuthStatus.authenticated,
           ),
         ),
-      child: _PostListContent(myPosts, userId),
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          context.read<PostBloc>().add(
+                GetPostsEvent(
+                  isRefresh: true,
+                  myPosts: myPosts,
+                  userId: userId,
+                  isMyFeed: state.status == AuthStatus.authenticated,
+                ),
+              );
+        },
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            return _PostListContent(myPosts, userId);
+          },
+        ),
+      ),
     );
   }
 }
@@ -51,13 +69,15 @@ class _PostListContent extends HookWidget {
   final int? userId;
 
   void _getPosts(BuildContext context) {
-    final tweetBloc = context.read<PostBloc>();
+    final postBloc = context.read<PostBloc>();
 
-    if (tweetBloc.state.status != PostStatus.loading) {
-      tweetBloc.add(
+    if (postBloc.state.status != PostStatus.loading) {
+      postBloc.add(
         GetPostsEvent(
           myPosts: myPosts,
           userId: userId,
+          isMyFeed:
+              context.read<AuthBloc>().state.status == AuthStatus.authenticated,
         ),
       );
     }
@@ -126,6 +146,8 @@ class _PostListContent extends HookWidget {
             isRefresh: true,
             myPosts: myPosts,
             userId: userId,
+            isMyFeed: context.read<AuthBloc>().state.status ==
+                AuthStatus.authenticated,
           ),
         );
   }
@@ -148,23 +170,31 @@ class _PostListContent extends HookWidget {
       },
       const [],
     );
-    return BlocBuilder<PostBloc, PostState>(
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        return RefreshIndicator(
-          onRefresh: () async {
-            context
-                .read<PostBloc>()
-                .add(GetPostsEvent(isRefresh: true, myPosts: myPosts));
+        return BlocBuilder<PostBloc, PostState>(
+          builder: (context, state) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<PostBloc>().add(
+                      GetPostsEvent(
+                        isRefresh: true,
+                        myPosts: myPosts,
+                        isMyFeed: context.read<AuthBloc>().state.status ==
+                            AuthStatus.authenticated,
+                      ),
+                    );
+              },
+              child: state.status == PostStatus.loading
+                  ? const Center(
+                      child: ShimmerPostAndMonumentResumeList(),
+                    )
+                  : SingleChildScrollView(
+                      controller: postScrollController,
+                      child: _buildPostList(context),
+                    ),
+            );
           },
-          child: state.status == PostStatus.loading
-              // TODO(nono): shimmer
-              ? const Center(
-                  child: ShimmerPostAndMonumentResumeList(),
-                )
-              : SingleChildScrollView(
-                  controller: postScrollController,
-                  child: _buildPostList(context),
-                ),
         );
       },
     );

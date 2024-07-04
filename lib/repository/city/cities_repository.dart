@@ -1,6 +1,5 @@
 import '../../api/city/model/response/cities_response/cities_response.dart';
 import '../../api/monument/model/response/pois_response/pois_response.dart';
-import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../object/position.dart';
 import '../../object/radius.dart';
 import '../../object/sort_possibility.dart';
@@ -46,19 +45,6 @@ class CityRepository implements ICityRepository {
     required int perPage,
   }) {
     return citiesRemoteDataSource.getCityMonuments(
-      cityId: cityId,
-      page: page,
-      perPage: perPage,
-    );
-  }
-
-  @override
-  Future<GetAllPostsResponse> getCityPosts({
-    required int cityId,
-    required int page,
-    required int perPage,
-  }) {
-    return citiesRemoteDataSource.getCityPosts(
       cityId: cityId,
       page: page,
       perPage: perPage,

@@ -258,6 +258,34 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         }
       },
     );
+
+    on<GetCityPostEvent>((event, emit) async {
+      emit(
+        state.copyWith(
+          selectedCityGetPostsStatus: PostStatus.loading,
+        ),
+      );
+      final GetAllPostsResponse postsResponse =
+      await postRepository.getCityPosts(
+        cityId: event.id,
+        page: event.isRefresh ? 1 : state.postCityPage + 1,
+        perPage: state.postsPerPage,
+      );
+      emit(
+        state.copyWith(
+          selectedCityGetPostsStatus: PostStatus.notLoading,
+          selectedCityPosts: event.isRefresh
+              ? postsResponse.data
+              : [
+            ...state.selectedCityPosts,
+            ...postsResponse.data,
+          ],
+          getCityHasMorePosts: postsResponse.data.length == state.postsPage,
+          postCityPage: event.isRefresh ? 0 : state.postCityPage + 1,
+        ),
+      );
+    });
+
   }
 
   final IPostRepository postRepository;

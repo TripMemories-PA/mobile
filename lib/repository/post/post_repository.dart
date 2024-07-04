@@ -42,4 +42,17 @@ class PostRepository implements IPostRepository {
   Future<Post> getPostById({required int postId}) {
     return postRemoteDataSource.getPostById(postId: postId);
   }
+
+  @override
+  Future<GetAllPostsResponse> getCityPosts({
+    required int cityId,
+    required int page,
+    required int perPage,
+  }) {
+    return postRemoteDataSource.getCityPosts(
+      cityId: cityId,
+      page: page,
+      perPage: perPage,
+    );
+  }
 }

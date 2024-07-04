@@ -2,15 +2,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../api/city/model/response/cities_response/cities_response.dart';
 import '../../api/monument/model/response/pois_response/pois_response.dart';
-import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../object/city/city.dart';
 import '../../object/poi/poi.dart';
 import '../../object/position.dart';
-import '../../object/post/post.dart';
 import '../../object/sort_possibility.dart';
 import '../../repository/city/i_cities_repository.dart';
 
 part 'city_event.dart';
+
 part 'city_state.dart';
 
 class CityBloc extends Bloc<CityEvent, CityState> {
@@ -79,34 +78,6 @@ class CityBloc extends Bloc<CityEvent, CityState> {
                 ],
           getCityHasMoreMonuments: pois.data.length == perPage,
           monumentsCityPage: event.isRefresh ? 1 : state.monumentsCityPage + 1,
-        ),
-      );
-    });
-
-    on<GetCityPostEvent>((event, emit) async {
-      emit(
-        state.copyWith(
-          selectedCityGetPostsStatus: CityStatus.loading,
-        ),
-      );
-      final GetAllPostsResponse postsResponse =
-          await cityRepository.getCityPosts(
-        cityId: event.id,
-        page: event.isRefresh ? 1 : state.postCityPage + 1,
-        perPage: perPage,
-      );
-      emit(
-        state.copyWith(
-          selectedCityGetPostsStatus: CityStatus.notLoading,
-          selectedCityPosts: [] /*event.isRefresh
-              ? postsResponse.data
-              : [
-                  ...state.selectedCityPosts,
-                  ...postsResponse.data,
-                ]*/
-          ,
-          getCityHasMorePosts: postsResponse.data.length == perPage,
-          postCityPage: event.isRefresh ? 0 : state.postCityPage + 1,
         ),
       );
     });

@@ -22,6 +22,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           authBloc.add(
             ChangeToLoggedInStatus(
               authToken: authResponse.token,
+              stayLoggedIn: event.stayLoggedIn,
             ),
           );
           emit(const LoginState.notLoading());

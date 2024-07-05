@@ -19,4 +19,8 @@ class AuthError extends ApiError {
   static AuthError errorOccurredWhileLoggingIn() {
     return AuthError(StringConstants().errorOccurredWhileLoggingIn);
   }
+
+  static AuthError tokenExpired() {
+    return AuthError(StringConstants().tokenExpired);
+  }
 }

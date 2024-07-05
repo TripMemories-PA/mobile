@@ -29,6 +29,7 @@ class SubscribeBloc extends Bloc<SubscribeEvent, SubscribeState> {
           authBloc.add(
             ChangeToLoggedInStatus(
               authToken: response.token,
+              stayLoggedIn: event.stayLoggedIn,
             ),
           );
         } catch (exception) {

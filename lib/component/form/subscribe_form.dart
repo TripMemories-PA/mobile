@@ -30,6 +30,7 @@ class SubscribeForm extends HookWidget {
     final TextEditingController passwordController = useTextEditingController();
     final TextEditingController confirmPasswordController =
         useTextEditingController();
+    final rememberMe = useState(false);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return BlocProvider(
       create: (context) => SubscribeBloc(
@@ -76,23 +77,41 @@ class SubscribeForm extends HookWidget {
                     passwordController: confirmPasswordController,
                     previousPasswordController: passwordController,
                   ),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: rememberMe.value,
+                        onChanged: context.read<SubscribeBloc>().state.loading
+                            ? null
+                            : (bool? value) {
+                          rememberMe.value = value!;
+                        },
+                        checkColor: Colors.black,
+                      ),
+                      Text(
+                        StringConstants().rememberMe,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
                   22.ph,
                   if (context.read<SubscribeBloc>().state.loading)
                     SizedBox(
-                      height: 50,
+                      height: 30,
                       child: Column(
                         children: [
-                          10.ph,
+                          5.ph,
                           const SizedBox(
-                            height: 30,
-                            width: 30,
+                            height: 20,
+                            width: 20,
                             child: CircularProgressIndicator(),
                           ),
-                          10.ph,
+                          5.ph,
                         ],
                       ),
                     ),
-                  if (!context.read<SubscribeBloc>().state.loading) 50.ph,
+                  if (!context.read<SubscribeBloc>().state.loading) 30.ph,
                   _buildSubscribeButton(
                     context: context,
                     formKey: formKey,
@@ -101,6 +120,7 @@ class SubscribeForm extends HookWidget {
                     firstNameController: firstNameController,
                     lastNameController: lastNameController,
                     userNameController: userNameController,
+                    rememberMe: rememberMe,
                   ),
                 ],
               ),
@@ -159,6 +179,7 @@ class SubscribeForm extends HookWidget {
     required TextEditingController firstNameController,
     required TextEditingController lastNameController,
     required TextEditingController userNameController,
+    required ValueNotifier<bool> rememberMe,
   }) {
     return SizedBox(
       height: 50,
@@ -180,6 +201,7 @@ class SubscribeForm extends HookWidget {
                           username: userNameController.text,
                           email: emailController.text,
                           password: passwordController.text,
+                          stayLoggedIn: rememberMe.value,
                         ),
                       );
                 }

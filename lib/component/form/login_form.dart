@@ -157,6 +157,7 @@ class LoginForm extends HookWidget {
                                       LoginRequested(
                                         email: emailController.text,
                                         password: passwordController.text,
+                                        stayLoggedIn: rememberMe.value,
                                       ),
                                     );
                               }

@@ -8,6 +8,8 @@ abstract class IAuthService {
     required String password,
   });
 
+  Future<AuthSuccessResponse> refresh();
+
   Future<SubscribeSuccessResponse> subscribe({
     required String firstName,
     required String lastName,
@@ -16,7 +18,7 @@ abstract class IAuthService {
     required String password,
   });
 
-  Future<WhoAmIResponse> whoAmI({required String token});
+  Future<WhoAmIResponse> whoAmI();
 
   Future<void> deleteAccount();
 }

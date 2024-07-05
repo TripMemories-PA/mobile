@@ -21,14 +21,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthState.guest());
         return;
       } else if (stayLoggedIn != null && token != null) {
-        if(!stayLoggedIn) {
+        if (!stayLoggedIn) {
           authTokenHandler.logout();
           emit(const AuthState.guest());
           return;
         } else {
           try {
             final AuthSuccessResponse authSuccessResponse =
-            await authService.refresh();
+                await authService.refresh();
+            await authTokenHandler.saveToken(
+              authSuccessResponse.token,
+              stayLoggedIn,
+            );
+
             final WhoAmIResponse whoAmIResponse = await authService.whoAmI();
             emit(
               AuthState.authenticated(
@@ -64,8 +69,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<ChangeToLoggedInStatus>((event, emit) async {
       await authTokenHandler.saveToken(event.authToken, event.stayLoggedIn);
-      final WhoAmIResponse user =
-          await authService.whoAmI();
+      final WhoAmIResponse user = await authService.whoAmI();
       emit(
         AuthState.authenticated(
           user: user,

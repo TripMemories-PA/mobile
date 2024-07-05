@@ -358,7 +358,9 @@ class _PageContent extends HookWidget {
                       : tickets == null
                           ? Center(
                               child: Text(
-                                  StringConstants().noTicketForThisMonument))
+                                StringConstants().noTicketForThisMonument,
+                              ),
+                            )
                           : (tickets.length == 1
                               ? TicketCardAdmin(article: tickets[0])
                               : TicketTabView(

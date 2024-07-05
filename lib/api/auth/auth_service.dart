@@ -11,7 +11,7 @@ import 'model/query/login_model.dart';
 import 'model/query/subscribe_model.dart';
 import 'model/response/auth_success_response/auth_success_response.dart';
 import 'model/response/subscribe_success_response/subscribe_success_response.dart';
-import 'model/response/who_am_i_response/who_am_i_response.dart';
+import 'model/response/who_am_i_response.dart';
 
 class AuthService implements IAuthService {
   static const String apiAuthBaseUrl = '${AppConfig.apiUrl}/auth';

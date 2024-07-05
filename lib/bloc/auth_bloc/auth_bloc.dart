@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../api/auth/i_auth_service.dart';
 import '../../api/auth/model/response/auth_success_response/auth_success_response.dart';
-import '../../api/auth/model/response/who_am_i_response/who_am_i_response.dart';
+import '../../api/auth/model/response/who_am_i_response.dart';
 import '../../api/error/api_error.dart';
 import '../../api/exception/custom_exception.dart';
 import '../../local_storage/local_storage/login_handler.dart';

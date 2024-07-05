@@ -1,4 +1,4 @@
-import '../../api/auth/model/response/who_am_i_response/who_am_i_response.dart';
+import '../../api/auth/model/response/who_am_i_response.dart';
 import '../../api/error/api_error.dart';
 
 enum AuthStatus { authenticated, guest }

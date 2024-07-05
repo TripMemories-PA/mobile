@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../component/popup/modify_article_popup.dart';
 import '../component/ticket_card.dart';
 import '../constants/string_constants.dart';
-import '../object/ticket.dart';
 import '../utils/messenger.dart';
 
 class ShopPage extends StatelessWidget {
@@ -35,8 +34,9 @@ class ShopPage extends StatelessWidget {
         child: ListView.builder(
           itemBuilder: (context, index) {
             return SizedBox(
-                height: 440,
-                child: TicketCardAdmin(article: tmpArticles[index]));
+              height: 440,
+              child: TicketCardAdmin(article: tmpArticles[index]),
+            );
           },
           itemCount: tmpArticles.length,
         ),
@@ -44,21 +44,3 @@ class ShopPage extends StatelessWidget {
     );
   }
 }
-
-Ticket tmpArticle = Ticket(
-  title: 'title hb kb hblhib lhb ib h kj mo  kj jk mkj mk , m mkj k:j k:j kj ',
-  description:
-      'description description description description description description description description description',
-  price: 10.0,
-  museumId: 1,
-  stock: 10,
-  id: 1,
-);
-
-List<Ticket> tmpArticles = [
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-];

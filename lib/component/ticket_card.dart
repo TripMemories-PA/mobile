@@ -11,16 +11,14 @@ import 'custom_card.dart';
 import 'popup/modify_article_popup.dart';
 
 class TicketCardAdmin extends StatelessWidget {
-  const TicketCardAdmin({super.key, required this.article, this.imageUrl,});
+  const TicketCardAdmin({super.key, required this.article,});
 
   final Ticket article;
-  final String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final String? tmpImageUrl = imageUrl;
         return CustomCard(
           height: constraints.maxHeight,
           borderColor: Theme.of(context).colorScheme.tertiary,
@@ -32,7 +30,6 @@ class TicketCardAdmin extends StatelessWidget {
                   children: [
                     Stack(
                       children: [
-                        if(tmpImageUrl != null)
                         SizedBox(
                           height: constraints.maxHeight * 0.5,
                           width: double.infinity,
@@ -41,7 +38,7 @@ class TicketCardAdmin extends StatelessWidget {
                               constraints.maxHeight * 0.05,
                             ),
                             child: Image.network(
-                              tmpImageUrl,
+                              article.poi.cover.url,
                               fit: BoxFit.cover,
                             ),
                           ),

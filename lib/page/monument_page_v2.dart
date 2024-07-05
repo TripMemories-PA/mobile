@@ -22,7 +22,6 @@ import '../num_extensions.dart';
 import '../object/poi/poi.dart';
 import '../repository/monument/monument_repository.dart';
 import '../repository/post/post_repository.dart';
-import 'shop_page.dart';
 
 class MonumentPageV2 extends HookWidget {
   const MonumentPageV2({super.key, required this.monument});

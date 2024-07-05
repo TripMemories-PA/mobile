@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/monument_bloc/monument_bloc.dart';
 import '../object/ticket.dart';
 import 'ticket_card.dart';
 
@@ -43,12 +41,6 @@ class _TicketTabViewState extends State<TicketTabView>
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: TicketCardAdmin(
                   article: ticket,
-                  imageUrl: context
-                      .read<MonumentBloc>()
-                      .state
-                      .selectedMonument
-                      ?.cover
-                      .url,
                 ),
               );
             }).toList(),

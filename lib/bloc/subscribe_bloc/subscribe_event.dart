@@ -12,6 +12,7 @@ class SubscribeRequested extends SubscribeEvent {
     required this.username,
     required this.firstName,
     required this.lastName,
+    required this.stayLoggedIn,
   });
 
   final String email;
@@ -19,6 +20,7 @@ class SubscribeRequested extends SubscribeEvent {
   final String username;
   final String firstName;
   final String lastName;
+  final bool stayLoggedIn;
 }
 
 class LogoutRequested extends SubscribeEvent {}

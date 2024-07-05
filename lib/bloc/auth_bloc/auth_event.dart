@@ -10,9 +10,11 @@ class AppStarted extends AuthEvent {}
 class ChangeToLoggedInStatus extends AuthEvent {
   const ChangeToLoggedInStatus({
     required this.authToken,
+    required this.stayLoggedIn,
   });
 
   final String authToken;
+  final bool stayLoggedIn;
 }
 
 class ChangeToLoggedOutStatus extends AuthEvent {

@@ -9,6 +9,8 @@ class StringConstants {
   // Authentication
   String get notAuthenticated => 'Pas connecté';
 
+  String get tokenExpired => 'Session expirée';
+
   String get wrongEmailOrPassword => 'Mauvaise email ou mot de passe';
 
   String get emailOrUsernameAlreadyExists =>

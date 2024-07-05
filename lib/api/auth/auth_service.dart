@@ -85,7 +85,7 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future<WhoAmIResponse> whoAmI({required String token}) async {
+  Future<WhoAmIResponse> whoAmI() async {
     Response response;
     try {
       response = await DioClient.instance.get(
@@ -111,6 +111,25 @@ class AuthService implements IAuthService {
       );
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());
+    }
+  }
+
+  @override
+  Future<AuthSuccessResponse> refresh() async {
+    Response response;
+    try {
+      response = await DioClient.instance.post(
+        '$apiAuthBaseUrl/refresh',
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.tokenExpired());
+    }
+    try {
+      return AuthSuccessResponse.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
     }
   }
 }

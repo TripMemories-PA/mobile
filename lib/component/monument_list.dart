@@ -21,9 +21,9 @@ class MonumentList extends StatelessWidget {
               onTap: () {
                 context.push(
                   '${RouteName.monumentPage}/${monument.id}',
-                  extra: monument,
                 );
-              },              child: MonumentResumeCard(
+              },
+              child: MonumentResumeCard(
                 monument: monument,
               ),
             ),

@@ -201,11 +201,11 @@ class MyApp extends HookWidget {
               GoRoute(
                 path: '${RouteName.monumentPage}/:monumentId',
                 pageBuilder: (context, state) {
-                  final Poi poi = state.extra! as Poi;
                   return CustomTransitionPage(
                     key: state.pageKey,
                     child: MonumentPageV2(
-                      monument: poi,
+                      monumentId:
+                          int.parse(state.pathParameters['monumentId']!),
                     ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
@@ -242,8 +242,24 @@ class MyApp extends HookWidget {
             routes: <RouteBase>[
               GoRoute(
                 path: RouteName.feedPage,
+                redirect: (BuildContext context, GoRouterState state) {
+                  final authState = context.read<AuthBloc>().state;
+                  final isAuthenticated =
+                      authState.status == AuthStatus.authenticated;
+                  final isUserType3 = authState.user?.userTypeId == 3;
+
+                  if (isAuthenticated && isUserType3) {
+                    return RouteName.shopPage;
+                  }
+                  return null;
+                },
                 builder: (BuildContext context, GoRouterState state) =>
                     const FeedPage(),
+              ),
+              GoRoute(
+                path: RouteName.shopPage,
+                builder: (BuildContext context, GoRouterState state) =>
+                    const ShopPage(),
               ),
               GoRoute(
                 path: RouteName.editTweetPage,
@@ -270,15 +286,17 @@ class MyApp extends HookWidget {
           StatefulShellBranch(
             routes: <RouteBase>[
               GoRoute(
-                path: RouteName.shopPage,
-                builder: (BuildContext context, GoRouterState state) =>
-                    const ShopPage(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: <RouteBase>[
-              GoRoute(
+                redirect: (BuildContext context, GoRouterState state) {
+                  final authState = context.read<AuthBloc>().state;
+                  final isAuthenticated =
+                      authState.status == AuthStatus.authenticated;
+                  final isUserType3 = authState.user?.userTypeId == 3;
+                  final int? poiId = authState.user?.poiId;
+                  if (isAuthenticated && isUserType3 && poiId != null) {
+                    return '${RouteName.monumentPage}/$poiId';
+                  }
+                  return null;
+                },
                 path: RouteName.profilePage,
                 builder: (BuildContext context, GoRouterState state) {
                   return const ProfilePage();

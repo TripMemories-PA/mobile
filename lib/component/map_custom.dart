@@ -226,7 +226,6 @@ class _MapCustomState extends State<MapCustom> {
           onTap: () {
             context.push(
               '${RouteName.monumentPage}/${selectedPoi.id}',
-              extra: selectedPoi,
             );
           },
           child: Container(

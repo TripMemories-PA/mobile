@@ -28,9 +28,9 @@ import '../repository/post/post_repository.dart';
 import '../repository/ticket/ticket_repository.dart';
 
 class MonumentPageV2 extends HookWidget {
-  const MonumentPageV2({super.key, required this.monument});
+  const MonumentPageV2({super.key, required this.monumentId});
 
-  final Poi monument;
+  final int monumentId;
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +40,33 @@ class MonumentPageV2 extends HookWidget {
         monumentRepository: RepositoryProvider.of<MonumentRepository>(context),
       )..add(
           GetMonumentEvent(
-            id: monument.id,
+            id: monumentId,
           ),
         ),
       child: BlocBuilder<MonumentBloc, MonumentState>(
         builder: (context, state) {
-          return _PageContent(
-            monument: monument,
-            tabController: tabController,
-          );
+          if (state.status == MonumentStatus.loading) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          final Poi? monument = state.selectedMonument;
+          if (monument == null) {
+            return Scaffold(
+              body: Center(
+                child: Text(
+                  StringConstants().errorOccurred,
+                ),
+              ),
+            );
+          } else {
+            return _PageContent(
+              monument: monument,
+              tabController: tabController,
+            );
+          }
         },
       ),
     );

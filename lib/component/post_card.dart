@@ -134,7 +134,6 @@ class PostCard extends HookWidget {
                               !path.contains(post.poi.id.toString())) {
                             context.push(
                               '${RouteName.monumentPage}/${post.poi.id}',
-                              extra: post.poi,
                             );
                           }
                         },

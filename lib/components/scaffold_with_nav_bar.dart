@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../bloc/auth_bloc/auth_bloc.dart';
+import '../bloc/auth_bloc/auth_state.dart';
 import '../constants/string_constants.dart';
 
 class ScaffoldWithNavBar extends StatelessWidget {
@@ -13,6 +16,10 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authState = context.read<AuthBloc>().state;
+    final isAuthenticated = authState.status == AuthStatus.authenticated;
+    final isUserType3 = authState.user?.userTypeId == 3;
+
     return Scaffold(
       body: SafeArea(
         child: navigationShell,
@@ -36,18 +43,20 @@ class ScaffoldWithNavBar extends StatelessWidget {
             ),
             label: StringConstants().map,
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.notifications_outlined,
+          if (isAuthenticated && isUserType3)
+            BottomNavigationBarItem(
+              icon: const Icon(
+                Icons.shopping_cart_outlined,
+              ),
+              label: StringConstants().shop,
+            )
+          else
+            BottomNavigationBarItem(
+              icon: const Icon(
+                Icons.notifications_outlined,
+              ),
+              label: StringConstants().feed,
             ),
-            label: StringConstants().feed,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.shopping_cart_outlined,
-            ),
-            label: StringConstants().shop,
-          ),
           BottomNavigationBarItem(
             icon: const Icon(
               Icons.person_outline,

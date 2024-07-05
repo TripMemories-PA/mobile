@@ -150,13 +150,16 @@ class ProfileBanner extends StatelessWidget {
                                             return Stack(
                                               children: [
                                                 IconButton(
-                                                  icon: const Icon(Icons
-                                                      .shopping_cart_outlined),
+                                                  icon: const Icon(
+                                                    Icons
+                                                        .shopping_cart_outlined,
+                                                  ),
                                                   onPressed: () {
                                                     showDialog(
                                                       context: context,
-                                                      builder: (BuildContext
-                                                          context) {
+                                                      builder: (
+                                                        BuildContext context,
+                                                      ) {
                                                         return _buildCart();
                                                       },
                                                     );
@@ -276,15 +279,8 @@ class ProfileBanner extends StatelessWidget {
                                           10,
                                         ),
                                       ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          15.0,
-                                        ),
-                                        child: Image.network(
-                                          cartElement.articles[0].imageUrl,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
+                                      child: Image.asset(
+                                          'assets/images/ticket.png',),
                                     ),
                                     10.pw,
                                     SizedBox(

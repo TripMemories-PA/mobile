@@ -8,6 +8,7 @@ class StringConstants {
 
   // Authentication
   String get notAuthenticated => 'Pas connecté';
+  String get doNotWaitToBuy => 'N’attendez pas, prenez vos places !';
 
   String get modifyArticle => "Modifier l'article";
 
@@ -16,6 +17,10 @@ class StringConstants {
   String get payment => 'Paiement';
 
   String get quantity => 'Quantité';
+
+  String get leftTickets => 'billets restants';
+
+  String get leftTicket => 'billet restant';
 
   String get total => 'Total';
 
@@ -48,6 +53,7 @@ class StringConstants {
   String get zipCode => 'Code postal';
 
   String get billingDetails => 'Détails de facturation';
+
   String get errorOccurredFromStripe => 'Erreur survenue depuis Stripe';
 
   String get deleteBillingDetails => 'Supprimer les détails de facturation';
@@ -79,8 +85,11 @@ class StringConstants {
   String get subscribe => 'Inscription';
 
   String get search => 'Rechercher';
+
   String get map => 'Carte';
+
   String get feed => "Fil d'actualité";
+
   String get profile => 'Profil';
 
   String get userNameOrEmail => "Nom d'utilisateur";
@@ -90,11 +99,13 @@ class StringConstants {
   String get tweetPosted => 'Publication postée !';
 
   String get back => 'Retour';
+
   String get location => 'Localisation';
 
   String get writeMessage => 'Écrivez un message';
 
   String get myExperience => 'Mon expérience';
+
   String get rateYourExperience => 'Évaluez votre expérience';
 
   String get requiredField => 'Champ requis';
@@ -338,7 +349,9 @@ class StringConstants {
       'les trésors dont la France recèle';
 
   String get fieldMustContainsAtLeast => 'Le champ doit contenir au moins';
+
   String get characters => 'caractères';
+
   String get passwordValidator => r'''
   Pour un mot de passe valide, assurez-vous qu'il contienne entre 8 et 16 caractères, au moins une lettre, une majuscule, au moins un chiffre, aucun espace, et au moins un caractère spécial parmi !@#$%^&*(),.?":{}|<>.
 ''';

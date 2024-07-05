@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../component/article_card.dart';
 import '../component/popup/modify_article_popup.dart';
+import '../component/ticket_card.dart';
 import '../constants/string_constants.dart';
-import '../object/article.dart';
+import '../object/ticket.dart';
 import '../utils/messenger.dart';
 
 class ShopPage extends StatelessWidget {
@@ -34,7 +34,9 @@ class ShopPage extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
           itemBuilder: (context, index) {
-            return ArticleCardAdmin(article: tmpArticles[index]);
+            return SizedBox(
+                height: 440,
+                child: TicketCardAdmin(article: tmpArticles[index]));
           },
           itemCount: tmpArticles.length,
         ),
@@ -43,53 +45,17 @@ class ShopPage extends StatelessWidget {
   }
 }
 
-Article tmpArticle = Article(
+Ticket tmpArticle = Ticket(
   title: 'title hb kb hblhib lhb ib h kj mo  kj jk mkj mk , m mkj k:j k:j kj ',
   description:
       'description description description description description description description description description',
-  imageUrl: 'https://picsum.photos/250?image=9',
   price: 10.0,
   museumId: 1,
   stock: 10,
   id: 1,
 );
 
-List<Article> tmpArticles = [
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
-  tmpArticle,
+List<Ticket> tmpArticles = [
   tmpArticle,
   tmpArticle,
   tmpArticle,

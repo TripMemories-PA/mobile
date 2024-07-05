@@ -1,19 +1,12 @@
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
-import '../../api/dio.dart';
 import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
-import '../../object/article.dart';
+import '../../object/ticket.dart';
 import '../../utils/messenger.dart';
 import '../custom_card.dart';
 
@@ -23,28 +16,16 @@ class ArticleFormPopup extends HookWidget {
     this.article,
   });
 
-  final Article? article;
+  final Ticket? article;
 
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<XFile?> image = useState(null);
-    final ValueNotifier<bool> loadingImage = useState(false);
     final articleTitleController =
         useTextEditingController(text: article?.title);
     final articleDescriptionController =
         useTextEditingController(text: article?.description);
     final articlePriceController =
         useTextEditingController(text: article?.price.toString());
-    useEffect(
-      () {
-        final Article? article = this.article;
-        if (article != null) {
-          _downloadAndSetImage(article.imageUrl, loadingImage, image);
-        }
-        return null;
-      },
-      [],
-    );
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Builder(
@@ -93,45 +74,18 @@ class ArticleFormPopup extends HookWidget {
                           height: 200,
                           child: Builder(
                             builder: (context) {
-                              if (loadingImage.value) {
-                                return const Center(
-                                  child: CupertinoActivityIndicator(),
-                                );
-                              } else {
-                                return image.value != null
-                                    ? Stack(
-                                        children: [
-                                          Container(
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12.0),
-                                              image: DecorationImage(
-                                                image: FileImage(
-                                                  File(image.value!.path),
-                                                ),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
-                                          Positioned(
-                                            top: 0,
-                                            right: 0,
-                                            child: IconButton(
-                                              icon: const Icon(
-                                                Icons.close,
-                                              ),
-                                              onPressed: () {
-                                                if (context.mounted) {
-                                                  image.value = null;
-                                                }
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    : _buildImagePicker(image, context);
-                              }
+                              return Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  image: DecorationImage(
+                                    image: FileImage(
+                                      File('assets/images/ticket.png'),
+                                    ),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              );
                             },
                           ),
                         ),
@@ -208,78 +162,11 @@ class ArticleFormPopup extends HookWidget {
       ),
     );
   }
-
-  CustomCard _buildImagePicker(
-    ValueNotifier<XFile?> image,
-    BuildContext context,
-  ) {
-    return CustomCard(
-      onTap: () => _selectImage(image),
-      width: double.infinity,
-      borderColor: Colors.transparent,
-      backgroundColor: Theme.of(context).colorScheme.tertiary,
-      content: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
-          child: Text(
-            StringConstants().addPhoto,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.surface,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _selectImage(ValueNotifier<XFile?> image) async {
-    final picker = ImagePicker();
-    await picker.pickImage(source: ImageSource.gallery).then(
-          (pickedImage) => {
-            if (pickedImage != null)
-              {
-                image.value = pickedImage,
-              },
-          },
-        );
-  }
-
-  Future<void> _downloadAndSetImage(
-    String url,
-    ValueNotifier<bool> loadingImage,
-    ValueNotifier<XFile?> image,
-  ) async {
-    if (url.isNotEmpty) {
-      loadingImage.value = true;
-
-      try {
-        final response = await DioClient.instance.get(
-          url,
-          options: Options(responseType: ResponseType.bytes),
-        );
-        final bytes = Uint8List.fromList(response.data);
-        final dir = await getApplicationDocumentsDirectory();
-        final filePath = path.join(dir.path, path.basename(url));
-
-        final file = File(filePath);
-        await file.writeAsBytes(bytes);
-
-        image.value = XFile(filePath);
-        loadingImage.value = false;
-      } catch (error) {
-        loadingImage.value = false;
-      }
-    }
-  }
 }
 
 Future<bool> modifyArticlePopup({
   required BuildContext context,
-  Article? article,
+  Ticket? article,
 }) async {
   return await showDialog<bool>(
         context: context,

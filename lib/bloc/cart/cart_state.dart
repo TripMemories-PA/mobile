@@ -25,5 +25,5 @@ class CartElement {
     required this.articles,
   });
 
-  List<Article> articles;
+  List<Ticket> articles;
 }

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../object/article.dart';
+import '../../object/ticket.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';

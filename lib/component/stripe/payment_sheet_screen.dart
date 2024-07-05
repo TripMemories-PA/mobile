@@ -73,7 +73,8 @@ class PaymentScreen extends HookWidget {
                               billingDetails.value;
                           if (billingDetailsValue == null) {
                             Messenger.showSnackBarError(
-                                StringConstants().fillBillingDetails);
+                              StringConstants().fillBillingDetails,
+                            );
                           } else {
                             initPaymentSheet(
                               step,

@@ -1,20 +1,18 @@
-class Article {
-  Article({
+class Ticket {
+  Ticket({
     required this.id,
     required this.title,
     required this.description,
     required this.price,
-    required this.imageUrl,
     required this.museumId,
     required this.stock,
   });
-  factory Article.fromJson(Map<String, dynamic> json) {
-    return Article(
+  factory Ticket.fromJson(Map<String, dynamic> json) {
+    return Ticket(
       id: json['id'] as int,
       title: json['title'] as String,
       description: json['description'] as String,
       price: json['price'] as double,
-      imageUrl: json['imageUrl'] as String,
       museumId: json['museumId'] as int,
       stock: json['stock'] as int,
     );
@@ -23,7 +21,6 @@ class Article {
   String title;
   String description;
   double price;
-  String imageUrl;
   int museumId;
   int stock;
 
@@ -33,13 +30,12 @@ class Article {
       'title': title,
       'description': description,
       'price': price,
-      'imageUrl': imageUrl,
       'museumId': museumId,
       'stock': stock,
     };
   }
 
-  Article copyWith({
+  Ticket copyWith({
     int? id,
     String? title,
     String? description,
@@ -48,12 +44,11 @@ class Article {
     int? museumId,
     int? stock,
   }) {
-    return Article(
+    return Ticket(
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
       price: price ?? this.price,
-      imageUrl: imageUrl ?? this.imageUrl,
       museumId: museumId ?? this.museumId,
       stock: stock ?? this.stock,
     );

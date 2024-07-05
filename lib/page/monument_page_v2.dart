@@ -11,10 +11,10 @@ import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../bloc/post/post_bloc.dart';
-import '../component/article_card.dart';
 import '../component/map_mini.dart';
 import '../component/post_card.dart';
 import '../component/shimmer/shimmer_post_and_monument_resume.dart';
+import '../component/ticket_slider.dart';
 import '../constants/my_colors.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
@@ -324,22 +324,18 @@ class _PageContent extends HookWidget {
     return Center(
       child: Column(
         children: [
-          for (var i = 0; i < tmpArticles.length; i += 2)
-            Row(
-              children: [
-                Expanded(
-                  child: ArticleCardAdmin(
-                    article: tmpArticles[i],
-                  ),
-                ),
-                if (i + 1 < tmpArticles.length)
-                  Expanded(
-                    child: ArticleCardAdmin(
-                      article: tmpArticles[i + 1],
-                    ),
-                  ),
-              ],
+          20.ph,
+          Text(
+            StringConstants().doNotWaitToBuy,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
             ),
+          ),
+          20.ph,
+          TicketTabView(
+            tickets: tmpArticles,
+          ),
         ],
       ),
     );

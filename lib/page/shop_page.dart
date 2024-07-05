@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/ticket_bloc/ticket_bloc.dart';
 import '../component/popup/modify_article_popup.dart';
 import '../component/ticket_card.dart';
 import '../constants/string_constants.dart';
+import '../object/ticket.dart';
+import '../repository/ticket/ticket_repository.dart';
 import '../utils/messenger.dart';
 
 class ShopPage extends StatelessWidget {
@@ -10,36 +14,59 @@ class ShopPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(StringConstants().myProducts),
-        centerTitle: true,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          modifyArticlePopup(
-            context: context,
-          ).then((bool result) {
-            if (result) {
-              Messenger.showSnackBarSuccess(
-                'Article created',
-              );
-            }
-          });
-        },
-        child: const Icon(Icons.add),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemBuilder: (context, index) {
-            return SizedBox(
-              height: 440,
-              child: TicketCardAdmin(article: tmpArticles[index]),
-            );
-          },
-          itemCount: tmpArticles.length,
+    return BlocProvider(
+      create: (context) => TicketBloc(
+        ticketRepository: RepositoryProvider.of<TicketRepository>(
+          context,
         ),
+      )..add(
+          GetTicketsEvent(),
+        ),
+      child: BlocBuilder<TicketBloc, TicketState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(StringConstants().myProducts),
+              centerTitle: true,
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                modifyArticlePopup(
+                  context: context,
+                ).then((bool result) {
+                  if (result) {
+                    Messenger.showSnackBarSuccess(
+                      'Article created',
+                    );
+                  }
+                });
+              },
+              child: const Icon(Icons.add),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Builder(
+                builder: (context) {
+                  final List<Ticket>? tickets = state.tickets;
+                  if (tickets == null) {
+                    return Center(
+                      child: Text(StringConstants().noTicketForThisMonument),
+                    );
+                  }
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      return SizedBox(
+                        height: 440,
+                        child: TicketCardAdmin(article: tickets[index]),
+                      );
+                    },
+                    itemCount: tickets.length,
+                  );
+                },
+              ),
+            ),
+          );
+        },
       ),
     );
   }

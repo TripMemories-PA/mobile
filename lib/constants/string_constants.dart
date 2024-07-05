@@ -14,6 +14,8 @@ class StringConstants {
 
   String get modifiedArticle => 'Article modifié';
 
+  String get noTicketForThisMonument => 'Pas de billet pour ce monument';
+
   String get payment => 'Paiement';
 
   String get quantity => 'Quantité';

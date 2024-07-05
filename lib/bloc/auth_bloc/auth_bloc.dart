@@ -68,13 +68,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<ChangeToLoggedInStatus>((event, emit) async {
-      await authTokenHandler.saveToken(event.authToken, event.stayLoggedIn);
-      final WhoAmIResponse user = await authService.whoAmI();
-      emit(
-        AuthState.authenticated(
-          user: user,
-        ),
-      );
+      try {
+        await authTokenHandler.saveToken(event.authToken, event.stayLoggedIn);
+        final WhoAmIResponse user = await authService.whoAmI();
+        emit(
+          AuthState.authenticated(
+            user: user,
+          ),
+        );
+      } catch (e) {
+        authTokenHandler.logout();
+        if (e is CustomException) {
+          emit(
+            AuthState.guest(
+              error: e.apiError,
+            ),
+          );
+        } else {
+          emit(
+            const AuthState.guest(),
+          );
+        }
+      }
     });
 
     on<ChangeToLoggedOutStatus>((event, emit) {

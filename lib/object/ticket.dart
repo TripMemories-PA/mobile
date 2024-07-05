@@ -6,8 +6,7 @@ class Ticket {
     required this.title,
     required this.description,
     required this.price,
-    required this.museumId,
-    required this.stock,
+    required this.quantity,
     required this.poi,
   });
   factory Ticket.fromJson(Map<String, dynamic> json) {
@@ -15,28 +14,26 @@ class Ticket {
       id: json['id'] as int,
       title: json['title'] as String,
       description: json['description'] as String,
-      price: json['price'] as double,
-      museumId: json['museumId'] as int,
-      stock: json['stock'] as int,
+      quantity: json['quantity'] as int,
+      price: json['price'] as String == 'null'
+          ? 0
+          : double.parse(json['price']),
       poi: Poi.fromJson(json['poi'] as Map<String, dynamic>),
     );
   }
   int id;
   String title;
   String description;
+  int quantity;
   double price;
-  int museumId;
-  int stock;
   Poi poi;
 
   Ticket copyWith({
     int? id,
     String? title,
     String? description,
+    int? quantity,
     double? price,
-    String? imageUrl,
-    int? museumId,
-    int? stock,
     Poi? poi,
   }) {
     return Ticket(
@@ -44,8 +41,7 @@ class Ticket {
       title: title ?? this.title,
       description: description ?? this.description,
       price: price ?? this.price,
-      museumId: museumId ?? this.museumId,
-      stock: stock ?? this.stock,
+      quantity: quantity ?? this.quantity,
       poi: poi ?? this.poi,
     );
   }

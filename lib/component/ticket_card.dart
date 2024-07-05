@@ -2,6 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/auth_bloc/auth_bloc.dart';
+import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/cart/cart_bloc.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
@@ -11,7 +13,10 @@ import 'custom_card.dart';
 import 'popup/modify_article_popup.dart';
 
 class TicketCardAdmin extends StatelessWidget {
-  const TicketCardAdmin({super.key, required this.article,});
+  const TicketCardAdmin({
+    super.key,
+    required this.article,
+  });
 
   final Ticket article;
 
@@ -62,9 +67,11 @@ class TicketCardAdmin extends StatelessWidget {
                           height: constraints.maxHeight * 0.5,
                           width: double.infinity,
                           child: ClipRRect(
-                              borderRadius: BorderRadius.circular(
-                                  constraints.maxWidth * 0.05,),
-                              child: Image.asset('assets/images/ticket.png'),),
+                            borderRadius: BorderRadius.circular(
+                              constraints.maxWidth * 0.05,
+                            ),
+                            child: Image.asset('assets/images/ticket.png'),
+                          ),
                         ),
                       ],
                     ),
@@ -103,20 +110,12 @@ class TicketCardAdmin extends StatelessWidget {
                         ),
                       ),
                       5.ph,
-                      if (article.description.length > 100)
-                        AutoSizeText(
-                          article.description,
-                          minFontSize: 2,
-                          maxFontSize: 10,
-                          maxLines: 3,
-                        )
-                      else
-                        AutoSizeText(
-                          article.description,
-                          minFontSize: 2,
-                          maxFontSize: 2,
-                          maxLines: 3,
-                        ),
+                      AutoSizeText(
+                        article.description,
+                        minFontSize: 2,
+                        maxFontSize: 10,
+                        maxLines: 3,
+                      ),
                       const Spacer(),
                       Row(
                         children: [
@@ -131,7 +130,7 @@ class TicketCardAdmin extends StatelessWidget {
                           const Spacer(),
                           Column(
                             children: [
-                              (constraints.maxHeight*0.05).ph,
+                              (constraints.maxHeight * 0.05).ph,
                               Row(
                                 children: [
                                   Icon(
@@ -140,7 +139,7 @@ class TicketCardAdmin extends StatelessWidget {
                                         Theme.of(context).colorScheme.primary,
                                   ),
                                   Text(
-                                    '${article.stock} ${article.stock > 1 ? StringConstants().leftTickets : StringConstants().leftTicket}',
+                                    '${article.quantity} ${article.quantity > 1 ? StringConstants().leftTickets : StringConstants().leftTicket}',
                                     style: TextStyle(
                                       color:
                                           Theme.of(context).colorScheme.primary,
@@ -149,26 +148,28 @@ class TicketCardAdmin extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Messenger.showSnackBarSuccess(
-                                    StringConstants().addedToCart,
-                                  );
-                                  context.read<CartBloc>().add(
-                                        AddArticle(
-                                          article,
-                                        ),
-                                      );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(35),
+                              if (context.read<AuthBloc>().state.status ==
+                                  AuthStatus.authenticated)
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Messenger.showSnackBarSuccess(
+                                      StringConstants().addedToCart,
+                                    );
+                                    context.read<CartBloc>().add(
+                                          AddArticle(
+                                            article,
+                                          ),
+                                        );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.primary,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(35),
+                                    ),
                                   ),
+                                  child: Text(StringConstants().addArticle),
                                 ),
-                                child: Text(StringConstants().addArticle),
-                              ),
                             ],
                           ),
                         ],
@@ -185,7 +186,7 @@ class TicketCardAdmin extends StatelessWidget {
     );
   }
 
-  /*IconButton _buildMoreDetailsButton(BuildContext context) {
+/*IconButton _buildMoreDetailsButton(BuildContext context) {
     return IconButton(
       style: ButtonStyle(
         padding: WidgetStateProperty.all(

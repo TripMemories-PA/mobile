@@ -36,11 +36,13 @@ import 'repository/comment/comment_repository.dart';
 import 'repository/monument/monument_repository.dart';
 import 'repository/post/post_repository.dart';
 import 'repository/profile/profile_repository.dart';
+import 'repository/ticket/ticket_repository.dart';
 import 'service/cities/cities_remote_data_source.dart';
 import 'service/comment/comment_remote_data_source.dart';
 import 'service/monument/monument_remote_data_source.dart';
 import 'service/post/post_remote_data_source.dart';
 import 'service/profile/profile_remote_data_source.dart';
+import 'service/ticket/tickets_remote_data_source.dart';
 import 'theme_generator.dart';
 import 'utils/messenger.dart';
 
@@ -85,6 +87,13 @@ Future<void> main() async {
         RepositoryProvider(
           create: (context) => ProfileRepository(
             profileRemoteDataSource: ProfileRemoteDataSource(),
+            // TODO(nono): Implement ProfileLocalDataSource
+            //profilelocalDataSource: ProfileLocalDataSource(),
+          ),
+        ),
+        RepositoryProvider(
+          create: (context) => TicketRepository(
+            ticketRemoteDataSource: TicketRemoteDataSource(),
             // TODO(nono): Implement ProfileLocalDataSource
             //profilelocalDataSource: ProfileLocalDataSource(),
           ),

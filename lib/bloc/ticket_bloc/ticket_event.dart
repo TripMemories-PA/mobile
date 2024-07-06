@@ -9,3 +9,11 @@ class GetTicketsEvent extends TicketEvent {
 
   final int? monumentId;
 }
+
+class PostTicketEvent extends TicketEvent {
+  PostTicketEvent({
+    required this.ticket,
+  });
+
+  final PostTicketQuery ticket;
+}

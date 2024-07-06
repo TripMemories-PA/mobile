@@ -1,6 +1,6 @@
 part of 'ticket_bloc.dart';
 
-enum TicketStatus { loading, notLoading, error }
+enum TicketStatus { loading, notLoading, error, ticketPosted }
 
 class TicketState {
   const TicketState({
@@ -13,7 +13,6 @@ class TicketState {
     List<Ticket>? tickets,
     TicketStatus? status,
     Ticket? selectedTicket,
-
   }) {
     return TicketState(
       tickets: tickets ?? this.tickets,

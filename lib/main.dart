@@ -286,17 +286,6 @@ class MyApp extends HookWidget {
           StatefulShellBranch(
             routes: <RouteBase>[
               GoRoute(
-                redirect: (BuildContext context, GoRouterState state) {
-                  final authState = context.read<AuthBloc>().state;
-                  final isAuthenticated =
-                      authState.status == AuthStatus.authenticated;
-                  final isUserType3 = authState.user?.userTypeId == 3;
-                  final int? poiId = authState.user?.poiId;
-                  if (isAuthenticated && isUserType3 && poiId != null) {
-                    return '${RouteName.monumentPage}/$poiId';
-                  }
-                  return null;
-                },
                 path: RouteName.profilePage,
                 builder: (BuildContext context, GoRouterState state) {
                   return const ProfilePage();

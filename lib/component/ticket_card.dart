@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/cart/cart_bloc.dart';
+import '../bloc/ticket_bloc/ticket_bloc.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/ticket.dart';
@@ -75,25 +76,30 @@ class TicketCardAdmin extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Positioned(
-                      right: 10,
-                      top: 10,
-                      child: IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () {
-                          modifyArticlePopup(
-                            context: context,
-                            article: article,
-                          ).then((bool result) {
-                            if (result) {
-                              Messenger.showSnackBarSuccess(
-                                StringConstants().modifiedArticle,
-                              );
-                            }
-                          });
-                        },
+                    if (context.read<AuthBloc>().state.status ==
+                            AuthStatus.authenticated &&
+                        context.read<AuthBloc>().state.user?.poiId ==
+                            article.poi.id)
+                      Positioned(
+                        right: 10,
+                        top: 10,
+                        child: IconButton(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () {
+                            modifyArticlePopup(
+                              context: context,
+                              article: article,
+                              ticketBloc: context.read<TicketBloc>(),
+                            ).then((bool result) {
+                              if (result) {
+                                Messenger.showSnackBarSuccess(
+                                  StringConstants().modifiedArticle,
+                                );
+                              }
+                            });
+                          },
+                        ),
                       ),
-                    ),
                   ],
                 ),
                 (constraints.maxHeight * 0.01).toInt().ph,

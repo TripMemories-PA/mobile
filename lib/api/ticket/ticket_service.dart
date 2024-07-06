@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 
 import '../../app.config.dart';
@@ -23,7 +22,9 @@ class TicketService implements ITicketService, ITicketRepository {
     Response response;
     try {
       response = await DioClient.instance.get(
-        monumentId == null ? apiMyTickets : apiPoiTickets.replaceFirst('{ID}', monumentId.toString()),
+        monumentId == null
+            ? apiMyTickets
+            : apiPoiTickets.replaceFirst('{ID}', monumentId.toString()),
       );
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());
@@ -42,9 +43,15 @@ class TicketService implements ITicketService, ITicketRepository {
   }
 
   @override
-  Future<void> postTicket({required PostTicketQuery ticket}) {
-    // TODO: implement postTicket
-    throw UnimplementedError();
+  Future<void> postTicket({required PostTicketQuery ticket}) async {
+    try {
+      await DioClient.instance.post(
+        apiTickets,
+        data: ticket.toJson(),
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
   }
 
   @override
@@ -58,5 +65,4 @@ class TicketService implements ITicketService, ITicketRepository {
     // TODO: implement updateTicket
     throw UnimplementedError();
   }
-
 }

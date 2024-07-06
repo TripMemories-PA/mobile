@@ -12,6 +12,8 @@ class StringConstants {
 
   String get modifyArticle => "Modifier l'article";
 
+  String get groupSize => 'Taille du groupe';
+
   String get modifiedArticle => 'Article modifié';
 
   String get noTicketForThisMonument => 'Pas de billet pour ce monument';
@@ -41,6 +43,8 @@ class StringConstants {
   String get wrongEmailOrPassword => 'Mauvaise email ou mot de passe';
 
   String get title => 'Titre';
+
+  String get ticketPosted => 'Billet posté';
 
   String get name => 'Nom';
 

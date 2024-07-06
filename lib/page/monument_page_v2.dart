@@ -7,6 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
 import '../api/post/post_service.dart';
+import '../api/ticket/ticket_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
@@ -359,6 +360,7 @@ class _PageContent extends HookWidget {
               ticketRepository: RepositoryProvider.of<TicketRepository>(
                 context,
               ),
+              ticketService: TicketService(),
             )..add(
                 GetTicketsEvent(monumentId: monument.id),
               ),

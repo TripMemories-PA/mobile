@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../api/ticket/ticket_service.dart';
+import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/ticket_bloc/ticket_bloc.dart';
 import '../component/popup/modify_article_popup.dart';
 import '../component/ticket_card.dart';
 import '../constants/string_constants.dart';
-import '../object/ticket.dart';
 import '../repository/ticket/ticket_repository.dart';
 import '../utils/messenger.dart';
 
@@ -19,8 +20,11 @@ class ShopPage extends StatelessWidget {
         ticketRepository: RepositoryProvider.of<TicketRepository>(
           context,
         ),
+        ticketService: TicketService(),
       )..add(
-          GetTicketsEvent(),
+          GetTicketsEvent(
+            monumentId: context.read<AuthBloc>().state.user?.poiId,
+          ),
         ),
       child: BlocBuilder<TicketBloc, TicketState>(
         builder: (context, state) {
@@ -33,6 +37,7 @@ class ShopPage extends StatelessWidget {
               onPressed: () {
                 modifyArticlePopup(
                   context: context,
+                  ticketBloc: context.read<TicketBloc>(),
                 ).then((bool result) {
                   if (result) {
                     Messenger.showSnackBarSuccess(
@@ -45,24 +50,39 @@ class ShopPage extends StatelessWidget {
             ),
             body: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Builder(
-                builder: (context) {
-                  final List<Ticket>? tickets = state.tickets;
-                  if (tickets == null) {
-                    return Center(
-                      child: Text(StringConstants().noTicketForThisMonument),
+              child: BlocListener<TicketBloc, TicketState>(
+                listener: (context, state) {
+                  if (state.status == TicketStatus.ticketPosted) {
+                    Messenger.showSnackBarSuccess(
+                      StringConstants().ticketPosted,
                     );
+                    context.read<TicketBloc>().add(
+                          GetTicketsEvent(
+                            monumentId:
+                                context.read<AuthBloc>().state.user?.poiId,
+                          ),
+                        );
                   }
-                  return ListView.builder(
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                        height: 440,
-                        child: TicketCardAdmin(article: tickets[index]),
-                      );
-                    },
-                    itemCount: tickets.length,
-                  );
                 },
+                child: Builder(
+                  builder: (context) {
+                    if (state.tickets == null) {
+                      return Center(
+                        child: Text(StringConstants().noTicketForThisMonument),
+                      );
+                    }
+                    return ListView.builder(
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                          height: 440,
+                          child:
+                              TicketCardAdmin(article: state.tickets![index]),
+                        );
+                      },
+                      itemCount: state.tickets?.length,
+                    );
+                  },
+                ),
               ),
             ),
           );

@@ -5,7 +5,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
 
-import '.env.dart';
 import 'api/auth/auth_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
 import 'bloc/auth_bloc/auth_event.dart';
@@ -53,7 +52,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MarkerIconsCustom.initialize();
   await MapStyle.initialize();
-  Stripe.publishableKey = stripePublishableKey;
+  Stripe.publishableKey = '{STRIPE_PUBLISHABLE_KEY}';
   Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();

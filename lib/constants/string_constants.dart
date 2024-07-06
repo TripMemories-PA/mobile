@@ -23,6 +23,8 @@ class StringConstants {
 
   String get ticketDeleted => 'Billet supprimé';
 
+  String get ticketUpdated => 'Billet mis à jour';
+
   String get payment => 'Paiement';
 
   String get quantity => 'Quantité';

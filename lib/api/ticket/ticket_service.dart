@@ -10,6 +10,7 @@ import '../exception/bad_request_exception.dart';
 import '../exception/parsing_response_exception.dart';
 import 'i_ticket_service.dart';
 import 'model/query/post_ticket_query.dart';
+import 'model/query/update_ticket_query.dart';
 
 class TicketService implements ITicketService, ITicketRepository {
   static const String apiPoiTickets = '${AppConfig.apiUrl}/pois/{ID}/tickets';
@@ -66,8 +67,14 @@ class TicketService implements ITicketService, ITicketRepository {
   }
 
   @override
-  Future<void> updateTicket({required Ticket ticket}) {
-    // TODO: implement updateTicket
-    throw UnimplementedError();
+  Future<void> updateTicket({required UpdateTicketQuery ticket}) async {
+    try {
+      await DioClient.instance.put(
+        '$apiTickets/${ticket.id}',
+        data: ticket.toJson(),
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
   }
 }

@@ -25,3 +25,11 @@ class DeleteTicketEvent extends TicketEvent {
 
   final int ticketId;
 }
+
+class UpdateTicketEvent extends TicketEvent {
+  UpdateTicketEvent({
+    required this.ticket,
+  });
+
+  final UpdateTicketQuery ticket;
+}

@@ -1,5 +1,5 @@
-import '../../object/ticket.dart';
 import 'model/query/post_ticket_query.dart';
+import 'model/query/update_ticket_query.dart';
 
 abstract class ITicketService {
   Future<void> postTicket({
@@ -11,7 +11,6 @@ abstract class ITicketService {
   });
 
   Future<void> updateTicket({
-    required Ticket ticket,
+    required UpdateTicketQuery ticket,
   });
-
 }

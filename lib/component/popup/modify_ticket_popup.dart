@@ -4,16 +4,16 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../api/ticket/model/query/post_ticket_query.dart';
+import '../../api/ticket/model/query/update_ticket_query.dart';
 import '../../bloc/ticket_bloc/ticket_bloc.dart';
 import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
 import '../../object/ticket.dart';
 import '../../utils/field_validator.dart';
-import '../../utils/messenger.dart';
 import '../custom_card.dart';
 
-class ArticleFormPopup extends HookWidget {
-  const ArticleFormPopup({
+class TicketFormPopup extends HookWidget {
+  const TicketFormPopup({
     super.key,
     this.article,
     required this.ticketBloc,
@@ -184,10 +184,29 @@ class ArticleFormPopup extends HookWidget {
                                   backgroundColor:
                                       Theme.of(context).colorScheme.primary,
                                   onTap: () {
+                                    final Ticket? tmp = article;
                                     if (formKey.currentState!.validate()) {
-                                      if (article != null) {
-                                        Messenger.showSnackBarSuccess(
-                                          'Modify article',
+                                      if (tmp != null) {
+                                        final UpdateTicketQuery ticket =
+                                            UpdateTicketQuery(
+                                          id: tmp.id,
+                                          title: articleTitleController.text,
+                                          description:
+                                              articleDescriptionController.text,
+                                          price: double.parse(
+                                            articlePriceController.text,
+                                          ),
+                                          quantity: int.parse(
+                                            quantityController.text,
+                                          ),
+                                          groupSize: int.parse(
+                                            groupSizeController.text,
+                                          ),
+                                        );
+                                        ticketBloc.add(
+                                          UpdateTicketEvent(
+                                            ticket: ticket,
+                                          ),
                                         );
                                         context.pop(true);
                                       } else {
@@ -240,7 +259,7 @@ Future<bool> modifyArticlePopup({
 }) async {
   return await showDialog<bool>(
         context: context,
-        builder: (_) => ArticleFormPopup(
+        builder: (_) => TicketFormPopup(
           article: article,
           ticketBloc: ticketBloc,
         ),

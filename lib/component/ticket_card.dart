@@ -12,7 +12,7 @@ import '../object/ticket.dart';
 import '../utils/messenger.dart';
 import 'custom_card.dart';
 import 'popup/confirmation_logout_dialog.dart';
-import 'popup/modify_article_popup.dart';
+import 'popup/modify_ticket_popup.dart';
 
 class TicketCardAdmin extends StatelessWidget {
   const TicketCardAdmin({

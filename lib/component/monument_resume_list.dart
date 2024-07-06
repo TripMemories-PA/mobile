@@ -41,7 +41,6 @@ class MonumentResumeList extends StatelessWidget {
                   ? context.pop(monument)
                   : context.push(
                       '${RouteName.monumentPage}/${monument.id}',
-                      extra: monument,
                     ),
               child: MonumentResumeCard(
                 monument: monument,

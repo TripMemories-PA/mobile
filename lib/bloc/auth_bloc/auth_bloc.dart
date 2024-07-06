@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../api/auth/i_auth_service.dart';
-import '../../api/auth/model/response/auth_success_response/auth_success_response.dart';
-import '../../api/auth/model/response/who_am_i_response/who_am_i_response.dart';
+import '../../api/auth/model/response/auth_success_response.dart';
 import '../../api/error/api_error.dart';
 import '../../api/exception/custom_exception.dart';
 import '../../local_storage/local_storage/login_handler.dart';
 import '../../local_storage/secure_storage/auth_token_handler.dart';
+import '../../object/profile.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
@@ -34,7 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               stayLoggedIn,
             );
 
-            final WhoAmIResponse whoAmIResponse = await authService.whoAmI();
+            final Profile whoAmIResponse = await authService.whoAmI();
             emit(
               AuthState.authenticated(
                 user: whoAmIResponse,
@@ -68,13 +68,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<ChangeToLoggedInStatus>((event, emit) async {
-      await authTokenHandler.saveToken(event.authToken, event.stayLoggedIn);
-      final WhoAmIResponse user = await authService.whoAmI();
-      emit(
-        AuthState.authenticated(
-          user: user,
-        ),
-      );
+      try {
+        await authTokenHandler.saveToken(event.authToken, event.stayLoggedIn);
+        final Profile user = await authService.whoAmI();
+        emit(
+          AuthState.authenticated(
+            user: user,
+          ),
+        );
+      } catch (e) {
+        authTokenHandler.logout();
+        if (e is CustomException) {
+          emit(
+            AuthState.guest(
+              error: e.apiError,
+            ),
+          );
+        } else {
+          emit(
+            const AuthState.guest(),
+          );
+        }
+      }
     });
 
     on<ChangeToLoggedOutStatus>((event, emit) {

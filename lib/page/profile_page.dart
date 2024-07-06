@@ -7,12 +7,15 @@ import 'package:go_router/go_router.dart';
 
 import '../api/post/post_service.dart';
 import '../api/profile/profile_service.dart';
+import '../api/ticket/ticket_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/post/post_bloc.dart';
 import '../bloc/profile/profile_bloc.dart';
+import '../bloc/ticket_bloc/ticket_bloc.dart';
 import '../component/my_friends_component.dart';
 import '../component/my_post_component.dart';
+import '../component/my_tickets_component.dart';
 import '../component/profile_infos.dart';
 import '../constants/my_colors.dart';
 import '../constants/route_name.dart';
@@ -20,6 +23,7 @@ import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../repository/post/post_repository.dart';
 import '../repository/profile/profile_repository.dart';
+import '../repository/ticket/ticket_repository.dart';
 import '../utils/messenger.dart';
 import 'login_page.dart';
 
@@ -30,7 +34,7 @@ class ProfilePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TabController tabController = useTabController(initialLength: 2);
+    final TabController tabController = useTabController(initialLength: 3);
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         // if user is null i will try to display my own profile
@@ -82,22 +86,25 @@ class ProfilePage extends HookWidget {
         child: Stack(
           children: [
             DefaultTabController(
-              length: 2,
+              length: 3,
               child: NestedScrollView(
                 headerSliverBuilder: (context, value) {
                   return [
                     _buildUserProfileInfosSliverAppBar(context),
-                    if (userId == null)
+                    if (userId == null &&
+                        context.read<AuthBloc>().state.user?.userTypeId != 3)
                       _buildSliverMenuForPostsAndFriends(
                         tabController,
                         context,
                       ),
                   ];
                 },
-                body: MyPostsAndMyFriends(
-                  userId: userId,
-                  tabController: tabController,
-                ),
+                body: context.read<AuthBloc>().state.user?.userTypeId == 3
+                    ? const SizedBox.shrink()
+                    : MyPostsAndMyFriends(
+                        userId: userId,
+                        tabController: tabController,
+                      ),
               ),
             ),
           ],
@@ -124,6 +131,7 @@ class ProfilePage extends HookWidget {
             tabs: [
               Tab(text: StringConstants().myFriends),
               Tab(text: StringConstants().myPosts),
+              Tab(text: StringConstants().myTickets),
             ],
           ),
         ),
@@ -208,6 +216,7 @@ class MyPostsAndMyFriends extends HookWidget {
                   ),
                 ),
                 _buildMyPostsPart(),
+                _buildMyTicketsPart(),
               ],
             )
           : _buildOtherUsersPosts(tmpUserId),
@@ -237,6 +246,31 @@ class MyPostsAndMyFriends extends HookWidget {
             },
             child: const SingleChildScrollView(
               child: MyPostsComponents(),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  BlocProvider<TicketBloc> _buildMyTicketsPart() {
+    return BlocProvider(
+      create: (context) => TicketBloc(
+        ticketRepository: RepositoryProvider.of<TicketRepository>(
+          context,
+        ),
+        ticketService: TicketService(),
+      )..add(
+          GetMyTicketsEvent(),
+        ),
+      child: BlocBuilder<TicketBloc, TicketState>(
+        builder: (context, state) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<TicketBloc>().add(GetMyTicketsEvent());
+            },
+            child: const SingleChildScrollView(
+              child: MyTicketsComponent(),
             ),
           );
         },

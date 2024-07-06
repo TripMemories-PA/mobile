@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../api/comment/i_comment_service.dart';
-import '../../api/comment/model/query/post_comment_query/post_comment_query.dart';
-import '../../api/comment/model/response/get_comment_response/get_comment_response.dart';
+import '../../api/comment/model/query/post_comment_query.dart';
+import '../../api/comment/model/response/get_comment_response.dart';
 import '../../api/error/api_error.dart';
 import '../../api/exception/custom_exception.dart';
-import '../../object/comment/comment.dart';
+import '../../object/comment.dart';
 import '../../repository/comment/i_comment_repository.dart';
 import '../post/post_bloc.dart';
 

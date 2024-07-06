@@ -6,17 +6,94 @@ class StringConstants {
 
   String get ok => 'Ok';
 
+  String get paymentCanceled => 'Paiement annulé';
+
+  String get confirmPayment => 'Confirmer le paiement';
+
   // Authentication
   String get notAuthenticated => 'Pas connecté';
+  String get doNotWaitToBuy => 'N’attendez pas, prenez vos places !';
+
+  String get modifyArticle => "Modifier l'article";
+
+  String get groupSize => 'Taille du groupe';
+
+  String get doYouReallyWantToDeleteThisArticle =>
+      'Voulez-vous vraiment supprimer cet article ?';
+
+  String get modifiedArticle => 'Article modifié';
+
+  String get noTicketForThisMonument => 'Pas de billet pour ce monument';
+
+  String get ticketDeleted => 'Billet supprimé';
+
+  String get ticketUpdated => 'Billet mis à jour';
+
+  String get payment => 'Paiement';
+
+  String get quantity => 'Quantité';
+
+  String get leftTickets => 'billets restants';
+
+  String get leftTicket => 'billet restant';
+
+  String get total => 'Total';
+
+  String get addedToCart => 'Ajouté au panier';
+
+  String get stock => 'Stock';
+
+  String get myCart => 'Mon panier';
+
+  String get buy => 'Payer';
+
+  String get addArticle => 'Ajouter un article';
 
   String get tokenExpired => 'Session expirée';
 
   String get wrongEmailOrPassword => 'Mauvaise email ou mot de passe';
 
+  String get title => 'Titre';
+
+  String get ticketPosted => 'Billet posté';
+
+  String get name => 'Nom';
+
+  String get phoneNumber => 'Numéro de téléphone';
+
+  String get city => 'Ville';
+
+  String get country => 'Pays';
+
+  String get address => 'Adresse';
+
+  String get zipCode => 'Code postal';
+
+  String get billingDetails => 'Détails de facturation';
+
+  String get errorOccurredFromStripe => 'Erreur survenue depuis Stripe';
+
+  String get deleteBillingDetails => 'Supprimer les détails de facturation';
+
+  String get fillBillingDetails =>
+      'Veuillez remplir les détails de facturation';
+
+  String get payNow => 'Payer maintenant';
+
+  String get paymentSuccess => 'Paiement réussi ✅';
+
+  String get initPayment => 'Initialiser le paiement';
+
+  String get price => 'Prix';
+
   String get emailOrUsernameAlreadyExists =>
       "Email ou nom d'utilisateur déjà utilisé";
 
+  String get myProducts => 'Mes produits';
+
   String get invalidEmail => 'Email invalide';
+
+  String get shop => 'Boutique';
 
   String get invalidPassword => 'Invalid password';
 
@@ -25,8 +102,11 @@ class StringConstants {
   String get subscribe => 'Inscription';
 
   String get search => 'Rechercher';
+
   String get map => 'Carte';
+
   String get feed => "Fil d'actualité";
+
   String get profile => 'Profil';
 
   String get userNameOrEmail => "Nom d'utilisateur";
@@ -36,11 +116,13 @@ class StringConstants {
   String get tweetPosted => 'Publication postée !';
 
   String get back => 'Retour';
+
   String get location => 'Localisation';
 
   String get writeMessage => 'Écrivez un message';
 
   String get myExperience => 'Mon expérience';
+
   String get rateYourExperience => 'Évaluez votre expérience';
 
   String get requiredField => 'Champ requis';
@@ -218,7 +300,17 @@ class StringConstants {
 
   String get myPosts => 'Mes posts';
 
+  String get myTickets => 'Mes billets';
+
+  String get usedTicket => 'Billet utilisé';
+
+  String get showQrCode => 'Afficher le QR Code';
+
+  String get notUsedTicket => 'Billet non utilisé';
+
   String get postedComment => 'Commentaires postés';
+
+  String get ticketFor => 'Billet pour';
 
   String get logout => 'Se déconnecter';
 
@@ -276,13 +368,17 @@ class StringConstants {
 
   String get cities => 'villes';
 
+  String get validate => 'Valider';
+
   String get thatFranceIsHiding => 'que la France cache';
 
   String get theTreasuresThatFranceHarbors =>
       'les trésors dont la France recèle';
 
   String get fieldMustContainsAtLeast => 'Le champ doit contenir au moins';
+
   String get characters => 'caractères';
+
   String get passwordValidator => r'''
   Pour un mot de passe valide, assurez-vous qu'il contienne entre 8 et 16 caractères, au moins une lettre, une majuscule, au moins un chiffre, aucun espace, et au moins un caractère spécial parmi !@#$%^&*(),.?":{}|<>.
 ''';

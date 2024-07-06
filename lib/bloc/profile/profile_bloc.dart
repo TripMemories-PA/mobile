@@ -7,10 +7,10 @@ import '../../api/error/specific_error/file_upload_error.dart';
 import '../../api/exception/custom_exception.dart';
 import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../api/profile/i_profile_service.dart';
-import '../../api/profile/response/friends/get_friends_pagination_response.dart';
+import '../../api/profile/response/get_friends_pagination_response.dart';
 import '../../local_storage/secure_storage/auth_token_handler.dart';
-import '../../object/avatar/uploaded_file.dart';
-import '../../object/profile/profile.dart';
+import '../../object/profile.dart';
+import '../../object/uploaded_file.dart';
 import '../../repository/profile/profile_repository.dart';
 
 part 'profile_event.dart';

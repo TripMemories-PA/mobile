@@ -1,4 +1,4 @@
-import '../../api/monument/model/response/pois_response/pois_response.dart';
+import '../../api/monument/model/response/pois_response.dart';
 import '../../api/monument/monument_service.dart';
 import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../object/poi/poi.dart';

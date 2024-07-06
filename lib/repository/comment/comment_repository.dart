@@ -1,4 +1,4 @@
-import '../../api/comment/model/response/get_comment_response/get_comment_response.dart';
+import '../../api/comment/model/response/get_comment_response.dart';
 import '../../service/comment/comment_remote_data_source.dart';
 import 'i_comment_repository.dart';
 

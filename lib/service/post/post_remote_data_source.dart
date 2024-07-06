@@ -1,6 +1,6 @@
 import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../api/post/post_service.dart';
-import '../../object/post/post.dart';
+import '../../object/post.dart';
 import '../../repository/post/i_post_repository.dart';
 
 class PostRemoteDataSource extends IPostRepository {

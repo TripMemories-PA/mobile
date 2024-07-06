@@ -6,7 +6,7 @@ import 'package:progressive_image/progressive_image.dart';
 import '../bloc/user_searching_bloc/user_searching_bloc.dart';
 import '../constants/my_colors.dart';
 import '../constants/route_name.dart';
-import '../object/profile/profile.dart';
+import '../object/profile.dart';
 import 'custom_card.dart';
 
 class UserCard extends StatelessWidget {

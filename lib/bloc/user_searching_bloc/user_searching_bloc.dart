@@ -4,7 +4,7 @@ import '../../api/error/api_error.dart';
 import '../../api/error/specific_error/auth_error.dart';
 import '../../api/exception/custom_exception.dart';
 import '../../api/profile/i_profile_service.dart';
-import '../../api/profile/response/friends/get_friends_pagination_response.dart';
+import '../../api/profile/response/get_friends_pagination_response.dart';
 import '../../local_storage/secure_storage/auth_token_handler.dart';
 import '../../repository/profile/i_profile_repository.dart';
 

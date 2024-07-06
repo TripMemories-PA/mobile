@@ -1,18 +1,29 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../../../object/meta_object.dart';
+import '../../../../object/post.dart';
 
-import '../../../../object/post/post.dart';
-import '../../../meta_object/meta.dart';
+class GetAllPostsResponse {
+  GetAllPostsResponse({
+    required this.meta,
+    required this.data,
+  });
 
-part 'get_all_posts_response.freezed.dart';
-part 'get_all_posts_response.g.dart';
+  factory GetAllPostsResponse.fromJson(Map<String, dynamic> json) {
+    return GetAllPostsResponse(
+      meta: MetaObject.fromJson(json['meta']),
+      data: List<Post>.from(json['data'].map((x) => Post.fromJson(x))),
+    );
+  }
 
-@Freezed()
-class GetAllPostsResponse with _$GetAllPostsResponse {
-  const factory GetAllPostsResponse({
-    required Meta meta,
-    required List<Post> data,
-  }) = _GetAllPostsResponse;
+  GetAllPostsResponse copyWith({
+    MetaObject? meta,
+    List<Post>? data,
+  }) {
+    return GetAllPostsResponse(
+      meta: meta ?? this.meta,
+      data: data ?? this.data,
+    );
+  }
 
-  factory GetAllPostsResponse.fromJson(Map<String, dynamic> json) =>
-      _$GetAllPostsResponseFromJson(json);
+  MetaObject meta;
+  List<Post> data;
 }

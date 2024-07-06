@@ -5,7 +5,7 @@ import 'package:progressive_image/progressive_image.dart';
 import '../constants/my_colors.dart';
 import '../constants/route_name.dart';
 import '../num_extensions.dart';
-import '../object/profile/profile.dart';
+import '../object/profile.dart';
 import 'custom_card.dart';
 
 class FriendCard extends StatelessWidget {

@@ -13,7 +13,7 @@ import '../component/shimmer/shimmer_post_and_monument_resume.dart';
 import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
-import '../object/city/city.dart';
+import '../object/city.dart';
 import '../repository/city/cities_repository.dart';
 
 class CityPage extends HookWidget {

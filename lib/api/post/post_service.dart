@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../app.config.dart';
-import '../../object/avatar/uploaded_file.dart';
-import '../../object/post/post.dart';
+import '../../object/post.dart';
+import '../../object/uploaded_file.dart';
 import '../../repository/post/i_post_repository.dart';
 import '../dio.dart';
 import '../error/api_error.dart';
@@ -11,8 +11,8 @@ import '../error/specific_error/auth_error.dart';
 import '../exception/bad_request_exception.dart';
 import '../exception/parsing_response_exception.dart';
 import 'i_post_service.dart';
-import 'model/query/create_post/create_post_query.dart';
-import 'model/response/create_post_response/create_post_response.dart';
+import 'model/query/create_post_query.dart';
+import 'model/response/create_post_response.dart';
 import 'model/response/get_all_posts_response.dart';
 
 class PostService implements IPostService, IPostRepository {
@@ -83,8 +83,9 @@ class PostService implements IPostService, IPostRepository {
     Response response;
     try {
       String url;
-      if(isMyFeed) {
-        url = '${AppConfig.apiUrl}/me/friends/posts?page=$page&perPage=$perPage';
+      if (isMyFeed) {
+        url =
+            '${AppConfig.apiUrl}/me/friends/posts?page=$page&perPage=$perPage';
       } else {
         if (userId != null) {
           url = '$apiGetUserPostUrl?page=$page&perPage=$perPage';

@@ -10,9 +10,9 @@ import '../error/api_error.dart';
 import '../error/specific_error/auth_error.dart';
 import '../exception/bad_request_exception.dart';
 import '../exception/parsing_response_exception.dart';
-import '../monument/model/response/pois_response/pois_response.dart';
+import '../monument/model/response/pois_response.dart';
 import 'i_city_service.dart';
-import 'model/response/cities_response/cities_response.dart';
+import 'model/response/cities_response.dart';
 
 class CityServiceService implements ICityService, ICityRepository {
   static const String apiCitiesBaseUrl = '${AppConfig.apiUrl}/cities';

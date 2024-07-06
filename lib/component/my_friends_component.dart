@@ -5,7 +5,7 @@ import '../bloc/profile/profile_bloc.dart';
 import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
-import '../object/profile/profile.dart';
+import '../object/profile.dart';
 import 'custom_card.dart';
 import 'popup/my_friends_requests.dart';
 import 'popup/user_searching.dart';

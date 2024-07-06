@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../../../../object/avatar/uploaded_file.dart';
 import '../../constants/my_colors.dart';
-import '../city/city.dart';
+import '../city.dart';
 import '../marker_icons_custom.dart';
+import '../uploaded_file.dart';
 import 'poi_icon.dart';
 import 'poi_type.dart';
 

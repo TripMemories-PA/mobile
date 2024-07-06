@@ -7,43 +7,67 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
 import '../api/post/post_service.dart';
+import '../api/ticket/ticket_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../bloc/post/post_bloc.dart';
+import '../bloc/ticket_bloc/ticket_bloc.dart';
 import '../component/map_mini.dart';
 import '../component/post_card.dart';
 import '../component/shimmer/shimmer_post_and_monument_resume.dart';
+import '../component/ticket_card.dart';
+import '../component/ticket_slider.dart';
 import '../constants/my_colors.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/poi/poi.dart';
+import '../object/ticket.dart';
 import '../repository/monument/monument_repository.dart';
 import '../repository/post/post_repository.dart';
+import '../repository/ticket/ticket_repository.dart';
 
 class MonumentPageV2 extends HookWidget {
-  const MonumentPageV2({super.key, required this.monument});
+  const MonumentPageV2({super.key, required this.monumentId});
 
-  final Poi monument;
+  final int monumentId;
 
   @override
   Widget build(BuildContext context) {
-    final TabController tabController = useTabController(initialLength: 3);
+    final TabController tabController = useTabController(initialLength: 4);
     return BlocProvider(
       create: (context) => MonumentBloc(
         monumentRepository: RepositoryProvider.of<MonumentRepository>(context),
       )..add(
           GetMonumentEvent(
-            id: monument.id,
+            id: monumentId,
           ),
         ),
       child: BlocBuilder<MonumentBloc, MonumentState>(
         builder: (context, state) {
-          return _PageContent(
-            monument: monument,
-            tabController: tabController,
-          );
+          if (state.status == MonumentStatus.loading) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          final Poi? monument = state.selectedMonument;
+          if (monument == null) {
+            return Scaffold(
+              body: Center(
+                child: Text(
+                  StringConstants().errorOccurred,
+                ),
+              ),
+            );
+          } else {
+            return _PageContent(
+              monument: monument,
+              tabController: tabController,
+            );
+          }
         },
       ),
     );
@@ -125,7 +149,7 @@ class _PageContent extends HookWidget {
       body: Stack(
         children: [
           DefaultTabController(
-            length: 3,
+            length: 4,
             child: NestedScrollView(
               headerSliverBuilder: (context, value) {
                 return [
@@ -142,6 +166,7 @@ class _PageContent extends HookWidget {
                     child: _buildPostPart(),
                   ),
                   SingleChildScrollView(child: _buildActuPart()),
+                  SingleChildScrollView(child: _buildShop(context)),
                 ],
               ),
             ),
@@ -167,6 +192,7 @@ class _PageContent extends HookWidget {
               Tab(text: StringConstants().description),
               Tab(text: StringConstants().posts),
               Tab(text: StringConstants().actu),
+              Tab(text: StringConstants().shop),
             ],
           ),
         ),
@@ -313,6 +339,64 @@ class _PageContent extends HookWidget {
   Widget _buildActuPart() {
     return Center(
       child: Text(StringConstants().actu),
+    );
+  }
+
+  Widget _buildShop(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          20.ph,
+          Text(
+            StringConstants().doNotWaitToBuy,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          20.ph,
+          BlocProvider(
+            create: (context) => TicketBloc(
+              ticketRepository: RepositoryProvider.of<TicketRepository>(
+                context,
+              ),
+              ticketService: TicketService(),
+            )..add(
+                GetTicketsEvent(monumentId: monument.id),
+              ),
+            child: BlocBuilder<TicketBloc, TicketState>(
+              builder: (context, state) {
+                final List<Ticket>? tickets = state.tickets;
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    context
+                        .read<TicketBloc>()
+                        .add(GetTicketsEvent(monumentId: monument.id));
+                  },
+                  child: state.status == TicketStatus.loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : tickets == null
+                          ? Center(
+                              child: Text(
+                                StringConstants().noTicketForThisMonument,
+                              ),
+                            )
+                          : (tickets.length == 1
+                              ? SizedBox(
+                                  height: 440,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                  child: TicketCardAdmin(article: tickets[0]),
+                                )
+                              : TicketTabView(
+                                  tickets: tickets,
+                                )),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 

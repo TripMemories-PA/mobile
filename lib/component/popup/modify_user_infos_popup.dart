@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../bloc/profile/profile_bloc.dart';
 import '../../constants/my_colors.dart';
 import '../../num_extensions.dart';
-import '../../object/profile/profile.dart';
+import '../../object/profile.dart';
 import '../custom_card.dart';
 import '../form/modify_password_form.dart';
 import '../form/modify_user_infos_form.dart';

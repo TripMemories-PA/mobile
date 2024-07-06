@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:progressive_image/progressive_image.dart';
 
 import '../bloc/profile/profile_bloc.dart';
-import '../object/avatar/uploaded_file.dart';
+import '../object/uploaded_file.dart';
 
 class ProfilePictureInteractive extends StatelessWidget {
   const ProfilePictureInteractive({

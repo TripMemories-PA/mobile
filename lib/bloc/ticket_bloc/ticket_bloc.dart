@@ -1,9 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../api/error/api_error.dart';
 import '../../api/exception/custom_exception.dart';
 import '../../api/ticket/i_ticket_service.dart';
 import '../../api/ticket/model/query/post_ticket_query.dart';
 import '../../api/ticket/model/query/update_ticket_query.dart';
+import '../../object/bought_ticket.dart';
 import '../../object/ticket.dart';
 import '../../repository/ticket/i_tickets_repository.dart';
 
@@ -115,6 +117,36 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
           emit(
             state.copyWith(
               status: TicketStatus.error,
+            ),
+          );
+        }
+      }
+    });
+
+    on<GetMyTicketsEvent>((event, emit) async {
+      emit(state.copyWith(status: TicketStatus.loading));
+      try {
+        final List<BoughtTicket> myTickets =
+            await ticketRepository.getMyTickets();
+        emit(
+          state.copyWith(
+            myTickets: myTickets.isEmpty ? null : myTickets,
+            status: TicketStatus.notLoading,
+          ),
+        );
+      } catch (e) {
+        if (e is CustomException) {
+          emit(
+            state.copyWith(
+              status: TicketStatus.error,
+              error: e.apiError,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              status: TicketStatus.error,
+              error: ApiError.errorAppendedWhileGettingData(),
             ),
           );
         }

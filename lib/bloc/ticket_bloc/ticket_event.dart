@@ -33,3 +33,5 @@ class UpdateTicketEvent extends TicketEvent {
 
   final UpdateTicketQuery ticket;
 }
+
+class GetMyTicketsEvent extends TicketEvent {}

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../app.config.dart';
+import '../../object/bought_ticket.dart';
 import '../../object/ticket.dart';
 import '../../repository/ticket/i_tickets_repository.dart';
 import '../dio.dart';
@@ -75,6 +76,29 @@ class TicketService implements ITicketService, ITicketRepository {
       );
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());
+    }
+  }
+
+  @override
+  Future<List<BoughtTicket>> getMyTickets() async {
+    Response response;
+    try {
+      response = await DioClient.instance.get(
+        apiMyTickets,
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      final List<BoughtTicket> myTickets = [];
+      for (final ticket in response.data) {
+        myTickets.add(BoughtTicket.fromJson(ticket));
+      }
+      return myTickets;
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
     }
   }
 }

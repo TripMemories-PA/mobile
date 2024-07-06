@@ -1,3 +1,4 @@
+import '../../object/bought_ticket.dart';
 import '../../object/ticket.dart';
 import '../../service/ticket/tickets_remote_data_source.dart';
 import 'i_tickets_repository.dart';
@@ -14,5 +15,10 @@ class TicketRepository implements ITicketRepository {
   @override
   Future<List<Ticket>> getTickets(int? monumentId) {
     return ticketRemoteDataSource.getTickets(monumentId);
+  }
+
+  @override
+  Future<List<BoughtTicket>> getMyTickets() {
+    return ticketRemoteDataSource.getMyTickets();
   }
 }

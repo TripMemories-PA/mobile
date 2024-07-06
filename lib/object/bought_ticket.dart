@@ -13,6 +13,21 @@ class BoughtTicket {
     required this.user,
   });
 
+  factory BoughtTicket.fromJson(Map<String, dynamic> json) {
+    return BoughtTicket(
+      id: json['id'] as int,
+      usedAt: json['usedAt'] == null
+          ? null
+          : DateTime.parse(json['usedAt'] as String),
+      paid: json['paid'] as bool,
+      qrCode: json['qrCode'] as String,
+      ticketId: json['ticketId'] as int,
+      userId: json['userId'] as int,
+      ticket: Ticket.fromJson(json['ticket'] as Map<String, dynamic>),
+      user: Profile.fromJson(json['user'] as Map<String, dynamic>),
+    );
+  }
+
   int id;
   DateTime? usedAt;
   bool paid;

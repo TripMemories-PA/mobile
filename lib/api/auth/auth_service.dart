@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../app.config.dart';
+import '../../object/profile.dart';
 import '../dio.dart';
 import '../error/api_error.dart';
 import '../error/specific_error/auth_error.dart';
@@ -9,9 +10,8 @@ import '../exception/parsing_response_exception.dart';
 import 'i_auth_service.dart';
 import 'model/query/login_model.dart';
 import 'model/query/subscribe_model.dart';
-import 'model/response/auth_success_response/auth_success_response.dart';
-import 'model/response/subscribe_success_response/subscribe_success_response.dart';
-import 'model/response/who_am_i_response.dart';
+import 'model/response/auth_success_response.dart';
+import 'model/response/subscribe_success_response.dart';
 
 class AuthService implements IAuthService {
   static const String apiAuthBaseUrl = '${AppConfig.apiUrl}/auth';
@@ -85,7 +85,7 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future<WhoAmIResponse> whoAmI() async {
+  Future<Profile> whoAmI() async {
     Response response;
     try {
       response = await DioClient.instance.get(
@@ -95,7 +95,7 @@ class AuthService implements IAuthService {
       throw BadRequestException(AuthError.notAuthenticated());
     }
     try {
-      return WhoAmIResponse.fromJson(response.data);
+      return Profile.fromJson(response.data);
     } catch (e) {
       throw ParsingResponseException(
         ApiError.errorOccurredWhileParsingResponse(),

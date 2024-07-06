@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../api/post/post_service.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/string_constants.dart';
-import '../object/city/city.dart';
+import '../object/city.dart';
 import '../repository/post/post_repository.dart';
 import 'post_card.dart';
 import 'shimmer/shimmer_post_and_monument_resume_list.dart';
@@ -24,7 +24,8 @@ class CityPostList extends HookWidget {
       create: (context) => PostBloc(
         postRepository: RepositoryProvider.of<PostRepository>(
           context,
-        ), postService: PostService(),
+        ),
+        postService: PostService(),
       )..add(
           GetCityPostEvent(
             id: city.id,
@@ -96,8 +97,7 @@ class _PostListContent extends HookWidget {
           );
         } else {
           return Container();
-
-      }
+        }
       },
     );
   }

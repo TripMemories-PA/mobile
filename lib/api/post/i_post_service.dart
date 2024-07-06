@@ -1,7 +1,7 @@
 import 'package:image_picker/image_picker.dart';
 
-import 'model/query/create_post/create_post_query.dart';
-import 'model/response/create_post_response/create_post_response.dart';
+import 'model/query/create_post_query.dart';
+import 'model/response/create_post_response.dart';
 
 abstract class IPostService {
   Future<CreatePostResponse> createPost({

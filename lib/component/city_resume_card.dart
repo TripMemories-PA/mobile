@@ -3,7 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:progressive_image/progressive_image.dart';
 
 import '../num_extensions.dart';
-import '../object/city/city.dart';
+import '../object/city.dart';
 import 'searching_cities_body.dart';
 
 class CityResumeCard extends StatelessWidget {

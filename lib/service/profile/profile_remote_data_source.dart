@@ -1,7 +1,7 @@
 import '../../api/profile/profile_service.dart';
-import '../../api/profile/response/friend_request/friend_request_response.dart';
-import '../../api/profile/response/friends/get_friends_pagination_response.dart';
-import '../../object/profile/profile.dart';
+import '../../api/profile/response/friend_request_response.dart';
+import '../../api/profile/response/get_friends_pagination_response.dart';
+import '../../object/profile.dart';
 import 'profile_interface.dart';
 
 class ProfileRemoteDataSource extends ProfileDataSourceInterface {

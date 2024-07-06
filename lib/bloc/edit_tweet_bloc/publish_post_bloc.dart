@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../api/error/api_error.dart';
 import '../../api/exception/custom_exception.dart';
 import '../../api/post/i_post_service.dart';
-import '../../api/post/model/query/create_post/create_post_query.dart';
+import '../../api/post/model/query/create_post_query.dart';
 
 part 'publish_post_event.dart';
 part 'publish_post_state.dart';

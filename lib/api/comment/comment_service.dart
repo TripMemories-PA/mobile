@@ -6,8 +6,8 @@ import '../dio.dart';
 import '../error/api_error.dart';
 import '../exception/bad_request_exception.dart';
 import 'i_comment_service.dart';
-import 'model/query/post_comment_query/post_comment_query.dart';
-import 'model/response/get_comment_response/get_comment_response.dart';
+import 'model/query/post_comment_query.dart';
+import 'model/response/get_comment_response.dart';
 
 class CommentService implements ICommentService, ICommentRepository {
   static const String apiCommentBaseUrl = '${AppConfig.apiUrl}/comments';

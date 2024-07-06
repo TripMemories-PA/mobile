@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../object/conversation/conversation.dart';
-import '../../object/message/message.dart';
-import '../../object/profile/profile.dart';
+import '../../object/conversation.dart';
+import '../../object/message.dart';
+import '../../object/profile.dart';
+import '../../object/user_type.dart';
 
 part 'chat_event.dart';
 part 'chat_state.dart';
@@ -23,7 +24,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         state.copyWith(
           conversation: Conversation(
             id: 1,
-            users: const [profile, profile],
+            users: [profile, profile],
             messages: sortedMessages,
           ),
         ),
@@ -32,7 +33,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 }
 
-const Profile me = Profile(
+Profile me = Profile(
   isFriend: true,
   id: 1,
   username: 'johndoe',
@@ -42,9 +43,10 @@ const Profile me = Profile(
   hasSentFriendRequest: false,
   hasReceivedFriendRequest: false,
   poisCount: 0,
+  userType: UserType(id: 2, name: 'User'),
 );
 
-const Profile profile = Profile(
+Profile profile = Profile(
   isFriend: true,
   id: 2,
   username: 'johndoe',
@@ -54,6 +56,7 @@ const Profile profile = Profile(
   hasSentFriendRequest: false,
   hasReceivedFriendRequest: false,
   poisCount: 0,
+  userType: UserType(id: 1, name: 'User'),
 );
 
 final Message message = Message(

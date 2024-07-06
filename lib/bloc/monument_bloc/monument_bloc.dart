@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../api/monument/model/response/pois_response/pois_response.dart';
+import '../../api/monument/model/response/pois_response.dart';
 import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../object/poi/poi.dart';
 import '../../object/position.dart';
-import '../../object/post/post.dart';
+import '../../object/post.dart';
 import '../../object/radius.dart';
 import '../../object/sort_possibility.dart';
 import '../../repository/monument/i_monument_repository.dart';

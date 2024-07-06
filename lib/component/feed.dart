@@ -7,7 +7,7 @@ import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/string_constants.dart';
-import '../object/post/post.dart';
+import '../object/post.dart';
 import '../repository/post/post_repository.dart';
 import 'post_card.dart';
 import 'shimmer/shimmer_post_and_monument_resume.dart';

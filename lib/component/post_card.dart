@@ -17,7 +17,7 @@ import '../constants/my_colors.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
-import '../object/post/post.dart';
+import '../object/post.dart';
 import '../utils/date_time_service.dart';
 import 'comment_button.dart';
 import 'custom_card.dart';

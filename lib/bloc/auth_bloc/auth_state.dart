@@ -1,5 +1,5 @@
-import '../../api/auth/model/response/who_am_i_response.dart';
 import '../../api/error/api_error.dart';
+import '../../object/profile.dart';
 
 enum AuthStatus { authenticated, guest }
 
@@ -11,7 +11,7 @@ class AuthState {
   });
 
   const AuthState.authenticated({
-    required WhoAmIResponse user,
+    required Profile user,
   }) : this._(
           status: AuthStatus.authenticated,
           user: user,
@@ -25,5 +25,5 @@ class AuthState {
         );
   final AuthStatus status;
   final ApiError? error;
-  final WhoAmIResponse? user;
+  final Profile? user;
 }

@@ -9,7 +9,7 @@ import '../../constants/my_colors.dart';
 import '../../constants/route_name.dart';
 import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
-import '../../object/friend_request/friend_request.dart';
+import '../../object/friend_request.dart';
 import '../../repository/profile/profile_repository.dart';
 import '../../utils/messenger.dart';
 import '../custom_card.dart';

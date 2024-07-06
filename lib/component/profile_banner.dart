@@ -13,7 +13,7 @@ import '../bloc/user_searching_bloc/user_searching_bloc.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
-import '../object/profile/profile.dart';
+import '../object/profile.dart';
 import '../repository/profile/profile_repository.dart';
 import '../utils/messenger.dart';
 import 'friends_and_visited_widget.dart';

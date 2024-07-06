@@ -1,6 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 
-import '../../object/avatar/uploaded_file.dart';
+import '../../object/uploaded_file.dart';
 
 abstract class IProfileService {
   Future<void> updateProfile({

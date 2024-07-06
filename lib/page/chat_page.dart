@@ -9,7 +9,7 @@ import '../component/text_field_custom.dart';
 import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
-import '../object/profile/profile.dart';
+import '../object/profile.dart';
 
 class ChatPage extends HookWidget {
   const ChatPage({super.key, required this.user});

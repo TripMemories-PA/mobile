@@ -13,7 +13,7 @@ import '../exception/bad_request_exception.dart';
 import '../exception/parsing_response_exception.dart';
 import '../post/model/response/get_all_posts_response.dart';
 import 'i_monument_service.dart';
-import 'model/response/pois_response/pois_response.dart';
+import 'model/response/pois_response.dart';
 
 class MonumentService implements IMonumentService, IMonumentRepository {
   static const String apiPoisBaseUrl = '${AppConfig.apiUrl}/pois';

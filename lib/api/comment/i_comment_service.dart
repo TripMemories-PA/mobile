@@ -1,4 +1,4 @@
-import 'model/query/post_comment_query/post_comment_query.dart';
+import 'model/query/post_comment_query.dart';
 
 abstract class ICommentService {
   Future<void> commentPost({

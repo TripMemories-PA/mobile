@@ -4,11 +4,10 @@ import '../../api/error/api_error.dart';
 import '../../api/exception/custom_exception.dart';
 import '../../api/post/i_post_service.dart';
 import '../../api/post/model/response/get_all_posts_response.dart';
-import '../../object/post/post.dart';
+import '../../object/post.dart';
 import '../../repository/post/i_post_repository.dart';
 
 part 'post_event.dart';
-
 part 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {

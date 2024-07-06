@@ -1,5 +1,5 @@
 import '../../api/post/model/response/get_all_posts_response.dart';
-import '../../object/post/post.dart';
+import '../../object/post.dart';
 import '../../service/post/post_remote_data_source.dart';
 import 'i_post_repository.dart';
 

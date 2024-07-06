@@ -6,6 +6,8 @@ class StringConstants {
 
   String get ok => 'Ok';
 
+  String get paymentCanceled => 'Paiement annulé';
+
   // Authentication
   String get notAuthenticated => 'Pas connecté';
   String get doNotWaitToBuy => 'N’attendez pas, prenez vos places !';

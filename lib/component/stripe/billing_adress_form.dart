@@ -3,8 +3,8 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 
 import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
+import '../../page/payment_sheet_screen.dart';
 import '../../utils/field_validator.dart';
-import 'payment_sheet_screen.dart';
 
 class BillingDetailsForm extends StatelessWidget {
   const BillingDetailsForm({

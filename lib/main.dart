@@ -11,7 +11,6 @@ import 'bloc/auth_bloc/auth_bloc.dart';
 import 'bloc/auth_bloc/auth_event.dart';
 import 'bloc/auth_bloc/auth_state.dart';
 import 'bloc/cart/cart_bloc.dart';
-import 'component/stripe/payment_sheet_screen.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
@@ -27,6 +26,7 @@ import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
 import 'page/monument_page_v2.dart';
+import 'page/payment_sheet_screen.dart';
 import 'page/profile_page.dart';
 import 'page/search_page.dart';
 import 'page/shop_page.dart';
@@ -160,8 +160,8 @@ class MyApp extends HookWidget {
               GoRoute(
                 path: RouteName.buy,
                 pageBuilder: (context, state) {
-                  final double? totalToPay = state.extra as double?;
-                  if (totalToPay == null) {
+                  final CartBloc? cartBloc = state.extra as CartBloc?;
+                  if (cartBloc == null) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       context.go(RouteName.searchPage);
                     });
@@ -178,7 +178,7 @@ class MyApp extends HookWidget {
                   }
                   return CustomTransitionPage(
                     key: state.pageKey,
-                    child: PaymentScreen(totalToPay: totalToPay),
+                    child: PaymentScreen(cartBloc: cartBloc),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       return CustomTransition.buildFadeTransition(

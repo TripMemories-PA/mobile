@@ -280,7 +280,8 @@ class ProfileBanner extends StatelessWidget {
                                         ),
                                       ),
                                       child: Image.asset(
-                                          'assets/images/ticket.png',),
+                                        'assets/images/ticket.png',
+                                      ),
                                     ),
                                     10.pw,
                                     SizedBox(
@@ -350,7 +351,7 @@ class ProfileBanner extends StatelessWidget {
                     context.pop();
                     context.push(
                       RouteName.buy,
-                      extra: context.read<CartBloc>().state.totalPrice,
+                      extra: context.read<CartBloc>(),
                     );
                   },
                   child: Text(

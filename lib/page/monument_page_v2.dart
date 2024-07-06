@@ -382,7 +382,12 @@ class _PageContent extends HookWidget {
                               ),
                             )
                           : (tickets.length == 1
-                              ? TicketCardAdmin(article: tickets[0])
+                              ? SizedBox(
+                                  height: 440,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                  child: TicketCardAdmin(article: tickets[0]),
+                                )
                               : TicketTabView(
                                   tickets: tickets,
                                 )),

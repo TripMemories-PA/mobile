@@ -126,7 +126,7 @@ class TicketCardAdmin extends StatelessWidget {
                       ),
                   ],
                 ),
-                (constraints.maxHeight * 0.01).toInt().ph,
+                5.ph,
                 SizedBox(
                   height: constraints.maxHeight * 0.4,
                   child: Column(

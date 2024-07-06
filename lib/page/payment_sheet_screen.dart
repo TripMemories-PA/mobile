@@ -1,20 +1,24 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:http/http.dart' as http;
 
-import '../../constants/string_constants.dart';
-import '../../num_extensions.dart';
-import '../../utils/messenger.dart';
-import 'billing_adress_form.dart';
-import 'loading_button.dart';
+import '../api/buy_ticket/buy_ticket_service.dart';
+import '../api/buy_ticket/model/query/buy_ticket_query.dart';
+import '../api/buy_ticket/model/response/buy_ticket_response.dart';
+import '../bloc/cart/cart_bloc.dart';
+import '../component/stripe/billing_adress_form.dart';
+import '../component/stripe/loading_button.dart';
+import '../constants/string_constants.dart';
+import '../num_extensions.dart';
+import '../utils/messenger.dart';
 
 class PaymentScreen extends HookWidget {
-  const PaymentScreen({super.key, required this.totalToPay});
+  const PaymentScreen({
+    super.key,
+    required this.cartBloc,
+  });
 
-  final double totalToPay;
+  final CartBloc cartBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +57,7 @@ class PaymentScreen extends HookWidget {
           children: [
             10.ph,
             Text(
-              '${StringConstants().total}: ${totalToPay.toStringAsFixed(2)} €',
+              '${StringConstants().total}: ${cartBloc.state.totalPrice.toStringAsFixed(2)} €',
             ),
             10.ph,
             Stepper(
@@ -138,25 +142,6 @@ class PaymentScreen extends HookWidget {
     }
   }
 
-  Future<Map<String, dynamic>> _createTestPaymentSheet() async {
-    final url = Uri.parse('http://10.0.2.2:4242/payment-sheet');
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: json.encode({
-        'currency': 'eur',
-        'amount': (totalToPay * 100).toInt(),
-      }),
-    );
-    final body = json.decode(response.body);
-    if (body['error'] != null) {
-      throw Exception(body['error']);
-    }
-    return body;
-  }
-
   Future<void> initPaymentSheet(
     ValueNotifier<int> step,
     BillingDetails billingDetails,
@@ -165,17 +150,29 @@ class PaymentScreen extends HookWidget {
     try {
       final Color primaryColor = Theme.of(context).colorScheme.primary;
       final Color surfaceColor = Theme.of(context).colorScheme.surface;
+
+      final List<BuyTicketQueryElement> tickets = [];
+      for (final cartElement in cartBloc.state.cartElements) {
+        tickets.add(
+          BuyTicketQueryElement(
+            id: cartElement.articles.first.id,
+            quantity: cartElement.articles.length,
+          ),
+        );
+      }
+      final BuyTicketQuery buyTicketQuery = BuyTicketQuery(tickets: tickets);
+
       // 1. create payment intent on the server
-      final data = await _createTestPaymentSheet();
+      final BuyTicketResponse data =
+          await BuyTicketService().buyTicket(tickets: buyTicketQuery);
 
       // 2. initialize the payment sheet
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
           // Main params
-          paymentIntentClientSecret: data['paymentIntent'],
+          paymentIntentClientSecret: data.paymentIntent,
           merchantDisplayName: 'Trip Memories payment [DEMO]',
           // Customer params
-          customerId: data['customer'],
           returnURL: 'flutterstripe://redirect',
 
           // Extra params
@@ -229,9 +226,15 @@ class PaymentScreen extends HookWidget {
       Messenger.showSnackBarSuccess(StringConstants().paymentSuccess);
     } on Exception catch (e) {
       if (e is StripeException) {
-        Messenger.showSnackBarError(
-          StringConstants().errorOccurredFromStripe,
-        );
+        if (e.error.code.index == FailureCode.Canceled.index) {
+          Messenger.showSnackBarError(
+            StringConstants().paymentCanceled,
+          );
+        } else {
+          Messenger.showSnackBarError(
+            StringConstants().errorOccurredFromStripe,
+          );
+        }
       } else {
         Messenger.showSnackBarError(StringConstants().errorOccurred);
       }

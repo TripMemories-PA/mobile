@@ -67,6 +67,32 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
         }
       }
     });
+
+    on<DeleteTicketEvent>((event, emit) async {
+      emit(state.copyWith(status: TicketStatus.loading));
+      try {
+        await ticketService.deleteTicket(ticketId: event.ticketId);
+        emit(
+          state.copyWith(
+            status: TicketStatus.ticketDeleted,
+          ),
+        );
+      } catch (e) {
+        if (e is CustomException) {
+          emit(
+            state.copyWith(
+              status: TicketStatus.error,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              status: TicketStatus.error,
+            ),
+          );
+        }
+      }
+    });
   }
 
   final ITicketRepository ticketRepository;

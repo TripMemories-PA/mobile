@@ -11,6 +11,7 @@ import '../num_extensions.dart';
 import '../object/ticket.dart';
 import '../utils/messenger.dart';
 import 'custom_card.dart';
+import 'popup/confirmation_logout_dialog.dart';
 import 'popup/modify_article_popup.dart';
 
 class TicketCardAdmin extends StatelessWidget {
@@ -83,21 +84,44 @@ class TicketCardAdmin extends StatelessWidget {
                       Positioned(
                         right: 10,
                         top: 10,
-                        child: IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            modifyArticlePopup(
-                              context: context,
-                              article: article,
-                              ticketBloc: context.read<TicketBloc>(),
-                            ).then((bool result) {
-                              if (result) {
-                                Messenger.showSnackBarSuccess(
-                                  StringConstants().modifiedArticle,
-                                );
-                              }
-                            });
-                          },
+                        child: Column(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () {
+                                modifyArticlePopup(
+                                  context: context,
+                                  article: article,
+                                  ticketBloc: context.read<TicketBloc>(),
+                                ).then((bool result) {
+                                  if (result) {
+                                    Messenger.showSnackBarSuccess(
+                                      StringConstants().modifiedArticle,
+                                    );
+                                  }
+                                });
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () async {
+                                await confirmationPopUp(
+                                  context,
+                                  title: StringConstants()
+                                      .doYouReallyWantToDeleteThisArticle,
+                                  isOkPopUp: false,
+                                ).then((bool result) {
+                                  if (result) {
+                                    context.read<TicketBloc>().add(
+                                          DeleteTicketEvent(
+                                            ticketId: article.id,
+                                          ),
+                                        );
+                                  }
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       ),
                   ],

@@ -17,3 +17,11 @@ class PostTicketEvent extends TicketEvent {
 
   final PostTicketQuery ticket;
 }
+
+class DeleteTicketEvent extends TicketEvent {
+  DeleteTicketEvent({
+    required this.ticketId,
+  });
+
+  final int ticketId;
+}

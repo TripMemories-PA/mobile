@@ -14,9 +14,14 @@ class StringConstants {
 
   String get groupSize => 'Taille du groupe';
 
+  String get doYouReallyWantToDeleteThisArticle =>
+      'Voulez-vous vraiment supprimer cet article ?';
+
   String get modifiedArticle => 'Article modifié';
 
   String get noTicketForThisMonument => 'Pas de billet pour ce monument';
+
+  String get ticketDeleted => 'Billet supprimé';
 
   String get payment => 'Paiement';
 

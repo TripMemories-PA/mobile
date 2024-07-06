@@ -1,6 +1,6 @@
 part of 'ticket_bloc.dart';
 
-enum TicketStatus { loading, notLoading, error, ticketPosted }
+enum TicketStatus { loading, notLoading, error, ticketPosted, ticketDeleted }
 
 class TicketState {
   const TicketState({

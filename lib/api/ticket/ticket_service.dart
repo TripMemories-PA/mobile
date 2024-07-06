@@ -55,9 +55,14 @@ class TicketService implements ITicketService, ITicketRepository {
   }
 
   @override
-  Future<void> deleteTicket({required int ticketId}) {
-    // TODO: implement deleteTicket
-    throw UnimplementedError();
+  Future<void> deleteTicket({required int ticketId}) async {
+    try {
+      await DioClient.instance.delete(
+        '$apiTickets/$ticketId',
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
   }
 
   @override

@@ -62,6 +62,16 @@ class ShopPage extends StatelessWidget {
                                 context.read<AuthBloc>().state.user?.poiId,
                           ),
                         );
+                  } else if (state.status == TicketStatus.ticketDeleted) {
+                    Messenger.showSnackBarSuccess(
+                      StringConstants().ticketDeleted,
+                    );
+                    context.read<TicketBloc>().add(
+                          GetTicketsEvent(
+                            monumentId:
+                                context.read<AuthBloc>().state.user?.poiId,
+                          ),
+                        );
                   }
                 },
                 child: Builder(

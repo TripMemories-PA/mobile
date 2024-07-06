@@ -13,3 +13,5 @@ class RemoveArticle extends CartEvent {
 
   final Ticket article;
 }
+
+class ClearCart extends CartEvent {}

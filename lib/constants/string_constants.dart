@@ -8,6 +8,8 @@ class StringConstants {
 
   String get paymentCanceled => 'Paiement annulé';
 
+  String get confirmPayment => 'Confirmer le paiement';
+
   // Authentication
   String get notAuthenticated => 'Pas connecté';
   String get doNotWaitToBuy => 'N’attendez pas, prenez vos places !';

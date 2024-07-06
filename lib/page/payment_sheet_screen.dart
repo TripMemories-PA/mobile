@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:go_router/go_router.dart';
 
 import '../api/buy_ticket/buy_ticket_service.dart';
 import '../api/buy_ticket/model/query/buy_ticket_query.dart';
@@ -93,10 +95,20 @@ class PaymentScreen extends HookWidget {
                   ),
                 ),
                 Step(
-                  title: const Text('Confirm payment'),
+                  title: Text(StringConstants().confirmPayment),
                   content: LoadingButton(
-                    onPressed: () => confirmPayment(step),
-                    text: 'Pay now',
+                    onPressed: () => confirmPayment(step).then(
+                      (value) => {
+                        if (value)
+                          {
+                            context.pop(),
+                            context.read<CartBloc>().add(
+                                  ClearCart(),
+                                ),
+                          },
+                      },
+                    ),
+                    text: StringConstants().payNow,
                   ),
                 ),
               ],
@@ -215,7 +227,7 @@ class PaymentScreen extends HookWidget {
     }
   }
 
-  Future<void> confirmPayment(
+  Future<bool> confirmPayment(
     ValueNotifier<int> step,
   ) async {
     try {
@@ -224,6 +236,7 @@ class PaymentScreen extends HookWidget {
 
       step.value = 0;
       Messenger.showSnackBarSuccess(StringConstants().paymentSuccess);
+      return true;
     } on Exception catch (e) {
       if (e is StripeException) {
         if (e.error.code.index == FailureCode.Canceled.index) {
@@ -238,6 +251,7 @@ class PaymentScreen extends HookWidget {
       } else {
         Messenger.showSnackBarError(StringConstants().errorOccurred);
       }
+      return false;
     }
   }
 }

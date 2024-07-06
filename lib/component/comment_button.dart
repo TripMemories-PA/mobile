@@ -17,7 +17,7 @@ import '../object/post.dart';
 import '../repository/comment/comment_repository.dart';
 import '../utils/date_time_service.dart';
 import '../utils/messenger.dart';
-import 'popup/confirmation_logout_dialog.dart';
+import 'popup/confirmation_dialog.dart';
 import 'text_field_custom.dart';
 
 class CommentButton extends HookWidget {

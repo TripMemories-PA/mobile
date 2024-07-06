@@ -300,7 +300,17 @@ class StringConstants {
 
   String get myPosts => 'Mes posts';
 
+  String get myTickets => 'Mes billets';
+
+  String get usedTicket => 'Billet utilisé';
+
+  String get showQrCode => 'Afficher le QR Code';
+
+  String get notUsedTicket => 'Billet non utilisé';
+
   String get postedComment => 'Commentaires postés';
+
+  String get ticketFor => 'Billet pour';
 
   String get logout => 'Se déconnecter';
 

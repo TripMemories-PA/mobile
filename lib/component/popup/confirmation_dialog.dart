@@ -11,29 +11,39 @@ class ConfirmationDialog extends StatelessWidget {
     this.title,
     this.subtitle,
     this.isOkPopUp = false,
+    this.content,
   });
 
   final String? title;
   final String? subtitle;
   final bool? isOkPopUp;
+  final Widget? content;
 
   @override
-  Widget build(BuildContext context) => Dialog(
-        child: CustomCard(
-          height: 200,
-          content: Padding(
-            padding: const EdgeInsets.all(32),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
+  Widget build(BuildContext context) {
+    final Widget? tmpContent = content;
+    return Dialog(
+      child: CustomCard(
+        height: 200,
+        content: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              if (tmpContent != null)
+                tmpContent
+              else
                 Text(title ?? StringConstants().confirmAction),
-                16.ph,
-                if (isOkPopUp ?? false) Center(
+              16.ph,
+              if (isOkPopUp ?? false)
+                Center(
                   child: TextButton(
                     child: Text(StringConstants().ok),
                     onPressed: () => context.pop(),
                   ),
-                ) else Row(
+                )
+              else
+                Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     TextButton(
@@ -46,21 +56,28 @@ class ConfirmationDialog extends StatelessWidget {
                     ),
                   ],
                 ),
-              ],
-            ),
+            ],
           ),
         ),
-      );
+      ),
+    );
+  }
 }
 
 Future<bool> confirmationPopUp(
   BuildContext context, {
   String? title,
   String? subtitle,
-      bool? isOkPopUp,
+  bool? isOkPopUp,
+  Widget? content,
 }) async =>
     await showDialog<bool>(
       context: context,
-      builder: (_) => ConfirmationDialog(title: title, subtitle: subtitle, isOkPopUp: isOkPopUp),
+      builder: (_) => ConfirmationDialog(
+        title: title,
+        subtitle: subtitle,
+        isOkPopUp: isOkPopUp,
+        content: content,
+      ),
     ) ??
     false;

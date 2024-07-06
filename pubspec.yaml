@@ -58,6 +58,7 @@ dependencies:
   progressive_image: ^2.0.1
   auto_size_text: ^3.0.0
   flutter_stripe: ^10.2.0
+  qr_flutter: ^4.1.0
 
 
 dev_dependencies:

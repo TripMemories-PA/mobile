@@ -17,7 +17,7 @@ import '../object/profile.dart';
 import '../repository/profile/profile_repository.dart';
 import '../utils/messenger.dart';
 import 'friends_and_visited_widget.dart';
-import 'popup/confirmation_logout_dialog.dart';
+import 'popup/confirmation_dialog.dart';
 import 'popup/modify_user_infos_popup.dart';
 import 'popup/my_friends_requests.dart';
 

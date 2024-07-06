@@ -7,7 +7,7 @@ import '../constants/string_constants.dart';
 import 'banner_picture.dart';
 import 'bouncing_widget.dart';
 import 'custom_card.dart';
-import 'popup/confirmation_logout_dialog.dart';
+import 'popup/confirmation_dialog.dart';
 import 'profile_banner.dart';
 import 'profile_picture.dart';
 

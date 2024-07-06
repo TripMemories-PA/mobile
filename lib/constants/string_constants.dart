@@ -10,6 +10,8 @@ class StringConstants {
 
   String get confirmPayment => 'Confirmer le paiement';
 
+  String get qrCodeScanner => 'Scanner';
+
   // Authentication
   String get notAuthenticated => 'Pas connecté';
   String get doNotWaitToBuy => 'N’attendez pas, prenez vos places !';

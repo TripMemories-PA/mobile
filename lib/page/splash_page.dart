@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
+import '../bloc/auth_bloc/auth_bloc.dart';
 import '../constants/route_name.dart';
 
 class SplashPage extends HookWidget {
@@ -12,7 +14,11 @@ class SplashPage extends HookWidget {
     useEffect(
       () {
         Future.delayed(const Duration(seconds: 3), () {
-          context.go(RouteName.searchPage);
+          context.go(
+            context.read<AuthBloc>().state.user?.userTypeId == 3
+                ? RouteName.shopPage
+                : RouteName.searchPage,
+          );
         });
         return null;
       },

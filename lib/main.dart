@@ -27,6 +27,7 @@ import 'page/map_page.dart';
 import 'page/monument_page_v2.dart';
 import 'page/payment_sheet_screen.dart';
 import 'page/profile_page.dart';
+import 'page/scan_qrcode_page.dart';
 import 'page/search_page.dart';
 import 'page/shop_page.dart';
 import 'page/splash_page.dart';
@@ -241,24 +242,8 @@ class MyApp extends HookWidget {
             routes: <RouteBase>[
               GoRoute(
                 path: RouteName.feedPage,
-                redirect: (BuildContext context, GoRouterState state) {
-                  final authState = context.read<AuthBloc>().state;
-                  final isAuthenticated =
-                      authState.status == AuthStatus.authenticated;
-                  final isUserType3 = authState.user?.userTypeId == 3;
-
-                  if (isAuthenticated && isUserType3) {
-                    return RouteName.shopPage;
-                  }
-                  return null;
-                },
                 builder: (BuildContext context, GoRouterState state) =>
                     const FeedPage(),
-              ),
-              GoRoute(
-                path: RouteName.shopPage,
-                builder: (BuildContext context, GoRouterState state) =>
-                    const ShopPage(),
               ),
               GoRoute(
                 path: RouteName.editTweetPage,
@@ -279,6 +264,103 @@ class MyApp extends HookWidget {
                     },
                   );
                 },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase>[
+              GoRoute(
+                path: RouteName.profilePage,
+                builder: (BuildContext context, GoRouterState state) {
+                  return const ProfilePage();
+                },
+              ),
+              GoRoute(
+                path: '${RouteName.profilePage}/:userId',
+                builder: (BuildContext context, GoRouterState state) {
+                  final Map<String, String> queryParameters =
+                      GoRouterState.of(context).pathParameters;
+                  final int? userId = int.tryParse(queryParameters['userId']!);
+                  return ProfilePage(userId: userId);
+                },
+              ),
+              GoRoute(
+                path: '${RouteName.chatPage}/:userId',
+                builder: (BuildContext context, GoRouterState state) {
+                  final Profile user = state.extra! as Profile;
+                  return ChatPage(user: user);
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  );
+
+  final GoRouter _poiRouter = GoRouter(
+    navigatorKey: _rootNavigatorKey,
+    initialLocation: RouteName.splashPage,
+    routes: <RouteBase>[
+      GoRoute(
+        path: RouteName.splashPage,
+        builder: (BuildContext context, GoRouterState state) {
+          return const SplashPage();
+        },
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (
+          BuildContext context,
+          GoRouterState state,
+          StatefulNavigationShell navigationShell,
+        ) {
+          return ScaffoldWithNavBar(navigationShell: navigationShell);
+        },
+        branches: <StatefulShellBranch>[
+          StatefulShellBranch(
+            routes: <RouteBase>[
+              GoRoute(
+                path: RouteName.shopPage,
+                builder: (BuildContext context, GoRouterState state) =>
+                    const ShopPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase>[
+              GoRoute(
+                path: RouteName.feedPage,
+                builder: (BuildContext context, GoRouterState state) =>
+                    const FeedPage(),
+              ),
+              GoRoute(
+                path: RouteName.editTweetPage,
+                pageBuilder: (context, state) {
+                  final extra = state.extra;
+                  final Poi? poi = extra is Poi ? extra : null;
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: EditTweetPage(
+                      preSelectedMonument: poi,
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return CustomTransition.buildRightToLeftPopTransition(
+                        animation,
+                        child,
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase>[
+              GoRoute(
+                path: RouteName.qrCodeScanner,
+                builder: (BuildContext context, GoRouterState state) =>
+                    const ScanQrcodePage(),
               ),
             ],
           ),
@@ -336,7 +418,7 @@ class MyApp extends HookWidget {
           debugShowCheckedModeBanner: false,
           scaffoldMessengerKey: messengerKey,
           title: 'Trip memories',
-          routerConfig: _router,
+          routerConfig: state.user?.userTypeId == 3 ? _poiRouter : _router,
           theme: ThemeGenerator.generate(),
         );
       },

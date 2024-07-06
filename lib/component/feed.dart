@@ -68,6 +68,54 @@ class _PostListContent extends HookWidget {
   final bool myPosts;
   final int? userId;
 
+  @override
+  Widget build(BuildContext context) {
+    final ScrollController postScrollController = useScrollController();
+    useEffect(
+      () {
+        void createScrollListener() {
+          if (postScrollController.position.atEdge) {
+            if (postScrollController.position.pixels != 0) {
+              _getPosts(context);
+            }
+          }
+        }
+
+        postScrollController.addListener(createScrollListener);
+        return () => postScrollController.removeListener(createScrollListener);
+      },
+      const [],
+    );
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        return BlocBuilder<PostBloc, PostState>(
+          builder: (context, state) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<PostBloc>().add(
+                      GetPostsEvent(
+                        isRefresh: true,
+                        myPosts: myPosts,
+                        isMyFeed: context.read<AuthBloc>().state.status ==
+                            AuthStatus.authenticated,
+                      ),
+                    );
+              },
+              child: state.status == PostStatus.loading
+                  ? const Center(
+                      child: ShimmerPostAndMonumentResumeList(),
+                    )
+                  : SingleChildScrollView(
+                      controller: postScrollController,
+                      child: _buildPostList(context),
+                    ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   void _getPosts(BuildContext context) {
     final postBloc = context.read<PostBloc>();
 
@@ -150,53 +198,5 @@ class _PostListContent extends HookWidget {
                 AuthStatus.authenticated,
           ),
         );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final ScrollController postScrollController = useScrollController();
-    useEffect(
-      () {
-        void createScrollListener() {
-          if (postScrollController.position.atEdge) {
-            if (postScrollController.position.pixels != 0) {
-              _getPosts(context);
-            }
-          }
-        }
-
-        postScrollController.addListener(createScrollListener);
-        return () => postScrollController.removeListener(createScrollListener);
-      },
-      const [],
-    );
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        return BlocBuilder<PostBloc, PostState>(
-          builder: (context, state) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<PostBloc>().add(
-                      GetPostsEvent(
-                        isRefresh: true,
-                        myPosts: myPosts,
-                        isMyFeed: context.read<AuthBloc>().state.status ==
-                            AuthStatus.authenticated,
-                      ),
-                    );
-              },
-              child: state.status == PostStatus.loading
-                  ? const Center(
-                      child: ShimmerPostAndMonumentResumeList(),
-                    )
-                  : SingleChildScrollView(
-                      controller: postScrollController,
-                      child: _buildPostList(context),
-                    ),
-            );
-          },
-        );
-      },
-    );
   }
 }

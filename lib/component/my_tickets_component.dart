@@ -91,7 +91,6 @@ class TicketCard extends StatelessWidget {
                                 children: <Widget>[
                                   QrImageView(
                                     data: ticket.ticket.id.toString(),
-                                    version: QrVersions.auto,
                                     size: 300.0,
                                   ),
                                   Center(

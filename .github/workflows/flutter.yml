@@ -44,8 +44,11 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Replace string with GitHub secret
+      - name: Set Google api key with GitHub secret
         run: sed -i 's/{GOOGLE_MAP_API_KEY}/${{ secrets.GOOGLE_MAP_API_KEY }}/g' android/app/src/main/AndroidManifest.xml
+
+      - name: Set Stripe pub key with GitHub secret
+        run: sed -i 's/{STRIPE_PUBLISHABLE_KEY}/${{ secrets.STRIPE_PUB_KEY }}/g' lib/main.dart
 
       - name: Build APK
         run: flutter build apk --release

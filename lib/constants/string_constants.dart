@@ -12,6 +12,14 @@ class StringConstants {
 
   String get qrCodeScanner => 'Scanner';
 
+  String get noPermissionForCamera => 'Pas de permission pour la caméra';
+
+  String get controllerNotReady => 'Contrôleur non prêt';
+
+  String get permissionDenied => 'Permission refusée';
+
+  String get unsupportedDevice => 'Appareil non supporté';
+
   // Authentication
   String get notAuthenticated => 'Pas connecté';
   String get doNotWaitToBuy => 'N’attendez pas, prenez vos places !';

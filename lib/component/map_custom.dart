@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +12,16 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image/image.dart' as img;
 
+import '../api/dio.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../bloc/profile/profile_bloc.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/map_style.dart';
+import '../object/marker_icons_custom.dart';
 import '../object/poi/poi.dart';
 import '../object/position.dart';
 import '../object/profile.dart';
@@ -75,6 +80,8 @@ class _MapCustomState extends State<MapCustom> {
                     position: LatLng(latitude, longitude),
                     onTap: () {
                       setState(() {
+                        selectedProfile = null;
+                        selectedFriendMarkerId = null;
                         selectedPoi = poi;
                         selectedMarkerId = markerId;
                       });
@@ -87,30 +94,61 @@ class _MapCustomState extends State<MapCustom> {
           ),
           if (profileBloc != null)
             BlocListener<ProfileBloc, ProfileState>(
-              listener: (context, state) {
-                setState(() {
-                  friendsMarkers = <MarkerId, Marker>{};
-                  for (final Profile profile in state.friends.data) {
-                    final double? latitude = profile.latitude;
-                    final double? longitude = profile.longitude;
-                    if (latitude == null || longitude == null) {
-                      continue;
-                    } else {
-                      print('COUCOU');
-                      final MarkerId markerId = MarkerId(profile.id.toString());
-                      final Marker marker = Marker(
-                        markerId: MarkerId(profile.id.toString()),
-                        position: LatLng(latitude, longitude),
-                        onTap: () {
-                          setState(() {
-                            selectedProfile = profile;
-                            selectedFriendMarkerId = markerId;
-                          });
-                        },
+              listener: (context, state) async {
+                final Map<MarkerId, Marker> newFriendsMarkers = {};
+
+                for (final Profile profile in state.friends.data) {
+                  final double? latitude = profile.latitude;
+                  final double? longitude = profile.longitude;
+                  if (latitude == null || longitude == null) {
+                    continue;
+                  } else {
+                    final MarkerId markerId = MarkerId(profile.id.toString());
+                    final BitmapDescriptor userIcon;
+                    final String? url = profile.avatar?.url;
+                    if (url == null) {
+                      userIcon = MarkerIconsCustom.getMarkerIcon(
+                        MarkerIconType.friend,
+                        selectedFriendMarkerId == markerId,
                       );
-                      friendsMarkers[markerId] = marker;
+                    } else {
+                      const int size = 100;
+                      final Uint8List imageData = await _downloadImage(url);
+                      final img.Image? originalImage =
+                          img.decodeImage(imageData);
+                      if (originalImage == null) {
+                        throw Exception('Failed to decode image');
+                      }
+
+                      final img.Image resizedImage = img.copyResize(
+                        originalImage,
+                        width: size,
+                        height: size,
+                      );
+
+                      final Uint8List resizedImageData =
+                          Uint8List.fromList(img.encodePng(resizedImage));
+                      userIcon = BitmapDescriptor.fromBytes(resizedImageData);
                     }
+                    final Marker marker = Marker(
+                      markerId: markerId,
+                      position: LatLng(latitude, longitude),
+                      icon: userIcon,
+                      onTap: () {
+                        setState(() {
+                          selectedPoi = null;
+                          selectedMarkerId = null;
+                          selectedProfile = profile;
+                          selectedFriendMarkerId = markerId;
+                        });
+                      },
+                    );
+                    newFriendsMarkers[markerId] = marker;
                   }
+                }
+
+                setState(() {
+                  friendsMarkers = newFriendsMarkers;
                 });
               },
             ),
@@ -139,9 +177,9 @@ class _MapCustomState extends State<MapCustom> {
             if (selectedProfile != null)
               Positioned(
                 right: 10,
-                bottom: 170,
+                bottom: 150,
                 child: IconButton(
-                  icon: const Icon(Icons.close, color: Colors.red),
+                  icon: const Icon(Icons.close),
                   onPressed: () {
                     setState(() {
                       _removeSelectedIconOnFriend();
@@ -155,6 +193,18 @@ class _MapCustomState extends State<MapCustom> {
         ),
       ),
     );
+  }
+
+  Future<Uint8List> _downloadImage(String url) async {
+    try {
+      final response = await DioClient.instance.get(
+        url,
+        options: Options(responseType: ResponseType.bytes),
+      );
+      return Uint8List.fromList(response.data);
+    } catch (e) {
+      throw Exception('Failed to download image: $e');
+    }
   }
 
   void _removeSelectedIconOnPoi() {
@@ -465,7 +515,7 @@ class _MapCustomState extends State<MapCustom> {
         child: GestureDetector(
           onTap: () {
             context.push(
-              '${RouteName.monumentPage}/${selectedProfile.id}',
+              '${RouteName.profilePage}/${selectedProfile.id}',
             );
           },
           child: Container(

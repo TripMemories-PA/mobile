@@ -2,7 +2,7 @@ import '../../../object/meta_object.dart';
 import '../../../object/profile.dart';
 
 class GetFriendsPaginationResponse {
-  GetFriendsPaginationResponse({
+  const GetFriendsPaginationResponse({
     required this.meta,
     required this.data,
   });
@@ -26,6 +26,6 @@ class GetFriendsPaginationResponse {
     );
   }
 
-  MetaObject meta;
-  List<Profile> data;
+  final MetaObject meta;
+  final List<Profile> data;
 }

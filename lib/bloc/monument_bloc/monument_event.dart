@@ -11,7 +11,7 @@ class GetMonumentsEvent extends MonumentEvent {
     this.searchingCriteria,
   });
 
-  final Position? position;
+  final PositionDataCustom? position;
   final bool sortByName;
   final AlphabeticalSortPossibility? order;
 
@@ -27,7 +27,7 @@ class GetMonumentsOnMapEvent extends MonumentEvent {
     this.isRefresh = false,
   });
 
-  final Position? position;
+  final PositionDataCustom? position;
   final RadiusQueryInfos? radius;
   final bool isRefresh;
 }

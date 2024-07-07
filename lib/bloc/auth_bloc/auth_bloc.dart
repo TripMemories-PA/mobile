@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../../api/auth/i_auth_service.dart';
 import '../../api/auth/model/response/auth_success_response.dart';
@@ -67,6 +68,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    on<SendMyLocation>((event, emit) async {
+      final bool isLocationServiceEnabled =
+          await Geolocator.isLocationServiceEnabled();
+      final LocationPermission permission = await Geolocator.checkPermission();
+      final bool isLocationPermissionGranted =
+          permission == LocationPermission.whileInUse ||
+              permission == LocationPermission.always;
+      if (isLocationPermissionGranted && isLocationServiceEnabled) {
+        Geolocator.getCurrentPosition().then((Position position) {
+          authService.updateMyLocation(
+            position.latitude,
+            position.longitude,
+          );
+        });
+      }
+    });
+
     on<ChangeToLoggedInStatus>((event, emit) async {
       try {
         await authTokenHandler.saveToken(event.authToken, event.stayLoggedIn);
@@ -76,6 +94,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             user: user,
           ),
         );
+        add(SendMyLocation());
       } catch (e) {
         authTokenHandler.logout();
         if (e is CustomException) {

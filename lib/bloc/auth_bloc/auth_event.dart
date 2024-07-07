@@ -22,3 +22,5 @@ class ChangeToLoggedOutStatus extends AuthEvent {
 }
 
 class DeleteAccountEvent extends AuthEvent {}
+
+class SendMyLocation extends AuthEvent {}

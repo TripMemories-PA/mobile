@@ -11,7 +11,7 @@ class GetCitiesEvent extends CityEvent {
     this.searchingCriteria,
   });
 
-  final Position? position;
+  final PositionDataCustom? position;
   final bool sortByName;
   final AlphabeticalSortPossibility? order;
 

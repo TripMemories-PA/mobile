@@ -6,7 +6,7 @@ import '../../object/sort_possibility.dart';
 
 abstract class ICityRepository {
   Future<CitiesResponse> getCities({
-    Position? position,
+    PositionDataCustom? position,
     required bool sortByName,
     required AlphabeticalSortPossibility order,
     required int page,

@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../app.config.dart';
+import '../../object/position.dart';
 import '../../object/profile.dart';
+import '../../object/radius.dart';
 import '../../object/uploaded_file.dart';
 import '../../repository/profile/i_profile_repository.dart';
 import '../dio.dart';
@@ -100,11 +102,19 @@ class ProfileService implements IProfileService, IProfileRepository {
   Future<GetFriendsPaginationResponse> getMyFriends({
     required int page,
     required int perPage,
+    PositionDataCustom? position,
+    RadiusQueryInfos? radius,
   }) async {
     Response response;
-    final String url = apiMyFriendsUrl
+    String url = apiMyFriendsUrl
         .replaceAll('[nb_page]', page.toString())
         .replaceAll('[per_page]', perPage.toString());
+    if (position != null) {
+      url +=
+          '&swLng=${position.swLng}&swLat=${position.swLat}&neLng=${position.neLng}&neLat=${position.neLat}';
+    } else if (radius != null) {
+      url += '&radius=${radius.km}&lng=${radius.lng}&lat=${radius.lat}';
+    }
     try {
       response = await DioClient.instance.get(
         url,

@@ -1,7 +1,9 @@
 import '../../api/profile/profile_service.dart';
 import '../../api/profile/response/friend_request_response.dart';
 import '../../api/profile/response/get_friends_pagination_response.dart';
+import '../../object/position.dart';
 import '../../object/profile.dart';
+import '../../object/radius.dart';
 import 'profile_interface.dart';
 
 class ProfileRemoteDataSource extends ProfileDataSourceInterface {
@@ -23,9 +25,16 @@ class ProfileRemoteDataSource extends ProfileDataSourceInterface {
   Future<GetFriendsPaginationResponse> getMyFriends({
     required int page,
     required int perPage,
+    PositionDataCustom? position,
+    RadiusQueryInfos? radius,
   }) async {
     final GetFriendsPaginationResponse friends =
-        await _profileService.getMyFriends(page: page, perPage: perPage);
+        await _profileService.getMyFriends(
+      page: page,
+      perPage: perPage,
+      position: position,
+      radius: radius,
+    );
     return friends;
   }
 

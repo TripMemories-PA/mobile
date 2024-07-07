@@ -16,7 +16,18 @@ class ProfileState {
     this.profile,
     this.status = ProfileStatus.initial,
     this.error,
-    this.friends,
+    this.friends = const GetFriendsPaginationResponse(
+      meta: MetaObject(
+        currentPage: 1,
+        lastPage: 1,
+        perPage: 1,
+        total: 0,
+        firstPage: 1,
+        firstPageUrl: '',
+        lastPageUrl: '',
+      ),
+      data: [],
+    ),
     this.friendsPerPage = 10,
     this.friendsPage = 0,
     this.hasMoreFriends = true,
@@ -52,7 +63,7 @@ class ProfileState {
   final ProfileStatus status;
   final ProfileStatus getMoreFriendsStatus;
   final ApiError? error;
-  final GetFriendsPaginationResponse? friends;
+  final GetFriendsPaginationResponse friends;
   final int friendsPerPage;
   final int friendsPage;
   final bool hasMoreFriends;

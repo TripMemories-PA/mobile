@@ -21,4 +21,6 @@ abstract class IAuthService {
   Future<Profile> whoAmI();
 
   Future<void> deleteAccount();
+
+  Future<void> updateMyLocation(double latitude, double longitude);
 }

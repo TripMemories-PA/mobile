@@ -10,7 +10,7 @@ abstract class IMonumentRepository {
   Future<Poi> getMonument(int id);
 
   Future<PoisResponse> getMonuments({
-    Position? position,
+    PositionDataCustom? position,
     required bool sortByName,
     required AlphabeticalSortPossibility order,
     required int page,

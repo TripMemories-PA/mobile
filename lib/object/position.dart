@@ -1,5 +1,5 @@
-class Position {
-  Position({
+class PositionDataCustom {
+  PositionDataCustom({
     required this.swLat,
     required this.swLng,
     required this.neLat,

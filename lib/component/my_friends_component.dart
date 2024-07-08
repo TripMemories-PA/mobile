@@ -99,9 +99,9 @@ class MyFriendsComponent extends StatelessWidget {
   }
 
   Widget _buildFriendsList(BuildContext context) {
-    final List<Profile>? friends =
-        context.read<ProfileBloc>().state.friends?.data;
-    if (friends == null || friends.isEmpty) {
+    final List<Profile> friends =
+        context.read<ProfileBloc>().state.friends.data;
+    if (friends.isEmpty) {
       return Center(child: Text(StringConstants().noFriendAdded));
     }
     if (context.read<ProfileBloc>().state.status == ProfileStatus.loading) {
@@ -116,7 +116,7 @@ class MyFriendsComponent extends StatelessWidget {
         return Column(
           children: [
             UserList(
-              users: state.friends!.data,
+              users: state.friends.data,
               horizontalCellSpacing: 20,
               padding: 20,
             ),

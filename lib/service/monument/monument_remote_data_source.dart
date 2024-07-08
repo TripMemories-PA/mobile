@@ -18,7 +18,7 @@ class MonumentRemoteDataSource implements IMonumentRepository {
 
   @override
   Future<PoisResponse> getMonuments({
-    Position? position,
+    PositionDataCustom? position,
     bool sortByName = true,
     AlphabeticalSortPossibility order = AlphabeticalSortPossibility.ascending,
     required int page,

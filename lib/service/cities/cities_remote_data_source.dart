@@ -11,7 +11,7 @@ class CityRemoteDataSource implements ICityRepository {
 
   @override
   Future<CitiesResponse> getCities({
-    Position? position,
+    PositionDataCustom? position,
     required bool sortByName,
     required AlphabeticalSortPossibility order,
     required int page,

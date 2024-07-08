@@ -31,9 +31,15 @@ class UpdatePasswordEvent extends ProfileEvent {
 class GetFriendsEvent extends ProfileEvent {
   GetFriendsEvent({
     this.isRefresh = false,
+    this.position,
+    this.radius,
+    this.isOnMap = false,
   });
 
   final bool isRefresh;
+  final PositionDataCustom? position;
+  final RadiusQueryInfos? radius;
+  final bool isOnMap;
 }
 
 class UpdateProfilePictureEvent extends ProfileEvent {

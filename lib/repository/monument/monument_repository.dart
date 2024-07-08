@@ -25,7 +25,7 @@ class MonumentRepository implements IMonumentRepository {
 
   @override
   Future<PoisResponse> getMonuments({
-    Position? position,
+    PositionDataCustom? position,
     required bool sortByName,
     required AlphabeticalSortPossibility order,
     required int page,

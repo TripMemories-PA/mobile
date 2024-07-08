@@ -9,7 +9,10 @@ import '../../api/post/model/response/get_all_posts_response.dart';
 import '../../api/profile/i_profile_service.dart';
 import '../../api/profile/response/get_friends_pagination_response.dart';
 import '../../local_storage/secure_storage/auth_token_handler.dart';
+import '../../object/meta_object.dart';
+import '../../object/position.dart';
 import '../../object/profile.dart';
+import '../../object/radius.dart';
 import '../../object/uploaded_file.dart';
 import '../../repository/profile/profile_repository.dart';
 
@@ -133,19 +136,21 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             return;
           }
           final Profile? tmpProfile = state.profile;
-          if (tmpProfile != null) {
+          if (tmpProfile != null || event.isOnMap) {
             final GetFriendsPaginationResponse friends =
                 await profileRepository.getMyFriends(
               page: event.isRefresh ? 1 : state.friendsPage + 1,
               perPage: state.friendsPerPage,
+              position: event.position,
+              radius: event.radius,
             );
             emit(
               state.copyWith(
                 friends: event.isRefresh
                     ? friends
-                    : state.friends?.copyWith(
+                    : state.friends.copyWith(
                         data: [
-                          ...state.friends!.data,
+                          ...state.friends.data,
                           ...friends.data,
                         ],
                       ),

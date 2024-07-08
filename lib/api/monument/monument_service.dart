@@ -22,7 +22,7 @@ class MonumentService implements IMonumentService, IMonumentRepository {
   Future<PoisResponse> getMonuments({
     required int page,
     required int perPage,
-    Position? position,
+    PositionDataCustom? position,
     required bool sortByName,
     required AlphabeticalSortPossibility order,
     String? searchingCriteria,

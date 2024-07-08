@@ -1,5 +1,5 @@
 class MetaObject {
-  MetaObject({
+  const MetaObject({
     required this.total,
     required this.perPage,
     required this.currentPage,
@@ -49,13 +49,13 @@ class MetaObject {
     );
   }
 
-  int total;
-  int perPage;
-  int currentPage;
-  int lastPage;
-  int firstPage;
-  String firstPageUrl;
-  String lastPageUrl;
-  String? nextPageUrl;
-  String? previousPageUrl;
+  final int total;
+  final int perPage;
+  final int currentPage;
+  final int lastPage;
+  final int firstPage;
+  final String firstPageUrl;
+  final String lastPageUrl;
+  final String? nextPageUrl;
+  final String? previousPageUrl;
 }

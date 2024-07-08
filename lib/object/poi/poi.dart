@@ -113,11 +113,17 @@ class Poi {
   }
 
   BitmapDescriptor get markerIcon {
-    return MarkerIconsCustom.getMarkerIcon(typeId, false);
+    return MarkerIconsCustom.getMarkerIcon(
+      MarkerIconType.getFromCode(typeId),
+      false,
+    );
   }
 
   BitmapDescriptor get selectedMarkerIcon {
-    return MarkerIconsCustom.getMarkerIcon(typeId, true);
+    return MarkerIconsCustom.getMarkerIcon(
+      MarkerIconType.getFromCode(typeId),
+      true,
+    );
   }
 
   final int id;

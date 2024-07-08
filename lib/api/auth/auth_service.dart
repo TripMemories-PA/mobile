@@ -132,4 +132,15 @@ class AuthService implements IAuthService {
       );
     }
   }
+
+  @override
+  Future<void> updateMyLocation(double latitude, double longitude) {
+    return DioClient.instance.put(
+      apiMeUrl,
+      data: {
+        'latitude': latitude,
+        'longitude': longitude,
+      },
+    );
+  }
 }

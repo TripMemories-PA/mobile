@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,23 +12,30 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image/image.dart' as img;
 
+import '../api/dio.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
+import '../bloc/profile/profile_bloc.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/map_style.dart';
+import '../object/marker_icons_custom.dart';
 import '../object/poi/poi.dart';
 import '../object/position.dart';
+import '../object/profile.dart';
 import 'search_bar_custom.dart';
 
 class MapCustom extends StatefulWidget {
   const MapCustom({
     super.key,
     required this.monumentBloc,
+    this.profileBloc,
   });
 
   final MonumentBloc monumentBloc;
+  final ProfileBloc? profileBloc;
 
   @override
   State<MapCustom> createState() => _MapCustomState();
@@ -34,10 +43,13 @@ class MapCustom extends StatefulWidget {
 
 class _MapCustomState extends State<MapCustom> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+  Map<MarkerId, Marker> friendsMarkers = <MarkerId, Marker>{};
   Poi? selectedPoi;
+  Profile? selectedProfile;
   late GoogleMapController mapController;
   final LatLng _center = const LatLng(48.84922330209508, 2.389781701197292);
   MarkerId? selectedMarkerId;
+  MarkerId? selectedFriendMarkerId;
 
   @override
   void initState() {
@@ -46,39 +58,108 @@ class _MapCustomState extends State<MapCustom> {
 
   @override
   Widget build(BuildContext context) {
+    final ProfileBloc? profileBloc = widget.profileBloc;
     return Scaffold(
-      body: BlocListener<MonumentBloc, MonumentState>(
-        listener: (context, state) {
-          setState(() {
-            markers = <MarkerId, Marker>{};
-            for (final Poi poi in state.monuments) {
-              final String lat = poi.latitude;
-              final double latitude = double.parse(lat);
-              final String lng = poi.longitude;
-              final double longitude = double.parse(lng);
-              final MarkerId markerId = MarkerId(poi.id.toString());
-              final Marker marker = Marker(
-                icon: selectedMarkerId == markerId
-                    ? poi.selectedMarkerIcon
-                    : poi.markerIcon,
-                markerId: MarkerId(poi.id.toString()),
-                position: LatLng(latitude, longitude),
-                onTap: () {
-                  setState(() {
-                    selectedPoi = poi;
-                    selectedMarkerId = markerId;
-                  });
-                },
-              );
-              markers[markerId] = marker;
-            }
-          });
-        },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<MonumentBloc, MonumentState>(
+            listener: (context, state) {
+              setState(() {
+                markers = <MarkerId, Marker>{};
+                for (final Poi poi in state.monuments) {
+                  final String lat = poi.latitude;
+                  final double latitude = double.parse(lat);
+                  final String lng = poi.longitude;
+                  final double longitude = double.parse(lng);
+                  final MarkerId markerId = MarkerId(poi.id.toString());
+                  final Marker marker = Marker(
+                    icon: selectedMarkerId == markerId
+                        ? poi.selectedMarkerIcon
+                        : poi.markerIcon,
+                    markerId: MarkerId(poi.id.toString()),
+                    position: LatLng(latitude, longitude),
+                    onTap: () {
+                      setState(() {
+                        selectedProfile = null;
+                        selectedFriendMarkerId = null;
+                        selectedPoi = poi;
+                        selectedMarkerId = markerId;
+                      });
+                    },
+                  );
+                  markers[markerId] = marker;
+                }
+              });
+            },
+          ),
+          if (profileBloc != null)
+            BlocListener<ProfileBloc, ProfileState>(
+              listener: (context, state) async {
+                final Map<MarkerId, Marker> newFriendsMarkers = {};
+
+                for (final Profile profile in state.friends.data) {
+                  final double? latitude = profile.latitude;
+                  final double? longitude = profile.longitude;
+                  if (latitude == null || longitude == null) {
+                    continue;
+                  } else {
+                    final MarkerId markerId = MarkerId(profile.id.toString());
+                    final BitmapDescriptor userIcon;
+                    final String? url = profile.avatar?.url;
+                    if (url == null) {
+                      userIcon = MarkerIconsCustom.getMarkerIcon(
+                        MarkerIconType.friend,
+                        selectedFriendMarkerId == markerId,
+                      );
+                    } else {
+                      const int size = 100;
+                      final Uint8List imageData = await _downloadImage(url);
+                      final img.Image? originalImage =
+                          img.decodeImage(imageData);
+                      if (originalImage == null) {
+                        throw Exception('Failed to decode image');
+                      }
+
+                      final img.Image resizedImage = img.copyResize(
+                        originalImage,
+                        width: size,
+                        height: size,
+                      );
+
+                      final Uint8List resizedImageData =
+                          Uint8List.fromList(img.encodePng(resizedImage));
+                      // ignore: deprecated_member_use
+                      userIcon = BitmapDescriptor.fromBytes(resizedImageData);
+                    }
+                    final Marker marker = Marker(
+                      markerId: markerId,
+                      position: LatLng(latitude, longitude),
+                      icon: userIcon,
+                      onTap: () {
+                        setState(() {
+                          selectedPoi = null;
+                          selectedMarkerId = null;
+                          selectedProfile = profile;
+                          selectedFriendMarkerId = markerId;
+                        });
+                      },
+                    );
+                    newFriendsMarkers[markerId] = marker;
+                  }
+                }
+
+                setState(() {
+                  friendsMarkers = newFriendsMarkers;
+                });
+              },
+            ),
+        ],
         child: Stack(
           children: [
             _buildGoogleMap(),
             _buildSearchMonumentPart(),
             if (selectedPoi != null) _buildMonumentPopupCard(context),
+            if (selectedProfile != null) _buildFriendPopupCard(context),
             if (selectedPoi != null)
               Positioned(
                 right: 10,
@@ -94,10 +175,37 @@ class _MapCustomState extends State<MapCustom> {
                   },
                 ),
               ),
+            if (selectedProfile != null)
+              Positioned(
+                right: 10,
+                bottom: 150,
+                child: IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    setState(() {
+                      _removeSelectedIconOnFriend();
+                      selectedFriendMarkerId = null;
+                      selectedProfile = null;
+                    });
+                  },
+                ),
+              ),
           ],
         ),
       ),
     );
+  }
+
+  Future<Uint8List> _downloadImage(String url) async {
+    try {
+      final response = await DioClient.instance.get(
+        url,
+        options: Options(responseType: ResponseType.bytes),
+      );
+      return Uint8List.fromList(response.data);
+    } catch (e) {
+      throw Exception('Failed to download image: $e');
+    }
   }
 
   void _removeSelectedIconOnPoi() {
@@ -117,6 +225,30 @@ class _MapCustomState extends State<MapCustom> {
           });
         },
       );
+    }
+  }
+
+  void _removeSelectedIconOnFriend() {
+    final Profile? tmpSelectedProfile = selectedProfile;
+    final MarkerId? tmpSelectedFriendMarkerId = selectedFriendMarkerId;
+    if (tmpSelectedFriendMarkerId != null && tmpSelectedProfile != null) {
+      final double? latitude = tmpSelectedProfile.latitude;
+      final double? longitude = tmpSelectedProfile.longitude;
+      if (latitude != null && longitude != null) {
+        friendsMarkers[tmpSelectedFriendMarkerId] = Marker(
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+            BitmapDescriptor.hueRed,
+          ),
+          markerId: tmpSelectedFriendMarkerId,
+          position: LatLng(latitude, longitude),
+          onTap: () {
+            setState(() {
+              selectedProfile = null;
+              selectedFriendMarkerId = null;
+            });
+          },
+        );
+      }
     }
   }
 
@@ -168,15 +300,19 @@ class _MapCustomState extends State<MapCustom> {
       onCameraIdle: () async {
         EasyDebounce.debounce('search_map_monuments', Durations.medium1,
             () async {
-          final Position position = await _getPosition();
+          final PositionDataCustom position = await _getPosition();
           _getNewMonuments(position);
+          _getFriends(position);
         });
       },
       initialCameraPosition: CameraPosition(
         target: _center,
         zoom: 11.0,
       ),
-      markers: Set<Marker>.of(markers.values),
+      markers: {
+        ...markers.values,
+        ...friendsMarkers.values,
+      },
       onMapCreated: (GoogleMapController controller) {
         mapController = controller;
         // ignore: deprecated_member_use
@@ -192,11 +328,11 @@ class _MapCustomState extends State<MapCustom> {
     );
   }
 
-  Future<Position> _getPosition() async {
+  Future<PositionDataCustom> _getPosition() async {
     final LatLngBounds bounds = await mapController.getVisibleRegion();
     final LatLng southwest = bounds.southwest;
     final LatLng northeast = bounds.northeast;
-    final Position position = Position(
+    final PositionDataCustom position = PositionDataCustom(
       swLat: southwest.latitude,
       swLng: southwest.longitude,
       neLat: northeast.latitude,
@@ -360,12 +496,143 @@ class _MapCustomState extends State<MapCustom> {
     );
   }
 
-  void _getNewMonuments(Position position) {
+  Positioned _buildFriendPopupCard(BuildContext context) {
+    final Profile? selectedProfile = this.selectedProfile;
+    if (selectedProfile == null) {
+      return const Positioned(
+        left: 0,
+        right: 0,
+        bottom: 30,
+        child: Center(
+          child: SizedBox.shrink(),
+        ),
+      );
+    }
+    return Positioned(
+      left: 0,
+      right: 0,
+      bottom: 30,
+      child: Center(
+        child: GestureDetector(
+          onTap: () {
+            context.push(
+              '${RouteName.profilePage}/${selectedProfile.id}',
+            );
+          },
+          child: Container(
+            width: 370,
+            height: 150,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Theme.of(context).colorScheme.surface,
+            ),
+            child: Row(
+              children: [
+                15.pw,
+                SizedBox(
+                  height: 140,
+                  width: 150,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: selectedProfile.avatar != null
+                        ? Image.network(
+                            selectedProfile.avatar!.url,
+                            loadingBuilder: (
+                              BuildContext context,
+                              Widget child,
+                              ImageChunkEvent? loadingProgress,
+                            ) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return const Center(
+                                  child: CupertinoActivityIndicator(),
+                                );
+                              }
+                            },
+                            errorBuilder: (
+                              BuildContext context,
+                              Object error,
+                              StackTrace? stackTrace,
+                            ) {
+                              return const Icon(
+                                CupertinoIcons.exclamationmark_triangle,
+                              );
+                            },
+                            fit: BoxFit.cover,
+                          )
+                        : const Icon(
+                            CupertinoIcons.person,
+                            size: 150,
+                          ),
+                  ),
+                ),
+                15.pw,
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      15.ph,
+                      Text(
+                        selectedProfile.username,
+                        style: TextStyle(
+                          height: 1,
+                          fontSize: 14,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      5.ph,
+                      AutoSizeText(
+                        selectedProfile.lastname ?? '',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          height: 1,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      5.ph,
+                      AutoSizeText(
+                        selectedProfile.firstname ?? '',
+                        maxLines: 2,
+                      ),
+                      Text(
+                        '${selectedProfile.poisCount?.toString() ?? 0} ${StringConstants().visitedBuildings}',
+                      ),
+                      10.ph,
+                    ],
+                  ),
+                ),
+                15.pw,
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _getNewMonuments(PositionDataCustom position) {
     widget.monumentBloc.add(
       GetMonumentsOnMapEvent(
         position: position,
       ),
     );
+  }
+
+  void _getFriends(PositionDataCustom position) {
+    final ProfileBloc? profileBloc = widget.profileBloc;
+    if (profileBloc != null) {
+      profileBloc.add(
+        GetFriendsEvent(
+          position: position,
+          isOnMap: true,
+        ),
+      );
+    }
   }
 }
 

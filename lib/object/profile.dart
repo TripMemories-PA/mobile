@@ -17,6 +17,8 @@ class Profile {
     this.hasSentFriendRequest,
     this.hasReceivedFriendRequest,
     this.poisCount,
+    this.latitude,
+    this.longitude,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,10 @@ class Profile {
       hasSentFriendRequest: json['hasSentFriendRequest'],
       hasReceivedFriendRequest: json['hasReceivedFriendRequest'],
       poisCount: json['poisCount'],
+      latitude:
+          json['latitude'] != null ? double.parse(json['latitude']) : null,
+      longitude:
+          json['longitude'] != null ? double.parse(json['longitude']) : null,
     );
   }
 
@@ -55,6 +61,8 @@ class Profile {
     bool? hasSentFriendRequest,
     bool? hasReceivedFriendRequest,
     int? poisCount,
+    double? latitude,
+    double? longitude,
   }) {
     return Profile(
       id: id ?? this.id,
@@ -72,6 +80,8 @@ class Profile {
       hasReceivedFriendRequest:
           hasReceivedFriendRequest ?? this.hasReceivedFriendRequest,
       poisCount: poisCount ?? this.poisCount,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
     );
   }
 
@@ -89,4 +99,6 @@ class Profile {
   final bool? hasSentFriendRequest;
   final bool? hasReceivedFriendRequest;
   final int? poisCount;
+  final double? latitude;
+  final double? longitude;
 }

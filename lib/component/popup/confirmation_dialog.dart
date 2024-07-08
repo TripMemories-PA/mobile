@@ -12,19 +12,24 @@ class ConfirmationDialog extends StatelessWidget {
     this.subtitle,
     this.isOkPopUp = false,
     this.content,
+    this.height = 200,
+    this.width,
   });
 
   final String? title;
   final String? subtitle;
   final bool? isOkPopUp;
   final Widget? content;
+  final double? height;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     final Widget? tmpContent = content;
     return Dialog(
       child: CustomCard(
-        height: 200,
+        height: height,
+        width: width,
         content: Padding(
           padding: const EdgeInsets.all(32),
           child: Column(
@@ -70,6 +75,8 @@ Future<bool> confirmationPopUp(
   String? subtitle,
   bool? isOkPopUp,
   Widget? content,
+  double? height,
+  double? width,
 }) async =>
     await showDialog<bool>(
       context: context,
@@ -78,6 +85,8 @@ Future<bool> confirmationPopUp(
         subtitle: subtitle,
         isOkPopUp: isOkPopUp,
         content: content,
+        height: height,
+        width: width,
       ),
     ) ??
     false;

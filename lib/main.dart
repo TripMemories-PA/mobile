@@ -25,6 +25,7 @@ import 'page/city_page.dart';
 import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
+import 'page/map_page_user_connected.dart';
 import 'page/monument_page_v2.dart';
 import 'page/payment_sheet_screen.dart';
 import 'page/profile_page.dart';
@@ -202,7 +203,16 @@ class MyApp extends HookWidget {
               GoRoute(
                 path: RouteName.mapPage,
                 builder: (BuildContext context, GoRouterState state) =>
-                    const MapPage(),
+                    BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    return context.read<AuthBloc>().state.status ==
+                            AuthStatus.authenticated
+                        ? (context.read<AuthBloc>().state.user?.userTypeId == 3
+                            ? const SizedBox.shrink()
+                            : const MapPageUserConnected())
+                        : const MapPage();
+                  },
+                ),
               ),
               GoRoute(
                 path: '${RouteName.monumentPage}/:monumentId',

@@ -8,6 +8,10 @@ class StringConstants {
 
   String get paymentCanceled => 'Paiement annulé';
 
+  String get noData => 'Pas de données';
+
+  String get qrCodeScannerTitle => 'Scanner le QR Code';
+
   String get confirmPayment => 'Confirmer le paiement';
 
   String get qrCodeScanner => 'Scanner';
@@ -19,6 +23,10 @@ class StringConstants {
   String get permissionDenied => 'Permission refusée';
 
   String get unsupportedDevice => 'Appareil non supporté';
+
+  String get validTicket => 'Billet valide';
+
+  String get invalidTicket => 'Billet invalide';
 
   // Authentication
   String get notAuthenticated => 'Pas connecté';

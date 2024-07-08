@@ -6,7 +6,6 @@ import '../../api/qr_code_scanner/i_qr_code_scanner_service.dart';
 import '../../api/qr_code_scanner/model/response/ticket_control.dart';
 
 part 'qr_code_scannner_event.dart';
-
 part 'qr_code_scannner_state.dart';
 
 class QrCodeScannerBloc extends Bloc<QrCodeScannnerEvent, QrCodeScannerState> {
@@ -22,7 +21,6 @@ class QrCodeScannerBloc extends Bloc<QrCodeScannnerEvent, QrCodeScannerState> {
             qrCodeStatus: controlledTicket.valid
                 ? QrCodeStatus.valid
                 : QrCodeStatus.invalid,
-            reviewingTicket: true,
             ticketControl: controlledTicket,
           ),
         );
@@ -34,14 +32,6 @@ class QrCodeScannerBloc extends Bloc<QrCodeScannnerEvent, QrCodeScannerState> {
           ),
         );
       }
-    });
-
-    on<EndTicketReviewEvent>((event, emit) {
-      emit(state.copyWith(reviewingTicket: false));
-    });
-
-    on<StartTicketReviewEvent>((event, emit) {
-      emit(state.copyWith(reviewingTicket: true));
     });
   }
 

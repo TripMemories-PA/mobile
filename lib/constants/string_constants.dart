@@ -8,6 +8,8 @@ class StringConstants {
 
   String get paymentCanceled => 'Paiement annulé';
 
+  String get noData => 'Pas de données';
+
   String get qrCodeScannerTitle => 'Scanner le QR Code';
 
   String get confirmPayment => 'Confirmer le paiement';

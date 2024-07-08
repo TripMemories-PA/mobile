@@ -1,19 +1,17 @@
-
-import '../../../../object/ticket.dart';
+import '../../../../object/ticket_controll.dart';
 
 class TicketControl {
-  
   TicketControl({
     required this.valid,
     required this.ticket,
   });
-  
+
   factory TicketControl.fromJson(Map<String, dynamic> json) {
     return TicketControl(
       valid: json['valid'],
-      ticket: Ticket.fromJson(json['ticket']),
+      ticket: ControlledTicket.fromJson(json['ticket']),
     );
   }
   bool valid;
-  Ticket ticket;
+  ControlledTicket ticket;
 }

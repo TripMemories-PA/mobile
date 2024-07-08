@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,6 +10,7 @@ import '../component/qr_code_canner/scanner_button_widgets.dart';
 import '../component/qr_code_canner/scanner_error_widget.dart';
 import '../constants/string_constants.dart';
 import '../utils/messenger.dart';
+
 class _MobileScannerControllerHook extends Hook<MobileScannerController> {
   const _MobileScannerControllerHook();
 
@@ -92,49 +92,6 @@ class ScanQrcodePage extends HookWidget {
     final mobileController = useMobileScannerController();
     final ticketInReview = useState(false);
 
-    useEffect(
-      () {
-        Future<void> createScrollListener() async {
-          if (!await mobileController.barcodes.isEmpty) {
-            if (!ticketInReview.value) {
-              ticketInReview.value = true;
-              if(!context.mounted) {
-                return;
-              }
-              await confirmationPopUp(
-                context,
-                isOkPopUp: true,
-                content: BlocProvider(
-                  create: (context) => QrCodeScannerBloc(
-                    qrCodeScannerService: QrCodeScannerService(),
-                  )..add(CheckQrCodeEvent(mobileController.value.toString())),
-                  child: BlocBuilder<QrCodeScannerBloc, QrCodeScannerState>(
-                    builder: (context, state) {
-                      return Column(
-                        children: [
-                          Text(
-                            state.ticketControl?.valid.toString() ?? 'pas de donnée',
-                          ),
-                          Text(
-                            state.ticketControl?.ticket.title ?? 'pas de donnée',
-                          ),
-                        ],
-
-                      );
-                    },
-                  ),
-                ),
-              ).then((_) => ticketInReview.value = false);
-            }
-          }
-        }
-
-        mobileController.addListener(createScrollListener);
-        return () => mobileController.removeListener(createScrollListener);
-      },
-      const [],
-    );
-
     final scanWindow = RRect.fromRectAndRadius(
       Rect.fromCenter(
         center: MediaQuery.of(context).size.center(const Offset(0, -100)),
@@ -186,6 +143,46 @@ class ScanQrcodePage extends HookWidget {
                           errorBuilder: (context, error, child) {
                             return ScannerErrorWidget(error: error);
                           },
+                          onDetect: (value) async {
+                            final String? barcode =
+                                value.barcodes.first.displayValue;
+                            if (barcode == null) {
+                              return;
+                            }
+                            mobileController.stop();
+                            ticketInReview.value = true;
+                            await confirmationPopUp(
+                              context,
+                              isOkPopUp: true,
+                              content: BlocProvider(
+                                create: (context) => QrCodeScannerBloc(
+                                  qrCodeScannerService: QrCodeScannerService(),
+                                )..add(CheckQrCodeEvent(barcode)),
+                                child: BlocBuilder<QrCodeScannerBloc,
+                                    QrCodeScannerState>(
+                                  builder: (context, state) {
+                                    return Column(
+                                      children: [
+                                        Text(
+                                          state.ticketControl?.valid
+                                                  .toString() ??
+                                              StringConstants().noData,
+                                        ),
+                                        Text(
+                                          state.ticketControl?.ticket.ticket
+                                                  .title ??
+                                              StringConstants().noData,
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                            ).then((_) {
+                              ticketInReview.value = false;
+                              mobileController.start();
+                            });
+                          },
                         ),
                       ),
                       CustomPaint(
@@ -203,7 +200,8 @@ class ScanQrcodePage extends HookWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               ToggleFlashlightButton(
-                                  controller: mobileController),
+                                controller: mobileController,
+                              ),
                               SwitchCameraButton(controller: mobileController),
                             ],
                           ),

@@ -7,3 +7,7 @@ class CheckQrCodeEvent extends QrCodeScannnerEvent {
 
   final String qrCode;
 }
+
+class EndTicketReviewEvent extends QrCodeScannnerEvent {}
+
+class StartTicketReviewEvent extends QrCodeScannnerEvent {}

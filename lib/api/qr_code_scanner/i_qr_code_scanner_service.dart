@@ -1,3 +1,5 @@
+import 'model/response/ticket_control.dart';
+
 abstract class IQrCodeScannerService {
-  Future<bool> scanQrCode(String qrCode);
+  Future<TicketControl> scanQrCode(String qrCode);
 }

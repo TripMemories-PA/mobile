@@ -1,156 +1,222 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-import '../component/qr_code_canner/scanned_barcode_label.dart';
+import '../api/qr_code_scanner/qr_code_scanner_service.dart';
+import '../bloc/qr_code_scanner/qr_code_scannner_bloc.dart';
+import '../component/popup/confirmation_dialog.dart';
 import '../component/qr_code_canner/scanner_button_widgets.dart';
 import '../component/qr_code_canner/scanner_error_widget.dart';
-
-class ScanQrcodePage extends StatefulWidget {
-  const ScanQrcodePage({super.key});
+import '../constants/string_constants.dart';
+import '../utils/messenger.dart';
+class _MobileScannerControllerHook extends Hook<MobileScannerController> {
+  const _MobileScannerControllerHook();
 
   @override
-  State<ScanQrcodePage> createState() => _ScanQrcodePageState();
+  _MobileScannerControllerHookState createState() =>
+      _MobileScannerControllerHookState();
 }
 
-class _ScanQrcodePageState extends State<ScanQrcodePage> {
-  final MobileScannerController controller = MobileScannerController(
-    formats: const [BarcodeFormat.qrCode],
-  );
+class _MobileScannerControllerHookState
+    extends HookState<MobileScannerController, _MobileScannerControllerHook> {
+  late MobileScannerController _controller;
 
   @override
-  Widget build(BuildContext context) {
-    final scanWindow = Rect.fromCenter(
-      center: MediaQuery.sizeOf(context).center(Offset.zero),
-      width: 200,
-      height: 200,
-    );
-
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: const Text('Scanner with Overlay Example app'),
-      ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Center(
-            child: MobileScanner(
-              fit: BoxFit.contain,
-              controller: controller,
-              scanWindow: scanWindow,
-              errorBuilder: (context, error, child) {
-                return ScannerErrorWidget(error: error);
-              },
-              overlayBuilder: (context, constraints) {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ScannedBarcodeLabel(barcodes: controller.barcodes),
-                  ),
-                );
-              },
-            ),
-          ),
-          ValueListenableBuilder(
-            valueListenable: controller,
-            builder: (context, value, child) {
-              if (!value.isInitialized ||
-                  !value.isRunning ||
-                  value.error != null) {
-                return const SizedBox();
-              }
-
-              return CustomPaint(
-                painter: ScannerOverlay(scanWindow: scanWindow),
-              );
-            },
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ToggleFlashlightButton(controller: controller),
-                  SwitchCameraButton(controller: controller),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+  void initHook() {
+    super.initHook();
+    _controller = MobileScannerController(
+      formats: const [BarcodeFormat.qrCode],
     );
   }
 
   @override
-  Future<void> dispose() async {
+  MobileScannerController build(BuildContext context) => _controller;
+
+  @override
+  void dispose() {
+    _controller.dispose();
     super.dispose();
-    await controller.dispose();
   }
 }
+
+MobileScannerController useMobileScannerController() =>
+    use(const _MobileScannerControllerHook());
 
 class ScannerOverlay extends CustomPainter {
-  const ScannerOverlay({
+  ScannerOverlay({
     required this.scanWindow,
-    this.borderRadius = 12.0,
+    this.borderColor = Colors.green,
+    this.borderWidth = 4.0,
   });
 
-  final Rect scanWindow;
-  final double borderRadius;
+  final RRect scanWindow;
+  final Color borderColor;
+  final double borderWidth;
 
   @override
   void paint(Canvas canvas, Size size) {
-    // TODO(nono): use `Offset.zero & size` instead of Rect.largest
-    // we need to pass the size to the custom paint widget
-    final backgroundPath = Path()..addRect(Rect.largest);
+    final paint = Paint()..color = Colors.black.withOpacity(0.5);
 
-    final cutoutPath = Path()
-      ..addRRect(
-        RRect.fromRectAndCorners(
-          scanWindow,
-          topLeft: Radius.circular(borderRadius),
-          topRight: Radius.circular(borderRadius),
-          bottomLeft: Radius.circular(borderRadius),
-          bottomRight: Radius.circular(borderRadius),
-        ),
-      );
-
-    final backgroundPaint = Paint()
-      ..color = Colors.black.withOpacity(0.5)
-      ..style = PaintingStyle.fill
-      ..blendMode = BlendMode.dstOut;
-
-    final backgroundWithCutout = Path.combine(
-      PathOperation.difference,
-      backgroundPath,
-      cutoutPath,
+    // Draw the grayed-out background
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      paint,
     );
 
-    final borderPaint = Paint()
-      ..color = Colors.white
+    // Clear the scan window area
+    paint.blendMode = BlendMode.clear;
+    canvas.drawRRect(scanWindow, paint);
+
+    // Draw the border
+    paint
+      ..blendMode = BlendMode.srcOver
+      ..color = borderColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 4.0;
-
-    final borderRect = RRect.fromRectAndCorners(
-      scanWindow,
-      topLeft: Radius.circular(borderRadius),
-      topRight: Radius.circular(borderRadius),
-      bottomLeft: Radius.circular(borderRadius),
-      bottomRight: Radius.circular(borderRadius),
-    );
-
-    // First, draw the background,
-    // with a cutout area that is a bit larger than the scan window.
-    // Finally, draw the scan window itself.
-    canvas.drawPath(backgroundWithCutout, backgroundPaint);
-    canvas.drawRRect(borderRect, borderPaint);
+      ..strokeWidth = borderWidth;
+    canvas.drawRRect(scanWindow, paint);
   }
 
   @override
-  bool shouldRepaint(ScannerOverlay oldDelegate) {
-    return scanWindow != oldDelegate.scanWindow ||
-        borderRadius != oldDelegate.borderRadius;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class ScanQrcodePage extends HookWidget {
+  const ScanQrcodePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final mobileController = useMobileScannerController();
+    final ticketInReview = useState(false);
+
+    useEffect(
+      () {
+        Future<void> createScrollListener() async {
+          if (!await mobileController.barcodes.isEmpty) {
+            if (!ticketInReview.value) {
+              ticketInReview.value = true;
+              if(!context.mounted) {
+                return;
+              }
+              await confirmationPopUp(
+                context,
+                isOkPopUp: true,
+                content: BlocProvider(
+                  create: (context) => QrCodeScannerBloc(
+                    qrCodeScannerService: QrCodeScannerService(),
+                  )..add(CheckQrCodeEvent(mobileController.value.toString())),
+                  child: BlocBuilder<QrCodeScannerBloc, QrCodeScannerState>(
+                    builder: (context, state) {
+                      return Column(
+                        children: [
+                          Text(
+                            state.ticketControl?.valid.toString() ?? 'pas de donnée',
+                          ),
+                          Text(
+                            state.ticketControl?.ticket.title ?? 'pas de donnée',
+                          ),
+                        ],
+
+                      );
+                    },
+                  ),
+                ),
+              ).then((_) => ticketInReview.value = false);
+            }
+          }
+        }
+
+        mobileController.addListener(createScrollListener);
+        return () => mobileController.removeListener(createScrollListener);
+      },
+      const [],
+    );
+
+    final scanWindow = RRect.fromRectAndRadius(
+      Rect.fromCenter(
+        center: MediaQuery.of(context).size.center(const Offset(0, -100)),
+        width: 300,
+        height: 300,
+      ),
+      const Radius.circular(20),
+    );
+
+    return BlocProvider(
+      create: (context) =>
+          QrCodeScannerBloc(qrCodeScannerService: QrCodeScannerService()),
+      child: BlocBuilder<QrCodeScannerBloc, QrCodeScannerState>(
+        builder: (context, state) {
+          return Scaffold(
+            body: Column(
+              children: [
+                BlocListener<QrCodeScannerBloc, QrCodeScannerState>(
+                  listener: (context, state) {
+                    if (state.error != null) {
+                      Messenger.showSnackBarError(
+                        state.error!.getDescription(),
+                      );
+                    }
+                  },
+                  child: const SizedBox.shrink(),
+                ),
+                Container(
+                  height: 50,
+                  color: Theme.of(context).primaryColor,
+                  child: Center(
+                    child: Text(
+                      StringConstants().qrCodeScannerTitle,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Center(
+                        child: MobileScanner(
+                          controller: mobileController,
+                          scanWindow: scanWindow.outerRect,
+                          errorBuilder: (context, error, child) {
+                            return ScannerErrorWidget(error: error);
+                          },
+                        ),
+                      ),
+                      CustomPaint(
+                        painter: ScannerOverlay(
+                          scanWindow: scanWindow,
+                          borderColor: Theme.of(context).colorScheme.primary,
+                        ),
+                        child: Container(),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ToggleFlashlightButton(
+                                  controller: mobileController),
+                              SwitchCameraButton(controller: mobileController),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }

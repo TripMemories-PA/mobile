@@ -66,6 +66,7 @@ class MarkerIconsCustom {
     if (bytes == null) {
       return BitmapDescriptor.defaultMarker;
     }
+    // ignore: deprecated_member_use
     return BitmapDescriptor.fromBytes(
       bytes,
       size: Size(width.toDouble(), width.toDouble()),

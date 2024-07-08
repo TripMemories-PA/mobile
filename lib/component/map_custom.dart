@@ -128,6 +128,7 @@ class _MapCustomState extends State<MapCustom> {
 
                       final Uint8List resizedImageData =
                           Uint8List.fromList(img.encodePng(resizedImage));
+                      // ignore: deprecated_member_use
                       userIcon = BitmapDescriptor.fromBytes(resizedImageData);
                     }
                     final Marker marker = Marker(

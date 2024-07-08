@@ -24,6 +24,10 @@ class StringConstants {
 
   String get unsupportedDevice => 'Appareil non supporté';
 
+  String get validTicket => 'Billet valide';
+
+  String get invalidTicket => 'Billet invalide';
+
   // Authentication
   String get notAuthenticated => 'Pas connecté';
   String get doNotWaitToBuy => 'N’attendez pas, prenez vos places !';

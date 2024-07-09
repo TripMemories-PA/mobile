@@ -51,6 +51,7 @@ class ThemeGenerator {
         error: Colors.black,
         onError: Colors.white,
         surfaceTint: Color(0xffd4dfff),
+        primaryContainer: MyColors.lightPurple,
       );
 
   static InputDecorationTheme get _inputDecorationTheme =>

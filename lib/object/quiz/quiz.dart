@@ -9,8 +9,7 @@ class Quiz {
 
   factory Quiz.fromJson(Map<String, dynamic> json) {
     return Quiz(
-      metaObject:
-          MetaObject.fromJson(json['metaObject'] as Map<String, dynamic>),
+      metaObject: MetaObject.fromJson(json['meta'] as Map<String, dynamic>),
       data: (json['data'] as List)
           .map((e) => Question.fromJson(e as Map<String, dynamic>))
           .toList(),

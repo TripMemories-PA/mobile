@@ -25,6 +25,7 @@ class Poi {
     required this.type,
     this.postsCount,
     this.averageNote,
+    required this.questionsCount,
   });
 
   factory Poi.fromJson(Map<String, dynamic> json) {
@@ -46,6 +47,7 @@ class Poi {
       type: PoiType.fromJson(json['type'] as Map<String, dynamic>),
       postsCount: json['postsCount'] as int?,
       averageNote: json['averageNote'] as num?,
+      questionsCount: json['questionsCount'] as int? ?? 0,
     );
   }
 
@@ -65,6 +67,7 @@ class Poi {
     PoiType? type,
     int? postsCount,
     num? averageNote,
+    int? questionsCount,
   }) {
     return Poi(
       id: id ?? this.id,
@@ -82,6 +85,7 @@ class Poi {
       type: type ?? this.type,
       postsCount: postsCount ?? this.postsCount,
       averageNote: averageNote ?? this.averageNote,
+      questionsCount: questionsCount ?? this.questionsCount,
     );
   }
 
@@ -141,4 +145,5 @@ class Poi {
   final PoiType type;
   final int? postsCount;
   final num? averageNote;
+  final int questionsCount;
 }

@@ -418,36 +418,35 @@ class _PageContent extends HookWidget {
         icon: const Icon(Icons.chevron_left),
         onPressed: () => context.pop(),
       ),
+      actions: [
+        if (monument.questionsCount > 0)
+          ElevatedButton(
+            onPressed: () =>
+                context.push('${RouteName.quizPage}/${monument.id}'),
+            child: Text(
+              StringConstants().doQuiz,
+            ),
+          ),
+        10.pw,
+      ],
       expandedHeight: 300,
       flexibleSpace: FlexibleSpaceBar(
         background: SizedBox(
           height: 180,
           width: double.infinity,
-          child: Stack(
-            children: [
-              CachedNetworkImage(
-                imageUrl: monument.cover.url,
-                fit: BoxFit.cover,
-                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    Center(
-                  child: CircularProgressIndicator(
-                    value: downloadProgress.progress,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).colorScheme.error,
-                    ),
-                  ),
-                ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
-              Positioned(
-                child: ElevatedButton(
-                  onPressed: () => context.push('${RouteName.quizPage}/${monument.id}'),
-                  child: const Text(
-                    'quiz',
-                  ),
+          child: CachedNetworkImage(
+            imageUrl: monument.cover.url,
+            fit: BoxFit.cover,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                Center(
+              child: CircularProgressIndicator(
+                value: downloadProgress.progress,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).colorScheme.error,
                 ),
               ),
-            ],
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
       ),

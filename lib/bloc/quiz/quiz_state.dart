@@ -2,6 +2,8 @@ part of 'quiz_bloc.dart';
 
 enum QuizStatus { initial, loading, error }
 
+enum QuizGameStatus { inProgress, ended }
+
 class QuizState {
   QuizState({
     this.quiz,
@@ -9,7 +11,10 @@ class QuizState {
     this.error,
     this.page = 1,
     this.perPage = 10,
-    this.currentQuestionIndex,
+    this.currentQuestionIndex = 0,
+    this.isValidAnswer,
+    this.quizGameStatus = QuizGameStatus.inProgress,
+    this.score = 0,
   });
 
   Quiz? quiz;
@@ -17,7 +22,10 @@ class QuizState {
   ApiError? error;
   int page;
   int perPage;
-  int? currentQuestionIndex;
+  int currentQuestionIndex;
+  bool? isValidAnswer;
+  QuizGameStatus quizGameStatus;
+  int score;
 
   QuizState copyWith({
     Quiz? quiz,
@@ -25,7 +33,10 @@ class QuizState {
     ApiError? error,
     int? page,
     int? perPage,
-    int? currentQuestionIndex
+    int? currentQuestionIndex,
+    bool? isValidAnswer,
+    QuizGameStatus? quizGameStatus,
+    int? score,
   }) {
     return QuizState(
       quiz: quiz ?? this.quiz,
@@ -34,6 +45,9 @@ class QuizState {
       page: page ?? this.page,
       perPage: perPage ?? this.perPage,
       currentQuestionIndex: currentQuestionIndex ?? this.currentQuestionIndex,
+      isValidAnswer: isValidAnswer,
+      quizGameStatus: quizGameStatus ?? this.quizGameStatus,
+      score: score ?? this.score,
     );
   }
 }

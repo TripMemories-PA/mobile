@@ -6,6 +6,20 @@ class StringConstants {
 
   String get ok => 'Ok';
 
+  String get on => 'sur';
+
+  String get points => 'points';
+
+  String get score => 'Score';
+
+  String get doQuiz => 'Faire le quiz';
+
+  String get question => 'question';
+
+  String get quizEnded => 'Quiz terminé';
+
+  String get nextQuestion => 'Question suivante';
+
   String get paymentCanceled => 'Paiement annulé';
 
   String get noData => 'Pas de données';
@@ -13,6 +27,8 @@ class StringConstants {
   String get qrCodeScannerTitle => 'Scanner le QR Code';
 
   String get confirmPayment => 'Confirmer le paiement';
+
+  String get selectAnAnswer => 'Sélectionnez une réponse';
 
   String get qrCodeScanner => 'Scanner';
 

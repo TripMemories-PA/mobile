@@ -16,7 +16,7 @@ import 'model/response/check_question_response.dart';
 
 class QuizService implements IQuizService, IQuizRepository {
   static const String apiGetQuizUrl = '${AppConfig.apiUrl}/questions';
-  static const String apiGetPoiQizzUrl =
+  static const String apiGetPoiQuizUrl =
       '${AppConfig.apiUrl}/pois/{POI_ID}/questions';
 
   @override
@@ -29,7 +29,7 @@ class QuizService implements IQuizService, IQuizRepository {
     try {
       String url = poiId == null
           ? apiGetQuizUrl
-          : apiGetPoiQizzUrl.replaceAll('{POI_ID}', poiId.toString());
+          : apiGetPoiQuizUrl.replaceAll('{POI_ID}', poiId.toString());
       url = '$url?page=$page&perPage=$perPage';
       response = await DioClient.instance.get(url);
     } on BadRequestException {

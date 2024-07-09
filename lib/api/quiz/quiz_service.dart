@@ -1,5 +1,5 @@
-import 'package:cross_file/src/types/interface.dart';
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../app.config.dart';
 import '../../object/quiz/quiz.dart';

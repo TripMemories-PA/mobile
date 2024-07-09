@@ -62,19 +62,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             );
           }
         } catch (e) {
-          // TODO(nono): implement profileLocalDataSource
-          /* try {
-            final Profile profile =
-                await profileRepository.getLocalProfile(event.userId);
-
-            emit(
-              state.copyWith(
-                profile: profile,
-                status: ProfileStatus.error,
-                error: e is CustomException ? e.apiError : ApiError.unknown(),
-              ),
-            );
-          } catch (_) {*/
           emit(
             state.copyWith(
               status: ProfileStatus.error,

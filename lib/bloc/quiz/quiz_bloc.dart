@@ -49,10 +49,11 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         final int nextQuestionIndex = currentQuestionIndex + 1;
         emit(
           state.copyWith(
-              currentQuestionIndex: nextQuestionIndex,
-              quizGameStatus: nextQuestionIndex < quiz.data.length
-                  ? QuizGameStatus.inProgress
-                  : QuizGameStatus.ended),
+            currentQuestionIndex: nextQuestionIndex,
+            quizGameStatus: nextQuestionIndex < quiz.data.length
+                ? QuizGameStatus.inProgress
+                : QuizGameStatus.ended,
+          ),
         );
       }
     });

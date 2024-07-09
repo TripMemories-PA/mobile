@@ -29,6 +29,7 @@ import 'page/map_page_user_connected.dart';
 import 'page/monument_page_v2.dart';
 import 'page/payment_sheet_screen.dart';
 import 'page/profile_page.dart';
+import 'page/profile_page_poi.dart';
 import 'page/quizz_page.dart';
 import 'page/scan_qrcode_page.dart';
 import 'page/search_page.dart';
@@ -421,6 +422,12 @@ class MyApp extends HookWidget {
           ),
           StatefulShellBranch(
             routes: <RouteBase>[
+              GoRoute(
+                path: RouteName.profilePagePoi,
+                builder: (BuildContext context, GoRouterState state) {
+                  return const ProfilePagePoi();
+                },
+              ),
               GoRoute(
                 path: RouteName.profilePage,
                 builder: (BuildContext context, GoRouterState state) {

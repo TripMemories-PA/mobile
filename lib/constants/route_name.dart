@@ -4,6 +4,7 @@ class RouteName {
   static const String feedPage = '/feed';
   static const String shopPage = '/store';
   static const String profilePage = '/profile';
+  static const String profilePagePoi = '/profile/poi';
   static const String myPosts = '${RouteName.profilePage}/myPosts';
   static const String myFriends = '${RouteName.profilePage}/myFriends';
   static const String loginPage = '/login';

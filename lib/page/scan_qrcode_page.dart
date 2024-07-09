@@ -191,7 +191,7 @@ class ScanQrcodePage extends HookWidget {
                                             ),
                                           );
                                           Vibration.vibrate(
-                                            pattern: [0000, 1000, 500, 1000],
+                                            pattern: [0000, 500, 200, 500],
                                             amplitude: 255,
                                           );
                                         }

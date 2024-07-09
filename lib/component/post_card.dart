@@ -72,7 +72,6 @@ class PostCard extends HookWidget {
                           ) {
                             return ProgressiveImage(
                               placeholder: null,
-                              // size: 1.87KB
                               thumbnail: const AssetImage(
                                 'assets/images/placeholder.jpg',
                               ),

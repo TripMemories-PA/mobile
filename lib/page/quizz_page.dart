@@ -1,5 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -87,15 +89,17 @@ class QuizPage extends StatelessWidget {
             children: [
               Text(
                 '${context.read<QuizBloc>().state.currentQuestionIndex + 1} ${StringConstants().on} $totalQuestions',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
               const Spacer(),
               Text(
                 '${context.read<QuizBloc>().state.score} ${StringConstants().points}',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
             ],
@@ -278,64 +282,58 @@ class QuestionWidget extends HookWidget {
               maxLines: 3,
               minFontSize: 15,
               question.question,
-              style: const TextStyle(fontSize: 25),
+              style: const TextStyle(fontSize: 20),
             ),
           ),
+          10.ph,
+          if (question.image != null)
+            CachedNetworkImage(
+              imageUrl: question.image!.url,
+              placeholder: (context, url) => const CupertinoActivityIndicator(),
+              errorWidget: (context, url, error) =>
+                  const Icon(CupertinoIcons.exclamationmark_triangle),
+            ),
           20.ph,
           if (question.image == null)
             _buildVerticalAnswers(answerSelected, context, selectedColor)
           else
-            _buildVerticalAnswers(answerSelected, context, selectedColor),
+            _buildGridAnswers(answerSelected, context, selectedColor),
           20.ph,
-          Row(
-            children: [
-              Expanded(
-                child: Center(
-                  child: Text(
-                    StringConstants().back,
-                  ),
-                ),
-              ),
-              10.pw,
-              Expanded(
-                child: BouncingWidget(
-                  onTap: () {
-                    if (answerSelected.value == -1) {
-                      Messenger.showSnackBarError(
-                        StringConstants().selectAnAnswer,
-                      );
-                      return;
-                    }
-                    if (context.read<QuizBloc>().state.isValidAnswer != null) {
-                      answerSelected.value = -1;
-                      selectedColor.value =
-                          Theme.of(context).colorScheme.primaryContainer;
-                      context.read<QuizBloc>().add(GetNextQuestionEvent());
-                    } else {
-                      context.read<QuizBloc>().add(
-                            CheckQuestionEvent(
-                              questionId: question.id,
-                              answerId: answerSelected.value,
-                            ),
-                          );
-                    }
-                  },
-                  child: CustomCard(
-                    height: 50,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    borderColor: Colors.transparent,
-                    content: Text(
-                      context.read<QuizBloc>().state.isValidAnswer != null
-                          ? StringConstants().nextQuestion
-                          : StringConstants().validate,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary,
+          BouncingWidget(
+            onTap: () {
+              if (answerSelected.value == -1) {
+                Messenger.showSnackBarError(
+                  StringConstants().selectAnAnswer,
+                );
+                return;
+              }
+              if (context.read<QuizBloc>().state.isValidAnswer != null) {
+                answerSelected.value = -1;
+                selectedColor.value =
+                    Theme.of(context).colorScheme.primaryContainer;
+                context.read<QuizBloc>().add(GetNextQuestionEvent());
+              } else {
+                context.read<QuizBloc>().add(
+                      CheckQuestionEvent(
+                        questionId: question.id,
+                        answerId: answerSelected.value,
                       ),
-                    ),
-                  ),
+                    );
+              }
+            },
+            child: CustomCard(
+              height: 50,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              borderColor: Colors.transparent,
+              content: Text(
+                context.read<QuizBloc>().state.isValidAnswer != null
+                    ? StringConstants().nextQuestion
+                    : StringConstants().validate,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
-            ],
+            ),
           ),
         ],
       ),
@@ -404,6 +402,78 @@ class QuestionWidget extends HookWidget {
           ),
         );
       }).toList(),
+    );
+  }
+
+  Widget _buildGridAnswers(
+    ValueNotifier<int> answerSelected,
+    BuildContext context,
+    ValueNotifier<Color> selectedColor,
+  ) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+        childAspectRatio: 2,
+      ),
+      itemCount: question.answers.length,
+      itemBuilder: (context, index) {
+        final answer = question.answers[index];
+        return CustomCard(
+          onTap: () {
+            if (context.read<QuizBloc>().state.isValidAnswer == null) {
+              answerSelected.value = answer.id;
+            }
+          },
+          backgroundColor: answerSelected.value == answer.id
+              ? selectedColor.value
+              : Theme.of(context).colorScheme.surface,
+          borderColor: answerSelected.value == answer.id
+              ? Colors.transparent
+              : Theme.of(context).colorScheme.tertiary,
+          borderRadius: 10,
+          height: 70,
+          content: Row(
+            children: [
+              10.pw,
+              Checkbox(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                value: answerSelected.value == answer.id,
+                onChanged: (value) {
+                  if (context.read<QuizBloc>().state.isValidAnswer == null) {
+                    answerSelected.value = answer.id;
+                  }
+                },
+                activeColor: Theme.of(context).colorScheme.primary,
+                checkColor: Colors.white,
+                side: WidgetStateBorderSide.resolveWith(
+                  (Set<WidgetState> states) {
+                    if (states.contains(WidgetState.selected)) {
+                      return null;
+                    }
+                    return BorderSide(
+                      color: Theme.of(context).colorScheme.tertiary,
+                    );
+                  },
+                ),
+              ),
+              10.pw,
+              Expanded(
+                child: AutoSizeText(
+                  answer.answer,
+                  maxLines: 2,
+                  style: const TextStyle(fontSize: 18),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

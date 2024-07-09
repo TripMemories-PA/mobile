@@ -423,19 +423,31 @@ class _PageContent extends HookWidget {
         background: SizedBox(
           height: 180,
           width: double.infinity,
-          child: CachedNetworkImage(
-            imageUrl: monument.cover.url,
-            fit: BoxFit.cover,
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                Center(
-              child: CircularProgressIndicator(
-                value: downloadProgress.progress,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Theme.of(context).colorScheme.error,
+          child: Stack(
+            children: [
+              CachedNetworkImage(
+                imageUrl: monument.cover.url,
+                fit: BoxFit.cover,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    Center(
+                  child: CircularProgressIndicator(
+                    value: downloadProgress.progress,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+              Positioned(
+                child: ElevatedButton(
+                  onPressed: () => context.push('${RouteName.quizPage}/${monument.id}'),
+                  child: const Text(
+                    'quiz',
+                  ),
                 ),
               ),
-            ),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+            ],
           ),
         ),
       ),

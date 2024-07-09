@@ -4,14 +4,14 @@ sealed class QuizEvent {}
 
 class GetQuizEvent extends QuizEvent {
   GetQuizEvent({
-    required this.page,
-    required this.perPage,
     this.poiId,
   });
 
-  final int page;
-  final int perPage;
   final int? poiId;
+}
+
+class GetNextQuestionEvent extends QuizEvent {
+  GetNextQuestionEvent();
 }
 
 class UpdateQuestionEvent extends QuizEvent {

@@ -1,12 +1,18 @@
+import 'package:cross_file/src/types/interface.dart';
 import 'package:dio/dio.dart';
 
 import '../../app.config.dart';
 import '../../object/quiz/quiz.dart';
+import '../../object/uploaded_file.dart';
 import '../../repository/quiz/i_quiz_repository.dart';
 import '../dio.dart';
 import '../error/api_error.dart';
+import '../error/specific_error/auth_error.dart';
 import '../exception/bad_request_exception.dart';
+import '../exception/parsing_response_exception.dart';
 import 'i_quiz_service.dart';
+import 'model/query/post_question_query.dart';
+import 'model/response/check_question_response.dart';
 
 class QuizService implements IQuizService, IQuizRepository {
   static const String apiGetQuizUrl = '${AppConfig.apiUrl}/questions';
@@ -33,6 +39,77 @@ class QuizService implements IQuizService, IQuizRepository {
       return Quiz.fromJson(response.data);
     } catch (e) {
       throw BadRequestException(ApiError.errorOccurredWhileParsingResponse());
+    }
+  }
+
+  @override
+  Future<void> updateQuestion(int id) async {
+    try {
+      await DioClient.instance.put('$apiGetQuizUrl/$id');
+    } on BadRequestException {
+      throw BadRequestException(ApiError.errorOccurred());
+    }
+  }
+
+  @override
+  Future<void> deleteQuestion(int id) async {
+    try {
+      await DioClient.instance.delete('$apiGetQuizUrl/$id');
+    } on BadRequestException {
+      throw BadRequestException(ApiError.errorOccurred());
+    }
+  }
+
+  @override
+  Future<void> postQuestion(PostQuestionQuery postQuestionQuery) async {
+    try {
+      await DioClient.instance
+          .post(apiGetQuizUrl, data: postQuestionQuery.toJson());
+    } on BadRequestException {
+      throw BadRequestException(ApiError.errorOccurred());
+    }
+  }
+
+  @override
+  Future<CheckQuestionResponse> checkQuestionResponse({
+    required int questionId,
+    required int answerId,
+  }) async {
+    Response response;
+    try {
+      response = await DioClient.instance
+          .post('$apiGetQuizUrl/$questionId/answers/$answerId');
+    } on BadRequestException {
+      throw BadRequestException(ApiError.errorOccurred());
+    }
+    try {
+      return CheckQuestionResponse.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
+    }
+  }
+
+  @override
+  Future<int> storeImage(XFile image) async {
+    Response response;
+    try {
+      response = await DioClient.instance.post(
+        '$apiGetQuizUrl/image',
+        data: FormData.fromMap({
+          'file': await MultipartFile.fromFile(image.path),
+        }),
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      return UploadFile.fromJson(response.data).id;
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
     }
   }
 }

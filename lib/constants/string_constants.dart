@@ -12,6 +12,8 @@ class StringConstants {
 
   String get score => 'Score';
 
+  String get quiz => 'Quiz';
+
   String get doQuiz => 'Faire le quiz';
 
   String get question => 'question';
@@ -284,6 +286,9 @@ class StringConstants {
 
   String get sureToDeleteComment =>
       'Etes-vous sûr de vouloir supprimer ce commentaire ?';
+
+  String get sureToDeleteQuestion =>
+      'Etes-vous sûr de vouloir supprimer cette question ?';
 
   String get deleteAccount => 'Supprimer le compte';
 

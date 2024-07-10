@@ -1,308 +1,69 @@
 import 'dart:math' as math;
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
-import '../api/post/post_service.dart';
-import '../api/profile/profile_service.dart';
-import '../api/ticket/ticket_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
-import '../bloc/auth_bloc/auth_state.dart';
-import '../bloc/post/post_bloc.dart';
-import '../bloc/profile/profile_bloc.dart';
-import '../bloc/ticket_bloc/ticket_bloc.dart';
-import '../component/my_friends_component.dart';
-import '../component/my_post_component.dart';
-import '../component/my_tickets_component.dart';
-import '../component/profile_infos.dart';
+import '../bloc/auth_bloc/auth_event.dart';
+import '../bloc/monument_bloc/monument_bloc.dart';
+import '../component/edit_quizz.dart';
+import '../component/map_mini.dart';
+import '../component/poi_feed.dart';
 import '../constants/my_colors.dart';
-import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
-import '../repository/post/post_repository.dart';
-import '../repository/profile/profile_repository.dart';
-import '../repository/ticket/ticket_repository.dart';
-import '../utils/messenger.dart';
+import '../object/poi/poi.dart';
+import '../repository/monument/monument_repository.dart';
 import 'login_page.dart';
 
 class ProfilePagePoi extends HookWidget {
-  const ProfilePagePoi({super.key, this.userId});
-
-  final int? userId;
+  const ProfilePagePoi({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     final TabController tabController = useTabController(initialLength: 3);
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        // if user is null i will try to display my own profile
-        // that is why i check if the user is authenticated
-        if (userId == null &&
-            context.read<AuthBloc>().state.status != AuthStatus.authenticated) {
-          return const LoginPage();
-        }
-        return _buildProfilePage(tabController);
-      },
-    );
-  }
-
-  BlocProvider<ProfileBloc> _buildProfilePage(
-    TabController tabController,
-  ) {
+    final int? poiId = context.read<AuthBloc>().state.user?.poiId;
+    if (poiId == null) {
+      context.read<AuthBloc>().add(const ChangeToLoggedOutStatus());
+      return const LoginPage();
+    }
     return BlocProvider(
-      create: (context) => ProfileBloc(
-        profileRepository: RepositoryProvider.of<ProfileRepository>(context),
-        profileService: ProfileService(),
-      )..add(GetProfileEvent(userId: userId)),
-      child: BlocBuilder<ProfileBloc, ProfileState>(
-        builder: (context, state) {
-          return _buildScaffold(
-            tabController,
-            context,
-          );
-        },
-      ),
-    );
-  }
-
-  Scaffold _buildScaffold(
-    TabController tabController,
-    BuildContext context,
-  ) {
-    return Scaffold(
-      floatingActionButton:
-          context.read<AuthBloc>().state.status == AuthStatus.authenticated &&
-                  userId == null
-              ? FloatingActionButton(
-                  onPressed: () => context.push(RouteName.editTweetPage),
-                  child: const Icon(Icons.add),
-                )
-              : null,
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      extendBodyBehindAppBar: true,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            DefaultTabController(
-              length: 3,
-              child: NestedScrollView(
-                headerSliverBuilder: (context, value) {
-                  return [
-                    _buildUserProfileInfosSliverAppBar(context),
-                    if (userId == null &&
-                        context.read<AuthBloc>().state.user?.userTypeId != 3)
-                      _buildSliverMenuForPostsAndFriends(
-                        tabController,
-                        context,
-                      ),
-                  ];
-                },
-                body: context.read<AuthBloc>().state.user?.userTypeId == 3
-                    ? const SizedBox.shrink()
-                    : MyPostsAndMyFriends(
-                        userId: userId,
-                        tabController: tabController,
-                      ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  SliverPersistentHeader _buildSliverMenuForPostsAndFriends(
-    TabController tabController,
-    BuildContext context,
-  ) {
-    return SliverPersistentHeader(
-      pinned: true,
-      delegate: _CustomSliverAppBarDelegate(
-        minHeight: 50,
-        maxHeight: 50,
-        child: ColoredBox(
-          color: Theme.of(context).colorScheme.surface,
-          child: TabBar(
-            unselectedLabelColor: MyColors.darkGrey,
-            controller: tabController,
-            indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Tab(text: StringConstants().myFriends),
-              Tab(text: StringConstants().myPosts),
-              Tab(text: StringConstants().myTickets),
-            ],
+      create: (context) => MonumentBloc(
+        monumentRepository: RepositoryProvider.of<MonumentRepository>(context),
+      )..add(
+          GetMonumentEvent(
+            id: poiId,
           ),
         ),
-      ),
-    );
-  }
-
-  SliverAppBar _buildUserProfileInfosSliverAppBar(BuildContext context) {
-    return SliverAppBar(
-      leading: userId != null
-          ? IconButton(
-              icon: const Icon(Icons.chevron_left),
-              onPressed: () => context.pop(),
-            )
-          : null,
-      expandedHeight: 300,
-      flexibleSpace: FlexibleSpaceBar(
-        background: ListView(
-          children: [
-            SizedBox(
-              height: 300,
-              child: ProfileInfos(
-                isMyProfile: userId == null,
+      child: BlocBuilder<MonumentBloc, MonumentState>(
+        builder: (context, state) {
+          if (state.status == MonumentStatus.loading) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
               ),
-            ),
-            10.ph,
-            BlocListener<ProfileBloc, ProfileState>(
-              listener: (context, state) {
-                if (state.status == ProfileStatus.error) {
-                  Messenger.showSnackBarError(
-                    state.error?.getDescription() ??
-                        StringConstants().errorWhilePostingComment,
-                  );
-                }
-                if (state.status == ProfileStatus.updated) {
-                  Messenger.showSnackBarSuccess(
-                    StringConstants().profileUpdated,
-                  );
-                }
-                if (state.status == ProfileStatus.postDeleted) {
-                  Messenger.showSnackBarSuccess(
-                    StringConstants().postDeleted,
-                  );
-                }
-              },
-              child: const SizedBox.shrink(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MyPostsAndMyFriends extends HookWidget {
-  const MyPostsAndMyFriends({
-    super.key,
-    this.userId,
-    required this.tabController,
-  });
-
-  final int? userId;
-  final TabController tabController;
-
-  @override
-  Widget build(BuildContext context) {
-    final int? tmpUserId = userId;
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: tmpUserId == null
-          ? TabBarView(
-              controller: tabController,
-              children: [
-                RefreshIndicator(
-                  onRefresh: () async {
-                    context
-                        .read<ProfileBloc>()
-                        .add(GetFriendsEvent(isRefresh: true));
-                  },
-                  child: const SingleChildScrollView(
-                    child: MyFriendsComponent(),
-                  ),
+            );
+          }
+          final Poi? monument = state.selectedMonument;
+          if (monument == null) {
+            return Scaffold(
+              body: Center(
+                child: Text(
+                  StringConstants().errorOccurred,
                 ),
-                _buildMyPostsPart(),
-                _buildMyTicketsPart(),
-              ],
-            )
-          : _buildOtherUsersPosts(tmpUserId),
-    );
-  }
-
-  BlocProvider<PostBloc> _buildMyPostsPart() {
-    return BlocProvider(
-      create: (context) => PostBloc(
-        postRepository: RepositoryProvider.of<PostRepository>(
-          context,
-        ),
-        postService: PostService(),
-      )..add(
-          GetPostsEvent(
-            isRefresh: true,
-            myPosts: true,
-          ),
-        ),
-      child: BlocBuilder<PostBloc, PostState>(
-        builder: (context, state) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              context
-                  .read<PostBloc>()
-                  .add(GetPostsEvent(isRefresh: true, myPosts: true));
-            },
-            child: const SingleChildScrollView(
-              child: MyPostsComponents(),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  BlocProvider<TicketBloc> _buildMyTicketsPart() {
-    return BlocProvider(
-      create: (context) => TicketBloc(
-        ticketRepository: RepositoryProvider.of<TicketRepository>(
-          context,
-        ),
-        ticketService: TicketService(),
-      )..add(
-          GetMyTicketsEvent(),
-        ),
-      child: BlocBuilder<TicketBloc, TicketState>(
-        builder: (context, state) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              context.read<TicketBloc>().add(GetMyTicketsEvent());
-            },
-            child: const SingleChildScrollView(
-              child: MyTicketsComponent(),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  BlocProvider<PostBloc> _buildOtherUsersPosts(int userId) {
-    return BlocProvider(
-      create: (context) => PostBloc(
-        postRepository: RepositoryProvider.of<PostRepository>(
-          context,
-        ),
-        postService: PostService(),
-      )..add(
-          GetPostsEvent(
-            isRefresh: true,
-            userId: userId,
-          ),
-        ),
-      child: BlocBuilder<PostBloc, PostState>(
-        builder: (context, state) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              context
-                  .read<PostBloc>()
-                  .add(GetPostsEvent(isRefresh: true, userId: userId));
-            },
-            child: const SingleChildScrollView(
-              child: MyPostsComponents(),
-            ),
-          );
+              ),
+            );
+          } else {
+            return _PageContent(
+              monument: monument,
+              tabController: tabController,
+            );
+          }
         },
       ),
     );
@@ -340,5 +101,206 @@ class _CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     return maxHeight != oldDelegate.maxHeight ||
         minHeight != oldDelegate.minHeight ||
         child != oldDelegate.child;
+  }
+}
+
+class _PageContent extends HookWidget {
+  const _PageContent({
+    required this.monument,
+    required this.tabController,
+  });
+
+  final Poi monument;
+  final TabController tabController;
+
+  @override
+  Widget build(BuildContext context) {
+    final ScrollController monumentPostsScrollController =
+        useScrollController();
+    useEffect(
+      () {
+        void createScrollListener() {
+          if (monumentPostsScrollController.position.atEdge) {
+            if (monumentPostsScrollController.position.pixels != 0) {
+              _getPosts(context, false);
+            }
+          }
+        }
+
+        monumentPostsScrollController.addListener(createScrollListener);
+        return () =>
+            monumentPostsScrollController.removeListener(createScrollListener);
+      },
+      const [],
+    );
+    return Scaffold(
+      body: Stack(
+        children: [
+          DefaultTabController(
+            length: 3,
+            child: NestedScrollView(
+              headerSliverBuilder: (context, value) {
+                return [
+                  _buildHeader(context),
+                  _buildSliverMenuForPostsAndFriends(),
+                ];
+              },
+              body: TabBarView(
+                controller: tabController,
+                children: [
+                  SingleChildScrollView(child: _buildDescription(context)),
+                  PoiFeed(
+                    monumentId: context.read<AuthBloc>().state.user?.poiId ?? 0,
+                  ),
+                  const SingleChildScrollView(
+                    child: EditQuiz(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  SliverPersistentHeader _buildSliverMenuForPostsAndFriends() {
+    return SliverPersistentHeader(
+      pinned: true,
+      delegate: _CustomSliverAppBarDelegate(
+        minHeight: 50,
+        maxHeight: 50,
+        child: ColoredBox(
+          color: Colors.white,
+          child: TabBar(
+            unselectedLabelColor: MyColors.darkGrey,
+            controller: tabController,
+            indicatorSize: TabBarIndicatorSize.tab,
+            tabs: [
+              Tab(text: StringConstants().description),
+              Tab(text: StringConstants().posts),
+              Tab(text: StringConstants().quiz),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _getPosts(BuildContext context, bool isRefresh) {
+    final monumentBloc = context.read<MonumentBloc>();
+//TODO
+    if (monumentBloc.state.selectedPostGetMonumentsStatus !=
+        MonumentStatus.loading) {
+      monumentBloc.add(
+        GetMonumentPostsEvent(
+          id: monument.id,
+          isRefresh: isRefresh,
+        ),
+      );
+    }
+  }
+
+  Padding _buildDescription(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(30.0),
+      child: Column(
+        children: [
+          Text(
+            monument.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.primary,
+              height: 1,
+            ),
+          ),
+          15.ph,
+          Text(
+            monument.city?.name ?? '',
+            style: const TextStyle(
+              fontSize: 20,
+            ),
+          ),
+          15.ph,
+          Text(
+            monument.description ?? '',
+            style: const TextStyle(
+              fontSize: 15,
+            ),
+          ),
+          15.ph,
+          Center(
+            child: MiniMap(
+              poi: monument,
+              width: MediaQuery.of(context).size.width - 40,
+              height: 300,
+            ),
+          ),
+          10.ph,
+          Text(
+            monument.address ?? '',
+            style: const TextStyle(
+              fontSize: 15,
+            ),
+          ),
+          Text(
+            monument.city?.name ?? '',
+            style: const TextStyle(
+              fontSize: 15,
+            ),
+          ),
+          Text(
+            monument.city?.zipCode ?? '',
+            style: const TextStyle(
+              fontSize: 15,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorWidget(BuildContext context) {
+    return Column(
+      children: [
+        Text(StringConstants().errorAppendedWhileGettingData),
+        ElevatedButton(
+          onPressed: () => _getPosts(context, true),
+          child: Text(StringConstants().retry),
+        ),
+      ],
+    );
+  }
+
+  SliverAppBar _buildHeader(BuildContext context) {
+    return SliverAppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.chevron_left),
+        onPressed: () => context.pop(),
+      ),
+      expandedHeight: 300,
+      flexibleSpace: FlexibleSpaceBar(
+        background: SizedBox(
+          height: 180,
+          width: double.infinity,
+          child: CachedNetworkImage(
+            imageUrl: monument.cover.url,
+            fit: BoxFit.cover,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                Center(
+              child: CircularProgressIndicator(
+                value: downloadProgress.progress,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).colorScheme.error,
+                ),
+              ),
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
+        ),
+      ),
+    );
   }
 }

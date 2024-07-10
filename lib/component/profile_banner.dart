@@ -134,69 +134,7 @@ class ProfileBanner extends StatelessWidget {
                                     children: [
                                       _buildProfileActionButton(context),
                                       if (isMyProfile) const Spacer(),
-                                      if (isMyProfile)
-                                        BlocBuilder<CartBloc, CartState>(
-                                          builder: (context, state) {
-                                            final int total = context
-                                                .read<CartBloc>()
-                                                .state
-                                                .cartElements
-                                                .fold(
-                                                  0,
-                                                  (previousValue, element) =>
-                                                      previousValue +
-                                                      element.articles.length,
-                                                );
-                                            return Stack(
-                                              children: [
-                                                IconButton(
-                                                  icon: const Icon(
-                                                    Icons
-                                                        .shopping_cart_outlined,
-                                                  ),
-                                                  onPressed: () {
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (
-                                                        BuildContext context,
-                                                      ) {
-                                                        return _buildCart();
-                                                      },
-                                                    );
-                                                  },
-                                                ),
-                                                Positioned(
-                                                  left: 0,
-                                                  child: Container(
-                                                    padding:
-                                                        const EdgeInsets.all(1),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.red,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        6,
-                                                      ),
-                                                    ),
-                                                    constraints:
-                                                        const BoxConstraints(
-                                                      minWidth: 15,
-                                                      minHeight: 15,
-                                                    ),
-                                                    child: Text(
-                                                      '$total',
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 10,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        ),
+                                      if (isMyProfile) _buildShopButton(),
                                     ],
                                   ),
                                 ),
@@ -229,6 +167,61 @@ class ProfileBanner extends StatelessWidget {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  BlocBuilder<CartBloc, CartState> _buildShopButton() {
+    return BlocBuilder<CartBloc, CartState>(
+      builder: (context, state) {
+        final int total = context.read<CartBloc>().state.cartElements.fold(
+              0,
+              (previousValue, element) =>
+                  previousValue + element.articles.length,
+            );
+        return Stack(
+          children: [
+            IconButton(
+              icon: const Icon(
+                Icons.shopping_cart_outlined,
+              ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (
+                    BuildContext context,
+                  ) {
+                    return _buildCart();
+                  },
+                );
+              },
+            ),
+            Positioned(
+              left: 0,
+              child: Container(
+                padding: const EdgeInsets.all(1),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(
+                    6,
+                  ),
+                ),
+                constraints: const BoxConstraints(
+                  minWidth: 15,
+                  minHeight: 15,
+                ),
+                child: Text(
+                  '$total',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
         );
       },
     );

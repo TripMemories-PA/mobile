@@ -27,3 +27,11 @@ class SearchUsersEvent extends UserSearchingEvent {
   final String searchingCriteria;
   final bool isRefresh;
 }
+
+class GetUsersRanking extends UserSearchingEvent {
+  GetUsersRanking({
+    required this.isRefresh,
+  });
+
+  final bool isRefresh;
+}

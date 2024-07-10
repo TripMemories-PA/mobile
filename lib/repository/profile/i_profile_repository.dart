@@ -25,5 +25,6 @@ abstract class IProfileRepository {
     required int page,
     required int perPage,
     String? searchName,
+    bool? sortByScore,
   });
 }

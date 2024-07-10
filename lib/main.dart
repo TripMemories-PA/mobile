@@ -22,6 +22,7 @@ import 'object/poi/poi.dart';
 import 'object/profile.dart';
 import 'page/chat_page.dart';
 import 'page/city_page.dart';
+import 'page/edit_question_page.dart';
 import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
@@ -448,6 +449,14 @@ class MyApp extends HookWidget {
                 builder: (BuildContext context, GoRouterState state) {
                   final Profile user = state.extra! as Profile;
                   return ChatPage(user: user);
+                },
+              ),
+              GoRoute(
+                path: RouteName.editQuestion,
+                builder: (BuildContext context, GoRouterState state) {
+                  final EditQuestionDTO editQuestionDTO =
+                      state.extra! as EditQuestionDTO;
+                  return EditQuestionPage(editQuestionDTO: editQuestionDTO);
                 },
               ),
             ],

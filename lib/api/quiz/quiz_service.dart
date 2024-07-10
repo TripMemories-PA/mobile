@@ -8,7 +8,6 @@ import '../../object/uploaded_file.dart';
 import '../../repository/quiz/i_quiz_repository.dart';
 import '../dio.dart';
 import '../error/api_error.dart';
-import '../error/specific_error/auth_error.dart';
 import '../exception/bad_request_exception.dart';
 import '../exception/parsing_response_exception.dart';
 import 'i_quiz_service.dart';
@@ -120,7 +119,7 @@ class QuizService implements IQuizService, IQuizRepository {
         }),
       );
     } on BadRequestException {
-      throw BadRequestException(AuthError.notAuthenticated());
+      throw BadRequestException(ApiError.badRequest());
     }
     try {
       return UploadFile.fromJson(response.data).id;

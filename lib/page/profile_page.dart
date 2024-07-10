@@ -91,20 +91,17 @@ class ProfilePage extends HookWidget {
                 headerSliverBuilder: (context, value) {
                   return [
                     _buildUserProfileInfosSliverAppBar(context),
-                    if (userId == null &&
-                        context.read<AuthBloc>().state.user?.userTypeId != 3)
+                    if (userId == null)
                       _buildSliverMenuForPostsAndFriends(
                         tabController,
                         context,
                       ),
                   ];
                 },
-                body: context.read<AuthBloc>().state.user?.userTypeId == 3
-                    ? const SizedBox.shrink()
-                    : MyPostsAndMyFriends(
-                        userId: userId,
-                        tabController: tabController,
-                      ),
+                body: MyPostsAndMyFriends(
+                  userId: userId,
+                  tabController: tabController,
+                ),
               ),
             ),
           ],

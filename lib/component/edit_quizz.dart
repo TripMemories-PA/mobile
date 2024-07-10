@@ -1,17 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../api/quiz/quiz_service.dart';
 import '../bloc/edit_quiz/edit_quiz_bloc.dart';
+import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/quiz/question.dart';
+import '../page/edit_question_page.dart';
 import '../repository/quiz/quiz_repository.dart';
 import '../utils/messenger.dart';
 import 'custom_card.dart';
 import 'popup/confirmation_dialog.dart';
-import 'popup/edit_question_dialog.dart';
 
 class EditQuiz extends StatelessWidget {
   const EditQuiz({super.key});
@@ -49,15 +51,12 @@ class EditQuiz extends StatelessWidget {
                     const Spacer(),
                     IconButton(
                       onPressed: () async {
-                        final bool isDone = await editQuestionPopup(
-                          context,
-                          editQuizBloc: context.read<EditQuizBloc>(),
+                        context.push(
+                          RouteName.editQuestion,
+                          extra: EditQuestionDTO(
+                            editQuizBloc: context.read<EditQuizBloc>(),
+                          ),
                         );
-                        if (isDone) {
-                          Messenger.showSnackBarSuccess(
-                            StringConstants().questionAdded,
-                          );
-                        }
                       },
                       icon: const Icon(Icons.add),
                     ),
@@ -68,10 +67,6 @@ class EditQuiz extends StatelessWidget {
                 if (state.status == EditQuizStatus.loading)
                   const Center(
                     child: CircularProgressIndicator(),
-                  )
-                else if (state.status == EditQuizStatus.error)
-                  Center(
-                    child: Text(state.error!.getDescription()),
                   )
                 else
                   Column(
@@ -132,6 +127,11 @@ class EditQuiz extends StatelessWidget {
                 StringConstants().questionAdded,
               );
           }
+          if (state.error != null) {
+            Messenger.showSnackBarError(
+              state.error!.getDescription(),
+            );
+          }
         },
       ),
     );
@@ -152,16 +152,13 @@ class EditQuestionWidget extends StatelessWidget {
       padding: const EdgeInsets.all(5.0),
       child: CustomCard(
         onTap: () async {
-          final bool isDone = await editQuestionPopup(
-            context,
-            question: question,
-            editQuizBloc: context.read<EditQuizBloc>(),
+          context.push(
+            RouteName.editQuestion,
+            extra: EditQuestionDTO(
+              editQuizBloc: context.read<EditQuizBloc>(),
+              question: question,
+            ),
           );
-          if (isDone) {
-            Messenger.showSnackBarSuccess(
-              StringConstants().questionUpdated,
-            );
-          }
         },
         height: 75,
         borderColor: Theme.of(context).colorScheme.tertiary,

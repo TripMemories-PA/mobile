@@ -5,8 +5,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../api/profile/profile_service.dart';
 import '../bloc/user_searching_bloc/user_searching_bloc.dart';
 import '../component/ranking_body.dart';
-import '../constants/string_constants.dart';
-import '../num_extensions.dart';
 import '../repository/profile/profile_repository.dart';
 
 class RankingPage extends StatelessWidget {
@@ -21,17 +19,14 @@ class RankingPage extends StatelessWidget {
         ),
         profileService: ProfileService(),
       )..add(GetUsersRanking(isRefresh: true)),
-      child: const _RankingPageContent(),
+      child: _RankingPageContent(),
     );
   }
 }
 
 class _RankingPageContent extends HookWidget {
-  const _RankingPageContent({super.key});
-
   @override
   Widget build(BuildContext context) {
-    final searching = useState(false);
     final ScrollController rankingScrollController = useScrollController();
     useEffect(
       () {
@@ -49,24 +44,8 @@ class _RankingPageContent extends HookWidget {
       },
       const [],
     );
-    return RefreshIndicator(
-      onRefresh: () async {
-        context.read<UserSearchingBloc>().add(
-              GetUsersRanking(
-                isRefresh: true,
-              ),
-            );
-      },
-      child: Column(
-        children: [
-          _buildHeader(),
-          20.ph,
-          Expanded(
-              child: RankingBody(
-            rankingScrollController: rankingScrollController,
-          )),
-        ],
-      ),
+    return RankingBody(
+      rankingScrollController: rankingScrollController,
     );
   }
 
@@ -78,22 +57,5 @@ class _RankingPageContent extends HookWidget {
         GetUsersRanking(),
       );
     }
-  }
-
-  Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        children: [
-          Text(
-            StringConstants().ranking,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

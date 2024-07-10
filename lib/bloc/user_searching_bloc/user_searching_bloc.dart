@@ -122,31 +122,39 @@ class UserSearchingBloc extends Bloc<UserSearchingEvent, UserSearchingState> {
 
     on<GetUsersRanking>((event, emit) async {
       try {
-        emit(
-          state.copyWith(
-            searchingUserByNameStatus: UserSearchingStatus.loading,
-          ),
-        );
+        if (event.isRefresh) {
+          emit(
+            state.copyWith(
+              status: UserSearchingStatus.loading,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              searchingUserByNameStatus: UserSearchingStatus.loading,
+            ),
+          );
+        }
         final GetFriendsPaginationResponse users =
             await profileRepository.getUsers(
-          page: event.isRefresh ? 1 : state.searchUsersPage + 1,
+          page: event.isRefresh ? 1 : state.friendsPage + 1,
           perPage: state.searchUsersPerPage,
           sortByScore: true,
         );
         emit(
           state.copyWith(
+            status: UserSearchingStatus.notLoading,
             searchingUserByNameStatus: UserSearchingStatus.notLoading,
             users: event.isRefresh
                 ? users
-                : state.usersSearchByName?.copyWith(
+                : state.users?.copyWith(
                     data: [
-                      ...state.usersSearchByName!.data,
+                      ...state.users!.data,
                       ...users.data,
                     ],
                   ),
-            searchUsersPage: event.isRefresh ? 1 : state.searchUsersPage + 1,
-            searchUsersHasMoreUsers:
-                users.data.length == state.searchUsersPerPage,
+            friendsPage: event.isRefresh ? 1 : state.friendsPage + 1,
+            hasMoreUsers: users.data.length == state.friendsPerPage,
           ),
         );
       } catch (e) {

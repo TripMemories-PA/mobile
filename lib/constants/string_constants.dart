@@ -6,6 +6,41 @@ class StringConstants {
 
   String get ok => 'Ok';
 
+  String get on => 'sur';
+
+  String get points => 'points';
+
+  String get score => 'Score';
+
+  String get editQuiz => 'Modifier le quiz';
+
+  String get selectRightAnswer => 'Sélectionnez la bonne réponse';
+
+  String get questionAdded => 'Question ajoutée';
+
+  String get questionUpdated => 'Question mise à jour';
+
+  String get update => 'Mettre à jour';
+
+  String get add => 'Ajouter';
+
+  String get answer => 'Réponse';
+
+  String get editQuestionRestrictions =>
+      'Vous devez avoir au minimum deux réponses. Ces réponses ainsi que la question ne doivent pas être vides.';
+
+  String get quiz => 'Quiz';
+
+  String get doQuiz => 'Faire le quiz';
+
+  String get question => 'question';
+
+  String get questionCap => 'Question';
+
+  String get quizEnded => 'Quiz terminé';
+
+  String get nextQuestion => 'Question suivante';
+
   String get paymentCanceled => 'Paiement annulé';
 
   String get noData => 'Pas de données';
@@ -13,6 +48,8 @@ class StringConstants {
   String get qrCodeScannerTitle => 'Scanner le QR Code';
 
   String get confirmPayment => 'Confirmer le paiement';
+
+  String get selectAnAnswer => 'Sélectionnez une réponse';
 
   String get qrCodeScanner => 'Scanner';
 
@@ -30,6 +67,7 @@ class StringConstants {
 
   // Authentication
   String get notAuthenticated => 'Pas connecté';
+
   String get doNotWaitToBuy => 'N’attendez pas, prenez vos places !';
 
   String get modifyArticle => "Modifier l'article";
@@ -44,6 +82,8 @@ class StringConstants {
   String get noTicketForThisMonument => 'Pas de billet pour ce monument';
 
   String get ticketDeleted => 'Billet supprimé';
+
+  String get questionDeleted => 'Question supprimée';
 
   String get ticketUpdated => 'Billet mis à jour';
 
@@ -236,6 +276,8 @@ class StringConstants {
 
   String get noMorePosts => 'Plus de posts à afficher.';
 
+  String get noMoreQuestions => 'Plus de questions à afficher.';
+
   String get retry => 'Réessayer';
 
   String get noUserFound => 'Aucun utilisateur trouvé';
@@ -268,6 +310,9 @@ class StringConstants {
 
   String get sureToDeleteComment =>
       'Etes-vous sûr de vouloir supprimer ce commentaire ?';
+
+  String get sureToDeleteQuestion =>
+      'Etes-vous sûr de vouloir supprimer cette question ?';
 
   String get deleteAccount => 'Supprimer le compte';
 

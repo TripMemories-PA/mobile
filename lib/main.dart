@@ -29,6 +29,8 @@ import 'page/map_page_user_connected.dart';
 import 'page/monument_page_v2.dart';
 import 'page/payment_sheet_screen.dart';
 import 'page/profile_page.dart';
+import 'page/profile_page_poi.dart';
+import 'page/quizz_page.dart';
 import 'page/scan_qrcode_page.dart';
 import 'page/search_page.dart';
 import 'page/shop_page.dart';
@@ -38,12 +40,14 @@ import 'repository/comment/comment_repository.dart';
 import 'repository/monument/monument_repository.dart';
 import 'repository/post/post_repository.dart';
 import 'repository/profile/profile_repository.dart';
+import 'repository/quiz/quiz_repository.dart';
 import 'repository/ticket/ticket_repository.dart';
 import 'service/cities/cities_remote_data_source.dart';
 import 'service/comment/comment_remote_data_source.dart';
 import 'service/monument/monument_remote_data_source.dart';
 import 'service/post/post_remote_data_source.dart';
 import 'service/profile/profile_remote_data_source.dart';
+import 'service/quiz/quiz_remote_data_source.dart';
 import 'service/ticket/tickets_remote_data_source.dart';
 import 'theme_generator.dart';
 import 'utils/messenger.dart';
@@ -70,15 +74,11 @@ Future<void> main() async {
         RepositoryProvider(
           create: (context) => CityRepository(
             citiesRemoteDataSource: CityRemoteDataSource(),
-            // TODO(nono): Implement ProfileLocalDataSource
-            //profilelocalDataSource: ProfileLocalDataSource(),
           ),
         ),
         RepositoryProvider(
           create: (context) => MonumentRepository(
             monumentRemoteDataSource: MonumentRemoteDataSource(),
-            // TODO(nono): Implement ProfileLocalDataSource
-            //profilelocalDataSource: ProfileLocalDataSource(),
           ),
         ),
         RepositoryProvider(
@@ -94,15 +94,16 @@ Future<void> main() async {
         RepositoryProvider(
           create: (context) => ProfileRepository(
             profileRemoteDataSource: ProfileRemoteDataSource(),
-            // TODO(nono): Implement ProfileLocalDataSource
-            //profilelocalDataSource: ProfileLocalDataSource(),
           ),
         ),
         RepositoryProvider(
           create: (context) => TicketRepository(
             ticketRemoteDataSource: TicketRemoteDataSource(),
-            // TODO(nono): Implement ProfileLocalDataSource
-            //profilelocalDataSource: ProfileLocalDataSource(),
+          ),
+        ),
+        RepositoryProvider(
+          create: (context) => QuizRepository(
+            quizRemoteDataSource: QuizRemoteDataSource(),
           ),
         ),
       ],
@@ -226,6 +227,26 @@ class MyApp extends HookWidget {
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       return CustomTransition.buildBottomToTopPopTransition(
+                        animation,
+                        child,
+                      );
+                    },
+                  );
+                },
+              ),
+              GoRoute(
+                path: '${RouteName.quizPage}/:monumentId',
+                pageBuilder: (context, state) {
+                  final int? monumentId =
+                      int.tryParse(state.pathParameters['monumentId'] ?? '');
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: QuizPage(
+                      monumentId: monumentId,
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return CustomTransition.buildRightToLeftPopTransition(
                         animation,
                         child,
                       );
@@ -369,6 +390,25 @@ class MyApp extends HookWidget {
                   );
                 },
               ),
+              GoRoute(
+                path: '${RouteName.monumentPage}/:monumentId',
+                pageBuilder: (context, state) {
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: MonumentPageV2(
+                      monumentId:
+                          int.parse(state.pathParameters['monumentId']!),
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return CustomTransition.buildBottomToTopPopTransition(
+                        animation,
+                        child,
+                      );
+                    },
+                  );
+                },
+              ),
             ],
           ),
           StatefulShellBranch(
@@ -382,6 +422,12 @@ class MyApp extends HookWidget {
           ),
           StatefulShellBranch(
             routes: <RouteBase>[
+              GoRoute(
+                path: RouteName.profilePagePoi,
+                builder: (BuildContext context, GoRouterState state) {
+                  return const ProfilePagePoi();
+                },
+              ),
               GoRoute(
                 path: RouteName.profilePage,
                 builder: (BuildContext context, GoRouterState state) {

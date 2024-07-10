@@ -32,6 +32,24 @@ class UploadFile {
     };
   }
 
+  UploadFile copyWith({
+    int? id,
+    String? filename,
+    String? url,
+    String? mimeType,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return UploadFile(
+      id: id ?? this.id,
+      filename: filename ?? this.filename,
+      url: url ?? this.url,
+      mimeType: mimeType ?? this.mimeType,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
   int id;
   String filename;
   String url;

@@ -418,6 +418,17 @@ class _PageContent extends HookWidget {
         icon: const Icon(Icons.chevron_left),
         onPressed: () => context.pop(),
       ),
+      actions: [
+        if (monument.questionsCount > 0)
+          ElevatedButton(
+            onPressed: () =>
+                context.push('${RouteName.quizPage}/${monument.id}'),
+            child: Text(
+              StringConstants().doQuiz,
+            ),
+          ),
+        10.pw,
+      ],
       expandedHeight: 300,
       flexibleSpace: FlexibleSpaceBar(
         background: SizedBox(

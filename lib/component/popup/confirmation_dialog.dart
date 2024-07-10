@@ -12,7 +12,7 @@ class ConfirmationDialog extends StatelessWidget {
     this.subtitle,
     this.isOkPopUp = false,
     this.content,
-    this.height = 200,
+    this.height,
     this.width,
   });
 
@@ -28,7 +28,7 @@ class ConfirmationDialog extends StatelessWidget {
     final Widget? tmpContent = content;
     return Dialog(
       child: CustomCard(
-        height: height,
+        height: height ?? 200,
         width: width,
         content: Padding(
           padding: const EdgeInsets.all(32),

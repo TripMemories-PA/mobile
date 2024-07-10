@@ -89,7 +89,7 @@ class SearchByMonument extends HookWidget {
                 child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
-                    text: StringConstants().discoverTheIncredible,
+                    text: '${StringConstants().discoverTheIncredible} ',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,

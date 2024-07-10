@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../app.config.dart';
+import '../../object/quiz/question.dart';
 import '../../object/quiz/quiz.dart';
 import '../../object/uploaded_file.dart';
 import '../../repository/quiz/i_quiz_repository.dart';
@@ -43,11 +44,20 @@ class QuizService implements IQuizService, IQuizRepository {
   }
 
   @override
-  Future<void> updateQuestion(int id) async {
+  Future<Question> updateQuestion(int id, PostQuestionQuery query) async {
+    Response response;
     try {
-      await DioClient.instance.put('$apiGetQuizUrl/$id');
+      response = await DioClient.instance
+          .put('$apiGetQuizUrl/$id', data: query.toJson());
     } on BadRequestException {
       throw BadRequestException(ApiError.errorOccurred());
+    }
+    try {
+      return Question.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
     }
   }
 
@@ -61,12 +71,20 @@ class QuizService implements IQuizService, IQuizRepository {
   }
 
   @override
-  Future<void> postQuestion(PostQuestionQuery postQuestionQuery) async {
+  Future<Question> postQuestion(PostQuestionQuery postQuestionQuery) async {
+    Response response;
     try {
-      await DioClient.instance
+      response = await DioClient.instance
           .post(apiGetQuizUrl, data: postQuestionQuery.toJson());
     } on BadRequestException {
       throw BadRequestException(ApiError.errorOccurred());
+    }
+    try {
+      return Question.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
     }
   }
 

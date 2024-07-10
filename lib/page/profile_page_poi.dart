@@ -115,24 +115,6 @@ class _PageContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController monumentPostsScrollController =
-        useScrollController();
-    useEffect(
-      () {
-        void createScrollListener() {
-          if (monumentPostsScrollController.position.atEdge) {
-            if (monumentPostsScrollController.position.pixels != 0) {
-              _getPosts(context, false);
-            }
-          }
-        }
-
-        monumentPostsScrollController.addListener(createScrollListener);
-        return () =>
-            monumentPostsScrollController.removeListener(createScrollListener);
-      },
-      const [],
-    );
     return Scaffold(
       body: Stack(
         children: [
@@ -142,7 +124,7 @@ class _PageContent extends HookWidget {
               headerSliverBuilder: (context, value) {
                 return [
                   _buildHeader(context),
-                  _buildSliverMenuForPostsAndFriends(),
+                  _buildSliverMenu(),
                 ];
               },
               body: TabBarView(
@@ -164,7 +146,7 @@ class _PageContent extends HookWidget {
     );
   }
 
-  SliverPersistentHeader _buildSliverMenuForPostsAndFriends() {
+  SliverPersistentHeader _buildSliverMenu() {
     return SliverPersistentHeader(
       pinned: true,
       delegate: _CustomSliverAppBarDelegate(
@@ -185,20 +167,6 @@ class _PageContent extends HookWidget {
         ),
       ),
     );
-  }
-
-  void _getPosts(BuildContext context, bool isRefresh) {
-    final monumentBloc = context.read<MonumentBloc>();
-//TODO
-    if (monumentBloc.state.selectedPostGetMonumentsStatus !=
-        MonumentStatus.loading) {
-      monumentBloc.add(
-        GetMonumentPostsEvent(
-          id: monument.id,
-          isRefresh: isRefresh,
-        ),
-      );
-    }
   }
 
   Padding _buildDescription(BuildContext context) {
@@ -259,18 +227,6 @@ class _PageContent extends HookWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildErrorWidget(BuildContext context) {
-    return Column(
-      children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
-        ElevatedButton(
-          onPressed: () => _getPosts(context, true),
-          child: Text(StringConstants().retry),
-        ),
-      ],
     );
   }
 

@@ -1,12 +1,26 @@
-class PostQuestionQuery {
-  PostQuestionQuery({
+import 'package:image_picker/image_picker.dart';
+
+class PostQuestionQueryDto {
+  PostQuestionQueryDto({
     required this.question,
-    required this.imageId,
+    this.image,
     required this.answers,
   });
 
   String question;
-  int imageId;
+  XFile? image;
+  List<PostQuestionQueryAnswer> answers;
+}
+
+class PostQuestionQuery {
+  PostQuestionQuery({
+    required this.question,
+    this.imageId,
+    required this.answers,
+  });
+
+  String question;
+  int? imageId;
   List<PostQuestionQueryAnswer> answers;
 
   Map<String, dynamic> toJson() => {

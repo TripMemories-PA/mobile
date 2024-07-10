@@ -62,20 +62,93 @@ class EditQuizBloc extends Bloc<EditQuizEvent, EditQuizState> {
       }
     });
 
-    on<UpdateQuestionEvent>((event, emit) {
-      throw UnimplementedError();
+    on<UpdateQuestionEvent>((event, emit) async {
+      try {
+        int? imageId;
+        if (event.postQuestionQueryDto.image != null) {
+          imageId =
+              await quizService.storeImage(event.postQuestionQueryDto.image!);
+        }
+        final PostQuestionQuery postQuestionQuery = PostQuestionQuery(
+          question: event.postQuestionQueryDto.question,
+          answers: event.postQuestionQueryDto.answers,
+          imageId: imageId,
+        );
+        final Question updatedQuestion =
+            await quizService.updateQuestion(event.id, postQuestionQuery);
+        emit(
+          state.copyWith(
+            smallEvent: EditQuizSmallEvent.updateQuestion,
+            questions: state.questions.map((question) {
+              if (question.id == event.id) {
+                return updatedQuestion;
+              }
+              return question;
+            }).toList(),
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            error: e is CustomException ? e.apiError : ApiError.unknown(),
+            status: EditQuizStatus.error,
+          ),
+        );
+      }
     });
 
-    on<DeleteQuestionEvent>((event, emit) {
-      throw UnimplementedError();
+    on<DeleteQuestionEvent>((event, emit) async {
+      try {
+        await quizService.deleteQuestion(event.id);
+        final List<Question> questions = state.questions;
+        questions.removeWhere((element) => element.id == event.id);
+        emit(
+          state.copyWith(
+            smallEvent: EditQuizSmallEvent.deleteQuestion,
+            questions: questions,
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            error: e is CustomException ? e.apiError : ApiError.unknown(),
+            status: EditQuizStatus.error,
+          ),
+        );
+      }
     });
 
-    on<PostQuestionEvent>((event, emit) {
-      throw UnimplementedError();
-    });
-
-    on<StoreImageEvent>((event, emit) {
-      throw UnimplementedError();
+    on<PostQuestionEvent>((event, emit) async {
+      try {
+        int? imageId;
+        if (event.postQuestionQueryDto.image != null) {
+          imageId =
+              await quizService.storeImage(event.postQuestionQueryDto.image!);
+        }
+        final PostQuestionQuery postQuestionQuery = PostQuestionQuery(
+          question: event.postQuestionQueryDto.question,
+          answers: event.postQuestionQueryDto.answers,
+          imageId: imageId,
+        );
+        final Question newQuestion =
+            await quizService.postQuestion(postQuestionQuery);
+        emit(
+          state.copyWith(
+            smallEvent: EditQuizSmallEvent.postQuestion,
+            questions: [
+              newQuestion,
+              ...state.questions,
+            ],
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            error: e is CustomException ? e.apiError : ApiError.unknown(),
+            status: EditQuizStatus.error,
+          ),
+        );
+      }
     });
   }
 

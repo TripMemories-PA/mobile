@@ -13,9 +13,10 @@ class GetMyQuizEvent extends EditQuizEvent {
 }
 
 class UpdateQuestionEvent extends EditQuizEvent {
-  UpdateQuestionEvent(this.id);
+  UpdateQuestionEvent(this.id, this.postQuestionQueryDto);
 
   final int id;
+  final PostQuestionQueryDto postQuestionQueryDto;
 }
 
 class DeleteQuestionEvent extends EditQuizEvent {
@@ -25,9 +26,9 @@ class DeleteQuestionEvent extends EditQuizEvent {
 }
 
 class PostQuestionEvent extends EditQuizEvent {
-  PostQuestionEvent(this.postQuestionQuery);
+  PostQuestionEvent(this.postQuestionQueryDto);
 
-  final PostQuestionQuery postQuestionQuery;
+  final PostQuestionQueryDto postQuestionQueryDto;
 }
 
 class StoreImageEvent extends EditQuizEvent {

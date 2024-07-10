@@ -2,6 +2,12 @@ part of 'edit_quiz_bloc.dart';
 
 enum EditQuizStatus { notLoading, loading, error }
 
+enum EditQuizSmallEvent {
+  updateQuestion,
+  deleteQuestion,
+  postQuestion,
+}
+
 class EditQuizState {
   EditQuizState({
     this.questions = const [],
@@ -11,6 +17,7 @@ class EditQuizState {
     this.perPage = 10,
     this.searchingMoreQuestionsStatus = EditQuizStatus.notLoading,
     this.hasMoreQuestions = true,
+    this.smallEvent,
   });
 
   List<Question> questions;
@@ -20,6 +27,7 @@ class EditQuizState {
   ApiError? error;
   int page;
   int perPage;
+  EditQuizSmallEvent? smallEvent;
 
   EditQuizState copyWith({
     List<Question>? questions,
@@ -29,6 +37,7 @@ class EditQuizState {
     int? perPage,
     EditQuizStatus? searchingMoreQuestionsStatus,
     bool? hasMoreQuestions,
+    EditQuizSmallEvent? smallEvent,
   }) {
     return EditQuizState(
       questions: questions ?? this.questions,
@@ -39,6 +48,7 @@ class EditQuizState {
       searchingMoreQuestionsStatus:
           searchingMoreQuestionsStatus ?? this.searchingMoreQuestionsStatus,
       hasMoreQuestions: hasMoreQuestions ?? this.hasMoreQuestions,
+      smallEvent: smallEvent,
     );
   }
 }

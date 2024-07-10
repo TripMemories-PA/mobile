@@ -65,7 +65,7 @@ class QuizPage extends StatelessWidget {
     );
   }
 
-  Column _buildBody(Quiz quiz, BuildContext context) {
+  Widget _buildBody(Quiz quiz, BuildContext context) {
     switch (context.read<QuizBloc>().state.quizGameStatus) {
       case QuizGameStatus.inProgress:
         return _buildQuiz(quiz, context);
@@ -133,11 +133,14 @@ class QuizPage extends StatelessWidget {
           ),
         ),
         const Spacer(),
-        QuestionWidget(
-          question:
-              quiz.data[context.read<QuizBloc>().state.currentQuestionIndex],
+        Center(
+          child: QuestionWidget(
+            question:
+                quiz.data[context.read<QuizBloc>().state.currentQuestionIndex],
+          ),
         ),
         const Spacer(),
+        10.ph,
       ],
     );
   }
@@ -287,11 +290,17 @@ class QuestionWidget extends HookWidget {
           ),
           10.ph,
           if (question.image != null)
-            CachedNetworkImage(
-              imageUrl: question.image!.url,
-              placeholder: (context, url) => const CupertinoActivityIndicator(),
-              errorWidget: (context, url, error) =>
-                  const Icon(CupertinoIcons.exclamationmark_triangle),
+            SizedBox(
+              height: 200,
+              width: MediaQuery.of(context).size.width * 0.6,
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: question.image!.url,
+                placeholder: (context, url) =>
+                    const CupertinoActivityIndicator(),
+                errorWidget: (context, url, error) =>
+                    const Icon(CupertinoIcons.exclamationmark_triangle),
+              ),
             ),
           20.ph,
           if (question.image == null)

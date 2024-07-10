@@ -58,11 +58,13 @@ class ProfileRepository implements IProfileRepository {
     required int page,
     required int perPage,
     String? searchName,
+    bool? sortByScore,
   }) async {
     return profileRemoteDataSource.getUsers(
       page: page,
       perPage: perPage,
       searchName: searchName,
+      sortByScore: sortByScore,
     );
   }
 }

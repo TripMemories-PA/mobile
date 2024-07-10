@@ -65,6 +65,12 @@ class ScaffoldWithNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: const Icon(
+            Icons.emoji_events_outlined,
+          ),
+          label: StringConstants().ranking,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(
             Icons.person_outline,
           ),
           label: StringConstants().profile,

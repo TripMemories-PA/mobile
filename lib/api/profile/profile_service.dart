@@ -161,6 +161,7 @@ class ProfileService implements IProfileService, IProfileRepository {
     required int page,
     required int perPage,
     String? searchName,
+    bool? sortByScore,
   }) async {
     Response response;
     String url = apiUsersUrl
@@ -169,6 +170,9 @@ class ProfileService implements IProfileService, IProfileRepository {
 
     if (searchName != null) {
       url = '$url&search=$searchName';
+    }
+    if (sortByScore != null) {
+      url = '$url&sortBy=score&order=desc';
     }
     try {
       response = await DioClient.instance.get(

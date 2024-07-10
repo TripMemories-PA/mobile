@@ -16,4 +16,6 @@ class RouteName {
   static const String buy = '/buy';
   static const String qrCodeScanner = '/qrCodeScanner';
   static const String quizPage = '/quiz';
+  static const String editQuestion = '/editQuestion';
+  static const String rankingPage = '/ranking';
 }

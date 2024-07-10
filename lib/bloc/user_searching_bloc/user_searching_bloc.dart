@@ -119,6 +119,53 @@ class UserSearchingBloc extends Bloc<UserSearchingEvent, UserSearchingState> {
         );
       }
     });
+
+    on<GetUsersRanking>((event, emit) async {
+      try {
+        if (event.isRefresh) {
+          emit(
+            state.copyWith(
+              status: UserSearchingStatus.loading,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              searchingUserByNameStatus: UserSearchingStatus.loading,
+            ),
+          );
+        }
+        final GetFriendsPaginationResponse users =
+            await profileRepository.getUsers(
+          page: event.isRefresh ? 1 : state.friendsPage + 1,
+          perPage: state.searchUsersPerPage,
+          sortByScore: true,
+        );
+        emit(
+          state.copyWith(
+            status: UserSearchingStatus.notLoading,
+            searchingUserByNameStatus: UserSearchingStatus.notLoading,
+            users: event.isRefresh
+                ? users
+                : state.users?.copyWith(
+                    data: [
+                      ...state.users!.data,
+                      ...users.data,
+                    ],
+                  ),
+            friendsPage: event.isRefresh ? 1 : state.friendsPage + 1,
+            hasMoreUsers: users.data.length == state.friendsPerPage,
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            status: UserSearchingStatus.error,
+            error: e is CustomException ? e.apiError : ApiError.unknown(),
+          ),
+        );
+      }
+    });
   }
 
   final IProfileService profileService;

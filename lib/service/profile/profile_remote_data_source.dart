@@ -53,9 +53,15 @@ class ProfileRemoteDataSource extends ProfileDataSourceInterface {
     required int page,
     required int perPage,
     String? searchName,
+    bool? sortByScore,
   }) async {
-    final GetFriendsPaginationResponse friendRequests = await _profileService
-        .getUsers(page: page, perPage: perPage, searchName: searchName);
+    final GetFriendsPaginationResponse friendRequests =
+        await _profileService.getUsers(
+      page: page,
+      perPage: perPage,
+      searchName: searchName,
+      sortByScore: sortByScore,
+    );
     return friendRequests;
   }
 }

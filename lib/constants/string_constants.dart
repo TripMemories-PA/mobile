@@ -12,6 +12,8 @@ class StringConstants {
 
   String get score => 'Score';
 
+  String get thePodium => 'Le podium';
+
   String get editQuiz => 'Modifier le quiz';
 
   String get selectRightAnswer => 'Sélectionnez la bonne réponse';
@@ -28,6 +30,8 @@ class StringConstants {
 
   String get editQuestionRestrictions =>
       'Vous devez avoir au minimum deux réponses. Ces réponses ainsi que la question ne doivent pas être vides.';
+
+  String get totalRanking => 'Classement total';
 
   String get quiz => 'Quiz';
 
@@ -164,6 +168,8 @@ class StringConstants {
   String get map => 'Carte';
 
   String get feed => "Fil d'actualité";
+
+  String get ranking => 'Classement';
 
   String get profile => 'Profil';
 

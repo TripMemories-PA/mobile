@@ -30,7 +30,7 @@ class SearchUsersEvent extends UserSearchingEvent {
 
 class GetUsersRanking extends UserSearchingEvent {
   GetUsersRanking({
-    required this.isRefresh,
+    this.isRefresh = false,
   });
 
   final bool isRefresh;

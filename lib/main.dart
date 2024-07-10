@@ -32,6 +32,7 @@ import 'page/payment_sheet_screen.dart';
 import 'page/profile_page.dart';
 import 'page/profile_page_poi.dart';
 import 'page/quizz_page.dart';
+import 'page/ranking_page.dart';
 import 'page/scan_qrcode_page.dart';
 import 'page/search_page.dart';
 import 'page/shop_page.dart';
@@ -301,6 +302,16 @@ class MyApp extends HookWidget {
                       );
                     },
                   );
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase>[
+              GoRoute(
+                path: RouteName.rankingPage,
+                builder: (BuildContext context, GoRouterState state) {
+                  return const RankingPage();
                 },
               ),
             ],

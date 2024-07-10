@@ -165,6 +165,8 @@ class StringConstants {
 
   String get feed => "Fil d'actualité";
 
+  String get ranking => 'Classement';
+
   String get profile => 'Profil';
 
   String get userNameOrEmail => "Nom d'utilisateur";

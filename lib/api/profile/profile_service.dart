@@ -172,7 +172,7 @@ class ProfileService implements IProfileService, IProfileRepository {
       url = '$url&search=$searchName';
     }
     if (sortByScore != null) {
-      url = '$url&sortBy=score';
+      url = '$url&sortBy=score&order=desc';
     }
     try {
       response = await DioClient.instance.get(

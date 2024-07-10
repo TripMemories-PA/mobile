@@ -136,7 +136,7 @@ class UserSearchingBloc extends Bloc<UserSearchingEvent, UserSearchingState> {
         emit(
           state.copyWith(
             searchingUserByNameStatus: UserSearchingStatus.notLoading,
-            usersSearchByName: event.isRefresh
+            users: event.isRefresh
                 ? users
                 : state.usersSearchByName?.copyWith(
                     data: [

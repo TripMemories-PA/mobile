@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:vibration/vibration.dart';
 
@@ -11,7 +12,6 @@ import '../bloc/qr_code_scanner/qr_code_scannner_bloc.dart';
 import '../component/popup/confirmation_dialog.dart';
 import '../component/qr_code_canner/scanner_button_widgets.dart';
 import '../component/qr_code_canner/scanner_error_widget.dart';
-import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../utils/messenger.dart';
@@ -211,15 +211,22 @@ class ScanQrcodePage extends HookWidget {
                                             state.ticketControl?.valid ?? false;
                                         return Column(
                                           children: [
-                                            Icon(
-                                              isValidTicket
-                                                  ? Icons.check_circle
-                                                  : Icons.cancel,
-                                              size: 125,
-                                              color: isValidTicket
-                                                  ? MyColors.success
-                                                  : MyColors.fail,
-                                            ),
+                                            if (isValidTicket)
+                                              Lottie.asset(
+                                                'assets/lottie/validation.json',
+                                                width: 200,
+                                                height: 200,
+                                                fit: BoxFit.fill,
+                                                repeat: false,
+                                              )
+                                            else
+                                              Lottie.asset(
+                                                'assets/lottie/error.json',
+                                                width: 200,
+                                                height: 200,
+                                                fit: BoxFit.fill,
+                                                repeat: false,
+                                              ),
                                             20.ph,
                                             Text(
                                               isValidTicket

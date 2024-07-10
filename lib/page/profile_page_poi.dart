@@ -12,6 +12,7 @@ import '../bloc/monument_bloc/monument_bloc.dart';
 import '../component/edit_quizz.dart';
 import '../component/map_mini.dart';
 import '../component/poi_feed.dart';
+import '../component/popup/confirmation_dialog.dart';
 import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
@@ -236,6 +237,31 @@ class _PageContent extends HookWidget {
         icon: const Icon(Icons.chevron_left),
         onPressed: () => context.pop(),
       ),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.logout),
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(
+              Colors.red,
+            ),
+          ),
+          onPressed: () async {
+            final bool result = await confirmationPopUp(
+              context,
+              title: StringConstants().logoutConfirmation,
+            );
+            if (!result) {
+              return;
+            } else {
+              if (context.mounted) {
+                context.read<AuthBloc>().add(
+                      const ChangeToLoggedOutStatus(),
+                    );
+              }
+            }
+          },
+        ),
+      ],
       expandedHeight: 300,
       flexibleSpace: FlexibleSpaceBar(
         background: SizedBox(

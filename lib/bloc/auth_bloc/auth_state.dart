@@ -8,6 +8,7 @@ class AuthState {
     this.status = AuthStatus.guest,
     this.error,
     this.user,
+    this.appStarted = false,
   });
 
   const AuthState.authenticated({
@@ -23,7 +24,13 @@ class AuthState {
           error: error,
           user: null,
         );
+
+  const AuthState.appStarted()
+      : this._(
+          appStarted: true,
+        );
   final AuthStatus status;
   final ApiError? error;
   final Profile? user;
+  final bool appStarted;
 }

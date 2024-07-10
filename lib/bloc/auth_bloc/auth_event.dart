@@ -7,6 +7,8 @@ abstract class AuthEvent {
 
 class AppStarted extends AuthEvent {}
 
+class SplashScreenDisplayed extends AuthEvent {}
+
 class ChangeToLoggedInStatus extends AuthEvent {
   const ChangeToLoggedInStatus({
     required this.authToken,

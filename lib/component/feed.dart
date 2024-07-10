@@ -35,7 +35,8 @@ class FeedComponent extends HookWidget {
             myPosts: myPosts,
             userId: userId,
             isMyFeed: context.read<AuthBloc>().state.status ==
-                AuthStatus.authenticated,
+                    AuthStatus.authenticated &&
+                context.read<AuthBloc>().state.user?.userTypeId != 3,
           ),
         ),
       child: BlocListener<AuthBloc, AuthState>(
@@ -45,7 +46,8 @@ class FeedComponent extends HookWidget {
                   isRefresh: true,
                   myPosts: myPosts,
                   userId: userId,
-                  isMyFeed: state.status == AuthStatus.authenticated,
+                  isMyFeed: state.status == AuthStatus.authenticated &&
+                      state.user?.userTypeId != 3,
                 ),
               );
         },
@@ -97,7 +99,9 @@ class _PostListContent extends HookWidget {
                         isRefresh: true,
                         myPosts: myPosts,
                         isMyFeed: context.read<AuthBloc>().state.status ==
-                            AuthStatus.authenticated,
+                                AuthStatus.authenticated &&
+                            context.read<AuthBloc>().state.user?.userTypeId !=
+                                3,
                       ),
                     );
               },
@@ -124,8 +128,9 @@ class _PostListContent extends HookWidget {
         GetPostsEvent(
           myPosts: myPosts,
           userId: userId,
-          isMyFeed:
-              context.read<AuthBloc>().state.status == AuthStatus.authenticated,
+          isMyFeed: context.read<AuthBloc>().state.status ==
+                  AuthStatus.authenticated &&
+              context.read<AuthBloc>().state.user?.userTypeId != 3,
         ),
       );
     }
@@ -195,7 +200,8 @@ class _PostListContent extends HookWidget {
             myPosts: myPosts,
             userId: userId,
             isMyFeed: context.read<AuthBloc>().state.status ==
-                AuthStatus.authenticated,
+                    AuthStatus.authenticated &&
+                context.read<AuthBloc>().state.user?.userTypeId != 3,
           ),
         );
   }

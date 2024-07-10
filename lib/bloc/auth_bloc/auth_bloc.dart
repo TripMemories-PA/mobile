@@ -135,6 +135,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       },
     );
+
+    on<SplashScreenDisplayed>((event, emit) {
+      emit(const AuthState.appStarted());
+    });
   }
 
   final IAuthService authService;

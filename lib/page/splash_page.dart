@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
+import '../bloc/auth_bloc/auth_event.dart';
 import '../constants/route_name.dart';
 
 class SplashPage extends HookWidget {
@@ -13,13 +14,23 @@ class SplashPage extends HookWidget {
   Widget build(BuildContext context) {
     useEffect(
       () {
-        Future.delayed(const Duration(seconds: 3), () {
+        if (context.read<AuthBloc>().state.appStarted) {
           context.go(
             context.read<AuthBloc>().state.user?.userTypeId == 3
                 ? RouteName.shopPage
                 : RouteName.searchPage,
           );
-        });
+        } else {
+          context.read<AuthBloc>().add(AppStarted());
+          Future.delayed(const Duration(seconds: 3), () {
+            context.go(
+              context.read<AuthBloc>().state.user?.userTypeId == 3
+                  ? RouteName.shopPage
+                  : RouteName.searchPage,
+            );
+          });
+        }
+
         return null;
       },
       const [],

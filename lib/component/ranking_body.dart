@@ -78,7 +78,10 @@ class RankingBody extends HookWidget {
                                           Column(
                                             children: [
                                               _buildUserRankingCard(
-                                                  context, users[i], i),
+                                                context,
+                                                users[i],
+                                                i,
+                                              ),
                                               10.ph,
                                             ],
                                           ),

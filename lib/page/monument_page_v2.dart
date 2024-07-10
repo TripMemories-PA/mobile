@@ -383,7 +383,7 @@ class _PageContent extends HookWidget {
                             )
                           : (tickets.length == 1
                               ? SizedBox(
-                                  height: 440,
+                                  height: 380,
                                   width:
                                       MediaQuery.of(context).size.width * 0.9,
                                   child: TicketCardAdmin(article: tickets[0]),

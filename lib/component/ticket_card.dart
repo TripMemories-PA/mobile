@@ -24,195 +24,194 @@ class TicketCardAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        return CustomCard(
-          height: constraints.maxHeight,
-          borderColor: Theme.of(context).colorScheme.tertiary,
-          content: Padding(
-            padding: EdgeInsets.all(constraints.maxWidth * 0.04),
-            child: Column(
-              children: <Widget>[
-                Stack(
+    return CustomCard(
+      borderColor: Theme.of(context).colorScheme.tertiary,
+      content: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 200,
+              child: Stack(
+                children: [
+                  _buildTicketImage(context),
+                  if (context.read<AuthBloc>().state.status ==
+                          AuthStatus.authenticated &&
+                      context.read<AuthBloc>().state.user?.poiId ==
+                          article.poi.id)
+                    _buildActionsButtons(context),
+                ],
+              ),
+            ),
+            10.ph,
+            AutoSizeText(
+              article.title,
+              minFontSize: 5,
+              maxLines: 2,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            10.ph,
+            AutoSizeText(
+              article.description,
+              minFontSize: 2,
+              maxFontSize: 10,
+              maxLines: 3,
+            ),
+            10.ph,
+            Row(
+              children: [
+                Text(
+                  '${article.price} €',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 30,
+                  ),
+                ),
+                const Spacer(),
+                Column(
                   children: [
-                    Stack(
+                    10.ph,
+                    Row(
                       children: [
-                        SizedBox(
-                          height: constraints.maxHeight * 0.5,
-                          width: double.infinity,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                              constraints.maxHeight * 0.05,
-                            ),
-                            child: Image.network(
-                              article.poi.cover.url,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                        Icon(
+                          Icons.bolt_outlined,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: const Color.fromRGBO(
-                              211,
-                              211,
-                              211,
-                              0.7,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              constraints.maxHeight * 0.05,
-                            ),
-                          ),
-                          height: constraints.maxHeight * 0.5,
-                          width: double.infinity,
-                        ),
-                        SizedBox(
-                          height: constraints.maxHeight * 0.5,
-                          width: double.infinity,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                              constraints.maxWidth * 0.05,
-                            ),
-                            child: Image.asset('assets/images/ticket.png'),
+                        Text(
+                          '${article.quantity} ${article.quantity > 1 ? StringConstants().leftTickets : StringConstants().leftTicket}',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
                     if (context.read<AuthBloc>().state.status ==
                             AuthStatus.authenticated &&
-                        context.read<AuthBloc>().state.user?.poiId ==
-                            article.poi.id)
-                      Positioned(
-                        right: 10,
-                        top: 10,
-                        child: Column(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () {
-                                modifyArticlePopup(
-                                  context: context,
-                                  article: article,
-                                  ticketBloc: context.read<TicketBloc>(),
-                                ).then((bool result) {
-                                  if (result) {
-                                    Messenger.showSnackBarSuccess(
-                                      StringConstants().modifiedArticle,
-                                    );
-                                  }
-                                });
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () async {
-                                await confirmationPopUp(
-                                  context,
-                                  title: StringConstants()
-                                      .doYouReallyWantToDeleteThisArticle,
-                                  isOkPopUp: false,
-                                ).then((bool result) {
-                                  if (result) {
-                                    context.read<TicketBloc>().add(
-                                          DeleteTicketEvent(
-                                            ticketId: article.id,
-                                          ),
-                                        );
-                                  }
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
+                        context.read<AuthBloc>().state.user?.userTypeId != 3)
+                      _buildAddToCartButton(context),
                   ],
-                ),
-                5.ph,
-                SizedBox(
-                  height: constraints.maxHeight * 0.4,
-                  child: Column(
-                    children: [
-                      AutoSizeText(
-                        article.title,
-                        minFontSize: 5,
-                        maxLines: 2,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      5.ph,
-                      AutoSizeText(
-                        article.description,
-                        minFontSize: 2,
-                        maxFontSize: 10,
-                        maxLines: 3,
-                      ),
-                      const Spacer(),
-                      Row(
-                        children: [
-                          Text(
-                            '${article.price} €',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: 30,
-                            ),
-                          ),
-                          const Spacer(),
-                          Column(
-                            children: [
-                              (constraints.maxHeight * 0.05).ph,
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.bolt_outlined,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                  Text(
-                                    '${article.quantity} ${article.quantity > 1 ? StringConstants().leftTickets : StringConstants().leftTicket}',
-                                    style: TextStyle(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              if (context.read<AuthBloc>().state.status ==
-                                  AuthStatus.authenticated)
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Messenger.showSnackBarSuccess(
-                                      StringConstants().addedToCart,
-                                    );
-                                    context.read<CartBloc>().add(
-                                          AddArticle(
-                                            article,
-                                          ),
-                                        );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.primary,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(35),
-                                    ),
-                                  ),
-                                  child: Text(StringConstants().addArticle),
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                    ],
-                  ),
                 ),
               ],
             ),
-          ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ElevatedButton _buildAddToCartButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        Messenger.showSnackBarSuccess(
+          StringConstants().addedToCart,
         );
+        context.read<CartBloc>().add(
+              AddArticle(
+                article,
+              ),
+            );
       },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(35),
+        ),
+      ),
+      child: Text(StringConstants().addArticle),
+    );
+  }
+
+  Positioned _buildActionsButtons(BuildContext context) {
+    return Positioned(
+      right: 10,
+      top: 10,
+      child: Column(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              modifyArticlePopup(
+                context: context,
+                article: article,
+                ticketBloc: context.read<TicketBloc>(),
+              ).then((bool result) {
+                if (result) {
+                  Messenger.showSnackBarSuccess(
+                    StringConstants().modifiedArticle,
+                  );
+                }
+              });
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () async {
+              await confirmationPopUp(
+                context,
+                title: StringConstants().doYouReallyWantToDeleteThisArticle,
+                isOkPopUp: false,
+              ).then((bool result) {
+                if (result) {
+                  context.read<TicketBloc>().add(
+                        DeleteTicketEvent(
+                          ticketId: article.id,
+                        ),
+                      );
+                }
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Stack _buildTicketImage(BuildContext context) {
+    return Stack(
+      children: [
+        SizedBox(
+          height: 200,
+          width: double.infinity,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(
+              15,
+            ),
+            child: Image.network(
+              article.poi.cover.url,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(
+              211,
+              211,
+              211,
+              0.7,
+            ),
+            borderRadius: BorderRadius.circular(
+              15,
+            ),
+          ),
+          height: MediaQuery.of(context).size.height * 0.5,
+          width: double.infinity,
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.5,
+          width: double.infinity,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(
+              MediaQuery.of(context).size.width * 0.05,
+            ),
+            child: Image.asset('assets/images/ticket.png'),
+          ),
+        ),
+      ],
     );
   }
 

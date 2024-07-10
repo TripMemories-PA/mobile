@@ -33,7 +33,7 @@ class _TicketTabViewState extends State<TicketTabView>
     return Column(
       children: [
         SizedBox(
-          height: 440,
+          height: 380,
           child: TabBarView(
             controller: _tabController,
             children: widget.tickets.map((ticket) {

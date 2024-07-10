@@ -87,8 +87,8 @@ class ShopPage extends StatelessWidget {
                     }
                     return ListView.builder(
                       itemBuilder: (context, index) {
-                        return SizedBox(
-                          height: 440,
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child:
                               TicketCardAdmin(article: state.tickets![index]),
                         );

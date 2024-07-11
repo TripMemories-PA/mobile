@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../api/buy_ticket/buy_ticket_service.dart';
 import '../api/buy_ticket/model/query/buy_ticket_query.dart';
 import '../api/buy_ticket/model/response/buy_ticket_response.dart';
+import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/cart/cart_bloc.dart';
 import '../component/stripe/billing_adress_form.dart';
 import '../component/stripe/loading_button.dart';
@@ -24,8 +25,12 @@ class PaymentScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nameController = useTextEditingController();
-    final emailController = useTextEditingController();
+    final nameController = useTextEditingController(
+      text: context.read<AuthBloc>().state.user?.lastname,
+    );
+    final emailController = useTextEditingController(
+      text: context.read<AuthBloc>().state.user?.email,
+    );
     final phoneController = useTextEditingController();
     final cityController = useTextEditingController();
     final countryController = useTextEditingController();

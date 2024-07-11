@@ -22,6 +22,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         totalPrice +=
             cartElements[i].articles[0].price * cartElements[i].articles.length;
       }
+      totalPrice = double.parse(totalPrice.toStringAsFixed(2));
       emit(state.copyWith(cartElements: cartElements, totalPrice: totalPrice));
     });
 
@@ -41,6 +42,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         totalPrice +=
             cartElements[i].articles[0].price * cartElements[i].articles.length;
       }
+      totalPrice = double.parse(totalPrice.toStringAsFixed(2));
       emit(state.copyWith(cartElements: cartElements, totalPrice: totalPrice));
     });
 

@@ -11,6 +11,7 @@ class MeetResponse {
     return MeetResponse(
       meta: MetaObject.fromJson(json['meta']),
       data: List<Meet>.from(json['data'].map((x) => Meet.fromJson(x))),
+
     );
   }
 

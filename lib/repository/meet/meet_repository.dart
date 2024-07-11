@@ -21,4 +21,13 @@ class MeetRepository implements IMeetRepository {
   }) {
     return remoteDataSource.getMeetUsers(meetId, page: page, perPage: perPage);
   }
+
+  @override
+  Future<MeetResponse> getPoiMeet({
+    required int poiId,
+    required int page,
+    required int perPage,
+  }) {
+    return remoteDataSource.getPoiMeet(poiId: poiId, page: page, perPage: perPage);
+  }
 }

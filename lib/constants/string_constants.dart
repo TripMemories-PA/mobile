@@ -10,6 +10,8 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get meet => 'Meet';
+
   String get cart => 'Panier';
 
   String get score => 'Score';

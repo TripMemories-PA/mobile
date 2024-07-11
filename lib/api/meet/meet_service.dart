@@ -1,20 +1,26 @@
 import 'package:dio/dio.dart';
+
 import '../../app.config.dart';
+import '../../repository/meet/i_meet_repository.dart';
 import '../dio.dart';
 import '../error/api_error.dart';
 import '../error/specific_error/auth_error.dart';
 import '../exception/bad_request_exception.dart';
 import '../exception/parsing_response_exception.dart';
+import 'i_meet_service.dart';
 import 'model/response/meet_response.dart';
 import 'model/response/meet_users.dart';
 
-class MeetService {
+class MeetService implements IMeetRepository, IMeetService {
   static const String apiMeetsBaseUrl = '${AppConfig.apiUrl}/meets';
 
-  Future<MeetUsers> getMeetUsers(int meetId, {required int page, required int perPage}) async {
+  @override
+  Future<MeetUsers> getMeetUsers(int meetId,
+      {required int page, required int perPage,}) async {
     Response response;
     try {
-      final String url = '$apiMeetsBaseUrl/$meetId/users?page=$page&perPage=$perPage';
+      final String url =
+          '$apiMeetsBaseUrl/$meetId/users?page=$page&perPage=$perPage';
       response = await DioClient.instance.get(url);
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());
@@ -22,10 +28,12 @@ class MeetService {
     try {
       return MeetUsers.fromJson(response.data);
     } catch (e) {
-      throw ParsingResponseException(ApiError.errorOccurredWhileParsingResponse());
+      throw ParsingResponseException(
+          ApiError.errorOccurredWhileParsingResponse(),);
     }
   }
 
+  @override
   Future<void> deleteUserFromMeet(int meetId, int userId) async {
     try {
       final String url = '$apiMeetsBaseUrl/$meetId/users/$userId';
@@ -35,6 +43,7 @@ class MeetService {
     }
   }
 
+  @override
   Future<MeetResponse> createMeet(Map<String, dynamic> data) async {
     Response response;
     try {
@@ -46,10 +55,12 @@ class MeetService {
     try {
       return MeetResponse.fromJson(response.data);
     } catch (e) {
-      throw ParsingResponseException(ApiError.errorOccurredWhileParsingResponse());
+      throw ParsingResponseException(
+          ApiError.errorOccurredWhileParsingResponse(),);
     }
   }
 
+  @override
   Future<MeetResponse> getMeet(int meetId) async {
     Response response;
     try {
@@ -61,10 +72,12 @@ class MeetService {
     try {
       return MeetResponse.fromJson(response.data);
     } catch (e) {
-      throw ParsingResponseException(ApiError.errorOccurredWhileParsingResponse());
+      throw ParsingResponseException(
+          ApiError.errorOccurredWhileParsingResponse(),);
     }
   }
 
+  @override
   Future<MeetResponse> updateMeet(int meetId, Map<String, dynamic> data) async {
     Response response;
     try {
@@ -76,10 +89,12 @@ class MeetService {
     try {
       return MeetResponse.fromJson(response.data);
     } catch (e) {
-      throw ParsingResponseException(ApiError.errorOccurredWhileParsingResponse());
+      throw ParsingResponseException(
+          ApiError.errorOccurredWhileParsingResponse(),);
     }
   }
 
+  @override
   Future<void> deleteMeet(int meetId) async {
     try {
       final String url = '$apiMeetsBaseUrl/$meetId';
@@ -89,6 +104,7 @@ class MeetService {
     }
   }
 
+  @override
   Future<void> joinMeet(int meetId) async {
     try {
       final String url = '$apiMeetsBaseUrl/$meetId/join';
@@ -98,6 +114,7 @@ class MeetService {
     }
   }
 
+  @override
   Future<void> leaveMeet(int meetId) async {
     try {
       final String url = '$apiMeetsBaseUrl/$meetId/leave';
@@ -107,12 +124,34 @@ class MeetService {
     }
   }
 
+  @override
   Future<void> payForMeet(int meetId) async {
     try {
       final String url = '$apiMeetsBaseUrl/$meetId/pay';
       await DioClient.instance.post(url);
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());
+    }
+  }
+
+  @override
+  Future<MeetResponse> getPoiMeet({
+    required int poiId,
+    required int page,
+    required int perPage,
+  }) async {
+    Response response;
+    try {
+      final String url = '${AppConfig.apiUrl}/pois/$poiId/meets?page=$page&perPage=$perPage';
+      response = await DioClient.instance.get(url);
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      return MeetResponse.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+          ApiError.errorOccurredWhileParsingResponse(),);
     }
   }
 }

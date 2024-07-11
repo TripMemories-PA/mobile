@@ -28,6 +28,7 @@ import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
 import 'page/map_page_user_connected.dart';
+import 'page/meet_page.dart';
 import 'page/monument_page_v2.dart';
 import 'page/payment_sheet_screen.dart';
 import 'page/profile_page.dart';
@@ -40,6 +41,7 @@ import 'page/shop_page.dart';
 import 'page/splash_page.dart';
 import 'repository/city/cities_repository.dart';
 import 'repository/comment/comment_repository.dart';
+import 'repository/meet/meet_repository.dart';
 import 'repository/monument/monument_repository.dart';
 import 'repository/post/post_repository.dart';
 import 'repository/profile/profile_repository.dart';
@@ -47,6 +49,7 @@ import 'repository/quiz/quiz_repository.dart';
 import 'repository/ticket/ticket_repository.dart';
 import 'service/cities/cities_remote_data_source.dart';
 import 'service/comment/comment_remote_data_source.dart';
+import 'service/meet/meet_remote_data_source.dart';
 import 'service/monument/monument_remote_data_source.dart';
 import 'service/post/post_remote_data_source.dart';
 import 'service/profile/profile_remote_data_source.dart';
@@ -112,6 +115,11 @@ Future<void> main() async {
             quizRemoteDataSource: QuizRemoteDataSource(),
           ),
         ),
+        RepositoryProvider(
+          create: (context) => MeetRepository(
+            remoteDataSource: MeetRemoteDataSource(),
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -164,6 +172,26 @@ class MyApp extends HookWidget {
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       return CustomTransition.buildFadeTransition(
+                        animation,
+                        child,
+                      );
+                    },
+                  );
+                },
+              ),
+              GoRoute(
+                path: '${RouteName.meet}/:meetId',
+                pageBuilder: (context, state) {
+                  final int meetId =
+                      int.parse(state.pathParameters['meetId'] ?? '');
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: MeetPage(
+                      poiId: meetId,
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return CustomTransition.buildBottomToTopPopTransition(
                         animation,
                         child,
                       );

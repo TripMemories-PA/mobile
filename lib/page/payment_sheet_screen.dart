@@ -104,7 +104,7 @@ class PaymentScreen extends HookWidget {
                   content: LoadingButton(
                     onPressed: () => confirmPayment(step).then(
                       (value) => {
-                        if (value)
+                        if (value && context.mounted)
                           {
                             context.pop(),
                             context.read<CartBloc>().add(

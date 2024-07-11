@@ -596,7 +596,7 @@ class ProfileBanner extends StatelessWidget {
               context,
               title: StringConstants().sureToDeleteAccount,
             ).then((bool result) {
-              if (result) {
+              if (result && context.mounted) {
                 context
                     .read<FriendRequestBloc>()
                     .add(DeleteFriendEvent(profile.id));

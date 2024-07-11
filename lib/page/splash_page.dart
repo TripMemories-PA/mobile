@@ -14,7 +14,7 @@ class SplashPage extends HookWidget {
   Widget build(BuildContext context) {
     useEffect(
       () {
-        if (context.read<AuthBloc>().state.appStarted) {
+        if (!context.read<AuthBloc>().state.appStarted) {
           context.go(
             context.read<AuthBloc>().state.user?.userTypeId == 3
                 ? RouteName.shopPage
@@ -23,11 +23,13 @@ class SplashPage extends HookWidget {
         } else {
           context.read<AuthBloc>().add(AppStarted());
           Future.delayed(const Duration(seconds: 3), () {
-            context.go(
-              context.read<AuthBloc>().state.user?.userTypeId == 3
-                  ? RouteName.shopPage
-                  : RouteName.searchPage,
-            );
+            if (context.mounted) {
+              context.go(
+                context.read<AuthBloc>().state.user?.userTypeId == 3
+                    ? RouteName.shopPage
+                    : RouteName.searchPage,
+              );
+            }
           });
         }
 

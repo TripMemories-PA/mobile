@@ -165,7 +165,7 @@ class TicketCardAdmin extends StatelessWidget {
                 title: StringConstants().doYouReallyWantToDeleteThisArticle,
                 isOkPopUp: false,
               ).then((bool result) {
-                if (result) {
+                if (result && context.mounted) {
                   context.read<TicketBloc>().add(
                         DeleteTicketEvent(
                           ticketId: article.id,

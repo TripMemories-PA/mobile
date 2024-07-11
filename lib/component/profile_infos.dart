@@ -84,7 +84,7 @@ class ProfileInfos extends StatelessWidget {
                     context,
                     title: StringConstants().sureToDeleteAccount,
                   ).then((bool result) {
-                    if (result) {
+                    if (result && context.mounted) {
                       context.read<AuthBloc>().add(
                             DeleteAccountEvent(),
                           );

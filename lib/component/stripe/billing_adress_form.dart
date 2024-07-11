@@ -23,8 +23,6 @@ class BillingDetailsForm extends StatelessWidget {
       if (formKey.currentState!.validate()) {
         final billingDetails = BillingDetails(
           name: controllers.nameController.text,
-          email: controllers.emailController.text,
-          phone: controllers.phoneController.text,
           address: Address(
             city: controllers.cityController.text,
             country: controllers.countryController.text,

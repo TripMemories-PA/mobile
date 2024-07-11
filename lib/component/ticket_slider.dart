@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/auth_bloc/auth_bloc.dart';
+import '../bloc/auth_bloc/auth_state.dart';
 import '../object/ticket.dart';
 import 'ticket_card.dart';
 
@@ -33,7 +36,10 @@ class _TicketTabViewState extends State<TicketTabView>
     return Column(
       children: [
         SizedBox(
-          height: 440,
+          height: (context.read<AuthBloc>().state.user?.userTypeId == 3 ||
+                  context.read<AuthBloc>().state.status == AuthStatus.guest)
+              ? 380
+              : 420,
           child: TabBarView(
             controller: _tabController,
             children: widget.tickets.map((ticket) {

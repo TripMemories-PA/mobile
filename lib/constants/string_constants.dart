@@ -10,9 +10,12 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get cart => 'Panier';
+
   String get score => 'Score';
 
   String get thePodium => 'Le podium';
+  String get tickets => 'Billets';
 
   String get editQuiz => 'Modifier le quiz';
 

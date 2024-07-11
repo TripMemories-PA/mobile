@@ -16,6 +16,7 @@ import '../num_extensions.dart';
 import '../object/profile.dart';
 import '../repository/profile/profile_repository.dart';
 import '../utils/messenger.dart';
+import 'custom_card.dart';
 import 'friends_and_visited_widget.dart';
 import 'popup/confirmation_dialog.dart';
 import 'popup/modify_user_infos_popup.dart';
@@ -233,6 +234,8 @@ class ProfileBanner extends StatelessWidget {
       child: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
           return Container(
+            width: MediaQuery.of(context).size.width * 0.90,
+            height: MediaQuery.of(context).size.height * 0.90,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(
                 Radius.circular(10),
@@ -241,122 +244,324 @@ class ProfileBanner extends StatelessWidget {
                 BorderSide(),
               ),
             ),
-            width: MediaQuery.of(context).size.width * 0.90,
-            height: MediaQuery.of(context).size.height * 0.90,
-            child: Column(
-              children: [
-                TextButton(
-                  child: Text(StringConstants().close),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10),
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20.0,
+                      horizontal: 20,
+                    ),
                     child: Column(
-                      children: <Widget>[
-                        for (final cartElement
-                            in context.read<CartBloc>().state.cartElements)
-                          Column(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                height: 80,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 50,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                          10,
-                                        ),
-                                      ),
-                                      child: Image.asset(
-                                        'assets/images/ticket.png',
-                                      ),
-                                    ),
-                                    10.pw,
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.50,
-                                      child: Text(
-                                        cartElement.articles[0].title,
-                                        textAlign: TextAlign.left,
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '${cartElement.articles.length}',
-                                    ),
-                                    const Spacer(),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          '${StringConstants().price}: ${cartElement.articles[0].price}',
-                                        ),
-                                        SizedBox(
-                                          height: 40,
-                                          width: 40,
-                                          child: IconButton(
-                                            onPressed: () => {
-                                              context.read<CartBloc>().add(
-                                                    RemoveArticle(
-                                                      cartElement.articles[0],
-                                                    ),
-                                                  ),
-                                            },
-                                            icon: const Icon(
-                                              Icons.delete,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                      children: [
+                        10.ph,
+                        Row(
+                          children: [
+                            Text(
+                              StringConstants().cart,
+                              style: const TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 5.0,
-                                ),
-                                child: Container(
-                                  height: 1,
-                                  color: Colors.grey,
-                                  width: double.infinity,
-                                ),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              onPressed: () {
+                                context.pop();
+                              },
+                              icon: const Icon(
+                                Icons.close,
                               ),
+                            ),
+                          ],
+                        ),
+                        20.ph,
+                        SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              for (final cartElement in context
+                                  .read<CartBloc>()
+                                  .state
+                                  .cartElements)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10.0,
+                                  ),
+                                  child:
+                                      _buildArticleCart(context, cartElement),
+                                ),
                             ],
                           ),
+                        ),
                       ],
                     ),
                   ),
-                ),
-                Text(
-                  '${StringConstants().total}: ${context.read<CartBloc>().state.totalPrice}',
-                  style: const TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                10.ph,
-                ElevatedButton(
-                  onPressed: () {
-                    context.pop();
-                    context.push(
-                      RouteName.buy,
-                      extra: context.read<CartBloc>(),
-                    );
-                  },
-                  child: Text(
-                    StringConstants().buy,
-                  ),
-                ),
-                10.ph,
-              ],
+                  const Spacer(),
+                  _buildFooter(context),
+                ],
+              ),
             ),
           );
         },
       ),
+    );
+  }
+
+  Container _buildFooter(BuildContext context) {
+    return Container(
+      height: 200,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary,
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+        child: Column(
+          children: [
+            const Spacer(),
+            Row(
+              children: [
+                Text(
+                  StringConstants().total,
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  '${context.read<CartBloc>().state.totalPrice} €',
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            Container(
+              width: double.infinity,
+              height: 1,
+              color: Theme.of(context).colorScheme.surface,
+            ),
+            const Spacer(),
+            CustomCard(
+              onTap: () {
+                context.pop();
+                context.push(
+                  RouteName.buy,
+                  extra: context.read<CartBloc>(),
+                );
+              },
+              borderRadius: 30,
+              borderColor: Colors.transparent,
+              content: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  StringConstants().buy,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
+            ),
+            const Spacer(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  CustomCard _buildArticleCart(BuildContext context, CartElement cartElement) {
+    return CustomCard(
+      borderColor: Theme.of(context).colorScheme.tertiary,
+      height: 120,
+      content: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                10.ph,
+                _buildTicketHeader(context),
+                Row(
+                  children: [
+                    Checkbox(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      value: true,
+                      onChanged: (value) {},
+                      activeColor: Theme.of(context).colorScheme.primary,
+                      checkColor: Colors.white,
+                      side: WidgetStateBorderSide.resolveWith(
+                        (Set<WidgetState> states) {
+                          if (states.contains(WidgetState.selected)) {
+                            return null;
+                          }
+                          return BorderSide(
+                            color: Theme.of(context).colorScheme.tertiary,
+                          );
+                        },
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          cartElement.articles[0].title,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                        Text(
+                          cartElement.articles[0].poi.name.toUpperCase(),
+                        ),
+                        Text(
+                          cartElement.articles[0].poi.type.name,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Container(
+                height: 80,
+                width: 1,
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    textAlign: TextAlign.center,
+                    '${cartElement.articles[0].price} €',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  Container(
+                    height: 30,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        5.pw,
+                        SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: IconButton(
+                            onPressed: () => {
+                              context.read<CartBloc>().add(
+                                    RemoveArticle(
+                                      cartElement.articles[0],
+                                    ),
+                                  ),
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all(
+                                Colors.transparent,
+                              ),
+                              shape: WidgetStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                              ),
+                              side: WidgetStateBorderSide.resolveWith(
+                                (Set<WidgetState> states) {
+                                  return BorderSide(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  );
+                                },
+                              ),
+                            ),
+                            icon: Icon(
+                              Icons.remove,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          '${cartElement.articles.length}',
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: IconButton(
+                            onPressed: () => {
+                              context.read<CartBloc>().add(
+                                    AddArticle(
+                                      cartElement.articles[0],
+                                    ),
+                                  ),
+                            },
+                            icon: const Icon(
+                              Icons.add,
+                            ),
+                          ),
+                        ),
+                        5.pw,
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Row _buildTicketHeader(BuildContext context) {
+    return Row(
+      children: [
+        10.pw,
+        Container(
+          height: 25,
+          width: 25,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              10,
+            ),
+          ),
+          child: Image.asset(
+            'assets/images/ticket.png',
+          ),
+        ),
+        10.pw,
+        Text(
+          StringConstants().tickets,
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+        ),
+      ],
     );
   }
 

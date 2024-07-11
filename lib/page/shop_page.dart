@@ -30,8 +30,20 @@ class ShopPage extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(StringConstants().myProducts),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              title: Text(
+                StringConstants().myProducts,
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              ),
               centerTitle: true,
+              bottom: const PreferredSize(
+                preferredSize: Size.fromHeight(1),
+                child: Divider(
+                  color: Colors.black,
+                  height: 0,
+                ),
+              ),
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
@@ -87,8 +99,8 @@ class ShopPage extends StatelessWidget {
                     }
                     return ListView.builder(
                       itemBuilder: (context, index) {
-                        return SizedBox(
-                          height: 440,
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child:
                               TicketCardAdmin(article: state.tickets![index]),
                         );

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 
 import '../api/post/post_service.dart';
 import '../api/ticket/ticket_service.dart';
@@ -47,9 +48,13 @@ class MonumentPageV2 extends HookWidget {
       child: BlocBuilder<MonumentBloc, MonumentState>(
         builder: (context, state) {
           if (state.status == MonumentStatus.loading) {
-            return const Scaffold(
+            return Scaffold(
               body: Center(
-                child: CircularProgressIndicator(),
+                child: Lottie.asset(
+                  'assets/lottie/plane_loader.json',
+                  height: 100,
+                  width: 100,
+                ),
               ),
             );
           }
@@ -383,7 +388,14 @@ class _PageContent extends HookWidget {
                             )
                           : (tickets.length == 1
                               ? SizedBox(
-                                  height: 440,
+                                  height: context
+                                              .read<AuthBloc>()
+                                              .state
+                                              .user
+                                              ?.userTypeId ==
+                                          3
+                                      ? 405
+                                      : 370,
                                   width:
                                       MediaQuery.of(context).size.width * 0.9,
                                   child: TicketCardAdmin(article: tickets[0]),
@@ -419,7 +431,8 @@ class _PageContent extends HookWidget {
         onPressed: () => context.pop(),
       ),
       actions: [
-        if (monument.questionsCount > 0)
+        if (monument.questionsCount > 0 &&
+            context.read<AuthBloc>().state.user?.userTypeId != 3)
           ElevatedButton(
             onPressed: () =>
                 context.push('${RouteName.quizPage}/${monument.id}'),

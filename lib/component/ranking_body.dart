@@ -14,6 +14,7 @@ import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/profile.dart';
+import 'floating_widget.dart';
 
 class RankingBody extends HookWidget {
   const RankingBody({
@@ -269,7 +270,7 @@ class RankingBody extends HookWidget {
                     right: 0,
                     child: Align(
                       alignment: Alignment.topCenter,
-                      child: _FloatingChildWidget(
+                      child: FloatingWidget(
                         child: InkWell(
                           onTap: () => context.push(
                             '${RouteName.profilePage}/${state.users?.data[0].id}',
@@ -302,7 +303,7 @@ class RankingBody extends HookWidget {
                   Positioned(
                     top: 120,
                     left: 30,
-                    child: _FloatingChildWidget(
+                    child: FloatingWidget(
                       child: InkWell(
                         onTap: () => context.push(
                           '${RouteName.profilePage}/${state.users?.data[1].id}',
@@ -334,7 +335,7 @@ class RankingBody extends HookWidget {
                   Positioned(
                     top: 140,
                     right: 30,
-                    child: _FloatingChildWidget(
+                    child: FloatingWidget(
                       child: InkWell(
                         onTap: () => context.push(
                           '${RouteName.profilePage}/${state.users?.data[2].id}',
@@ -405,34 +406,5 @@ class _CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     return maxHeight != oldDelegate.maxHeight ||
         minHeight != oldDelegate.minHeight ||
         child != oldDelegate.child;
-  }
-}
-
-class _FloatingChildWidget extends HookWidget {
-  const _FloatingChildWidget({required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final AnimationController controller = useAnimationController(
-      duration: const Duration(seconds: 1),
-    )..repeat(reverse: true);
-
-    final Animation<double> animation =
-        Tween<double>(begin: -5.0, end: 5.0).animate(
-      CurvedAnimation(parent: controller, curve: Curves.easeInOut),
-    );
-
-    return AnimatedBuilder(
-      animation: animation,
-      builder: (context, child) {
-        return Transform.translate(
-          offset: Offset(0.0, animation.value),
-          child: child,
-        );
-      },
-      child: child,
-    );
   }
 }

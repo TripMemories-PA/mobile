@@ -58,11 +58,14 @@ import 'utils/messenger.dart';
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
 
+final GlobalKey<NavigatorState> _rootNavigatorKeyPoi =
+    GlobalKey<NavigatorState>(debugLabel: 'root_poi');
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MarkerIconsCustom.initialize();
   await MapStyle.initialize();
-  Stripe.publishableKey = 'pk_test_51PXqcPD03zNfc2sem171z1y1z2f7UriFAJFUVTHMUqojf62sApeAiILYcpDpguYwt9RAOcC3ssJPARbDrAMGvtok00yrnnIhRy';
+  Stripe.publishableKey = '{STRIPE_PUBLISHABLE_KEY}';
   Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
@@ -349,7 +352,7 @@ class MyApp extends HookWidget {
   );
 
   final GoRouter _poiRouter = GoRouter(
-    navigatorKey: _rootNavigatorKey,
+    navigatorKey: _rootNavigatorKeyPoi,
     initialLocation: RouteName.splashPage,
     routes: <RouteBase>[
       GoRoute(

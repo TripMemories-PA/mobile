@@ -20,7 +20,7 @@ class BannerPicture extends StatelessWidget {
     final picker = ImagePicker();
     await picker.pickImage(source: ImageSource.gallery).then(
           (pickedImage) => {
-            if (pickedImage != null)
+            if (pickedImage != null && context.mounted)
               {
                 context.read<ProfileBloc>().add(
                       UpdateProfileBannerEvent(

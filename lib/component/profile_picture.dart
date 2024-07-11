@@ -25,7 +25,7 @@ class ProfilePictureInteractive extends StatelessWidget {
         )
         .then(
           (pickedImage) => {
-            if (pickedImage != null)
+            if (pickedImage != null && context.mounted)
               {
                 context.read<ProfileBloc>().add(
                       UpdateProfilePictureEvent(

@@ -12,6 +12,7 @@ import 'bloc/auth_bloc/auth_event.dart';
 import 'bloc/auth_bloc/auth_state.dart';
 import 'bloc/cart/cart_bloc.dart';
 import 'components/scaffold_with_nav_bar.dart';
+import 'components/scaffold_with_nav_bar_poi.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
@@ -61,7 +62,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MarkerIconsCustom.initialize();
   await MapStyle.initialize();
-  Stripe.publishableKey = '{STRIPE_PUBLISHABLE_KEY}';
+  Stripe.publishableKey = 'pk_test_51PXqcPD03zNfc2sem171z1y1z2f7UriFAJFUVTHMUqojf62sApeAiILYcpDpguYwt9RAOcC3ssJPARbDrAMGvtok00yrnnIhRy';
   Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
@@ -363,7 +364,7 @@ class MyApp extends HookWidget {
           GoRouterState state,
           StatefulNavigationShell navigationShell,
         ) {
-          return ScaffoldWithNavBar(navigationShell: navigationShell);
+          return ScaffoldWithNavBarPoi(navigationShell: navigationShell);
         },
         branches: <StatefulShellBranch>[
           StatefulShellBranch(

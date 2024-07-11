@@ -22,9 +22,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
           body: SafeArea(
             child: navigationShell,
           ),
-          bottomNavigationBar: state.user?.userTypeId == 3
-              ? _buildPoiNavigationBar(context)
-              : _buildBasicNavigationBar(context),
+          bottomNavigationBar: _buildBasicNavigationBar(context),
         );
       },
     );
@@ -68,44 +66,6 @@ class ScaffoldWithNavBar extends StatelessWidget {
             Icons.emoji_events_outlined,
           ),
           label: StringConstants().ranking,
-        ),
-        BottomNavigationBarItem(
-          icon: const Icon(
-            Icons.person_outline,
-          ),
-          label: StringConstants().profile,
-        ),
-      ],
-      currentIndex: navigationShell.currentIndex,
-      onTap: (int index) => _onTap(context, index),
-    );
-  }
-
-  BottomNavigationBar _buildPoiNavigationBar(BuildContext context) {
-    return BottomNavigationBar(
-      showUnselectedLabels: true,
-      selectedItemColor: Theme.of(context).primaryColor,
-      unselectedItemColor: Colors.grey,
-      elevation: 0,
-      type: BottomNavigationBarType.fixed,
-      items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: const Icon(
-            Icons.shopping_cart_outlined,
-          ),
-          label: StringConstants().shop,
-        ),
-        BottomNavigationBarItem(
-          icon: const Icon(
-            Icons.notifications_outlined,
-          ),
-          label: StringConstants().feed,
-        ),
-        BottomNavigationBarItem(
-          icon: const Icon(
-            Icons.qr_code_2,
-          ),
-          label: StringConstants().qrCodeScanner,
         ),
         BottomNavigationBarItem(
           icon: const Icon(

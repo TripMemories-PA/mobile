@@ -291,7 +291,8 @@ class ProfileBanner extends StatelessWidget {
                                   .cartElements)
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      vertical: 10.0),
+                                    vertical: 10.0,
+                                  ),
                                   child:
                                       _buildArticleCart(context, cartElement),
                                 ),

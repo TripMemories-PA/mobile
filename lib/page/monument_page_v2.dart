@@ -431,7 +431,8 @@ class _PageContent extends HookWidget {
         onPressed: () => context.pop(),
       ),
       actions: [
-        if (monument.questionsCount > 0)
+        if (monument.questionsCount > 0 &&
+            context.read<AuthBloc>().state.user?.userTypeId != 3)
           ElevatedButton(
             onPressed: () =>
                 context.push('${RouteName.quizPage}/${monument.id}'),

@@ -105,33 +105,7 @@ class QuizPage extends StatelessWidget {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10),
-          child: Stack(
-            children: [
-              Container(
-                height: 5,
-                width: MediaQuery.of(context).size.width - 80,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  height: 5,
-                  width: (MediaQuery.of(context).size.width - 80) * progress,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        _buildProgressBar(context, progress),
         const Spacer(),
         Center(
           child: QuestionWidget(
@@ -142,6 +116,36 @@ class QuizPage extends StatelessWidget {
         const Spacer(),
         10.ph,
       ],
+    );
+  }
+
+  Padding _buildProgressBar(BuildContext context, double progress) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10),
+      child: Stack(
+        children: [
+          Container(
+            height: 5,
+            width: MediaQuery.of(context).size.width - 80,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              borderRadius: BorderRadius.circular(5),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              height: 5,
+              width: (MediaQuery.of(context).size.width - 80) * progress,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -273,7 +277,7 @@ class QuestionWidget extends HookWidget {
             child: Text(
               StringConstants().selectAnAnswer,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.tertiary,
+                color: Theme.of(context).colorScheme.onSecondary,
                 fontSize: 15,
               ),
             ),
@@ -292,7 +296,7 @@ class QuestionWidget extends HookWidget {
           if (question.image != null)
             SizedBox(
               height: 200,
-              width: MediaQuery.of(context).size.width * 0.6,
+              width: double.infinity,
               child: CachedNetworkImage(
                 fit: BoxFit.cover,
                 imageUrl: question.image!.url,
@@ -447,7 +451,6 @@ class QuestionWidget extends HookWidget {
           height: 70,
           content: Row(
             children: [
-              10.pw,
               Checkbox(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -471,12 +474,11 @@ class QuestionWidget extends HookWidget {
                   },
                 ),
               ),
-              10.pw,
               Expanded(
                 child: AutoSizeText(
                   answer.answer,
                   maxLines: 2,
-                  style: const TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 13),
                 ),
               ),
             ],

@@ -10,6 +10,7 @@ import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/ticket.dart';
 import '../utils/messenger.dart';
+import 'bouncing_widget.dart';
 import 'custom_card.dart';
 import 'popup/confirmation_dialog.dart';
 import 'popup/modify_ticket_popup.dart';
@@ -103,9 +104,9 @@ class TicketCardAdmin extends StatelessWidget {
     );
   }
 
-  ElevatedButton _buildAddToCartButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
+  BouncingWidget _buildAddToCartButton(BuildContext context) {
+    return BouncingWidget(
+      onTap: () {
         Messenger.showSnackBarSuccess(
           StringConstants().addedToCart,
         );
@@ -115,13 +116,22 @@ class TicketCardAdmin extends StatelessWidget {
               ),
             );
       },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(35),
+      child: Container(
+        height: 40,
+        width: 150,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary,
+          borderRadius: BorderRadius.circular(
+            35,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            StringConstants().addArticle,
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
         ),
       ),
-      child: Text(StringConstants().addArticle),
     );
   }
 

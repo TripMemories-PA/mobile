@@ -32,8 +32,7 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
       }
       emit(
         state.copyWith(
-          meets: event.isRefresh ? newMeets : List.of(state.meets)
-            ..addAll(newMeets),
+          meets: event.isRefresh ? newMeets : [...state.meets, ...newMeets],
           meetQueryStatus: MeetQueryStatus.notLoading,
           getMoreMeetsStatus: MeetQueryStatus.notLoading,
           currentPage: event.isRefresh ? 0 : state.currentPage + 1,

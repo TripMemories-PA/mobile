@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../api/error/api_error.dart';
 import '../../api/meet/i_meet_service.dart';
 import '../../api/meet/model/response/meet_response.dart';
 import '../../api/meet/model/response/meet_users.dart';
@@ -13,35 +14,46 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
   MeetBloc({required this.meetRepository, required this.meetService})
       : super(MeetState()) {
     on<GetPoiMeet>((event, emit) async {
-      if (event.isRefresh) {
-        emit(state.copyWith(meetQueryStatus: MeetQueryStatus.loading));
-      } else {
-        emit(state.copyWith(getMoreMeetsStatus: MeetQueryStatus.loading));
-      }
-      final MeetResponse response = await meetRepository.getPoiMeet(
-        poiId: event.poiId,
-        page: state.currentPage + 1,
-        perPage: state.perPage,
-      );
-      final List<Meet> newMeets = [];
-      for (int i = 0; i < response.data.length; i++) {
-        final MeetUsers meetUsers = await meetRepository.getMeetUsers(
-          response.data[i].id,
-          page: 1,
-          perPage: 3,
+      try {
+        if (event.isRefresh) {
+          emit(state.copyWith(meetQueryStatus: MeetQueryStatus.loading));
+        } else {
+          emit(state.copyWith(getMoreMeetsStatus: MeetQueryStatus.loading));
+        }
+        final MeetResponse response = await meetRepository.getPoiMeet(
+          poiId: event.poiId,
+          page: state.currentPage + 1,
+          perPage: state.perPage,
         );
-        newMeets.add(response.data[i].copyWith(users: meetUsers.data));
+        final List<Meet> newMeets = [];
+        for (int i = 0; i < response.data.length; i++) {
+          final MeetUsers meetUsers = await meetRepository.getMeetUsers(
+            response.data[i].id,
+            page: 1,
+            perPage: 3,
+          );
+          newMeets.add(response.data[i].copyWith(users: meetUsers.data));
+        }
+        emit(
+          state.copyWith(
+            meets: event.isRefresh ? newMeets : [...state.meets, ...newMeets],
+            meetQueryStatus: MeetQueryStatus.notLoading,
+            getMoreMeetsStatus: MeetQueryStatus.notLoading,
+            currentPage: event.isRefresh ? 0 : state.currentPage + 1,
+            hasMoreMeets:
+            response.meta.total == state.meets.length + newMeets.length,
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            meetQueryStatus: MeetQueryStatus.error,
+            getMoreMeetsStatus: MeetQueryStatus.error,
+            error: e is ApiError ? e : ApiError.errorOccurred(),
+          ),
+        );
       }
-      emit(
-        state.copyWith(
-          meets: event.isRefresh ? newMeets : [...state.meets, ...newMeets],
-          meetQueryStatus: MeetQueryStatus.notLoading,
-          getMoreMeetsStatus: MeetQueryStatus.notLoading,
-          currentPage: event.isRefresh ? 0 : state.currentPage + 1,
-          hasMoreMeets:
-              response.meta.total == state.meets.length + newMeets.length,
-        ),
-      );
+
     });
 
     on<AskToJoinMeet>((event, emit) async {

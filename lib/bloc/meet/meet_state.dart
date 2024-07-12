@@ -11,6 +11,7 @@ class MeetState {
     this.getMoreMeetsStatus = MeetQueryStatus.notLoading,
     this.joinMeetStatus = JoinMeetStatus.notLoading,
     this.selectedMeetId,
+    this.error,
   });
 
   MeetState copyWith({
@@ -21,6 +22,7 @@ class MeetState {
     MeetQueryStatus? getMoreMeetsStatus,
     JoinMeetStatus? joinMeetStatus,
     int? selectedMeetId,
+    ApiError? error,
   }) {
     return MeetState(
       meets: meets ?? this.meets,
@@ -30,6 +32,7 @@ class MeetState {
       getMoreMeetsStatus: getMoreMeetsStatus ?? this.getMoreMeetsStatus,
       joinMeetStatus: joinMeetStatus ?? this.joinMeetStatus,
       selectedMeetId: selectedMeetId,
+      error: error,
     );
   }
 
@@ -41,5 +44,6 @@ class MeetState {
   MeetQueryStatus getMoreMeetsStatus;
   JoinMeetStatus joinMeetStatus;
   int? selectedMeetId;
+  ApiError? error;
 
 }

@@ -9,3 +9,9 @@ class GetMeet extends MeetDetailsEvent {
 }
 
 class LeaveMeetEvent extends MeetDetailsEvent {}
+
+class GetMeetUsers extends MeetDetailsEvent {
+  GetMeetUsers({this.isRefresh = false});
+
+  final bool isRefresh;
+}

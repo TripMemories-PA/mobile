@@ -435,6 +435,8 @@ class _PageContent extends HookWidget {
             context.read<AuthBloc>().state.user?.userTypeId != 3)
           Row(
             children: [
+              if (context.read<AuthBloc>().state.status ==
+                  AuthStatus.authenticated && context.read<AuthBloc>().state.user?.userTypeId != 3)
               ElevatedButton(
                 onPressed: () =>
                     context.push('${RouteName.poiMeet}/${monument.id}'),

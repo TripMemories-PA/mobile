@@ -79,6 +79,11 @@ class _MeetPageBody extends HookWidget {
         } else if (state.joinMeetStatus == JoinMeetStatus.rejected) {
           Messenger.showSnackBarError(StringConstants().meetJoinFailed);
         }
+        if (state.meetQueryStatus == MeetQueryStatus.error) {
+          Messenger.showSnackBarError(
+            state.error?.getDescription() ?? StringConstants().errorOccurred,
+          );
+        }
       },
       builder: (context, state) {
         return Scaffold(
@@ -116,7 +121,7 @@ class _MeetPageBody extends HookWidget {
                             );
                       },
                       child: ListView.builder(
-                        controller: ScrollController(),
+                        controller: scrollController,
                         itemCount: state.hasMoreMeets
                             ? state.meets.length + 1
                             : state.meets.length,
@@ -201,7 +206,8 @@ class _MeetPageBody extends HookWidget {
                 : StringConstants().joinMeet,
           ),
           const Spacer(),
-          if (state.joinMeetStatus == JoinMeetStatus.loading && state.selectedMeetId == meet.id)
+          if (state.joinMeetStatus == JoinMeetStatus.loading &&
+              state.selectedMeetId == meet.id)
             const Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 12,

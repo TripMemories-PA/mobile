@@ -2,7 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../api/error/api_error.dart';
 import '../../api/meet/i_meet_service.dart';
+import '../../api/meet/model/response/meet_users.dart';
 import '../../object/meet.dart';
+import '../../object/profile.dart';
 import '../../repository/meet/i_meet_repository.dart';
 import '../meet/meet_bloc.dart';
 
@@ -16,16 +18,27 @@ class MeetDetailsBloc extends Bloc<MeetDetailsEvent, MeetDetailsState> {
     required this.meetBloc,
   }) : super(MeetDetailsState()) {
     on<GetMeet>((event, emit) async {
-      emit(
-        state.copyWith(meetDetailsQueryStatus: MeetDetailsQueryStatus.loading),
-      );
-      final Meet meet = await meetRepository.getMeet(event.meetId);
-      emit(
-        state.copyWith(
-          meet: meet,
-          meetDetailsQueryStatus: MeetDetailsQueryStatus.notLoading,
-        ),
-      );
+      try {
+        emit(
+          state.copyWith(meetDetailsQueryStatus: MeetDetailsQueryStatus.loading),
+        );
+        final Meet meet = await meetRepository.getMeet(event.meetId);
+        add(GetMeetUsers(isRefresh: true));
+        emit(
+          state.copyWith(
+            meet: meet,
+            meetDetailsQueryStatus: MeetDetailsQueryStatus.notLoading,
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            meetDetailsQueryStatus: MeetDetailsQueryStatus.error,
+            error: e is ApiError ? e : ApiError.errorOccurred(),
+          ),
+        );
+      }
+
     });
 
     on<LeaveMeetEvent>((event, emit) async {
@@ -46,6 +59,43 @@ class MeetDetailsBloc extends Bloc<MeetDetailsEvent, MeetDetailsState> {
           ),
         );
       }
+    });
+
+    on<GetMeetUsers>((event, emit) async {
+      try {
+        if (event.isRefresh) {
+          emit(state.copyWith(
+              getUsersLoadingStatus: MeetDetailsQueryStatus.loading,),);
+        } else {
+          emit(state.copyWith(
+              getMoreUsersLoadingStatus: MeetDetailsQueryStatus.loading,),);
+        }
+        final MeetUsers response = await meetRepository.getMeetUsers(
+          state.meet!.id,
+          page: event.isRefresh ? 1 : state.usersPage + 1,
+          perPage: state.usersPerPage,
+        );
+        emit(
+          state.copyWith(
+            users: event.isRefresh
+                ? response.data
+                : [...state.users, ...response.data],
+            getUsersLoadingStatus: MeetDetailsQueryStatus.notLoading,
+            getMoreUsersLoadingStatus: MeetDetailsQueryStatus.notLoading,
+            usersPage: event.isRefresh ? 0 : state.usersPage + 1,
+            hasMoreUsers:
+            response.meta.total > state.users.length + response.data.length,
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            getUsersLoadingStatus: MeetDetailsQueryStatus.error,
+            error: e is ApiError ? e : ApiError.errorOccurred(),
+          ),
+        );
+      }
+
     });
   }
 

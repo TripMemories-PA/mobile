@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../api/meet/model/response/meet_response.dart';
+import '../../api/meet/model/response/meet_users.dart';
 import '../../object/meet.dart';
 import '../../repository/meet/i_meet_repository.dart';
 
@@ -20,14 +21,24 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
         page: state.currentPage + 1,
         perPage: state.perPage,
       );
+      final List<Meet> newMeets = [];
+      for(int i = 0; i < response.data.length; i++) {
+        final MeetUsers meetUsers = await meetRepository.getMeetUsers(
+          response.data[i].id,
+          page: 1,
+          perPage: 3,
+        );
+        newMeets.add(response.data[i].copyWith(users: meetUsers.data));
+      }
       emit(
         state.copyWith(
-          meets: event.isRefresh ? response.data : List.of(state.meets)
-            ..addAll(response.data),
+          meets: event.isRefresh ? newMeets : List.of(state.meets)
+            ..addAll(newMeets),
           meetQueryStatus: MeetQueryStatus.notLoading,
           getMoreMeetsStatus: MeetQueryStatus.notLoading,
           currentPage: event.isRefresh ? 0 : state.currentPage + 1,
-          hasMoreMeets: response.meta.total == state.meets.length + response.data.length,
+          hasMoreMeets:
+              response.meta.total == state.meets.length + newMeets.length,
         ),
       );
     });

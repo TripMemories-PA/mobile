@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../api/meet/i_meet_service.dart';
 import '../../api/meet/model/response/meet_response.dart';
 import '../../api/meet/model/response/meet_users.dart';
 import '../../object/meet.dart';
@@ -9,7 +10,8 @@ part 'meet_event.dart';
 part 'meet_state.dart';
 
 class MeetBloc extends Bloc<MeetEvent, MeetState> {
-  MeetBloc({required this.meetRepository}) : super(MeetState()) {
+  MeetBloc({required this.meetRepository, required this.meetService})
+      : super(MeetState()) {
     on<GetPoiMeet>((event, emit) async {
       if (event.isRefresh) {
         emit(state.copyWith(meetQueryStatus: MeetQueryStatus.loading));
@@ -22,7 +24,7 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
         perPage: state.perPage,
       );
       final List<Meet> newMeets = [];
-      for(int i = 0; i < response.data.length; i++) {
+      for (int i = 0; i < response.data.length; i++) {
         final MeetUsers meetUsers = await meetRepository.getMeetUsers(
           response.data[i].id,
           page: 1,
@@ -41,7 +43,36 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
         ),
       );
     });
+
+    on<AskToJoinMeet>((event, emit) async {
+      try {
+        emit(state.copyWith(joinMeetStatus: JoinMeetStatus.loading));
+        await meetService.joinMeet(
+          event.meetId,
+        );
+        emit(
+          state.copyWith(
+            joinMeetStatus: JoinMeetStatus.accepted,
+            meets: state.meets.map((meet) {
+              if (meet.id == event.meetId) {
+                return meet.copyWith(
+                  canJoin: true,
+                );
+              }
+              return meet;
+            }).toList(),
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            joinMeetStatus: JoinMeetStatus.rejected,
+          ),
+        );
+      }
+    });
   }
 
   final IMeetRepository meetRepository;
+  final IMeetService meetService;
 }

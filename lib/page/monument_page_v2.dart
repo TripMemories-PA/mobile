@@ -437,7 +437,7 @@ class _PageContent extends HookWidget {
             children: [
               ElevatedButton(
                 onPressed: () =>
-                    context.push('${RouteName.meet}/${monument.id}'),
+                    context.push('${RouteName.poiMeet}/${monument.id}'),
                 child: Text(
                   StringConstants().meet,
                 ),

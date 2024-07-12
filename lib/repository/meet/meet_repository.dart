@@ -1,5 +1,6 @@
 import '../../api/meet/model/response/meet_response.dart';
 import '../../api/meet/model/response/meet_users.dart';
+import '../../object/meet.dart';
 import '../../service/meet/meet_remote_data_source.dart';
 import 'i_meet_repository.dart';
 
@@ -9,7 +10,7 @@ class MeetRepository implements IMeetRepository {
   final MeetRemoteDataSource remoteDataSource;
 
   @override
-  Future<MeetResponse> getMeet(int meetId) {
+  Future<Meet> getMeet(int meetId) {
     return remoteDataSource.getMeet(meetId);
   }
 

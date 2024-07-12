@@ -456,4 +456,16 @@ class StringConstants {
   String get passwordValidator => r'''
   Pour un mot de passe valide, assurez-vous qu'il contienne entre 8 et 16 caractères, au moins une lettre, une majuscule, au moins un chiffre, aucun espace, et au moins un caractère spécial parmi !@#$%^&*(),.?":{}|<>.
 ''';
+
+  String get seeMeet => 'Voir le meet';
+
+  String get joinMeet => 'Rejoindre le meet';
+
+  String get noMoreMeets => 'Plus de meets à afficher';
+
+  String get noMeetFound => 'Aucun meet trouvé';
+
+  String get meetJoined => 'Meet rejoint';
+
+  String get meetJoinFailed => 'Echec de la rejoindre du meet';
 }

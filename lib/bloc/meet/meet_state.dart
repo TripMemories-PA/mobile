@@ -1,7 +1,7 @@
 part of 'meet_bloc.dart';
 
 enum MeetQueryStatus { loading, notLoading, error }
-
+enum JoinMeetStatus { loading, notLoading, accepted, rejected }
 class MeetState {
   MeetState({
     this.meets = const [],
@@ -9,6 +9,8 @@ class MeetState {
     this.currentPage = 0,
     this.hasMoreMeets = true,
     this.getMoreMeetsStatus = MeetQueryStatus.notLoading,
+    this.joinMeetStatus = JoinMeetStatus.notLoading,
+    this.selectedMeetId,
   });
 
   MeetState copyWith({
@@ -17,6 +19,8 @@ class MeetState {
     int? currentPage,
     bool? hasMoreMeets,
     MeetQueryStatus? getMoreMeetsStatus,
+    JoinMeetStatus? joinMeetStatus,
+    int? selectedMeetId,
   }) {
     return MeetState(
       meets: meets ?? this.meets,
@@ -24,6 +28,8 @@ class MeetState {
       currentPage: currentPage ?? this.currentPage,
       hasMoreMeets: hasMoreMeets ?? this.hasMoreMeets,
       getMoreMeetsStatus: getMoreMeetsStatus ?? this.getMoreMeetsStatus,
+      joinMeetStatus: joinMeetStatus ?? this.joinMeetStatus,
+      selectedMeetId: selectedMeetId ?? this.selectedMeetId,
     );
   }
 
@@ -33,5 +39,7 @@ class MeetState {
   int perPage = 10;
   bool hasMoreMeets;
   MeetQueryStatus getMoreMeetsStatus;
+  JoinMeetStatus joinMeetStatus;
+  int? selectedMeetId;
 
 }

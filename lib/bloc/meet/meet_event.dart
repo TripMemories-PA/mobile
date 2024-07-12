@@ -8,3 +8,9 @@ class GetPoiMeet extends MeetEvent {
   final int poiId;
   final bool isRefresh;
 }
+
+class AskToJoinMeet extends MeetEvent {
+  AskToJoinMeet({required this.meetId});
+
+  final int meetId;
+}

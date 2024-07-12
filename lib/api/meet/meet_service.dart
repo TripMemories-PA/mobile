@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../app.config.dart';
+import '../../object/meet.dart';
 import '../../repository/meet/i_meet_repository.dart';
 import '../dio.dart';
 import '../error/api_error.dart';
@@ -15,8 +16,11 @@ class MeetService implements IMeetRepository, IMeetService {
   static const String apiMeetsBaseUrl = '${AppConfig.apiUrl}/meets';
 
   @override
-  Future<MeetUsers> getMeetUsers(int meetId,
-      {required int page, required int perPage,}) async {
+  Future<MeetUsers> getMeetUsers(
+    int meetId, {
+    required int page,
+    required int perPage,
+  }) async {
     Response response;
     try {
       final String url =
@@ -29,7 +33,8 @@ class MeetService implements IMeetRepository, IMeetService {
       return MeetUsers.fromJson(response.data);
     } catch (e) {
       throw ParsingResponseException(
-          ApiError.errorOccurredWhileParsingResponse(),);
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
     }
   }
 
@@ -56,12 +61,13 @@ class MeetService implements IMeetRepository, IMeetService {
       return MeetResponse.fromJson(response.data);
     } catch (e) {
       throw ParsingResponseException(
-          ApiError.errorOccurredWhileParsingResponse(),);
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
     }
   }
 
   @override
-  Future<MeetResponse> getMeet(int meetId) async {
+  Future<Meet> getMeet(int meetId) async {
     Response response;
     try {
       final String url = '$apiMeetsBaseUrl/$meetId';
@@ -70,10 +76,11 @@ class MeetService implements IMeetRepository, IMeetService {
       throw BadRequestException(AuthError.notAuthenticated());
     }
     try {
-      return MeetResponse.fromJson(response.data);
+      return Meet.fromJson(response.data);
     } catch (e) {
       throw ParsingResponseException(
-          ApiError.errorOccurredWhileParsingResponse(),);
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
     }
   }
 
@@ -90,7 +97,8 @@ class MeetService implements IMeetRepository, IMeetService {
       return MeetResponse.fromJson(response.data);
     } catch (e) {
       throw ParsingResponseException(
-          ApiError.errorOccurredWhileParsingResponse(),);
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
     }
   }
 
@@ -142,7 +150,8 @@ class MeetService implements IMeetRepository, IMeetService {
   }) async {
     Response response;
     try {
-      final String url = '${AppConfig.apiUrl}/pois/$poiId/meets?page=$page&perPage=$perPage';
+      final String url =
+          '${AppConfig.apiUrl}/pois/$poiId/meets?page=$page&perPage=$perPage';
       response = await DioClient.instance.get(url);
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());
@@ -151,7 +160,8 @@ class MeetService implements IMeetRepository, IMeetService {
       return MeetResponse.fromJson(response.data);
     } catch (e) {
       throw ParsingResponseException(
-          ApiError.errorOccurredWhileParsingResponse(),);
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
     }
   }
 }

@@ -28,6 +28,7 @@ import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
 import 'page/map_page.dart';
 import 'page/map_page_user_connected.dart';
+import 'page/meet_details_page.dart';
 import 'page/meet_page.dart';
 import 'page/monument_page_v2.dart';
 import 'page/payment_sheet_screen.dart';
@@ -180,14 +181,34 @@ class MyApp extends HookWidget {
                 },
               ),
               GoRoute(
+                path: '${RouteName.poiMeet}/:monumentId',
+                pageBuilder: (context, state) {
+                  final int poiId =
+                      int.parse(state.pathParameters['monumentId'] ?? '');
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: MeetPage(
+                      poiId: poiId,
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return CustomTransition.buildBottomToTopPopTransition(
+                        animation,
+                        child,
+                      );
+                    },
+                  );
+                },
+              ),
+              GoRoute(
                 path: '${RouteName.meet}/:meetId',
                 pageBuilder: (context, state) {
                   final int meetId =
                       int.parse(state.pathParameters['meetId'] ?? '');
                   return CustomTransitionPage(
                     key: state.pageKey,
-                    child: MeetPage(
-                      poiId: meetId,
+                    child: MeetDetailsPage(
+                      meetId: meetId,
                     ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {

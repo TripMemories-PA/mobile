@@ -22,7 +22,7 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
         }
         final MeetResponse response = await meetRepository.getPoiMeet(
           poiId: event.poiId,
-          page: state.currentPage + 1,
+          page: event.isRefresh ? 1 : state.currentPage + 1,
           perPage: state.perPage,
         );
         final List<Meet> newMeets = [];
@@ -41,7 +41,7 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
             getMoreMeetsStatus: MeetQueryStatus.notLoading,
             currentPage: event.isRefresh ? 0 : state.currentPage + 1,
             hasMoreMeets:
-            response.meta.total == state.meets.length + newMeets.length,
+                response.meta.total == state.meets.length + newMeets.length,
           ),
         );
       } catch (e) {
@@ -53,12 +53,13 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
           ),
         );
       }
-
     });
 
     on<AskToJoinMeet>((event, emit) async {
       try {
-        emit(state.copyWith(joinMeetStatus: JoinMeetStatus.loading, selectedMeetId: event.meetId));
+        emit(state.copyWith(
+            joinMeetStatus: JoinMeetStatus.loading,
+            selectedMeetId: event.meetId));
         await meetService.joinMeet(
           event.meetId,
         );

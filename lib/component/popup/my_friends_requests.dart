@@ -29,6 +29,7 @@ class MyFriendsRequests extends StatelessWidget {
           return Dialog(
             insetPadding: EdgeInsets.zero,
             child: CustomCard(
+              borderColor: Colors.transparent,
               width: MediaQuery.of(context).size.width * 0.90,
               height: MediaQuery.of(context).size.height * 0.81,
               content: _buildContent(context),
@@ -40,11 +41,15 @@ class MyFriendsRequests extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
-    return Column(
-      children: [
-        _buildTitle(context),
-        _buildFriendsList(context),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          _buildTitle(context),
+          10.ph,
+          _buildFriendsList(context),
+        ],
+      ),
     );
   }
 
@@ -84,7 +89,6 @@ class MyFriendsRequests extends StatelessWidget {
         builder: (context, state) {
           return Expanded(
             child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               children: [
                 ...context
                         .read<FriendRequestBloc>()

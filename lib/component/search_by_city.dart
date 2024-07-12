@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../bloc/city_bloc/city_bloc.dart';
 import '../constants/string_constants.dart';
@@ -90,20 +91,25 @@ class SearchByCity extends HookWidget {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     text: '${StringConstants().discoverTheIncredible} ',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
+                      fontFamily: GoogleFonts.urbanist().fontFamily,
                     ),
                     children: <TextSpan>[
                       TextSpan(
                         text: StringConstants().cities,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
+                          fontFamily: GoogleFonts.urbanist().fontFamily,
                         ),
                       ),
                       TextSpan(
                         text: ' ${StringConstants().thatFranceIsHiding}',
+                        style: TextStyle(
+                          fontFamily: GoogleFonts.urbanist().fontFamily,
+                        ),
                       ),
                     ],
                   ),

@@ -23,12 +23,22 @@ class LoginPage extends HookWidget {
             SizedBox(
               height: 60,
               child: TabBar(
+                dividerColor: Colors.transparent,
+                unselectedLabelColor: Colors.grey,
                 tabs: [
                   Tab(
-                    icon: Text(StringConstants().login),
+                    icon: Text(
+                      StringConstants().login,
+                      style: const TextStyle(fontSize: 17),
+                    ),
                     iconMargin: EdgeInsets.zero,
                   ),
-                  Tab(icon: Text(StringConstants().subscribe)),
+                  Tab(
+                    icon: Text(
+                      StringConstants().subscribe,
+                      style: const TextStyle(fontSize: 17),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -72,7 +82,7 @@ class LoginPage extends HookWidget {
         children: [
           Column(
             children: [
-              20.ph,
+              40.ph,
               Text(
                 StringConstants().welcomeBack,
                 style: const TextStyle(
@@ -117,7 +127,7 @@ class LoginPage extends HookWidget {
               Text(
                 StringConstants().subscribeText,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 13,
                 ),
               ),
             ],

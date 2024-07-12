@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/profile/profile_bloc.dart';
-import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
+import '../num_extensions.dart';
 
 class FriendsAndVisitedWidget extends StatelessWidget {
   const FriendsAndVisitedWidget({super.key, this.itIsMe = false});
@@ -36,6 +36,7 @@ class FriendsAndVisitedWidget extends StatelessWidget {
     return _buildCard(
       StringConstants().friendAdded,
       friendsCount,
+      context,
     );
   }
 
@@ -45,34 +46,38 @@ class FriendsAndVisitedWidget extends StatelessWidget {
     return _buildCard(
       StringConstants().visitedBuildings,
       visitedCount,
+      context,
     );
   }
 
   Widget _buildCard(
     String subText,
     int count,
+      BuildContext context,
   ) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            count.toString(),
-            style: const TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ),
-          Text(subText),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Container(
-              color: MyColors.darkGrey,
-              height: 1,
-              width: 130,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              count.toString(),
+              style: const TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+            Text(subText),
+            15.ph,
+          ],
+        ),
       ),
     );
   }

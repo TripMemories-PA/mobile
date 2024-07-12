@@ -77,6 +77,7 @@ class SubscribeForm extends HookWidget {
                     passwordController: confirmPasswordController,
                     previousPasswordController: passwordController,
                   ),
+                  10.ph,
                   Row(
                     children: [
                       Checkbox(

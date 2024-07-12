@@ -55,16 +55,19 @@ class ThemeGenerator {
         surfaceContainerLow: Color(0xffeff3ff),
       );
 
-  static InputDecorationTheme get _inputDecorationTheme =>
-      const InputDecorationTheme(
-        enabledBorder: UnderlineInputBorder(
+  static InputDecorationTheme get _inputDecorationTheme => InputDecorationTheme(
+        enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: MyColors.darkGrey),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.green),
         ),
-        labelStyle: TextStyle(color: Colors.grey),
-        contentPadding: EdgeInsets.only(left: 8.0),
+        labelStyle: const TextStyle(color: Colors.grey),
+        contentPadding: const EdgeInsets.only(left: 8.0),
+        hintStyle: TextStyle(
+          fontFamily: GoogleFonts.urbanist().fontFamily,
+          color: _hintColor,
+        ),
       );
 
   static TabBarTheme get _tabBarTheme => TabBarTheme(

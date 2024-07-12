@@ -74,11 +74,9 @@ class SlidePage extends HookWidget {
               );
             },
             borderRadius: const BorderRadius.all(Radius.circular(8)),
-            borderColor: Theme.of(context).colorScheme.onSecondary,
             selectedColor: Theme.of(context).colorScheme.onPrimary,
             fillColor: Theme.of(context).colorScheme.primary,
             color: Theme.of(context).colorScheme.onSecondary,
-            selectedBorderColor: Theme.of(context).colorScheme.onSecondary,
             constraints: const BoxConstraints(
               minHeight: 30.0,
               minWidth: 170.0,

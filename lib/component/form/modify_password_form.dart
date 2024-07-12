@@ -25,7 +25,7 @@ class UpdatePasswordForm extends HookWidget {
           Container(
             height: 45,
             decoration: ShapeDecoration(
-              color: MyColors.lightGrey,
+              color: Theme.of(context).colorScheme.secondary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -51,7 +51,7 @@ class UpdatePasswordForm extends HookWidget {
           Container(
             height: 45,
             decoration: ShapeDecoration(
-              color: MyColors.lightGrey,
+              color: Theme.of(context).colorScheme.secondary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),

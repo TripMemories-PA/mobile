@@ -34,6 +34,7 @@ class UserSearching extends HookWidget {
             return Dialog(
               insetPadding: EdgeInsets.zero,
               child: CustomCard(
+                borderColor: Colors.transparent,
                 width: MediaQuery.of(context).size.width * 0.90,
                 height: MediaQuery.of(context).size.height * 0.81,
                 content: SizedBox.expand(
@@ -41,16 +42,11 @@ class UserSearching extends HookWidget {
                     children: [
                       const SearchingUsersBody(),
                       Positioned(
-                        top: 30,
+                        top: 10,
                         right: 10,
-                        child: SizedBox(
-                          height: 25,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.pop();
-                            },
-                            child: Text(StringConstants().close),
-                          ),
+                        child: IconButton(
+                          onPressed: () => context.pop(),
+                          icon: const Icon(Icons.close),
                         ),
                       ),
                     ],
@@ -246,13 +242,13 @@ class SearchingUsersBody extends HookWidget {
     TextEditingController searchController,
     ValueNotifier<String> searchContent,
   ) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          '',
-          style: TextStyle(
+          StringConstants().addFriends,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),

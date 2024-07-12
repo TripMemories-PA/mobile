@@ -122,6 +122,7 @@ class ProfilePage extends HookWidget {
         child: ColoredBox(
           color: Theme.of(context).colorScheme.surface,
           child: TabBar(
+            dividerColor: Colors.transparent,
             unselectedLabelColor: MyColors.darkGrey,
             controller: tabController,
             indicatorSize: TabBarIndicatorSize.tab,
@@ -144,12 +145,12 @@ class ProfilePage extends HookWidget {
               onPressed: () => context.pop(),
             )
           : null,
-      expandedHeight: 300,
+      expandedHeight: 325,
       flexibleSpace: FlexibleSpaceBar(
         background: ListView(
           children: [
             SizedBox(
-              height: 300,
+              height: 325,
               child: ProfileInfos(
                 isMyProfile: userId == null,
               ),
@@ -197,7 +198,7 @@ class MyPostsAndMyFriends extends HookWidget {
   Widget build(BuildContext context) {
     final int? tmpUserId = userId;
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: const EdgeInsets.only(top: 30.0),
       child: tmpUserId == null
           ? TabBarView(
               controller: tabController,

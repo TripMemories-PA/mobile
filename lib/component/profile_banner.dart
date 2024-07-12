@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../api/profile/profile_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
@@ -19,7 +20,6 @@ import '../utils/messenger.dart';
 import 'custom_card.dart';
 import 'friends_and_visited_widget.dart';
 import 'popup/confirmation_dialog.dart';
-import 'popup/modify_user_infos_popup.dart';
 import 'popup/my_friends_requests.dart';
 
 class ProfileBanner extends StatelessWidget {
@@ -152,6 +152,9 @@ class ProfileBanner extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
+                      fontFamily:
+                          GoogleFonts.urbanist(fontWeight: FontWeight.w700)
+                              .fontFamily,
                     ),
                   ),
                   Text(
@@ -584,7 +587,10 @@ class ProfileBanner extends StatelessWidget {
           color: Theme.of(context).colorScheme.primary,
         );
         onPressed = () async {
-          await modifyUserInfosPopup(context);
+          context.push(
+            RouteName.editProfile,
+            extra: context.read<ProfileBloc>(),
+          );
         };
       } else {
         if (profile.isFriend ?? false) {
@@ -657,6 +663,8 @@ class ProfileBanner extends StatelessWidget {
       }
       return icon != null
           ? Container(
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                 border: Border.all(
                   color: Theme.of(context).primaryColor,

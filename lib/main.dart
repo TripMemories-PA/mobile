@@ -11,6 +11,7 @@ import 'bloc/auth_bloc/auth_bloc.dart';
 import 'bloc/auth_bloc/auth_event.dart';
 import 'bloc/auth_bloc/auth_state.dart';
 import 'bloc/cart/cart_bloc.dart';
+import 'bloc/meet/meet_bloc.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'components/scaffold_with_nav_bar_poi.dart';
 import 'constants/route_name.dart';
@@ -203,11 +204,13 @@ class MyApp extends HookWidget {
               GoRoute(
                 path: '${RouteName.meet}/:meetId',
                 pageBuilder: (context, state) {
+                  final MeetBloc meetBloc = state.extra! as MeetBloc;
                   final int meetId =
-                      int.parse(state.pathParameters['meetId'] ?? '');
+                  int.parse(state.pathParameters['meetId'] ?? '');
                   return CustomTransitionPage(
                     key: state.pageKey,
                     child: MeetDetailsPage(
+                      meetBloc: meetBloc,
                       meetId: meetId,
                     ),
                     transitionsBuilder:

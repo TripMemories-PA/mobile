@@ -467,5 +467,7 @@ class StringConstants {
 
   String get meetJoined => 'Meet rejoint';
 
-  String get meetJoinFailed => 'Echec de la rejoindre du meet';
+  String get leaveMeet => 'Quitter le meet';
+
+  String get meetJoinFailed => 'Impossible de rejoindre le meet';
 }

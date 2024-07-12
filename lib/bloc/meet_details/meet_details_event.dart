@@ -7,3 +7,5 @@ class GetMeet extends MeetDetailsEvent {
 
   final int meetId;
 }
+
+class LeaveMeetEvent extends MeetDetailsEvent {}

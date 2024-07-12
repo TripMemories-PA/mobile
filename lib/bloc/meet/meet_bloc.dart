@@ -46,7 +46,7 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
 
     on<AskToJoinMeet>((event, emit) async {
       try {
-        emit(state.copyWith(joinMeetStatus: JoinMeetStatus.loading));
+        emit(state.copyWith(joinMeetStatus: JoinMeetStatus.loading, selectedMeetId: event.meetId));
         await meetService.joinMeet(
           event.meetId,
         );
@@ -56,7 +56,8 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
             meets: state.meets.map((meet) {
               if (meet.id == event.meetId) {
                 return meet.copyWith(
-                  canJoin: true,
+                  canJoin: false,
+                  hasJoined: true,
                 );
               }
               return meet;

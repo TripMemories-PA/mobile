@@ -11,7 +11,6 @@ import '../bloc/meet/meet_bloc.dart';
 import '../component/custom_card.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
-import '../num_extensions.dart';
 import '../object/meet.dart';
 import '../repository/meet/meet_repository.dart';
 import '../utils/messenger.dart';
@@ -107,24 +106,34 @@ class _MeetPageBody extends HookWidget {
                   ? Center(
                       child: Text(StringConstants().noMeetFound),
                     )
-                  : ListView.builder(
-                      controller: ScrollController(),
-                      itemCount: state.hasMoreMeets
-                          ? state.meets.length + 1
-                          : state.meets.length,
-                      itemBuilder: (context, index) {
-                        if (index == state.meets.length) {
-                          return Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Center(
-                              child: Text(StringConstants().noMoreMeets),
-                            ),
-                          );
-                        }
-
-                        final meet = state.meets[index];
-                        return _buildMeetPreviewCard(meet, context, state);
+                  : RefreshIndicator(
+                      onRefresh: () async {
+                        context.read<MeetBloc>().add(
+                              GetPoiMeet(
+                                poiId: poiId,
+                                isRefresh: true,
+                              ),
+                            );
                       },
+                      child: ListView.builder(
+                        controller: ScrollController(),
+                        itemCount: state.hasMoreMeets
+                            ? state.meets.length + 1
+                            : state.meets.length,
+                        itemBuilder: (context, index) {
+                          if (index == state.meets.length) {
+                            return Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Center(
+                                child: Text(StringConstants().noMoreMeets),
+                              ),
+                            );
+                          }
+
+                          final meet = state.meets[index];
+                          return _buildMeetPreviewCard(meet, context, state);
+                        },
+                      ),
                     )),
         );
       },
@@ -169,7 +178,10 @@ class _MeetPageBody extends HookWidget {
     return ElevatedButton(
       onPressed: () {
         if (meet.hasJoined ?? false) {
-          context.push('${RouteName.meet}/${meet.id}');
+          context.push(
+            '${RouteName.meet}/${meet.id}',
+            extra: context.read<MeetBloc>(),
+          );
         } else {
           if (meet.canJoin ?? false) {
             context.read<MeetBloc>().add(AskToJoinMeet(meetId: meet.id));
@@ -183,7 +195,13 @@ class _MeetPageBody extends HookWidget {
       ),
       child: Row(
         children: [
-          if (state.joinMeetStatus == JoinMeetStatus.loading)
+          Text(
+            (meet.hasJoined ?? false)
+                ? StringConstants().seeMeet
+                : StringConstants().joinMeet,
+          ),
+          const Spacer(),
+          if (state.joinMeetStatus == JoinMeetStatus.loading && state.selectedMeetId == meet.id)
             const Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 12,
@@ -197,14 +215,7 @@ class _MeetPageBody extends HookWidget {
                   ),
                 ),
               ),
-            )
-          else
-            44.ph,
-          Text(
-            (meet.hasJoined ?? false)
-                ? StringConstants().seeMeet
-                : StringConstants().joinMeet,
-          ),
+            ),
         ],
       ),
     );

@@ -29,7 +29,7 @@ class MeetState {
       hasMoreMeets: hasMoreMeets ?? this.hasMoreMeets,
       getMoreMeetsStatus: getMoreMeetsStatus ?? this.getMoreMeetsStatus,
       joinMeetStatus: joinMeetStatus ?? this.joinMeetStatus,
-      selectedMeetId: selectedMeetId ?? this.selectedMeetId,
+      selectedMeetId: selectedMeetId,
     );
   }
 

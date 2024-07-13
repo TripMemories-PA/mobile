@@ -1,0 +1,358 @@
+{
+  "language": "English",
+  "@language": {
+    "description": "English language"
+  },
+  "helloWorld": "Hello, World!",
+  "@helloWorld": {
+    "description": "Hello, World!"
+  },
+  "yes": "Yes",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "No",
+  "@no": {
+    "description": "No"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry"
+  },
+  "notAuthenticated": "Not authenticated",
+  "@notAuthenticated": {
+    "description": "Not authenticated"
+  },
+  "wrongEmailOrPassword": "Wrong email or password",
+  "@wrongEmailOrPassword": {
+    "description": "Wrong email or password"
+  },
+  "emailOrPasswordAlreadyExists": "Email or username already used",
+  "@emailOrPasswordAlreadyExists": {
+    "description": "Email or username already used"
+  },
+  "invalidEmail": "Invalid email",
+  "@invalidEmail": {
+    "description": "Invalid email"
+  },
+  "invalidPassword": "Invalid password",
+  "@invalidPassword": {
+    "description": "Invalid password"
+  },
+  "passwordNotMatch": "The passwords do not match",
+  "@passwordNotMatch": {
+    "description": "The passwords do not match"
+  },
+  "requiredField": "Required field",
+  "@requiredField": {
+    "description": "Required field"
+  },
+  "hostUnreachable": "Host unreachable",
+  "@hostUnreachable": {
+    "description": "Host unreachable"
+  },
+  "cannotReachLocalData": "Cannot reach local data",
+  "@cannotReachLocalData": {
+    "description": "Cannot reach local data"
+  },
+  "unknownError": "Unknown error",
+  "@unknownError": {
+    "description": "Unknown error"
+  },
+  "errorOccurred": "Error occurred",
+  "@errorOccurred": {
+    "description": "Error occurred"
+  },
+  "errorLoadingImage": "Error occurred while loading image",
+  "@errorLoadingImage": {
+    "description": "Error occurred while loading image"
+  },
+  "errorOccurredWhileQueryingServer": "Error occurred while querying server",
+  "@errorOccurredWhileQueryingServer": {
+    "description": "Error occurred while querying server"
+  },
+  "errorOccurredWhileParsingResponse": "Error occurred while parsing response",
+  "@errorOccurredWhileParsingResponse": {
+    "description": "Error occurred while parsing response"
+  },
+  "errorWhilePostingTweet": "Error while posting tweet",
+  "@errorWhilePostingTweet": {
+    "description": "Error while posting tweet"
+  },
+  "errorWhilePostingComment": "Error while posting comment",
+  "@errorWhilePostingComment": {
+    "description": "Error while posting comment"
+  },
+  "errorAppendedWhileGettingData": "An error occurred while getting data",
+  "@errorAppendedWhileGettingData": {
+    "description": "An error occurred while getting data"
+  },
+  "errorOccurredWhileLoggingIn": "Error occurred while logging in",
+  "@errorOccurredWhileLoggingIn": {
+    "description": "Error occurred while logging in"
+  },
+  "errorHappenedWhileUpdatingTweet": "Error happened while updating tweet",
+  "@errorHappenedWhileUpdatingTweet": {
+    "description": "Error happened while updating tweet"
+  },
+  "errorHappenedWhileDeletingTweet": "Error happened while deleting tweet",
+  "@errorHappenedWhileDeletingTweet": {
+    "description": "Error happened while deleting tweet"
+  },
+  "errorHappenedWhileDeletingComment": "Error happened while deleting comment",
+  "@errorHappenedWhileDeletingComment": {
+    "description": "Error happened while deleting comment"
+  },
+  "errorHappenedWhileUpdatingComment": "Error happened while updating comment",
+  "@errorHappenedWhileUpdatingComment": {
+    "description": "Error happened while updating comment"
+  },
+  "badFileFormat": "Bad file format",
+  "@badFileFormat": {
+    "description": "Bad file format"
+  },
+  "badRequest": "Bad request",
+  "@badRequest": {
+    "description": "Bad request"
+  },
+  "requestTimeout": "Request timeout",
+  "@requestTimeout": {
+    "description": "Request timeout"
+  },
+  "unauthorized": "Unauthorized",
+  "@unauthorized": {
+    "description": "Unauthorized"
+  },
+  "welcome": "Welcome",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "login": "Login",
+  "@login": {
+    "description": "Login"
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout"
+  },
+  "subscribe": "Subscribe",
+  "@subscribe": {
+    "description": "Subscribe"
+  },
+  "subIfNoAccount": "No account? Subscribe!",
+  "@subIfNoAccount": {
+    "description": "No account? Subscribe!"
+  },
+  "loginIfAlreadyHaveAccount": "Already have an account? Login!",
+  "@loginIfAlreadyHaveAccount": {
+    "description": "Already have an account? Login!"
+  },
+  "confirmPassword": "Confirm password",
+  "@confirmPassword": {
+    "description": "Confirm password"
+  },
+  "userName": "Username",
+  "@userName": {
+    "description": "Username"
+  },
+  "notification": "Notification",
+  "@notification": {
+    "description": "Notification"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Home"
+  },
+  "tweets": "Tweets",
+  "@tweets": {
+    "description": "Tweets"
+  },
+  "myTweets": "My tweets",
+  "@myTweets": {
+    "description": "My tweets"
+  },
+  "tweetsOfUser": "Tweets of user",
+  "@tweetsOfUser": {
+    "description": "Tweets of user"
+  },
+  "tweetNotFound": "Tweet not found",
+  "@tweetNotFound": {
+    "description": "Tweet not found"
+  },
+  "wassup": "Wassup ?",
+  "@wassup": {
+    "description": "Wassup ?"
+  },
+  "pickImage": "Pick image",
+  "@pickImage": {
+    "description": "Pick image"
+  },
+  "removeImage": "Remove image",
+  "@removeImage": {
+    "description": "Remove image"
+  },
+  "editTweet": "Edit tweet",
+  "@editTweet": {
+    "description": "Edit tweet"
+  },
+  "modifyTweet": "Modify tweet",
+  "@modifyTweet": {
+    "description": "Modify tweet"
+  },
+  "typeYourComment": "Type your comment",
+  "@typeYourComment": {
+    "description": "Type your comment"
+  },
+  "comment": "Comment",
+  "@comment": {
+    "description": "Comment"
+  },
+  "tweetPosted": "Tweet posted",
+  "@tweetPosted": {
+    "description": "Tweet posted"
+  },
+  "commentPosted": "Comment posted",
+  "@commentPosted": {
+    "description": "Comment posted"
+  },
+  "commentUpdated": "Comment updated",
+  "@commentUpdated": {
+    "description": "Comment updated"
+  },
+  "cannotGetUserDetails": "Cannot get user details",
+  "@cannotGetUserDetails": {
+    "description": "Cannot get user details"
+  },
+  "cannotGetUserTweets": "Cannot get user tweets",
+  "@cannotGetUserTweets": {
+    "description": "Cannot get user tweets"
+  },
+  "userNotFound": "User not found",
+  "@userNotFound": {
+    "description": "User not found"
+  },
+  "errorHappenedWhilePostingComment": "Error happened while posting comment",
+  "@errorHappenedWhilePostingComment": {
+    "description": "Error happened while posting comment"
+  },
+  "confirmAction": "Confirm action",
+  "@confirmAction": {
+    "description": "Confirm action"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "proceed": "Proceed",
+  "@proceed": {
+    "description": "Proceed"
+  },
+  "deleteTweet": "Delete tweet",
+  "@deleteTweet": {
+    "description": "Delete tweet"
+  },
+  "deleteComment": "Delete comment",
+  "@deleteComment": {
+    "description": "Delete comment"
+  },
+  "tweetDeleted": "Tweet deleted",
+  "@tweetDeleted": {
+    "description": "Tweet deleted"
+  },
+  "commentDeleted": "Comment deleted",
+  "@commentDeleted": {
+    "description": "Comment deleted"
+  },
+  "confirmDeleteTweet": "Do you want to delete this tweet ?",
+  "@confirmDeleteTweet": {
+    "description": "Do you want to delete this tweet ?"
+  },
+  "confirmDeleteComment": "Do you want to delete this comment?",
+  "@confirmDeleteComment": {
+    "description": "Do you want to delete this comment?"
+  },
+  "updateTweet": "Update tweet",
+  "@updateTweet": {
+    "description": "Update tweet"
+  },
+  "confirmUpdateTweet": "Do you want to update this tweet ?",
+  "@confirmUpdateTweet": {
+    "description": "Do you want to update this tweet ?"
+  },
+  "tweetUpdated": "Tweet updated",
+  "@tweetUpdated": {
+    "description": "Tweet updated"
+  },
+  "youMustBeLoggedInToEditTweet": "You must be logged in to edit tweet",
+  "@youMustBeLoggedInToEditTweet": {
+    "description": "You must be logged in to edit tweet"
+  },
+  "noMoreTweets": "No more tweets",
+  "@noMoreTweets": {
+    "description": "No more tweets"
+  },
+  "needGoodPasswordLength": "Your password must contain at least 8 characters, and less than 16 characters, at least one letter, one number, one special character and no spaces.",
+  "@needGoodPasswordLength": {
+    "description": "Password requirements"
+  },
+  "needAtListOneLetter": "Your password must contain at least one letter.",
+  "@needAtListOneLetter": {
+    "description": "Password requirements"
+  },
+  "passwordNeedAtLeastOneNumber": "Your password must contain at least one number.",
+  "@passwordNeedAtLeastOneNumber": {
+    "description": "Password requirements"
+  },
+  "passwordCannotHaveBlankSpace": "Your password cannot have blank space.",
+  "@passwordCannotHaveBlankSpace": {
+    "description": "Password requirements"
+  },
+  "passwordNeedAtLeastOneSpecialCharacter": "Your password must contain at least one special character.",
+  "@passwordNeedAtLeastOneSpecialCharacter": {
+    "description": "Password requirements"
+  },
+  "commentsNumber": "Number of comments: ",
+  "@commentsNumber": {
+    "description": "Number of comments"
+  },
+  "comments": "Comments",
+  "@comments": {
+    "description": "Comments"
+  },
+  "noTweetLoaded": "No tweet loaded",
+  "@noTweetLoaded": {
+    "description": "No tweet loaded"
+  },
+  "emailTitle": "Email",
+  "@emailTitle": {
+    "description": "Email title"
+  },
+  "emailHint": "example@gmail.com",
+  "@emailHint": {
+    "description": "Email hint"
+  },
+  "passwordTitle": "Password",
+  "@passwordTitle": {
+    "description": "Password title"
+  },
+  "passwordHint": "Your password",
+  "@passwordHint": {
+    "description": "Password hint"
+  },
+  "confirmActionTitle": "Confirm action",
+  "@confirmActionTitle": {
+    "description": "Confirm action title"
+  },
+  "confirmActionHint": "Do you want to proceed with this action?",
+  "@confirmActionHint": {
+    "description": "Confirm action hint"
+  },
+  "userNameHint": "Your username",
+  "@userNameHint": {
+    "description": "Username hint"
+  }
+}

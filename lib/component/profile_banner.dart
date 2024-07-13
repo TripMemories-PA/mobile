@@ -451,7 +451,7 @@ class ProfileBanner extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(
+                  AutoSizeText(
                     textAlign: TextAlign.center,
                     '${cartElement.articles[0].price} €',
                     style: TextStyle(
@@ -459,6 +459,7 @@ class ProfileBanner extends StatelessWidget {
                       fontSize: 30,
                       color: Theme.of(context).colorScheme.primary,
                     ),
+                    maxLines: 1,
                   ),
                   Container(
                     height: 30,

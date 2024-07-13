@@ -18,9 +18,29 @@ class DateTimeService {
       return '${StringConstants().thereIs} ${hours > 0 ? '$hours ${StringConstants().hour}${hours > 1 ? 's' : ''}' : ''} $minutes ${StringConstants().minutes}';
     }
 
-    final formattedDate =
-        DateFormat("EEEE d MMMM yyyy HH'h'mm", Intl.systemLocale)
-            .format(dateTime.toLocal());
-    return formattedDate;
+    final String dateFormated = DateFormat(
+      'EEEE d MMMM yyyy',
+      'fr_FR',
+    ).format(dateTime.toLocal());
+    return dateFormated;
+  }
+
+  static String formatDateToDayMonthYear(DateTime dateTime) {
+    final String dateFormated = DateFormat(
+      'EEEE d MMMM yyyy',
+      'fr_FR',
+    ).format(dateTime.toLocal());
+    return dateFormated;
+  }
+
+  static String formatTimeToString(DateTime dateTime) {
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
+  }
+
+  static String formatNbDayMonth(DateTime dateTime) {
+    return DateFormat(
+      'dd MMMM',
+      'fr_FR',
+    ).format(dateTime);
   }
 }

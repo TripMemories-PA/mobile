@@ -433,12 +433,28 @@ class _PageContent extends HookWidget {
       actions: [
         if (monument.questionsCount > 0 &&
             context.read<AuthBloc>().state.user?.userTypeId != 3)
-          ElevatedButton(
-            onPressed: () =>
-                context.push('${RouteName.quizPage}/${monument.id}'),
-            child: Text(
-              StringConstants().doQuiz,
-            ),
+          Row(
+            children: [
+              if (context.read<AuthBloc>().state.status ==
+                      AuthStatus.authenticated &&
+                  context.read<AuthBloc>().state.user?.userTypeId != 3)
+                ElevatedButton(
+                  onPressed: () => context.push(
+                    '${RouteName.poiMeet}/${monument.id}',
+                    extra: monument,
+                  ),
+                  child: Text(
+                    StringConstants().meet,
+                  ),
+                ),
+              ElevatedButton(
+                onPressed: () =>
+                    context.push('${RouteName.quizPage}/${monument.id}'),
+                child: Text(
+                  StringConstants().doQuiz,
+                ),
+              ),
+            ],
           ),
         10.pw,
       ],

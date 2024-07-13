@@ -10,9 +10,87 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get cancel => 'Annuler';
+
+  String get joinChat => 'Rejoindre le chat';
+
+  String get userKicked => 'Utilisateur expulsé';
+
+  String get sureToKickUser =>
+      'Etes-vous sûr de vouloir expulser cet utilisateur ?';
+
+  String get status => 'Statut';
+
+  String get soldTickets => 'Billets vendus';
+
+  String get boughTicket => 'Billet acheté';
+
+  String get bought => 'acheté';
+
+  String get ticket => 'billet';
+
+  String get pending => 'en attente';
+
+  String get meetLocked => 'Meet verrouillé';
+
+  String get seeDetail => 'Voir le détail';
+
+  String get date => 'Date';
+
+  String get meetPeople => 'Faite des rencontres';
+
+  String get participant => 'participant';
+
+  String get haveReduction => 'Bénéficier de réductions';
+
+  String get meetDeleteFailed => 'Impossible de supprimer le meet';
+
+  String get meetUpdated => 'Meet mis à jour';
+
+  String get meetUpdateFailed => 'Impossible de mettre à jour le meet';
+
+  String get editMeet => 'Modifier le meet';
+
+  String get deleteMeet => 'Supprimer le meet';
+
+  String get meetDeleted => 'Meet supprimé';
+
+  String get aboutToDeleteMeet =>
+      'Vous êtes sur le point de supprimer ce meet. Êtes-vous sûr ?';
+
+  String get selectTicket => 'Sélectionner un billet';
+
+  String get warning => 'Attention';
+
+  String get meet => 'Meet';
+
+  String get already => 'Déjà';
+
+  String get iParticipate => 'Je participe';
+
+  String get place => 'place';
+
+  String get sold => 'vendue';
+
+  String get you => 'Toi';
+
+  String get valueMustBeGreaterThanTwo => 'La valeur doit être supérieure à 2';
+
+  String get valueMustBeLessThanFifty => 'La valeur doit être inférieure à 50';
+
+  String get meetCreated => 'Meet créé';
+
+  String get valueMustBeANumber => 'La valeur doit être un nombre';
+
+  String get pleaseSelectATicket => 'Veuillez sélectionner un billet';
+
   String get cart => 'Panier';
 
+  String get noTicket => 'Pas de billet';
+
   String get score => 'Score';
+
+  String get createMeet => 'Créer un Meet';
 
   String get thePodium => 'Le podium';
   String get tickets => 'Billets';
@@ -454,4 +532,18 @@ class StringConstants {
   String get passwordValidator => r'''
   Pour un mot de passe valide, assurez-vous qu'il contienne entre 8 et 16 caractères, au moins une lettre, une majuscule, au moins un chiffre, aucun espace, et au moins un caractère spécial parmi !@#$%^&*(),.?":{}|<>.
 ''';
+
+  String get seeMeet => 'Voir le meet';
+
+  String get joinMeet => 'Rejoindre le meet';
+
+  String get noMoreMeets => 'Plus de meets à afficher';
+
+  String get noMeetFound => 'Aucun meet trouvé';
+
+  String get meetJoined => 'Meet rejoint';
+
+  String get leaveMeet => 'Quitter le meet';
+
+  String get meetJoinFailed => 'Impossible de rejoindre le meet';
 }

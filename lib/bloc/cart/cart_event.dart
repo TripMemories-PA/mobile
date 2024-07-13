@@ -3,9 +3,10 @@ part of 'cart_bloc.dart';
 sealed class CartEvent {}
 
 class AddArticle extends CartEvent {
-  AddArticle(this.article);
+  AddArticle(this.article, {this.meetId});
 
   final Ticket article;
+  final int? meetId;
 }
 
 class RemoveArticle extends CartEvent {
@@ -15,3 +16,5 @@ class RemoveArticle extends CartEvent {
 }
 
 class ClearCart extends CartEvent {}
+
+class MeetTicketBought extends CartEvent {}

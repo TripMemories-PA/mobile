@@ -41,7 +41,7 @@ class ThemeGenerator {
   static ColorScheme get _colorScheme => const ColorScheme(
         primary: MyColors.purple,
         onPrimary: Colors.white,
-        secondary: Color(0x1a5569e1),
+        secondary: MyColors.darkGrey,
         onSecondary: Colors.black,
         tertiary: MyColors.lightGrey,
         onTertiary: Colors.black,
@@ -52,6 +52,7 @@ class ThemeGenerator {
         onError: Colors.white,
         surfaceTint: Color(0xffd4dfff),
         primaryContainer: MyColors.lightPurple,
+        surfaceContainerLow: Color(0xffeff3ff),
       );
 
   static InputDecorationTheme get _inputDecorationTheme =>

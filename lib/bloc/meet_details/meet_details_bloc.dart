@@ -28,7 +28,7 @@ class MeetDetailsBloc extends Bloc<MeetDetailsEvent, MeetDetailsState> {
           ),
         );
         final Meet meet = await meetRepository.getMeet(event.meetId);
-        add(GetMeetUsers(isRefresh: true));
+        add(GetMeetUsers(isRefresh: true, meetId: meet.id));
         List<Ticket> tickets = [];
         if (meet.ticket == null) {
           tickets = await ticketRepository.getTickets(meet.poi.id);
@@ -86,7 +86,7 @@ class MeetDetailsBloc extends Bloc<MeetDetailsEvent, MeetDetailsState> {
           );
         }
         final MeetUsers response = await meetRepository.getMeetUsers(
-          state.meet!.id,
+          event.meetId,
           page: event.isRefresh ? 1 : state.usersPage + 1,
           perPage: state.usersPerPage,
         );

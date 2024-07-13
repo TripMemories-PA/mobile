@@ -11,7 +11,8 @@ class GetMeet extends MeetDetailsEvent {
 class LeaveMeetEvent extends MeetDetailsEvent {}
 
 class GetMeetUsers extends MeetDetailsEvent {
-  GetMeetUsers({this.isRefresh = false});
+  GetMeetUsers({this.isRefresh = false, required this.meetId});
 
   final bool isRefresh;
+  final int meetId;
 }

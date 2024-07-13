@@ -148,11 +148,14 @@ class MeetDetailsPage extends StatelessWidget {
                 color: Theme.of(context).colorScheme.tertiary,
               ),
               15.ph,
-              Text(
-                '${meet.usersCount} ${StringConstants().participant}${(meet.users?.length ?? 0) > 1 ? 's' : ''}',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w900,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  '${meet.usersCount} ${StringConstants().participant}${(state.users.length) > 1 ? 's' : ''}',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ),
               10.ph,
@@ -263,16 +266,14 @@ class MeetDetailsPage extends StatelessWidget {
                   ),
                   padding: WidgetStateProperty.all(
                     EdgeInsets.zero,
-                  ), // Remove padding
+                  ),
                 ),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20.0,
                     vertical: 8.0,
                   ),
-                  // Minimal padding
                   color: Colors.transparent,
-                  // Use transparent color instead of red
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -361,7 +362,13 @@ class _UserList extends HookWidget {
                       MeetQueryStatus.notLoading &&
                   context.read<MeetBloc>().state.meetQueryStatus ==
                       MeetQueryStatus.notLoading) {
-                context.read<MeetDetailsBloc>().add(GetMeetUsers());
+                final int? meetId =
+                    context.read<MeetDetailsBloc>().state.meet?.id;
+                if (meetId != null) {
+                  context
+                      .read<MeetDetailsBloc>()
+                      .add(GetMeetUsers(meetId: meetId));
+                }
               }
             }
           }

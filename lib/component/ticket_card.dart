@@ -20,10 +20,12 @@ class TicketCardAdmin extends StatelessWidget {
     super.key,
     required this.article,
     this.onlyDemo = false,
+    this.buyButton,
   });
 
   final Ticket article;
   final bool onlyDemo;
+  final Widget? buyButton;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +98,7 @@ class TicketCardAdmin extends StatelessWidget {
                             AuthStatus.authenticated &&
                         context.read<AuthBloc>().state.user?.userTypeId != 3 &&
                         !onlyDemo)
-                      _buildAddToCartButton(context),
+                      buyButton ?? _buildAddToCartButton(context),
                   ],
                 ),
               ],

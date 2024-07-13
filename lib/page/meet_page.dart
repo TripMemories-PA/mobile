@@ -247,7 +247,7 @@ class _MeetPreviewCard extends StatelessWidget {
               16.ph,
               Row(
                 children: [
-                  _MeetCardPeople(
+                  MeetCardPeople(
                     users: meet.users ?? [],
                     hasJoined: meet.hasJoined ?? false,
                   ),
@@ -367,8 +367,9 @@ class _ActionButtons extends StatelessWidget {
   }
 }
 
-class _MeetCardPeople extends StatelessWidget {
-  const _MeetCardPeople({
+class MeetCardPeople extends StatelessWidget {
+  const MeetCardPeople({
+    super.key,
     required this.users,
     this.hasJoined = false,
   });

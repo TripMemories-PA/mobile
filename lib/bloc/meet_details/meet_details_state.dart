@@ -14,6 +14,7 @@ class MeetDetailsState {
     this.hasMoreUsers = true,
     this.getUsersLoadingStatus = MeetDetailsQueryStatus.notLoading,
     this.getMoreUsersLoadingStatus = MeetDetailsQueryStatus.notLoading,
+    this.ticketsToBuy = const [],
   });
 
   MeetDetailsState copyWith({
@@ -27,6 +28,7 @@ class MeetDetailsState {
     bool? hasMoreUsers,
     MeetDetailsQueryStatus? getUsersLoadingStatus,
     MeetDetailsQueryStatus? getMoreUsersLoadingStatus,
+    List<Ticket>? ticketsToBuy,
   }) {
     return MeetDetailsState(
       meet: meet ?? this.meet,
@@ -42,10 +44,12 @@ class MeetDetailsState {
           getUsersLoadingStatus ?? this.getUsersLoadingStatus,
       getMoreUsersLoadingStatus:
           getMoreUsersLoadingStatus ?? this.getMoreUsersLoadingStatus,
+      ticketsToBuy: ticketsToBuy ?? this.ticketsToBuy,
     );
   }
 
   Meet? meet;
+  List<Ticket> ticketsToBuy;
   MeetDetailsQueryStatus meetDetailsQueryStatus;
   MeetDetailsQueryStatus leavingMeetStatus;
   ApiError? error;

@@ -107,22 +107,27 @@ class _FormMeeting extends HookWidget {
             child: Column(
               children: [
                 TextFormField(
+                  maxLines: 2,
                   controller: titleController,
-                  decoration: const InputDecoration(labelText: 'Title'),
+                  decoration:
+                      InputDecoration(labelText: StringConstants().title),
                   validator: (value) =>
                       FieldValidator.validateRequired(value: value),
                 ),
                 10.ph,
                 TextFormField(
+                  maxLines: 4,
                   controller: descriptionController,
-                  decoration: const InputDecoration(labelText: 'Description'),
+                  decoration:
+                      InputDecoration(labelText: StringConstants().description),
                   validator: (value) =>
                       FieldValidator.validateRequired(value: value),
                 ),
                 10.ph,
                 TextFormField(
                   controller: sizeController,
-                  decoration: const InputDecoration(labelText: 'Size'),
+                  decoration:
+                      InputDecoration(labelText: StringConstants().groupSize),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     final String? check =
@@ -145,9 +150,9 @@ class _FormMeeting extends HookWidget {
                 10.ph,
                 TextFormField(
                   controller: dateController,
-                  decoration: const InputDecoration(
-                    labelText: 'Date',
-                    suffixIcon: Icon(Icons.calendar_today),
+                  decoration: InputDecoration(
+                    labelText: StringConstants().date,
+                    suffixIcon: const Icon(Icons.calendar_today),
                   ),
                   readOnly: true,
                   onTap: () async {

@@ -57,7 +57,7 @@ class _TicketTabViewState extends State<TicketTabView>
           child: TabPageSelector(
             controller: _tabController,
             selectedColor: Theme.of(context).colorScheme.primary,
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.tertiary,
             borderStyle: BorderStyle.none,
           ),
         ),

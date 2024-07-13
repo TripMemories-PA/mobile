@@ -12,7 +12,15 @@ class StringConstants {
 
   String get cancel => 'Annuler';
 
+  String get meetLocked => 'Meet verrouillé';
+
+  String get seeDetail => 'Voir le détail';
+
+  String get date => 'Date';
+
   String get meetPeople => 'Faite des rencontres';
+
+  String get participant => 'participant';
 
   String get haveReduction => 'Bénéficier de réductions';
 
@@ -36,6 +44,14 @@ class StringConstants {
   String get warning => 'Attention';
 
   String get meet => 'Meet';
+
+  String get already => 'Déjà';
+
+  String get iParticipate => 'Je participe';
+
+  String get place => 'place';
+
+  String get sold => 'vendue';
 
   String get you => 'Toi';
 

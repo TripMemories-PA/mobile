@@ -75,7 +75,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MarkerIconsCustom.initialize();
   await MapStyle.initialize();
-  Stripe.publishableKey = '{STRIPE_PUBLISHABLE_KEY}';
+  Stripe.publishableKey =
+      'pk_test_51PXqcPD03zNfc2sem171z1y1z2f7UriFAJFUVTHMUqojf62sApeAiILYcpDpguYwt9RAOcC3ssJPARbDrAMGvtok00yrnnIhRy';
   Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();

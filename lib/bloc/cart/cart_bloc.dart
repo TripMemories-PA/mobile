@@ -23,7 +23,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             cartElements[i].articles[0].price * cartElements[i].articles.length;
       }
       totalPrice = double.parse(totalPrice.toStringAsFixed(2));
-      emit(state.copyWith(cartElements: cartElements, totalPrice: totalPrice));
+      emit(
+        state.copyWith(
+          cartElements: cartElements,
+          totalPrice: totalPrice,
+          meetId: event.meetId,
+        ),
+      );
     });
 
     on<RemoveArticle>((event, emit) {
@@ -48,6 +54,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
     on<ClearCart>((event, emit) {
       emit(state.copyWith(cartElements: <CartElement>[], totalPrice: 0));
+    });
+
+    on<MeetTicketBought>((event, emit) {
+      emit(state.copyWith(meetBuyStatus: CartStatus.meetTicketBought));
     });
   }
 }

@@ -25,6 +25,14 @@ class DateTimeService {
     return dateFormated;
   }
 
+  static String formatDateToDayMonthYear(DateTime dateTime) {
+    final String dateFormated = DateFormat(
+      'EEEE d MMMM yyyy',
+      'fr_FR',
+    ).format(dateTime.toLocal());
+    return dateFormated;
+  }
+
   static String formatTimeToString(DateTime dateTime) {
     return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
   }

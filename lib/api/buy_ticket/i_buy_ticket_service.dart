@@ -5,4 +5,6 @@ abstract class IBuyTicketService {
   Future<BuyTicketResponse> buyTicket({
     required BuyTicketQuery tickets,
   });
+
+  Future<BuyTicketResponse> buyTicketForMeet(int meetId);
 }

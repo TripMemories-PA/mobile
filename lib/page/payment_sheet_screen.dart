@@ -62,6 +62,8 @@ class PaymentScreen extends HookWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            if (cartBloc.state.meetId != null)
+              Text('Meet: ${cartBloc.state.meetId}'),
             10.ph,
             Text(
               '${StringConstants().total}: ${cartBloc.state.totalPrice.toStringAsFixed(2)} €',
@@ -179,9 +181,12 @@ class PaymentScreen extends HookWidget {
       }
       final BuyTicketQuery buyTicketQuery = BuyTicketQuery(tickets: tickets);
 
+      final BuyTicketService buyTicketService = BuyTicketService();
       // 1. create payment intent on the server
-      final BuyTicketResponse data =
-          await BuyTicketService().buyTicket(tickets: buyTicketQuery);
+      final int? meetId = cartBloc.state.meetId;
+      final BuyTicketResponse data = meetId != null
+          ? await buyTicketService.buyTicketForMeet(meetId)
+          : await buyTicketService.buyTicket(tickets: buyTicketQuery);
 
       // 2. initialize the payment sheet
       await Stripe.instance.initPaymentSheet(
@@ -241,6 +246,7 @@ class PaymentScreen extends HookWidget {
 
       step.value = 0;
       Messenger.showSnackBarSuccess(StringConstants().paymentSuccess);
+      cartBloc.add(MeetTicketBought());
       return true;
     } on Exception catch (e) {
       if (e is StripeException) {

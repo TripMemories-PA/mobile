@@ -21,3 +21,9 @@ class PostMeetFromPoiPage extends MeetEvent {
   final CreateMeetQuery query;
   final int poiId;
 }
+
+class DeleteMeet extends MeetEvent {
+  DeleteMeet({required this.meetId});
+
+  final int meetId;
+}

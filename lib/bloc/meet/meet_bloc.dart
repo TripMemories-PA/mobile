@@ -53,6 +53,12 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
           ),
         );
       }
+      emit(
+        state.copyWith(
+          meetQueryStatus: MeetQueryStatus.notLoading,
+          getMoreMeetsStatus: MeetQueryStatus.notLoading,
+        ),
+      );
     });
 
     on<AskToJoinMeet>((event, emit) async {
@@ -87,6 +93,11 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
           ),
         );
       }
+      emit(
+        state.copyWith(
+          joinMeetStatus: JoinMeetStatus.notLoading,
+        ),
+      );
     });
 
     on<PostMeetFromPoiPage>((event, emit) async {
@@ -102,7 +113,41 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
             error: e is ApiError ? e : ApiError.errorOccurred(),
           ),
         );
+        emit(
+          state.copyWith(
+            postMeetStatus: PostMeetStatus.notLoading,
+          ),
+        );
       }
+    });
+
+    on<DeleteMeet>((event, emit) async {
+      try {
+        await meetService.deleteMeet(event.meetId);
+        List<Meet> newMeets = [];
+        for (int i = 0; i < state.meets.length; i++) {
+          if (state.meets[i].id != event.meetId) {
+            newMeets.add(state.meets[i]);
+          }
+        }
+        emit(
+          state.copyWith(
+            meets: newMeets,
+            deleteMeetStatus: DeleteMeetStatus.deleted,
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            error: e is ApiError ? e : ApiError.errorOccurred(),
+          ),
+        );
+      }
+      emit(
+        state.copyWith(
+          deleteMeetStatus: DeleteMeetStatus.notLoading,
+        ),
+      );
     });
   }
 

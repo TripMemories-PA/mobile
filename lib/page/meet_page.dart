@@ -9,6 +9,7 @@ import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/meet/meet_bloc.dart';
 import '../component/custom_card.dart';
+import '../component/popup/confirmation_dialog.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../dto/meet_bloc_and_obj_dto.dart';
@@ -88,6 +89,12 @@ class _MeetPageBody extends HookWidget {
           Messenger.showSnackBarError(
             state.error?.getDescription() ?? StringConstants().errorOccurred,
           );
+        }
+        if (state.deleteMeetStatus == DeleteMeetStatus.deleted) {
+          Messenger.showSnackBarSuccess(StringConstants().meetDeleted);
+        }
+        if (state.deleteMeetStatus == DeleteMeetStatus.error) {
+          Messenger.showSnackBarError(StringConstants().meetDeleteFailed);
         }
       },
       builder: (context, state) {
@@ -230,9 +237,46 @@ class _MeetPreviewCard extends StatelessWidget {
                 ),
               ),
               16.ph,
-              _MeetCardPeople(
-                users: meet.users ?? [],
-                hasJoined: meet.hasJoined ?? false,
+              Row(
+                children: [
+                  _MeetCardPeople(
+                    users: meet.users ?? [],
+                    hasJoined: meet.hasJoined ?? false,
+                  ),
+                  const Spacer(),
+                  if (meet.createdBy.id ==
+                      context.read<AuthBloc>().state.user?.id)
+                    PopupMenuButton(
+                      icon: const Icon(Icons.more_vert),
+                      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                        PopupMenuItem(
+                          child: ListTile(
+                            leading: const Icon(Icons.edit_outlined),
+                            title: Text(StringConstants().editMeet),
+                          ),
+                        ),
+                        PopupMenuItem(
+                            child: ListTile(
+                              leading: const Icon(Icons.delete_outline),
+                              title: Text(StringConstants().deleteMeet),
+                            ),
+                            onTap: () {
+                              confirmationPopUp(
+                                context,
+                                title: StringConstants().warning,
+                                content:
+                                    Text(StringConstants().aboutToDeleteMeet),
+                              ).then((value) {
+                                if (value) {
+                                  context
+                                      .read<MeetBloc>()
+                                      .add(DeleteMeet(meetId: meet.id));
+                                }
+                              });
+                            }),
+                      ],
+                    ),
+                ],
               ),
               8.ph,
               if (context.read<AuthBloc>().state.user?.userTypeId != 3 &&

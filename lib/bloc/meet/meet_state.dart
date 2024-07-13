@@ -6,6 +6,8 @@ enum JoinMeetStatus { loading, notLoading, accepted, rejected }
 
 enum PostMeetStatus { loading, notLoading, posted, error }
 
+enum DeleteMeetStatus { loading, notLoading, deleted, error }
+
 class MeetState {
   MeetState({
     this.meets = const [],
@@ -17,6 +19,7 @@ class MeetState {
     this.selectedMeetId,
     this.error,
     this.postMeetStatus = PostMeetStatus.notLoading,
+    this.deleteMeetStatus = DeleteMeetStatus.notLoading,
   });
 
   MeetState copyWith({
@@ -29,6 +32,7 @@ class MeetState {
     int? selectedMeetId,
     ApiError? error,
     PostMeetStatus? postMeetStatus,
+    DeleteMeetStatus? deleteMeetStatus,
   }) {
     return MeetState(
       meets: meets ?? this.meets,
@@ -40,6 +44,7 @@ class MeetState {
       selectedMeetId: selectedMeetId,
       error: error,
       postMeetStatus: postMeetStatus ?? this.postMeetStatus,
+      deleteMeetStatus: deleteMeetStatus ?? this.deleteMeetStatus,
     );
   }
 
@@ -53,4 +58,5 @@ class MeetState {
   int? selectedMeetId;
   ApiError? error;
   PostMeetStatus postMeetStatus;
+  DeleteMeetStatus deleteMeetStatus;
 }

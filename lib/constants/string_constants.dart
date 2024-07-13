@@ -10,7 +10,20 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get meetDeleteFailed => 'Impossible de supprimer le meet';
+
+  String get editMeet => 'Modifier le meet';
+
+  String get deleteMeet => 'Supprimer le meet';
+
+  String get meetDeleted => 'Meet supprimé';
+
+  String get aboutToDeleteMeet =>
+      'Vous êtes sur le point de supprimer ce meet. Êtes-vous sûr ?';
+
   String get selectTicket => 'Sélectionner un billet';
+
+  String get warning => 'Attention';
 
   String get meet => 'Meet';
 

@@ -68,4 +68,16 @@ class FieldValidator {
       return null;
     }
   }
+
+  static String? validateIntFormat(String? value) {
+    if (value == null || value.isEmpty) {
+      return StringConstants().requiredField;
+    }
+    try {
+      int.parse(value);
+      return null;
+    } catch (e) {
+      return StringConstants().valueMustBeANumber;
+    }
+  }
 }

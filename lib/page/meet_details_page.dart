@@ -7,7 +7,6 @@ import 'package:lottie/lottie.dart';
 import '../api/meet/meet_service.dart';
 import '../bloc/meet/meet_bloc.dart';
 import '../bloc/meet_details/meet_details_bloc.dart';
-import '../component/custom_card.dart';
 import '../constants/string_constants.dart';
 import '../object/meet.dart';
 import '../object/profile.dart';
@@ -137,25 +136,25 @@ class _UserList extends HookWidget {
         return state.getUsersLoadingStatus == MeetDetailsQueryStatus.loading
             ? const CircularProgressIndicator()
             : Column(
-          children: List.generate(
-            state.users.length + 1,
-                (index) {
-              if (index == state.users.length) {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Center(
-                    child: Text(StringConstants().noMoreUsers),
-                  ),
-                );
-              }
-              final Profile user = state.users[index];
-              return ListTile(
-                title: Text(user.username),
-                subtitle: Text(user.email),
+                children: List.generate(
+                  state.users.length + 1,
+                  (index) {
+                    if (index == state.users.length) {
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Center(
+                          child: Text(StringConstants().noMoreUsers),
+                        ),
+                      );
+                    }
+                    final Profile user = state.users[index];
+                    return ListTile(
+                      title: Text(user.username),
+                      subtitle: Text(user.email),
+                    );
+                  },
+                ),
               );
-            },
-          ),
-        );
       },
     );
   }

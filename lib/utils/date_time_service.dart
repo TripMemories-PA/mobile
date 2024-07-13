@@ -23,4 +23,8 @@ class DateTimeService {
             .format(dateTime.toLocal());
     return formattedDate;
   }
+
+  static String formatTimeToString(DateTime dateTime) {
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
+  }
 }

@@ -1,7 +1,11 @@
 part of 'meet_bloc.dart';
 
 enum MeetQueryStatus { loading, notLoading, error }
+
 enum JoinMeetStatus { loading, notLoading, accepted, rejected }
+
+enum PostMeetStatus { loading, notLoading, posted, error }
+
 class MeetState {
   MeetState({
     this.meets = const [],
@@ -12,6 +16,7 @@ class MeetState {
     this.joinMeetStatus = JoinMeetStatus.notLoading,
     this.selectedMeetId,
     this.error,
+    this.postMeetStatus = PostMeetStatus.notLoading,
   });
 
   MeetState copyWith({
@@ -23,6 +28,7 @@ class MeetState {
     JoinMeetStatus? joinMeetStatus,
     int? selectedMeetId,
     ApiError? error,
+    PostMeetStatus? postMeetStatus,
   }) {
     return MeetState(
       meets: meets ?? this.meets,
@@ -33,6 +39,7 @@ class MeetState {
       joinMeetStatus: joinMeetStatus ?? this.joinMeetStatus,
       selectedMeetId: selectedMeetId,
       error: error,
+      postMeetStatus: postMeetStatus ?? this.postMeetStatus,
     );
   }
 
@@ -45,5 +52,5 @@ class MeetState {
   JoinMeetStatus joinMeetStatus;
   int? selectedMeetId;
   ApiError? error;
-
+  PostMeetStatus postMeetStatus;
 }

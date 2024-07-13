@@ -9,6 +9,7 @@ import '../error/specific_error/auth_error.dart';
 import '../exception/bad_request_exception.dart';
 import '../exception/parsing_response_exception.dart';
 import 'i_meet_service.dart';
+import 'model/query/create_meet_query.dart';
 import 'model/response/meet_response.dart';
 import 'model/response/meet_users.dart';
 
@@ -49,20 +50,12 @@ class MeetService implements IMeetRepository, IMeetService {
   }
 
   @override
-  Future<MeetResponse> createMeet(Map<String, dynamic> data) async {
-    Response response;
+  Future<void> createMeet(CreateMeetQuery data) async {
     try {
       const String url = apiMeetsBaseUrl;
-      response = await DioClient.instance.post(url, data: data);
+      await DioClient.instance.post(url, data: data.toJson());
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());
-    }
-    try {
-      return MeetResponse.fromJson(response.data);
-    } catch (e) {
-      throw ParsingResponseException(
-        ApiError.errorOccurredWhileParsingResponse(),
-      );
     }
   }
 

@@ -10,11 +10,29 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get selectTicket => 'Sélectionner un billet';
+
   String get meet => 'Meet';
+
+  String get valueMustBeGreaterThanTwo => 'La valeur doit être supérieure à 2';
+
+  String get valueMustBeLessThanFifty => 'La valeur doit être inférieure à 50';
+
+  String get meetCreated => 'Meet créé';
+
+  String get valueMustBeANumber => 'La valeur doit être un nombre';
+
+  String get pleaseSelectATicket => 'Veuillez sélectionner un billet';
 
   String get cart => 'Panier';
 
+  String get ticket => 'Billet';
+
+  String get noTicket => 'Pas de billet';
+
   String get score => 'Score';
+
+  String get createMeet => 'Créer un Meet';
 
   String get thePodium => 'Le podium';
   String get tickets => 'Billets';

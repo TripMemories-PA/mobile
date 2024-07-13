@@ -19,9 +19,11 @@ class TicketCardAdmin extends StatelessWidget {
   const TicketCardAdmin({
     super.key,
     required this.article,
+    this.onlyDemo = false,
   });
 
   final Ticket article;
+  final bool onlyDemo;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +94,8 @@ class TicketCardAdmin extends StatelessWidget {
                     ),
                     if (context.read<AuthBloc>().state.status ==
                             AuthStatus.authenticated &&
-                        context.read<AuthBloc>().state.user?.userTypeId != 3)
+                        context.read<AuthBloc>().state.user?.userTypeId != 3 &&
+                        !onlyDemo)
                       _buildAddToCartButton(context),
                   ],
                 ),
@@ -224,42 +227,4 @@ class TicketCardAdmin extends StatelessWidget {
       ],
     );
   }
-
-/*IconButton _buildMoreDetailsButton(BuildContext context) {
-    return IconButton(
-      style: ButtonStyle(
-        padding: WidgetStateProperty.all(
-          EdgeInsets.zero,
-        ),
-      ),
-      onPressed: () => showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(article.title),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    '${StringConstants().description}: ${article.description}',
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(StringConstants().close),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      ),
-      icon: const Icon(
-        Icons.info,
-      ),
-    );
-  }*/
 }

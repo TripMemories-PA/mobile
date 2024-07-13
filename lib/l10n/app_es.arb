@@ -1,0 +1,358 @@
+{
+  "language": "Español",
+  "@language": {
+    "description": "Idioma español"
+  },
+  "helloWorld": "¡Hola, mundo!",
+  "@helloWorld": {
+    "description": "Saludo mundial en español"
+  },
+  "yes": "Sí",
+  "@yes": {
+    "description": "Sí"
+  },
+  "no": "No",
+  "@no": {
+    "description": "No"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error"
+  },
+  "retry": "Reintentar",
+  "@retry": {
+    "description": "Reintentar"
+  },
+  "notAuthenticated": "No autenticado",
+  "@notAuthenticated": {
+    "description": "No autenticado"
+  },
+  "wrongEmailOrPassword": "Correo electrónico o contraseña incorrectos",
+  "@wrongEmailOrPassword": {
+    "description": "Correo electrónico o contraseña incorrectos"
+  },
+  "emailOrPasswordAlreadyExists": "Correo electrónico o nombre de usuario ya utilizado",
+  "@emailOrPasswordAlreadyExists": {
+    "description": "Correo electrónico o nombre de usuario ya utilizado"
+  },
+  "invalidEmail": "Correo electrónico no válido",
+  "@invalidEmail": {
+    "description": "Correo electrónico no válido"
+  },
+  "invalidPassword": "Contraseña no válida",
+  "@invalidPassword": {
+    "description": "Contraseña no válida"
+  },
+  "passwordNotMatch": "Las contraseñas no coinciden",
+  "@passwordNotMatch": {
+    "description": "Las contraseñas no coinciden"
+  },
+  "requiredField": "Campo obligatorio",
+  "@requiredField": {
+    "description": "Campo obligatorio"
+  },
+  "hostUnreachable": "Host inaccesible",
+  "@hostUnreachable": {
+    "description": "Host inaccesible"
+  },
+  "cannotReachLocalData": "No se puede acceder a los datos locales",
+  "@cannotReachLocalData": {
+    "description": "No se puede acceder a los datos locales"
+  },
+  "unknownError": "Error desconocido",
+  "@unknownError": {
+    "description": "Error desconocido"
+  },
+  "errorOccurred": "Error ocurrido",
+  "@errorOccurred": {
+    "description": "Error ocurrido"
+  },
+  "errorLoadingImage": "Error ocurrido al cargar la imagen",
+  "@errorLoadingImage": {
+    "description": "Error ocurrido al cargar la imagen"
+  },
+  "errorOccurredWhileQueryingServer": "Error ocurrido al consultar al servidor",
+  "@errorOccurredWhileQueryingServer": {
+    "description": "Error ocurrido al consultar al servidor"
+  },
+  "errorOccurredWhileParsingResponse": "Error ocurrido al analizar la respuesta",
+  "@errorOccurredWhileParsingResponse": {
+    "description": "Error ocurrido al analizar la respuesta"
+  },
+  "errorWhilePostingTweet": "Error al publicar el tweet",
+  "@errorWhilePostingTweet": {
+    "description": "Error al publicar el tweet"
+  },
+  "errorWhilePostingComment": "Error al publicar el comentario",
+  "@errorWhilePostingComment": {
+    "description": "Error al publicar el comentario"
+  },
+  "errorAppendedWhileGettingData": "Se produjo un error al obtener los datos",
+  "@errorAppendedWhileGettingData": {
+    "description": "Se produjo un error al obtener los datos"
+  },
+  "errorOccurredWhileLoggingIn": "Error ocurrido al iniciar sesión",
+  "@errorOccurredWhileLoggingIn": {
+    "description": "Error ocurrido al iniciar sesión"
+  },
+  "errorHappenedWhileUpdatingTweet": "Error ocurrido al actualizar el tweet",
+  "@errorHappenedWhileUpdatingTweet": {
+    "description": "Error ocurrido al actualizar el tweet"
+  },
+  "errorHappenedWhileDeletingTweet": "Error ocurrido al eliminar el tweet",
+  "@errorHappenedWhileDeletingTweet": {
+    "description": "Error ocurrido al eliminar el tweet"
+  },
+  "errorHappenedWhileDeletingComment": "Error ocurrido al eliminar el comentario",
+  "@errorHappenedWhileDeletingComment": {
+    "description": "Error ocurrido al eliminar el comentario"
+  },
+  "errorHappenedWhileUpdatingComment": "Error ocurrido al actualizar el comentario",
+  "@errorHappenedWhileUpdatingComment": {
+    "description": "Error ocurrido al actualizar el comentario"
+  },
+  "badFileFormat": "Formato de archivo incorrecto",
+  "@badFileFormat": {
+    "description": "Formato de archivo incorrecto"
+  },
+  "badRequest": "Solicitud incorrecta",
+  "@badRequest": {
+    "description": "Solicitud incorrecta"
+  },
+  "requestTimeout": "Tiempo de espera de la solicitud agotado",
+  "@requestTimeout": {
+    "description": "Tiempo de espera de la solicitud agotado"
+  },
+  "unauthorized": "No autorizado",
+  "@unauthorized": {
+    "description": "No autorizado"
+  },
+  "welcome": "Bienvenido",
+  "@welcome": {
+    "description": "Bienvenido"
+  },
+  "login": "Iniciar sesión",
+  "@login": {
+    "description": "Iniciar sesión"
+  },
+  "logout": "Cerrar sesión",
+  "@logout": {
+    "description": "Cerrar sesión"
+  },
+  "subscribe": "Suscribirse",
+  "@subscribe": {
+    "description": "Suscribirse"
+  },
+  "subIfNoAccount": "¿No tienes una cuenta? ¡Suscríbete!",
+  "@subIfNoAccount": {
+    "description": "¿No tienes una cuenta? ¡Suscríbete!"
+  },
+  "loginIfAlreadyHaveAccount": "¿Ya tienes una cuenta? ¡Inicia sesión!",
+  "@loginIfAlreadyHaveAccount": {
+    "description": "¿Ya tienes una cuenta? ¡Inicia sesión!"
+  },
+  "confirmPassword": "Confirmar contraseña",
+  "@confirmPassword": {
+    "description": "Confirmar contraseña"
+  },
+  "userName": "Nombre de usuario",
+  "@userName": {
+    "description": "Nombre de usuario"
+  },
+  "notification": "Notificación",
+  "@notification": {
+    "description": "Notificación"
+  },
+  "home": "Inicio",
+  "@home": {
+    "description": "Inicio"
+  },
+  "tweets": "Tweets",
+  "@tweets": {
+    "description": "Tweets"
+  },
+  "myTweets": "Mis tweets",
+  "@myTweets": {
+    "description": "Mis tweets"
+  },
+  "tweetsOfUser": "Tweets del usuario",
+  "@tweetsOfUser": {
+    "description": "Tweets del usuario"
+  },
+  "tweetNotFound": "Tweet no encontrado",
+  "@tweetNotFound": {
+    "description": "Tweet no encontrado"
+  },
+  "wassup": "¿Qué pasa?",
+  "@wassup": {
+    "description": "¿Qué pasa?"
+  },
+  "pickImage": "Seleccionar imagen",
+  "@pickImage": {
+    "description": "Seleccionar imagen"
+  },
+  "removeImage": "Eliminar imagen",
+  "@removeImage": {
+    "description": "Eliminar imagen"
+  },
+  "editTweet": "Editar tweet",
+  "@editTweet": {
+    "description": "Editar tweet"
+  },
+  "modifyTweet": "Modificar tweet",
+  "@modifyTweet": {
+    "description": "Modificar tweet"
+  },
+  "typeYourComment": "Escribe tu comentario",
+  "@typeYourComment": {
+    "description": "Escribe tu comentario"
+  },
+  "comment": "Comentario",
+  "@comment": {
+    "description": "Comentario"
+  },
+  "tweetPosted": "Tweet publicado",
+  "@tweetPosted": {
+    "description": "Tweet publicado"
+  },
+  "commentPosted": "Comentario publicado",
+  "@commentPosted": {
+    "description": "Comentario publicado"
+  },
+  "commentUpdated": "Comentario actualizado",
+  "@commentUpdated": {
+    "description": "Comentario actualizado"
+  },
+  "cannotGetUserDetails": "No se pueden obtener los detalles del usuario",
+  "@cannotGetUserDetails": {
+    "description": "No se pueden obtener los detalles del usuario"
+  },
+  "cannotGetUserTweets": "No se pueden obtener los tweets del usuario",
+  "@cannotGetUserTweets": {
+    "description": "No se pueden obtener los tweets del usuario"
+  },
+  "userNotFound": "Usuario no encontrado",
+  "@userNotFound": {
+    "description": "Usuario no encontrado"
+  },
+  "errorHappenedWhilePostingComment": "Error ocurrido al publicar el comentario",
+  "@errorHappenedWhilePostingComment": {
+    "description": "Error ocurrido al publicar el comentario"
+  },
+  "confirmAction": "Confirmar acción",
+  "@confirmAction": {
+    "description": "Confirmar acción"
+  },
+  "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Cancelar"
+  },
+  "proceed": "Proceder",
+  "@proceed": {
+    "description": "Proceder"
+  },
+  "deleteTweet": "Eliminar tweet",
+  "@deleteTweet": {
+    "description": "Eliminar tweet"
+  },
+  "deleteComment": "Eliminar comentario",
+  "@deleteComment": {
+    "description": "Eliminar comentario"
+  },
+  "tweetDeleted": "Tweet eliminado",
+  "@tweetDeleted": {
+    "description": "Tweet eliminado"
+  },
+  "commentDeleted": "Comentario eliminado",
+  "@commentDeleted": {
+    "description": "Comentario eliminado"
+  },
+  "confirmDeleteTweet": "¿Quieres eliminar este tweet?",
+  "@confirmDeleteTweet": {
+    "description": "¿Quieres eliminar este tweet?"
+  },
+  "confirmDeleteComment": "¿Quieres eliminar este comentario?",
+  "@confirmDeleteComment": {
+    "description": "¿Quieres eliminar este comentario?"
+  },
+  "updateTweet": "Actualizar tweet",
+  "@updateTweet": {
+    "description": "Actualizar tweet"
+  },
+  "confirmUpdateTweet": "¿Quieres actualizar este tweet?",
+  "@confirmUpdateTweet": {
+    "description": "¿Quieres actualizar este tweet?"
+  },
+  "tweetUpdated": "Tweet actualizado",
+  "@tweetUpdated": {
+    "description": "Tweet actualizado"
+  },
+  "youMustBeLoggedInToEditTweet": "Debes iniciar sesión para editar el tweet",
+  "@youMustBeLoggedInToEditTweet": {
+    "description": "Debes iniciar sesión para editar el tweet"
+  },
+  "noMoreTweets": "No hay más tweets",
+  "@noMoreTweets": {
+    "description": "No hay más tweets"
+  },
+  "needGoodPasswordLength": "Tu contraseña debe contener al menos 8 caracteres y menos de 16 caracteres, al menos una letra, un número, un carácter especial y sin espacios.",
+  "@needGoodPasswordLength": {
+    "description": "Requisitos de contraseña"
+  },
+  "needAtListOneLetter": "Tu contraseña debe contener al menos una letra.",
+  "@needAtListOneLetter": {
+    "description": "Requisitos de contraseña"
+  },
+  "passwordNeedAtLeastOneNumber": "Tu contraseña debe contener al menos un número.",
+  "@passwordNeedAtLeastOneNumber": {
+    "description": "Requisitos de contraseña"
+  },
+  "passwordCannotHaveBlankSpace": "Tu contraseña no puede tener espacios en blanco.",
+  "@passwordCannotHaveBlankSpace": {
+    "description": "Requisitos de contraseña"
+  },
+  "passwordNeedAtLeastOneSpecialCharacter": "Tu contraseña debe contener al menos un carácter especial.",
+  "@passwordNeedAtLeastOneSpecialCharacter": {
+    "description": "Requisitos de contraseña"
+  },
+  "commentsNumber": "Número de comentarios: ",
+  "@commentsNumber": {
+    "description": "Número de comentarios"
+  },
+  "comments": "Comentarios",
+  "@comments": {
+    "description": "Comentarios"
+  },
+  "noTweetLoaded": "Ningún tweet cargado",
+  "@noTweetLoaded": {
+    "description": "Ningún tweet cargado"
+  },
+  "emailTitle": "Correo electrónico",
+  "@emailTitle": {
+    "description": "Título del correo electrónico"
+  },
+  "emailHint": "ejemplo@gmail.com",
+  "@emailHint": {
+    "description": "Consejo para el correo electrónico"
+  },
+  "passwordTitle": "Contraseña",
+  "@passwordTitle": {
+    "description": "Título de la contraseña"
+  },
+  "passwordHint": "Tu contraseña",
+  "@passwordHint": {
+    "description": "Consejo para la contraseña"
+  },
+  "confirmActionTitle": "Confirmar acción",
+  "@confirmActionTitle": {
+    "description": "Título de la confirmación de la acción"
+  },
+  "confirmActionHint": "¿Quieres proceder con esta acción?",
+  "@confirmActionHint": {
+    "description": "Consejo para la confirmación de la acción"
+  },
+  "userNameHint": "Tu nombre de usuario",
+  "@userNameHint": {
+    "description": "Consejo para el nombre de usuario"
+  }
+}

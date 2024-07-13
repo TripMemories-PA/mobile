@@ -14,3 +14,10 @@ class AskToJoinMeet extends MeetEvent {
 
   final int meetId;
 }
+
+class PostMeetFromPoiPage extends MeetEvent {
+  PostMeetFromPoiPage({required this.query, required this.poiId});
+
+  final CreateMeetQuery query;
+  final int poiId;
+}

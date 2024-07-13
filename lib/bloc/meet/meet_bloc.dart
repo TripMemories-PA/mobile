@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../api/error/api_error.dart';
 import '../../api/meet/i_meet_service.dart';
+import '../../api/meet/model/query/create_meet_query.dart';
 import '../../api/meet/model/response/meet_response.dart';
 import '../../api/meet/model/response/meet_users.dart';
 import '../../object/meet.dart';
@@ -39,9 +40,8 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
             meets: event.isRefresh ? newMeets : [...state.meets, ...newMeets],
             meetQueryStatus: MeetQueryStatus.notLoading,
             getMoreMeetsStatus: MeetQueryStatus.notLoading,
-            currentPage: event.isRefresh ? 0 : state.currentPage + 1,
-            hasMoreMeets:
-                response.meta.total == state.meets.length + newMeets.length,
+            currentPage: event.isRefresh ? 1 : state.currentPage + 1,
+            hasMoreMeets: state.perPage == newMeets.length,
           ),
         );
       } catch (e) {
@@ -57,9 +57,12 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
 
     on<AskToJoinMeet>((event, emit) async {
       try {
-        emit(state.copyWith(
+        emit(
+          state.copyWith(
             joinMeetStatus: JoinMeetStatus.loading,
-            selectedMeetId: event.meetId));
+            selectedMeetId: event.meetId,
+          ),
+        );
         await meetService.joinMeet(
           event.meetId,
         );
@@ -81,6 +84,22 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
         emit(
           state.copyWith(
             joinMeetStatus: JoinMeetStatus.rejected,
+          ),
+        );
+      }
+    });
+
+    on<PostMeetFromPoiPage>((event, emit) async {
+      try {
+        emit(state.copyWith(postMeetStatus: PostMeetStatus.loading));
+        await meetService.createMeet(event.query);
+        emit(state.copyWith(postMeetStatus: PostMeetStatus.posted));
+        add(GetPoiMeet(poiId: event.poiId, isRefresh: true));
+      } catch (e) {
+        emit(
+          state.copyWith(
+            postMeetStatus: PostMeetStatus.error,
+            error: e is ApiError ? e : ApiError.errorOccurred(),
           ),
         );
       }

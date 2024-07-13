@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +17,7 @@ import 'components/scaffold_with_nav_bar.dart';
 import 'components/scaffold_with_nav_bar_poi.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
+import 'dto/meet_bloc_and_obj_dto.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
 import 'object/city.dart';
 import 'object/map_style.dart';
@@ -24,6 +26,7 @@ import 'object/poi/poi.dart';
 import 'object/profile.dart';
 import 'page/chat_page.dart';
 import 'page/city_page.dart';
+import 'page/edit_meet_page.dart';
 import 'page/edit_question_page.dart';
 import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
@@ -59,6 +62,8 @@ import 'service/quiz/quiz_remote_data_source.dart';
 import 'service/ticket/tickets_remote_data_source.dart';
 import 'theme_generator.dart';
 import 'utils/messenger.dart';
+
+AppLocalizations? localisation;
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -151,6 +156,7 @@ class MyApp extends HookWidget {
       GoRoute(
         path: RouteName.splashPage,
         builder: (BuildContext context, GoRouterState state) {
+          localisation = AppLocalizations.of(context);
           return const SplashPage();
         },
       ),
@@ -184,12 +190,11 @@ class MyApp extends HookWidget {
               GoRoute(
                 path: '${RouteName.poiMeet}/:monumentId',
                 pageBuilder: (context, state) {
-                  final int poiId =
-                      int.parse(state.pathParameters['monumentId'] ?? '');
+                  final Poi poi = state.extra! as Poi;
                   return CustomTransitionPage(
                     key: state.pageKey,
                     child: MeetPage(
-                      poiId: poiId,
+                      poi: poi,
                     ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
@@ -206,7 +211,7 @@ class MyApp extends HookWidget {
                 pageBuilder: (context, state) {
                   final MeetBloc meetBloc = state.extra! as MeetBloc;
                   final int meetId =
-                  int.parse(state.pathParameters['meetId'] ?? '');
+                      int.parse(state.pathParameters['meetId'] ?? '');
                   return CustomTransitionPage(
                     key: state.pageKey,
                     child: MeetDetailsPage(
@@ -248,6 +253,26 @@ class MyApp extends HookWidget {
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       return CustomTransition.buildFadeTransition(
+                        animation,
+                        child,
+                      );
+                    },
+                  );
+                },
+              ),
+              GoRoute(
+                path: RouteName.editMeet,
+                pageBuilder: (context, state) {
+                  final MeetBlocAndObjDTO dto =
+                      state.extra! as MeetBlocAndObjDTO;
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: EditMeetPage(
+                      meetBlocAndObjDTO: dto,
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return CustomTransition.buildBottomToTopPopTransition(
                         animation,
                         child,
                       );
@@ -558,6 +583,8 @@ class MyApp extends HookWidget {
           title: 'Trip memories',
           routerConfig: state.user?.userTypeId == 3 ? _poiRouter : _router,
           theme: ThemeGenerator.generate(),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
         );
       },
     );

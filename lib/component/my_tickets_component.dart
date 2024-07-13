@@ -95,7 +95,6 @@ class TicketCard extends StatelessWidget {
                                     embeddedImage: const AssetImage(
                                       'assets/images/app_logo_qr_code_light.png',
                                     ),
-
                                   ),
                                   Center(
                                     child: ElevatedButton(

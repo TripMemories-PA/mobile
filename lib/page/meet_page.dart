@@ -11,14 +11,16 @@ import '../bloc/meet/meet_bloc.dart';
 import '../component/custom_card.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
+import '../dto/meet_bloc_and_obj_dto.dart';
 import '../object/meet.dart';
+import '../object/poi/poi.dart';
 import '../repository/meet/meet_repository.dart';
 import '../utils/messenger.dart';
 
 class MeetPage extends StatelessWidget {
-  const MeetPage({super.key, required this.poiId});
+  const MeetPage({super.key, required this.poi});
 
-  final int poiId;
+  final Poi poi;
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +32,19 @@ class MeetPage extends StatelessWidget {
         meetService: MeetService(),
       )..add(
           GetPoiMeet(
-            poiId: poiId,
+            poiId: poi.id,
             isRefresh: true,
           ),
         ),
-      child: _MeetPageBody(poiId),
+      child: _MeetPageBody(poi),
     );
   }
 }
 
 class _MeetPageBody extends HookWidget {
-  const _MeetPageBody(this.poiId);
+  const _MeetPageBody(this.poi);
 
-  final int poiId;
+  final Poi poi;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +61,7 @@ class _MeetPageBody extends HookWidget {
                       MeetQueryStatus.notLoading) {
                 context.read<MeetBloc>().add(
                       GetPoiMeet(
-                        poiId: poiId,
+                        poiId: poi.id,
                       ),
                     );
               }
@@ -91,6 +93,18 @@ class _MeetPageBody extends HookWidget {
             title: const Text('Meet'),
             leading: const SizedBox.shrink(),
             actions: [
+              ElevatedButton(
+                onPressed: () => context.push(
+                  RouteName.editMeet,
+                  extra: MeetBlocAndObjDTO(
+                    meetBloc: context.read<MeetBloc>(),
+                    poi: poi,
+                  ),
+                ),
+                child: Text(
+                  StringConstants().createMeet,
+                ),
+              ),
               IconButton(
                 icon: const Icon(Icons.close),
                 onPressed: () {
@@ -115,16 +129,14 @@ class _MeetPageBody extends HookWidget {
                       onRefresh: () async {
                         context.read<MeetBloc>().add(
                               GetPoiMeet(
-                                poiId: poiId,
+                                poiId: poi.id,
                                 isRefresh: true,
                               ),
                             );
                       },
                       child: ListView.builder(
                         controller: scrollController,
-                        itemCount: state.hasMoreMeets
-                            ? state.meets.length + 1
-                            : state.meets.length,
+                        itemCount: state.meets.length + 1,
                         itemBuilder: (context, index) {
                           if (index == state.meets.length) {
                             return Padding(

@@ -12,6 +12,7 @@ import '../component/custom_card.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../dto/meet_bloc_and_obj_dto.dart';
+import '../num_extensions.dart';
 import '../object/meet.dart';
 import '../object/poi/poi.dart';
 import '../object/profile.dart';
@@ -182,7 +183,7 @@ class _MeetPreviewCard extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           child: Column(
             children: [
-              const SizedBox(height: 16),
+              16.ph,
               SizedBox(
                 height: 108,
                 child: Row(
@@ -196,7 +197,7 @@ class _MeetPreviewCard extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    16.pw,
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -210,7 +211,7 @@ class _MeetPreviewCard extends StatelessWidget {
                               fontSize: 16,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          8.ph,
                           Expanded(
                             child: Text(
                               meet.description,
@@ -228,12 +229,12 @@ class _MeetPreviewCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
+              16.ph,
               _MeetCardPeople(
                 users: meet.users ?? [],
                 hasJoined: meet.hasJoined ?? false,
               ),
-              const SizedBox(height: 8),
+              8.ph,
               if (context.read<AuthBloc>().state.user?.userTypeId != 3 &&
                   context.read<AuthBloc>().state.status ==
                       AuthStatus.authenticated)
@@ -310,7 +311,7 @@ class _MeetCardPeople extends StatelessWidget {
                 .toList(),
           ),
         ),
-        const SizedBox(width: 8),
+        8.pw,
         if (hasJoined && length > maxCircles) Text('${StringConstants().you} '),
         if (rest > 0) Text('+ $rest'),
       ],

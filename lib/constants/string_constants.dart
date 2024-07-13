@@ -12,6 +12,8 @@ class StringConstants {
 
   String get cancel => 'Annuler';
 
+  String get joinChat => 'Rejoindre le chat';
+
   String get userKicked => 'Utilisateur expulsé';
 
   String get sureToKickUser =>

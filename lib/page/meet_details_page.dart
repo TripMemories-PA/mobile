@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -500,7 +501,11 @@ class _MeetDetailsBody extends HookWidget {
           ),
         15.ph,
         _buildBlueBandana(state, context),
+        15.ph,
+        _buildChatCard(),
+        25.ph,
         _buildExitButton(context, state),
+        10.ph,
       ],
     );
   }
@@ -792,6 +797,131 @@ class _MeetDetailsBody extends HookWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+
+  Padding _buildChatCard() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      child: SizedBox(
+        height: 150,
+        width: double.infinity,
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                25.ph,
+                CustomCard(
+                  height: 125,
+                  borderColor: Theme.of(context).colorScheme.tertiary,
+                  content: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
+                            'assets/images/paris_by_night.png',
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const Spacer(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: AutoSizeText(
+                                context
+                                        .read<MeetDetailsBloc>()
+                                        .state
+                                        .meet
+                                        ?.title ??
+                                    '',
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                                maxLines: 2,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  height: 10,
+                                  width: 10,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                5.pw,
+                                Text(
+                                  '${meet.usersCount} ${StringConstants().participant}${(meet.usersCount ?? 0) > 1 ? 's' : ''}',
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          height: 30,
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all(
+                                Theme.of(context).colorScheme.primary,
+                              ),
+                              shape: WidgetStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              padding: WidgetStateProperty.all(
+                                const EdgeInsets.all(5),
+                              ),
+                              minimumSize:
+                                  WidgetStateProperty.all(const Size(0, 30)),
+                            ),
+                            child: AutoSizeText(
+                              StringConstants().joinChat,
+                              style: const TextStyle(
+                                fontSize: 12,
+                              ),
+                              maxLines: 1,
+                              minFontSize: 8,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              right: 30,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Image.asset(
+                  'assets/images/chat_bubbles.png',
+                  width: 45,
+                  height: 45,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

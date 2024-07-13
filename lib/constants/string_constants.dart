@@ -14,6 +14,8 @@ class StringConstants {
 
   String get meet => 'Meet';
 
+  String get you => 'Toi';
+
   String get valueMustBeGreaterThanTwo => 'La valeur doit être supérieure à 2';
 
   String get valueMustBeLessThanFifty => 'La valeur doit être inférieure à 50';

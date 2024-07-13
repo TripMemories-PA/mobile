@@ -99,8 +99,7 @@ class MeetService implements IMeetRepository, IMeetService {
   Future<void> deleteMeet(int meetId) async {
     try {
       final String url = '$apiMeetsBaseUrl/$meetId';
-      Response response = await DioClient.instance.delete(url);
-      print(response);
+      await DioClient.instance.delete(url);
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());
     }

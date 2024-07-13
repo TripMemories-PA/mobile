@@ -50,11 +50,19 @@ class EditMeetPage extends HookWidget {
             length: 2,
             child: Scaffold(
               appBar: AppBar(
-                title: const Text('Create Meet'),
-                bottom: const TabBar(
+                leading: const SizedBox.shrink(),
+                title: Text(StringConstants().createMeet),
+                actions: [
+                  IconButton(
+                    onPressed: () => context.pop(),
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+                centerTitle: true,
+                bottom: TabBar(
                   tabs: [
-                    Tab(text: 'Faire des rencontres'),
-                    Tab(text: "Bénéficier d'une réduction"),
+                    Tab(text: StringConstants().meetPeople),
+                    Tab(text: StringConstants().haveReduction),
                   ],
                 ),
               ),
@@ -146,7 +154,7 @@ class _FormMeeting extends HookWidget {
                     final DateTime? pickedDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
+                      firstDate: DateTime.now(),
                       lastDate: DateTime(2101),
                       locale: const Locale('fr', 'FR'),
                     );
@@ -161,6 +169,7 @@ class _FormMeeting extends HookWidget {
                   validator: (value) =>
                       FieldValidator.validateRequired(value: value),
                 ),
+                20.ph,
                 ElevatedButton(
                   onPressed: () {
                     if (context.read<MeetBloc>().state.postMeetStatus ==

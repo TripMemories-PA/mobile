@@ -256,24 +256,25 @@ class _MeetPreviewCard extends StatelessWidget {
                           ),
                         ),
                         PopupMenuItem(
-                            child: ListTile(
-                              leading: const Icon(Icons.delete_outline),
-                              title: Text(StringConstants().deleteMeet),
-                            ),
-                            onTap: () {
-                              confirmationPopUp(
-                                context,
-                                title: StringConstants().warning,
-                                content:
-                                    Text(StringConstants().aboutToDeleteMeet),
-                              ).then((value) {
-                                if (value) {
-                                  context
-                                      .read<MeetBloc>()
-                                      .add(DeleteMeet(meetId: meet.id));
-                                }
-                              });
-                            }),
+                          child: ListTile(
+                            leading: const Icon(Icons.delete_outline),
+                            title: Text(StringConstants().deleteMeet),
+                          ),
+                          onTap: () {
+                            confirmationPopUp(
+                              context,
+                              title: StringConstants().warning,
+                              content:
+                                  Text(StringConstants().aboutToDeleteMeet),
+                            ).then((value) {
+                              if (value) {
+                                context
+                                    .read<MeetBloc>()
+                                    .add(DeleteMeet(meetId: meet.id));
+                              }
+                            });
+                          },
+                        ),
                       ],
                     ),
                 ],

@@ -124,7 +124,7 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
     on<DeleteMeet>((event, emit) async {
       try {
         await meetService.deleteMeet(event.meetId);
-        List<Meet> newMeets = [];
+        final List<Meet> newMeets = [];
         for (int i = 0; i < state.meets.length; i++) {
           if (state.meets[i].id != event.meetId) {
             newMeets.add(state.meets[i]);

@@ -111,6 +111,30 @@ class MeetDetailsBloc extends Bloc<MeetDetailsEvent, MeetDetailsState> {
         );
       }
     });
+
+    on<KickUser>((event, emit) async {
+      try {
+        await meetService.deleteUserFromMeet(event.meetId, event.userId);
+        emit(
+          state.copyWith(
+            users:
+                state.users.where((user) => user.id != event.userId).toList(),
+            deleteUserStatus: DeleteUserStatus.deleted,
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            error: e is ApiError ? e : ApiError.errorOccurred(),
+          ),
+        );
+      }
+      emit(
+        state.copyWith(
+          deleteUserStatus: DeleteUserStatus.initial,
+        ),
+      );
+    });
   }
 
   final IMeetRepository meetRepository;

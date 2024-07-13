@@ -36,4 +36,11 @@ class DateTimeService {
   static String formatTimeToString(DateTime dateTime) {
     return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
   }
+
+  static String formatNbDayMonth(DateTime dateTime) {
+    return DateFormat(
+      'dd MMMM',
+      'fr_FR',
+    ).format(dateTime);
+  }
 }

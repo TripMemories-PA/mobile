@@ -2,6 +2,8 @@ part of 'meet_details_bloc.dart';
 
 enum MeetDetailsQueryStatus { loading, notLoading, error, left }
 
+enum DeleteUserStatus { initial, deleted, error }
+
 class MeetDetailsState {
   MeetDetailsState({
     this.meet,
@@ -15,6 +17,7 @@ class MeetDetailsState {
     this.getUsersLoadingStatus = MeetDetailsQueryStatus.notLoading,
     this.getMoreUsersLoadingStatus = MeetDetailsQueryStatus.notLoading,
     this.ticketsToBuy = const [],
+    this.deleteUserStatus = DeleteUserStatus.initial,
   });
 
   MeetDetailsState copyWith({
@@ -29,6 +32,7 @@ class MeetDetailsState {
     MeetDetailsQueryStatus? getUsersLoadingStatus,
     MeetDetailsQueryStatus? getMoreUsersLoadingStatus,
     List<Ticket>? ticketsToBuy,
+    DeleteUserStatus? deleteUserStatus,
   }) {
     return MeetDetailsState(
       meet: meet ?? this.meet,
@@ -45,6 +49,7 @@ class MeetDetailsState {
       getMoreUsersLoadingStatus:
           getMoreUsersLoadingStatus ?? this.getMoreUsersLoadingStatus,
       ticketsToBuy: ticketsToBuy ?? this.ticketsToBuy,
+      deleteUserStatus: deleteUserStatus ?? DeleteUserStatus.initial,
     );
   }
 
@@ -59,4 +64,5 @@ class MeetDetailsState {
   bool hasMoreUsers;
   MeetDetailsQueryStatus getUsersLoadingStatus;
   MeetDetailsQueryStatus getMoreUsersLoadingStatus;
+  DeleteUserStatus deleteUserStatus;
 }

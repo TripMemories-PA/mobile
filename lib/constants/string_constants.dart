@@ -12,6 +12,23 @@ class StringConstants {
 
   String get cancel => 'Annuler';
 
+  String get userKicked => 'Utilisateur expulsé';
+
+  String get sureToKickUser =>
+      'Etes-vous sûr de vouloir expulser cet utilisateur ?';
+
+  String get status => 'Statut';
+
+  String get soldTickets => 'Billets vendus';
+
+  String get boughTicket => 'Billet acheté';
+
+  String get bought => 'acheté';
+
+  String get ticket => 'billet';
+
+  String get pending => 'en attente';
+
   String get meetLocked => 'Meet verrouillé';
 
   String get seeDetail => 'Voir le détail';
@@ -66,8 +83,6 @@ class StringConstants {
   String get pleaseSelectATicket => 'Veuillez sélectionner un billet';
 
   String get cart => 'Panier';
-
-  String get ticket => 'Billet';
 
   String get noTicket => 'Pas de billet';
 

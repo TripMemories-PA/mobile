@@ -16,3 +16,10 @@ class GetMeetUsers extends MeetDetailsEvent {
   final bool isRefresh;
   final int meetId;
 }
+
+class KickUser extends MeetDetailsEvent {
+  KickUser({required this.userId, required this.meetId});
+
+  final int userId;
+  final int meetId;
+}

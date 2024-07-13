@@ -643,13 +643,15 @@ class _MeetDetailsBody extends HookWidget {
                       TextSpan(
                         text: '${userThatPaid.length} ',
                         style: const TextStyle(
-                            decoration: TextDecoration.underline),
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                       TextSpan(
                         text:
                             '${StringConstants().place}${userThatPaid.length > 1 ? 's' : ''} ',
                         style: const TextStyle(
-                            decoration: TextDecoration.underline),
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                       TextSpan(
                         text:

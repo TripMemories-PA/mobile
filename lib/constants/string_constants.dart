@@ -10,11 +10,17 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get cancel => 'Annuler';
+
   String get meetPeople => 'Faite des rencontres';
 
   String get haveReduction => 'Bénéficier de réductions';
 
   String get meetDeleteFailed => 'Impossible de supprimer le meet';
+
+  String get meetUpdated => 'Meet mis à jour';
+
+  String get meetUpdateFailed => 'Impossible de mettre à jour le meet';
 
   String get editMeet => 'Modifier le meet';
 

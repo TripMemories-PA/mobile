@@ -13,41 +13,9 @@ import '../component/popup/confirmation_dialog.dart';
 import '../component/qr_code_canner/scanner_button_widgets.dart';
 import '../component/qr_code_canner/scanner_error_widget.dart';
 import '../constants/string_constants.dart';
+import '../hooks/mobile_scanner_hook.dart';
 import '../num_extensions.dart';
 import '../utils/messenger.dart';
-
-class _MobileScannerControllerHook extends Hook<MobileScannerController> {
-  const _MobileScannerControllerHook();
-
-  @override
-  _MobileScannerControllerHookState createState() =>
-      _MobileScannerControllerHookState();
-}
-
-class _MobileScannerControllerHookState
-    extends HookState<MobileScannerController, _MobileScannerControllerHook> {
-  late MobileScannerController _controller;
-
-  @override
-  void initHook() {
-    super.initHook();
-    _controller = MobileScannerController(
-      formats: const [BarcodeFormat.qrCode],
-    );
-  }
-
-  @override
-  MobileScannerController build(BuildContext context) => _controller;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-}
-
-MobileScannerController useMobileScannerController() =>
-    use(const _MobileScannerControllerHook());
 
 class ScannerOverlay extends CustomPainter {
   ScannerOverlay({

@@ -5,10 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
 import '../api/meet/meet_service.dart';
+import '../api/meet/model/query/update_meet_query.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/meet/meet_bloc.dart';
 import '../component/custom_card.dart';
+import '../component/form/edit_meet_form.dart';
 import '../component/popup/confirmation_dialog.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
@@ -95,6 +97,12 @@ class _MeetPageBody extends HookWidget {
         }
         if (state.deleteMeetStatus == DeleteMeetStatus.error) {
           Messenger.showSnackBarError(StringConstants().meetDeleteFailed);
+        }
+        if (state.updateMeetStatus == UpdateMeetStatus.updated) {
+          Messenger.showSnackBarSuccess(StringConstants().meetUpdated);
+        }
+        if (state.updateMeetStatus == UpdateMeetStatus.error) {
+          Messenger.showSnackBarError(StringConstants().meetUpdateFailed);
         }
       },
       builder: (context, state) {
@@ -246,37 +254,7 @@ class _MeetPreviewCard extends StatelessWidget {
                   const Spacer(),
                   if (meet.createdBy.id ==
                       context.read<AuthBloc>().state.user?.id)
-                    PopupMenuButton(
-                      icon: const Icon(Icons.more_vert),
-                      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                        PopupMenuItem(
-                          child: ListTile(
-                            leading: const Icon(Icons.edit_outlined),
-                            title: Text(StringConstants().editMeet),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          child: ListTile(
-                            leading: const Icon(Icons.delete_outline),
-                            title: Text(StringConstants().deleteMeet),
-                          ),
-                          onTap: () {
-                            confirmationPopUp(
-                              context,
-                              title: StringConstants().warning,
-                              content:
-                                  Text(StringConstants().aboutToDeleteMeet),
-                            ).then((value) {
-                              if (value) {
-                                context
-                                    .read<MeetBloc>()
-                                    .add(DeleteMeet(meetId: meet.id));
-                              }
-                            });
-                          },
-                        ),
-                      ],
-                    ),
+                    _ActionButtons(meet: meet),
                 ],
               ),
               8.ph,
@@ -288,6 +266,103 @@ class _MeetPreviewCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ActionButtons extends StatelessWidget {
+  const _ActionButtons({
+    required this.meet,
+  });
+
+  final Meet meet;
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      icon: const Icon(Icons.more_vert),
+      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+        PopupMenuItem(
+          child: ListTile(
+            leading: const Icon(Icons.edit_outlined),
+            title: Text(StringConstants().editMeet),
+          ),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (_) => DtoMeetBloc(
+                meetBloc: context.read<MeetBloc>(),
+                child: Dialog(
+                  child: Stack(
+                    children: [
+                      ListView(
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(25),
+                        children: [
+                          30.ph,
+                          Text(
+                            StringConstants().editMeet,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          30.ph,
+                          EditMeetForm(
+                            title: meet.title,
+                            description: meet.description,
+                            onValidate: ({
+                              required title,
+                              required description,
+                            }) {
+                              final UpdateMeetQuery query = UpdateMeetQuery(
+                                id: meet.id,
+                                title: title,
+                                description: description,
+                              );
+                              context.read<MeetBloc>().add(
+                                    UpdateMeet(
+                                      query: query,
+                                    ),
+                                  );
+                              context.pop();
+                            },
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        top: 10,
+                        right: 10,
+                        child: IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: context.pop,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+        PopupMenuItem(
+          child: ListTile(
+            leading: const Icon(Icons.delete_outline),
+            title: Text(StringConstants().deleteMeet),
+          ),
+          onTap: () {
+            confirmationPopUp(
+              context,
+              title: StringConstants().warning,
+              content: Text(StringConstants().aboutToDeleteMeet),
+            ).then((value) {
+              if (value) {
+                context.read<MeetBloc>().add(DeleteMeet(meetId: meet.id));
+              }
+            });
+          },
+        ),
+      ],
     );
   }
 }
@@ -410,5 +485,17 @@ class _JoinMeetButton extends StatelessWidget {
               ),
       ),
     );
+  }
+}
+
+class DtoMeetBloc extends StatelessWidget {
+  const DtoMeetBloc({super.key, required this.child, required this.meetBloc});
+
+  final Widget child;
+  final MeetBloc meetBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return child;
   }
 }

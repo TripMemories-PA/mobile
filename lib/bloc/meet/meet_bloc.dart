@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api/error/api_error.dart';
 import '../../api/meet/i_meet_service.dart';
 import '../../api/meet/model/query/create_meet_query.dart';
+import '../../api/meet/model/query/update_meet_query.dart';
 import '../../api/meet/model/response/meet_response.dart';
 import '../../api/meet/model/response/meet_users.dart';
 import '../../object/meet.dart';
@@ -148,6 +149,43 @@ class MeetBloc extends Bloc<MeetEvent, MeetState> {
           deleteMeetStatus: DeleteMeetStatus.notLoading,
         ),
       );
+    });
+
+    on<UpdateMeet>((event, emit) async {
+      try {
+        emit(state.copyWith(updateMeetStatus: UpdateMeetStatus.loading));
+        final Meet updatedMeet = await meetService.updateMeet(event.query);
+        final List<Meet> newMeets = [];
+        for (int i = 0; i < state.meets.length; i++) {
+          if (state.meets[i].id == updatedMeet.id) {
+            final Meet newMeet = state.meets[i].copyWith(
+              title: updatedMeet.title,
+              description: updatedMeet.description,
+            );
+            newMeets.add(newMeet);
+          } else {
+            newMeets.add(state.meets[i]);
+          }
+        }
+        emit(
+          state.copyWith(
+            updateMeetStatus: UpdateMeetStatus.updated,
+            meets: newMeets,
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            updateMeetStatus: UpdateMeetStatus.error,
+            error: e is ApiError ? e : ApiError.errorOccurred(),
+          ),
+        );
+        emit(
+          state.copyWith(
+            updateMeetStatus: UpdateMeetStatus.notLoading,
+          ),
+        );
+      }
     });
   }
 

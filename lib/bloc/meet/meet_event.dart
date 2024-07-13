@@ -27,3 +27,9 @@ class DeleteMeet extends MeetEvent {
 
   final int meetId;
 }
+
+class UpdateMeet extends MeetEvent {
+  UpdateMeet({required this.query});
+
+  final UpdateMeetQuery query;
+}

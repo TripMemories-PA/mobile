@@ -57,6 +57,12 @@ class _MapCustomState extends State<MapCustom> {
   }
 
   @override
+  void dispose() {
+    mapController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final ProfileBloc? profileBloc = widget.profileBloc;
     return Scaffold(

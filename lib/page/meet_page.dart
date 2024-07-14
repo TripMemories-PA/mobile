@@ -372,22 +372,25 @@ class MeetCardPeople extends StatelessWidget {
     super.key,
     required this.users,
     this.hasJoined = false,
+    this.maxUserAvatar = 3,
+    this.avatarSize = 32,
+    this.overlapAmount = 10,
   });
 
   final List<Profile> users;
   final bool hasJoined;
+  final int maxUserAvatar;
+  final double avatarSize;
+  final double overlapAmount;
 
   @override
   Widget build(BuildContext context) {
-    const maxCircles = 3;
-    final length = maxCircles.clamp(0, users.length);
-    const width = 32.0;
-    const height = 32.0;
+    final length = maxUserAvatar.clamp(0, users.length);
     const overlapAmount = 10.0;
     final rest = users.length - length;
     var otherUsers = users;
 
-    if (otherUsers.length > maxCircles) {
+    if (otherUsers.length > maxUserAvatar) {
       otherUsers = otherUsers
           .where((u) => u.id != context.read<AuthBloc>().state.user?.id)
           .toList();
@@ -397,18 +400,18 @@ class MeetCardPeople extends StatelessWidget {
     return Row(
       children: [
         SizedBox(
-          width: width * length - overlapAmount * (length - 1),
-          height: height,
+          width: avatarSize * length - overlapAmount * (length - 1),
+          height: avatarSize,
           child: Stack(
             children: otherUsers
                 .asMap()
                 .entries
                 .map(
                   (kvp) => Positioned(
-                    left: (width - overlapAmount) * kvp.key,
+                    left: (avatarSize - overlapAmount) * kvp.key,
                     child: Container(
-                      width: width,
-                      height: height,
+                      width: avatarSize,
+                      height: avatarSize,
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -433,7 +436,8 @@ class MeetCardPeople extends StatelessWidget {
           ),
         ),
         8.pw,
-        if (hasJoined && length > maxCircles) Text('${StringConstants().you} '),
+        if (hasJoined && length > maxUserAvatar)
+          Text('${StringConstants().you} '),
         if (rest > 0) Text('+ $rest'),
       ],
     );

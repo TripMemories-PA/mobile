@@ -6,6 +6,8 @@ import 'package:progressive_image/progressive_image.dart';
 import '../bloc/user_searching_bloc/user_searching_bloc.dart';
 import '../constants/my_colors.dart';
 import '../constants/route_name.dart';
+import '../dto/conversation/conversation_dto.dart';
+import '../dto/conversation/private_conversation_dto.dart';
 import '../object/profile.dart';
 import 'custom_card.dart';
 
@@ -70,7 +72,7 @@ class UserCard extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     child: isFriend
-                        ? _buildChatIconButton(context)
+                        ? _buildChatIconButton(context, user)
                         : _buildNotFriendButton(context, user),
                   ),
                 ],
@@ -131,14 +133,26 @@ class UserCard extends StatelessWidget {
     );
   }
 
-  IconButton _buildChatIconButton(BuildContext context) {
+  IconButton? _buildChatIconButton(BuildContext context, Profile user) {
+    final String? channel = user.channel;
+    if (channel == null) {
+      return null;
+    }
+    final ConversationDto conversationDto = PrivateConversationDto(
+      id: user.id,
+      channel: channel,
+      user: user,
+    );
     return IconButton(
       iconSize: 15,
       padding: EdgeInsets.zero,
       icon: const Icon(Icons.chat_outlined),
       color: Colors.white,
       onPressed: () {
-        context.push('${RouteName.chatPage}/${user.id}', extra: user);
+        context.push(
+          '${RouteName.chatPage}/${user.id}',
+          extra: conversationDto,
+        );
       },
     );
   }

@@ -1,38 +1,28 @@
 import 'profile.dart';
-import 'uploaded_file.dart';
 
 class Message {
   Message({
     required this.id,
+    required this.content,
+    required this.createdAt,
     required this.sender,
-    required this.receiver,
-    required this.message,
-    required this.sentAt,
-    this.avatar,
-    this.banner,
   });
 
   factory Message.fromJson(Map<String, dynamic> json) {
-    return Message(
-      id: json['id'] as int,
-      sender: Profile.fromJson(json['sender'] as Map<String, dynamic>),
-      receiver: Profile.fromJson(json['receiver'] as Map<String, dynamic>),
-      message: json['message'] as String,
-      sentAt: DateTime.parse(json['sentAt'] as String),
-      avatar: json['avatar'] == null
-          ? null
-          : UploadFile.fromJson(json['avatar'] as Map<String, dynamic>),
-      banner: json['banner'] == null
-          ? null
-          : UploadFile.fromJson(json['banner'] as Map<String, dynamic>),
-    );
+    try {
+      return Message(
+        id: json['id'] as int,
+        content: json['content'] as String,
+        createdAt: DateTime.parse(json['createdAt'] as String),
+        sender: Profile.fromJson(json['sender'] as Map<String, dynamic>),
+      );
+    } catch (e) {
+      throw Exception('Failed to create message from json: $e');
+    }
   }
 
   int id;
+  String content;
+  DateTime createdAt;
   Profile sender;
-  Profile receiver;
-  String message;
-  DateTime sentAt;
-  UploadFile? avatar;
-  UploadFile? banner;
 }

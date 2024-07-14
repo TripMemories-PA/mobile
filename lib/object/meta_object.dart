@@ -25,6 +25,18 @@ class MetaObject {
     );
   }
 
+  static MetaObject initial() {
+    return const MetaObject(
+      total: 0,
+      perPage: 0,
+      currentPage: 0,
+      lastPage: 0,
+      firstPage: 0,
+      firstPageUrl: '',
+      lastPageUrl: '',
+    );
+  }
+
   MetaObject copyWith({
     int? total,
     int? perPage,

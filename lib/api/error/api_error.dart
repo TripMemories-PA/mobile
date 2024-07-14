@@ -45,6 +45,14 @@ class ApiError {
     return ApiError(StringConstants().errorOccurred);
   }
 
+  static ApiError errorWhilePostingMessage() {
+    return ApiError(StringConstants().errorWhilePostingMessage);
+  }
+
+  static ApiError errorWhileFetchingMessages() {
+    return ApiError(StringConstants().errorWhileFetchingMessages);
+  }
+
   String getDescription() {
     return _description;
   }

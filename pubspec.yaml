@@ -65,6 +65,8 @@ dependencies:
   vibration: ^1.9.0
   audioplayers: ^6.0.0
   flutter_localization: ^0.2.0
+  dart_pusher_channels: ^1.2.2+1
+
 
 dev_dependencies:
   flutter_test:

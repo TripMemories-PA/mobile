@@ -1,26 +1,31 @@
 import 'message.dart';
-import 'profile.dart';
+import 'meta_object.dart';
 
 class Conversation {
   Conversation({
-    required this.id,
-    required this.users,
+    required this.meta,
     required this.messages,
   });
 
   factory Conversation.fromJson(Map<String, dynamic> json) {
     return Conversation(
-      id: json['id'] as int,
-      users: (json['users'] as List)
-          .map((e) => Profile.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      messages: (json['messages'] as List)
+      meta: MetaObject.fromJson(json['meta'] as Map<String, dynamic>),
+      messages: (json['data'] as List)
           .map((e) => Message.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
   }
 
-  final int id;
-  final List<Profile> users;
+  Conversation copyWith({
+    MetaObject? meta,
+    List<Message>? messages,
+  }) {
+    return Conversation(
+      meta: meta ?? this.meta,
+      messages: messages ?? this.messages,
+    );
+  }
+
+  final MetaObject meta;
   final List<Message> messages;
 }

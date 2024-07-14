@@ -16,6 +16,8 @@ import '../component/ticket_card.dart';
 import '../component/ticket_slider.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
+import '../dto/conversation/conversation_dto.dart';
+import '../dto/conversation/meet_conversation_dto.dart';
 import '../num_extensions.dart';
 import '../object/meet.dart';
 import '../object/profile.dart';
@@ -874,7 +876,26 @@ class _MeetDetailsBody extends HookWidget {
                           height: 30,
                           width: MediaQuery.of(context).size.width * 0.25,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              final String? channel = meet.channel;
+                              if (channel == null) {
+                                Messenger.showSnackBarError(
+                                  StringConstants().errorOccurred,
+                                );
+                                return;
+                              }
+                              final ConversationDto conversationDto =
+                                  MeetConversationDto(
+                                users: state.users,
+                                id: meet.id,
+                                channel: channel,
+                                meet: meet,
+                              );
+                              context.push(
+                                '${RouteName.chatPage}/${meet.id}',
+                                extra: conversationDto,
+                              );
+                            },
                             style: ButtonStyle(
                               backgroundColor: WidgetStateProperty.all(
                                 Theme.of(context).colorScheme.primary,

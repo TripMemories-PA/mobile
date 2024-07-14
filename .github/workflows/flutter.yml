@@ -48,7 +48,10 @@ jobs:
         run: sed -i 's/{GOOGLE_MAP_API_KEY}/${{ secrets.GOOGLE_MAP_API_KEY }}/g' android/app/src/main/AndroidManifest.xml
 
       - name: Set Stripe pub key with GitHub secret
-        run: sed -i 's/{STRIPE_PUBLISHABLE_KEY}/${{ secrets.STRIPE_PUB_KEY }}/g' lib/main.dart
+        run: sed -i 's/{STRIPE_PUBLISHABLE_KEY}/${{ secrets.STRIPE_PUB_KEY }}/g' lib/main.dart      
+          
+      - name: Set Pusher pub key with GitHub secret
+        run: sed -i 's/{PUSHER_API_KEY}/${{ secrets.PUSHER_API_KEY }}/g' lib/api/pusher_service.dart
 
       - name: Build APK
         run: flutter build apk --release

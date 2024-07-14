@@ -16,6 +16,12 @@ class StringConstants {
 
   String get userKicked => 'Utilisateur expulsé';
 
+  String get errorWhilePostingMessage =>
+      'Erreur lors de la publication du message';
+
+  String get errorWhileFetchingMessages =>
+      'Erreur lors de la récupération des messages';
+
   String get sureToKickUser =>
       'Etes-vous sûr de vouloir expulser cet utilisateur ?';
 
@@ -93,6 +99,7 @@ class StringConstants {
   String get createMeet => 'Créer un Meet';
 
   String get thePodium => 'Le podium';
+
   String get tickets => 'Billets';
 
   String get editQuiz => 'Modifier le quiz';

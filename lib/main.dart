@@ -17,13 +17,13 @@ import 'components/scaffold_with_nav_bar.dart';
 import 'components/scaffold_with_nav_bar_poi.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
+import 'dto/conversation/conversation_dto.dart';
 import 'dto/meet_bloc_and_obj_dto.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
 import 'object/city.dart';
 import 'object/map_style.dart';
 import 'object/marker_icons_custom.dart';
 import 'object/poi/poi.dart';
-import 'object/profile.dart';
 import 'page/chat_page.dart';
 import 'page/city_page.dart';
 import 'page/edit_meet_page.dart';
@@ -44,6 +44,7 @@ import 'page/scan_qrcode_page.dart';
 import 'page/search_page.dart';
 import 'page/shop_page.dart';
 import 'page/splash_page.dart';
+import 'repository/chat/chat_repository.dart';
 import 'repository/city/cities_repository.dart';
 import 'repository/comment/comment_repository.dart';
 import 'repository/meet/meet_repository.dart';
@@ -52,6 +53,7 @@ import 'repository/post/post_repository.dart';
 import 'repository/profile/profile_repository.dart';
 import 'repository/quiz/quiz_repository.dart';
 import 'repository/ticket/ticket_repository.dart';
+import 'service/chat/chat_remote_data_source.dart';
 import 'service/cities/cities_remote_data_source.dart';
 import 'service/comment/comment_remote_data_source.dart';
 import 'service/meet/meet_remote_data_source.dart';
@@ -75,8 +77,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MarkerIconsCustom.initialize();
   await MapStyle.initialize();
-  Stripe.publishableKey =
-      'pk_test_51PXqcPD03zNfc2sem171z1y1z2f7UriFAJFUVTHMUqojf62sApeAiILYcpDpguYwt9RAOcC3ssJPARbDrAMGvtok00yrnnIhRy';
+  Stripe.publishableKey = '{STRIPE_PUBLISHABLE_KEY}';
   Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
@@ -126,6 +127,11 @@ Future<void> main() async {
         RepositoryProvider(
           create: (context) => MeetRepository(
             remoteDataSource: MeetRemoteDataSource(),
+          ),
+        ),
+        RepositoryProvider(
+          create: (context) => ChatRepository(
+            chatRemoteDataSource: ChatRemoteDataSource(),
           ),
         ),
       ],
@@ -418,8 +424,9 @@ class MyApp extends HookWidget {
               GoRoute(
                 path: '${RouteName.chatPage}/:userId',
                 builder: (BuildContext context, GoRouterState state) {
-                  final Profile user = state.extra! as Profile;
-                  return ChatPage(user: user);
+                  final ConversationDto conversationDTO =
+                      state.extra! as ConversationDto;
+                  return ChatPage(conversationDto: conversationDTO);
                 },
               ),
             ],
@@ -540,8 +547,9 @@ class MyApp extends HookWidget {
               GoRoute(
                 path: '${RouteName.chatPage}/:userId',
                 builder: (BuildContext context, GoRouterState state) {
-                  final Profile user = state.extra! as Profile;
-                  return ChatPage(user: user);
+                  final ConversationDto conversationDTO =
+                      state.extra! as ConversationDto;
+                  return ChatPage(conversationDto: conversationDTO);
                 },
               ),
               GoRoute(

@@ -143,7 +143,7 @@ class ScanQrcodePageIos extends HookWidget {
                               context,
                               isOkPopUp: true,
                               width: MediaQuery.of(context).size.width * 0.9,
-                              height: MediaQuery.of(context).size.height * 0.55,
+                              height: MediaQuery.of(context).size.height * 0.6,
                               content: BlocProvider(
                                 create: (context) => QrCodeScannerBloc(
                                   qrCodeScannerService: QrCodeScannerService(),

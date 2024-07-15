@@ -64,15 +64,7 @@ class ScanQrcodePage extends HookWidget {
   Widget build(BuildContext context) {
     final mobileController = useMobileScannerController();
     final ticketInReview = useState(false);
-    useEffect(
-      () {
-        mobileController.start();
-        return () {
-          mobileController.dispose();
-        };
-      },
-      [],
-    );
+
     final scanWindow = RRect.fromRectAndRadius(
       Rect.fromCenter(
         center: MediaQuery.of(context).size.center(const Offset(0, -100)),
@@ -120,6 +112,7 @@ class ScanQrcodePage extends HookWidget {
                       Center(
                         child: MobileScanner(
                           controller: mobileController,
+                          scanWindow: scanWindow.outerRect,
                           errorBuilder: (context, error, child) {
                             return ScannerErrorWidget(error: error);
                           },
@@ -254,6 +247,13 @@ class ScanQrcodePage extends HookWidget {
                                 controller: mobileController,
                               ),
                               SwitchCameraButton(controller: mobileController),
+                              IconButton(
+                                icon: const Icon(Icons.camera_alt_outlined),
+                                onPressed: () {
+                                  mobileController.stop();
+                                  mobileController.start();
+                                },
+                              ),
                             ],
                           ),
                         ),

@@ -512,6 +512,18 @@ class MyApp extends HookWidget {
               ),
               GoRoute(
                 path: '${RouteName.monumentPage}/:monumentId',
+                redirect: (context, state) {
+                  final int monumentId =
+                      int.parse(state.pathParameters['monumentId']!);
+                  final bool shouldRedirect =
+                      context.read<AuthBloc>().state.user?.poiId == monumentId;
+
+                  if (shouldRedirect) {
+                    return RouteName.profilePagePoi;
+                  }
+
+                  return null;
+                },
                 pageBuilder: (context, state) {
                   return CustomTransitionPage(
                     key: state.pageKey,

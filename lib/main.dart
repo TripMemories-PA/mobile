@@ -10,6 +10,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 
 import 'api/auth/auth_service.dart';
+import 'api/quest/quest_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
 import 'bloc/auth_bloc/auth_event.dart';
 import 'bloc/auth_bloc/auth_state.dart';
@@ -56,6 +57,7 @@ import 'repository/meet/meet_repository.dart';
 import 'repository/monument/monument_repository.dart';
 import 'repository/post/post_repository.dart';
 import 'repository/profile/profile_repository.dart';
+import 'repository/quest/quest_repository.dart';
 import 'repository/quiz/quiz_repository.dart';
 import 'repository/ticket/ticket_repository.dart';
 import 'service/chat/chat_remote_data_source.dart';
@@ -138,6 +140,9 @@ Future<void> main() async {
           create: (context) => ChatRepository(
             chatRemoteDataSource: ChatRemoteDataSource(),
           ),
+        ),
+        RepositoryProvider(
+          create: (context) => QuestRepository(QuestService()),
         ),
       ],
       child: MultiBlocProvider(

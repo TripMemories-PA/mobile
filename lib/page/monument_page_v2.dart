@@ -9,11 +9,14 @@ import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
 import '../api/post/post_service.dart';
+import '../api/quest/quest_service.dart';
 import '../api/ticket/ticket_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../bloc/post/post_bloc.dart';
+import '../bloc/quest/quest_bloc.dart';
+import '../bloc/quest/quest_event.dart';
 import '../bloc/ticket_bloc/ticket_bloc.dart';
 import '../component/map_mini.dart';
 import '../component/post_card.dart';
@@ -28,6 +31,7 @@ import '../object/poi/poi.dart';
 import '../object/ticket.dart';
 import '../repository/monument/monument_repository.dart';
 import '../repository/post/post_repository.dart';
+import '../repository/quest/quest_repository.dart';
 import '../repository/ticket/ticket_repository.dart';
 
 class MonumentPageV2 extends HookWidget {
@@ -197,7 +201,7 @@ class _PageContent extends HookWidget {
             tabs: [
               Tab(text: StringConstants().description),
               Tab(text: StringConstants().posts),
-              Tab(text: StringConstants().actu),
+              Tab(text: StringConstants().monumentQuests),
               Tab(text: StringConstants().shop),
             ],
             dividerColor: Colors.transparent,
@@ -344,8 +348,49 @@ class _PageContent extends HookWidget {
   }
 
   Widget _buildActuPart() {
-    return Center(
-      child: Text(StringConstants().actu),
+    return BlocProvider(
+      create: (context) => QuestBloc(
+        questRepository: RepositoryProvider.of<QuestRepository>(context),
+        questService: QuestService(),
+      )..add(GetPoiQuestEvent(monument.id)),
+      child: BlocBuilder<QuestBloc, QuestState>(
+        builder: (context, state) {
+          return Center(
+            child: Column(
+              children: [
+                20.ph,
+                Text(
+                  StringConstants().monumentQuests,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+                20.ph,
+                if (state.status == QuestStatus.loading)
+                  const CircularProgressIndicator()
+                else
+                  state.questList == null
+                      ? Text(StringConstants().noQuestForThisMonument)
+                      : Column(
+                          children: state.questList!.quests
+                              .map(
+                                (quest) => Column(
+                                  children: [
+                                    Text(quest.title),
+                                    10.ph,
+                                    Text(quest.title),
+                                    10.ph,
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                        ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 

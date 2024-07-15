@@ -29,7 +29,11 @@ class StringConstants {
 
   String get joinChat => 'Rejoindre le chat';
 
+  String get monumentQuests => 'Quêtes du monument';
+
   String get userKicked => 'Utilisateur expulsé';
+
+  String get noQuestForThisMonument => 'Pas de quête pour ce monument';
 
   String get errorWhilePostingMessage =>
       'Erreur lors de la publication du message';

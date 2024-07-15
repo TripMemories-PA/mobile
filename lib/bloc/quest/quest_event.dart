@@ -23,6 +23,13 @@ class GetQuestEvent extends QuestEvent {
   final int id;
 }
 
+class GetPoiQuestEvent extends QuestEvent {
+  GetPoiQuestEvent(this.id);
+
+  final int id;
+  final bool isRefresh = false;
+}
+
 class UpdateQuestEvent extends QuestEvent {
   UpdateQuestEvent({required this.id, required this.queryModel});
 

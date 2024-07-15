@@ -19,6 +19,7 @@ class QuestBloc extends Bloc<QuestEvent, QuestState> {
     on<StoreQuestImageEvent>(_onStoreImage);
     on<StoreQuestEvent>(_onStoreQuest);
     on<GetQuestEvent>(_onGetQuest);
+    on<GetPoiQuestEvent>(_onGetPoiQuests);
     on<UpdateQuestEvent>(_onUpdateQuest);
     on<DeleteQuestEvent>(_onDeleteQuest);
     on<ValidateQuestEvent>(_onValidateQuest);
@@ -74,6 +75,38 @@ class QuestBloc extends Bloc<QuestEvent, QuestState> {
         state.copyWith(
           status: QuestStatus.initial,
           selectedQuest: quest,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: QuestStatus.error,
+          error: e is CustomException ? e.apiError : ApiError.unknown(),
+        ),
+      );
+    }
+  }
+
+  Future<void> _onGetPoiQuests(
+    GetPoiQuestEvent event,
+    Emitter<QuestState> emit,
+  ) async {
+    event.isRefresh
+        ? emit(state.copyWith(status: QuestStatus.loading))
+        : emit(state.copyWith(moreQuestStatus: QuestStatus.loading));
+    try {
+      final GetQuestList quests = await questRepository.getQuestsFromPoi(
+        poiId: event.id,
+        page: event.isRefresh ? 1 : state.page + 1,
+        perPage: state.perPage,
+      );
+      emit(
+        state.copyWith(
+          status: QuestStatus.initial,
+          questList: quests,
+          page: event.isRefresh ? 0 : state.page + 1,
+          moreQuestStatus: QuestStatus.initial,
+          hasMoreQuest: quests.meta.total != state.questList?.quests.length,
         ),
       );
     } catch (e) {

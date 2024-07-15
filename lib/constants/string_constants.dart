@@ -29,7 +29,17 @@ class StringConstants {
 
   String get joinChat => 'Rejoindre le chat';
 
+  String get questDeleted => 'Mission supprimée';
+
+  String get questUpdated => 'Mission mise à jour';
+
+  String get sureToDeleteMission => 'Etes-vous sûr de vouloir supprimer cette mission ?';
+
+  String get myMissions => 'Mes missions';
+
   String get monumentQuests => 'Quêtes du monument';
+
+  String get quests => 'Missions';
 
   String get userKicked => 'Utilisateur expulsé';
 

@@ -103,10 +103,10 @@ class QuestBloc extends Bloc<QuestEvent, QuestState> {
       emit(
         state.copyWith(
           status: QuestStatus.initial,
-          questList: quests,
+          questList: quests.quests,
           page: event.isRefresh ? 0 : state.page + 1,
           moreQuestStatus: QuestStatus.initial,
-          hasMoreQuest: quests.meta.total != state.questList?.quests.length,
+          hasMoreQuest: quests.meta.total != state.questList.length,
         ),
       );
     } catch (e) {
@@ -144,10 +144,16 @@ class QuestBloc extends Bloc<QuestEvent, QuestState> {
     DeleteQuestEvent event,
     Emitter<QuestState> emit,
   ) async {
-    emit(state.copyWith(status: QuestStatus.loading));
     try {
       await questService.deleteQuest(event.id);
-      emit(state.copyWith(status: QuestStatus.initial));
+      final List<Quest> updatedQuests =
+          state.questList.where((element) => element.id != event.id).toList();
+      emit(
+        state.copyWith(
+          status: QuestStatus.deleted,
+          questList: updatedQuests,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
@@ -156,6 +162,7 @@ class QuestBloc extends Bloc<QuestEvent, QuestState> {
         ),
       );
     }
+    emit(state.copyWith(status: QuestStatus.initial));
   }
 
   Future<void> _onValidateQuest(

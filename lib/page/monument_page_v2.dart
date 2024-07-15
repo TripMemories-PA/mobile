@@ -378,10 +378,10 @@ class _PageContent extends HookWidget {
                 if (state.status == QuestStatus.loading)
                   const CircularProgressIndicator()
                 else
-                  state.questList == null
+                  state.questList.isEmpty
                       ? Text(StringConstants().noQuestForThisMonument)
                       : Column(
-                          children: state.questList!.quests
+                          children: state.questList
                               .map(
                                 (quest) => Column(
                                   children: [

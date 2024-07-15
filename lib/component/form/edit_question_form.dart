@@ -202,10 +202,14 @@ class EditQuestionForm extends HookWidget {
                           .any((element) => element.text.isEmpty) ||
                       questionController.text.isEmpty ||
                       selectedAnswerIndex.value == null) {
+                    final String message = selectedAnswerIndex.value != null
+
+                        ? StringConstants().selectRightAnswer
+                        : StringConstants().editQuestionRestrictions;
                     confirmationPopUp(
                       context,
                       content: Text(
-                        StringConstants().editQuestionRestrictions,
+                        message,
                       ),
                       isOkPopUp: true,
                     );

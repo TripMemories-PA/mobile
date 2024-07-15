@@ -4,13 +4,15 @@ enum QuestStatus {
   initial,
   loading,
   error,
+  deleted,
+  updated,
 }
 
 class QuestState {
   QuestState({
     this.status = QuestStatus.initial,
     this.error,
-    this.questList,
+    this.questList = const [],
     this.selectedQuest,
     this.page = 0,
     this.perPage = 10,
@@ -20,7 +22,7 @@ class QuestState {
 
   final QuestStatus status;
   final ApiError? error;
-  final GetQuestList? questList;
+  final List<Quest> questList;
   final Quest? selectedQuest;
   final int page;
   final int perPage;
@@ -30,7 +32,7 @@ class QuestState {
   QuestState copyWith({
     QuestStatus? status,
     ApiError? error,
-    GetQuestList? questList,
+    List<Quest>? questList,
     Quest? selectedQuest,
     int? page,
     int? perPage,

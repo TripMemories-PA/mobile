@@ -14,6 +14,16 @@ class GetQuestList {
     );
   }
 
+  GetQuestList copyWith({
+    List<Quest>? quests,
+    MetaObject? meta,
+  }) {
+    return GetQuestList(
+      quests: quests ?? this.quests,
+      meta: meta ?? this.meta,
+    );
+  }
+
   final List<Quest> quests;
   final MetaObject meta;
 }

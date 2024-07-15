@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_event.dart';
@@ -12,6 +11,7 @@ import '../bloc/monument_bloc/monument_bloc.dart';
 import '../component/edit_quizz.dart';
 import '../component/map_mini.dart';
 import '../component/poi_feed.dart';
+import '../component/poi_quest_editor.dart';
 import '../component/popup/confirmation_dialog.dart';
 import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
@@ -27,7 +27,7 @@ class ProfilePagePoi extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TabController tabController = useTabController(initialLength: 3);
+    final TabController tabController = useTabController(initialLength: 4);
     final int? poiId = context.read<AuthBloc>().state.user?.poiId;
     if (poiId == null) {
       context.read<AuthBloc>().add(const ChangeToLoggedOutStatus());
@@ -105,7 +105,7 @@ class _CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-class _PageContent extends HookWidget {
+class _PageContent extends StatelessWidget {
   const _PageContent({
     required this.monument,
     required this.tabController,
@@ -138,6 +138,9 @@ class _PageContent extends HookWidget {
                   const SingleChildScrollView(
                     child: EditQuiz(),
                   ),
+                  SingleChildScrollView(
+                    child: PoiQuestEditor(poiId: monument.id,),
+                  ),
                 ],
               ),
             ),
@@ -163,6 +166,7 @@ class _PageContent extends HookWidget {
               Tab(text: StringConstants().description),
               Tab(text: StringConstants().posts),
               Tab(text: StringConstants().quiz),
+              Tab(text: StringConstants().quests),
             ],
             dividerColor: Colors.transparent,
           ),
@@ -234,10 +238,7 @@ class _PageContent extends HookWidget {
 
   SliverAppBar _buildHeader(BuildContext context) {
     return SliverAppBar(
-      leading: IconButton(
-        icon: const Icon(Icons.chevron_left),
-        onPressed: () => context.pop(),
-      ),
+      leading: const SizedBox.shrink(),
       actions: [
         IconButton(
           icon: const Icon(Icons.logout),

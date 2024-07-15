@@ -24,10 +24,10 @@ class GetQuestEvent extends QuestEvent {
 }
 
 class GetPoiQuestEvent extends QuestEvent {
-  GetPoiQuestEvent(this.id);
+  GetPoiQuestEvent(this.id, {this.isRefresh = false});
 
   final int id;
-  final bool isRefresh = false;
+  final bool isRefresh;
 }
 
 class UpdateQuestEvent extends QuestEvent {

@@ -33,6 +33,7 @@ import '../repository/monument/monument_repository.dart';
 import '../repository/post/post_repository.dart';
 import '../repository/quest/quest_repository.dart';
 import '../repository/ticket/ticket_repository.dart';
+import '../utils/messenger.dart';
 
 class MonumentPageV2 extends HookWidget {
   const MonumentPageV2({super.key, required this.monumentId});
@@ -353,7 +354,14 @@ class _PageContent extends HookWidget {
         questRepository: RepositoryProvider.of<QuestRepository>(context),
         questService: QuestService(),
       )..add(GetPoiQuestEvent(monument.id)),
-      child: BlocBuilder<QuestBloc, QuestState>(
+      child: BlocConsumer<QuestBloc, QuestState>(
+        listener: (context, state) {
+          if (state.status == QuestStatus.error) {
+            Messenger.showSnackBarError(
+              state.error?.getDescription() ?? StringConstants().errorOccurred,
+            );
+          }
+        },
         builder: (context, state) {
           return Center(
             child: Column(

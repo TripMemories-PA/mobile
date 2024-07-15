@@ -4,12 +4,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../api/quest/model/query/post_quest_query_model.dart';
 import '../api/quest/quest_service.dart';
 import '../bloc/edit_quest/edit_quest_bloc.dart';
 import '../bloc/edit_quest/edit_quest_event.dart';
+import '../bloc/quest/quest_event.dart';
 import '../constants/string_constants.dart';
 import '../dto/quest_dto.dart';
 import '../num_extensions.dart';
+import '../object/uploaded_file.dart';
 import '../utils/messenger.dart';
 
 class EditQuestPage extends HookWidget {
@@ -30,14 +33,18 @@ class EditQuestPage extends HookWidget {
         listener: (context, state) {
           if (state.publishQuestStep == PublishQuestStep.pickImage) {
             currentStep.value = 1;
-          } else if (state.publishQuestStep == PublishQuestStep.selectLabels) {
+          }
+          if (state.publishQuestStep == PublishQuestStep.selectLabels) {
             currentStep.value = 2;
-          } else if (state.publishQuestStep == PublishQuestStep.storeQuest) {
-            currentStep.value = 3;
-          } else if (state.publishQuestStep == PublishQuestStep.posted) {
-            currentStep.value = 3;
-          } else if (state.publishQuestStep == PublishQuestStep.posted) {
-            Messenger.showSnackBarSuccess(StringConstants().questUpdated);
+          }
+          if (state.publishQuestStep == PublishQuestStep.posted) {
+            Messenger.showSnackBarSuccess(StringConstants().questPosted);
+            questBlocDTO.questBloc.add(GetQuestEvent(questBlocDTO.poiId));
+            context.pop();
+          }
+          if (state.publishQuestStep == PublishQuestStep.updated) {
+            Messenger.showSnackBarSuccess(StringConstants().questionUpdated);
+            questBlocDTO.questBloc.add(GetQuestEvent(questBlocDTO.poiId));
             context.pop();
           }
         },
@@ -88,15 +95,59 @@ class EditQuestPage extends HookWidget {
                     content: state.postQuestImageResponse.labels.isEmpty
                         ? Text(StringConstants().noLabels)
                         : Column(
-                            children: state.postQuestImageResponse.labels
-                                .map(
-                                  (label) => ElevatedButton(
-                                    onPressed: () =>
-                                        selectedLabel.value = label,
-                                    child: Text(label),
-                                  ),
-                                )
-                                .toList(),
+                            children: [
+                              Wrap(
+                                spacing: 8.0,
+                                runSpacing: 8.0,
+                                children: state.postQuestImageResponse.labels
+                                    .map(
+                                      (label) => SizedBox(
+                                        width: 100,
+                                        height: 50,
+                                        child: ElevatedButton(
+                                          onPressed: () =>
+                                              selectedLabel.value = label,
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStateProperty.resolveWith(
+                                              (states) =>
+                                                  selectedLabel.value == label
+                                                      ? Colors.green
+                                                      : Colors.blue,
+                                            ),
+                                          ),
+                                          child: Text(label),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                              20.ph,
+                              ElevatedButton(
+                                onPressed: () {
+                                  final UploadFile? file =
+                                      state.postQuestImageResponse.file;
+                                  if (selectedLabel.value.isNotEmpty &&
+                                      file != null) {
+                                    context.read<EditQuestBloc>().add(
+                                          StoreQuestEvent(
+                                            PostQuestQueryModel(
+                                              title: titleController.text,
+                                              label: selectedLabel.value,
+                                              poiId: questBlocDTO.poiId,
+                                              imageId: file.id,
+                                            ),
+                                          ),
+                                        );
+                                  } else {
+                                    Messenger.showSnackBarError(
+                                      StringConstants().pleaseSelectLabel,
+                                    );
+                                  }
+                                },
+                                child: Text(StringConstants().validate),
+                              ),
+                            ],
                           ),
                   ),
                 ],

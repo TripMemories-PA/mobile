@@ -22,7 +22,7 @@ class QuestState {
     this.error,
     this.questList = const [],
     this.selectedQuest,
-    this.page = 0,
+    this.page = 1,
     this.perPage = 10,
     this.moreQuestStatus = QuestStatus.initial,
     this.hasMoreQuest = true,

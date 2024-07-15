@@ -10,7 +10,13 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get questPosted => 'Mission postée';
+
   String get noLabels => 'Pas de labels';
+
+  String get pleaseSelectLabel => 'Veuillez sélectionner un label';
+
+  String get noMoreQuests => 'Plus de missions à afficher';
 
   String get titleCannotBeEmpty => 'Le titre ne peut pas être vide';
 

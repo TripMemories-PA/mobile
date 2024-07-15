@@ -13,14 +13,17 @@ enum PublishQuestStep {
   pickImage,
   selectLabels,
   storeQuest,
-  posted
+  posted,
+  updated,
 }
 
 class EditQuestState {
   EditQuestState({
     this.error,
     this.pickImageStatus = QuestStatus.initial,
-    this.postQuestImageResponse = const PostQuestImageResponse(labels: []),
+    this.postQuestImageResponse = const PostQuestImageResponse(
+      labels: [],
+    ),
     this.publishQuestStep = PublishQuestStep.selectTitle,
   });
 

@@ -34,6 +34,7 @@ class EditQuestBloc extends Bloc<EditQuestEvent, EditQuestState> {
         state.copyWith(
           status: QuestStatus.initial,
           postQuestImageResponse: response,
+          publishQuestStep: PublishQuestStep.selectLabels,
         ),
       );
     } catch (e) {
@@ -44,7 +45,6 @@ class EditQuestBloc extends Bloc<EditQuestEvent, EditQuestState> {
         ),
       );
     }
-    emit(state.copyWith(pickImageStatus: QuestStatus.initial));
   }
 
   Future<void> _onStoreQuest(
@@ -54,7 +54,12 @@ class EditQuestBloc extends Bloc<EditQuestEvent, EditQuestState> {
     emit(state.copyWith(status: QuestStatus.loading));
     try {
       await questService.storeQuest(questData: event.queryModel);
-      emit(state.copyWith(status: QuestStatus.initial));
+      emit(
+        state.copyWith(
+          status: QuestStatus.initial,
+          publishQuestStep: PublishQuestStep.posted,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(

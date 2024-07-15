@@ -71,6 +71,7 @@ class PoiQuestEditor extends StatelessWidget {
                             RouteName.editQuest,
                             extra: QuestBlocDTO(
                               questBloc: context.read<QuestBloc>(),
+                              poiId: poiId,
                             ),
                           );
                         },
@@ -86,16 +87,49 @@ class PoiQuestEditor extends StatelessWidget {
                     state.questList.isEmpty
                         ? Text(StringConstants().noQuestForThisMonument)
                         : Column(
-                            children: state.questList
-                                .map(
-                                  (quest) => Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: MissionCard(
-                                      quest: quest,
-                                    ),
+                            children: [
+                              ...state.questList.map(
+                                (quest) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: MissionCard(
+                                    quest: quest,
                                   ),
+                                ),
+                              ),
+                              if (state.hasMoreQuest)
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: state.moreQuestStatus ==
+                                          QuestStatus.loading
+                                      ? const CircularProgressIndicator()
+                                      : ElevatedButton(
+                                          onPressed: () {
+                                            context.read<QuestBloc>().add(
+                                                  GetPoiQuestEvent(poiId),
+                                                );
+                                          },
+                                          style: ButtonStyle(
+                                            shape: WidgetStateProperty.all(
+                                              RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              ),
+                                            ),
+                                            backgroundColor:
+                                                WidgetStateProperty.all(
+                                              Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            StringConstants().loadMoreResults,
+                                          ),
+                                        ),
                                 )
-                                .toList(),
+                              else
+                                Text(StringConstants().noMoreQuests),
+                            ],
                           ),
                 ],
               ),
@@ -230,6 +264,7 @@ class MissionCard extends StatelessWidget {
                               extra: QuestBlocDTO(
                                 questBloc: context.read<QuestBloc>(),
                                 quest: quest,
+                                poiId: quest.poiId,
                               ),
                             );
                           } else {

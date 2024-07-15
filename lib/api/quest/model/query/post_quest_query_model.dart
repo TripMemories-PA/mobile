@@ -1,15 +1,21 @@
 class PostQuestQueryModel {
-  PostQuestQueryModel({
-    required this.id,
+  const PostQuestQueryModel({
     required this.title,
+    required this.label,
+    required this.poiId,
+    required this.imageId,
   });
-  int id;
-  String title;
+  final String title;
+  final String label;
+  final int poiId;
+  final int imageId;
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'title': title,
+      'label': label,
+      'poiId': poiId,
+      'imageId': imageId,
     };
   }
 }

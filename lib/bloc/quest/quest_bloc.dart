@@ -60,13 +60,15 @@ class QuestBloc extends Bloc<QuestEvent, QuestState> {
         page: event.isRefresh ? 1 : state.page + 1,
         perPage: state.perPage,
       );
+      final List<Quest> questList =
+          event.isRefresh ? quests.quests : state.questList + quests.quests;
       emit(
         state.copyWith(
           status: QuestStatus.initial,
-          questList: quests.quests,
-          page: event.isRefresh ? 0 : state.page + 1,
+          questList: questList,
+          page: event.isRefresh ? 1 : state.page + 1,
           moreQuestStatus: QuestStatus.initial,
-          hasMoreQuest: quests.meta.total != state.questList.length,
+          hasMoreQuest: quests.meta.total != questList.length,
         ),
       );
     } catch (e) {

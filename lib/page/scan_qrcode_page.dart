@@ -64,7 +64,15 @@ class ScanQrcodePage extends HookWidget {
   Widget build(BuildContext context) {
     final mobileController = useMobileScannerController();
     final ticketInReview = useState(false);
-
+    useEffect(
+      () {
+        mobileController.start();
+        return () {
+          mobileController.dispose();
+        };
+      },
+      [],
+    );
     final scanWindow = RRect.fromRectAndRadius(
       Rect.fromCenter(
         center: MediaQuery.of(context).size.center(const Offset(0, -100)),

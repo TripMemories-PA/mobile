@@ -12,51 +12,75 @@ import '../bloc/qr_code_scanner/qr_code_scannner_bloc.dart';
 import '../component/popup/confirmation_dialog.dart';
 import '../component/qr_code_canner/scanner_button_widgets.dart';
 import '../component/qr_code_canner/scanner_error_widget.dart';
+import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
 import '../hooks/mobile_scanner_hook.dart';
 import '../num_extensions.dart';
 import '../utils/messenger.dart';
 
 class ScannerOverlay extends CustomPainter {
-  ScannerOverlay({
+  const ScannerOverlay({
     required this.scanWindow,
-    this.borderColor = Colors.green,
-    this.borderWidth = 4.0,
+    this.borderRadius = 12.0,
   });
 
-  final RRect scanWindow;
-  final Color borderColor;
-  final double borderWidth;
+  final Rect scanWindow;
+  final double borderRadius;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.black.withOpacity(0.5);
+    // TODO: use `Offset.zero & size` instead of Rect.largest
+    // we need to pass the size to the custom paint widget
+    final backgroundPath = Path()..addRect(Rect.largest);
 
-    // Draw the grayed-out background
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width, size.height),
-      paint,
+    final cutoutPath = Path()
+      ..addRRect(
+        RRect.fromRectAndCorners(
+          scanWindow,
+          topLeft: Radius.circular(borderRadius),
+          topRight: Radius.circular(borderRadius),
+          bottomLeft: Radius.circular(borderRadius),
+          bottomRight: Radius.circular(borderRadius),
+        ),
+      );
+
+    final backgroundPaint = Paint()
+      ..color = Colors.black.withOpacity(0.5)
+      ..style = PaintingStyle.fill
+      ..blendMode = BlendMode.dstOut;
+
+    final backgroundWithCutout = Path.combine(
+      PathOperation.difference,
+      backgroundPath,
+      cutoutPath,
     );
 
-    // Clear the scan window area
-    paint.blendMode = BlendMode.clear;
-    canvas.drawRRect(scanWindow, paint);
-
-    // Draw the border
-    paint
-      ..blendMode = BlendMode.srcOver
-      ..color = borderColor
+    final borderPaint = Paint()
+      ..color = MyColors.purple
       ..style = PaintingStyle.stroke
-      ..strokeWidth = borderWidth;
-    canvas.drawRRect(scanWindow, paint);
+      ..strokeWidth = 4.0;
+
+    final borderRect = RRect.fromRectAndCorners(
+      scanWindow,
+      topLeft: Radius.circular(borderRadius),
+      topRight: Radius.circular(borderRadius),
+      bottomLeft: Radius.circular(borderRadius),
+      bottomRight: Radius.circular(borderRadius),
+    );
+
+    // First, draw the background,
+    // with a cutout area that is a bit larger than the scan window.
+    // Finally, draw the scan window itself.
+    canvas.drawPath(backgroundWithCutout, backgroundPaint);
+    canvas.drawRRect(borderRect, borderPaint);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+  bool shouldRepaint(ScannerOverlay oldDelegate) {
+    return scanWindow != oldDelegate.scanWindow ||
+        borderRadius != oldDelegate.borderRadius;
   }
 }
-
 class ScanQrcodePage extends HookWidget {
   const ScanQrcodePage({super.key});
 
@@ -65,13 +89,10 @@ class ScanQrcodePage extends HookWidget {
     final mobileController = useMobileScannerController();
     final ticketInReview = useState(false);
 
-    final scanWindow = RRect.fromRectAndRadius(
-      Rect.fromCenter(
-        center: MediaQuery.of(context).size.center(const Offset(0, -100)),
-        width: 300,
-        height: 300,
-      ),
-      const Radius.circular(20),
+    final scanWindow = Rect.fromCenter(
+      center: MediaQuery.of(context).size.center(const Offset(0, -100)),
+      width: 200,
+      height: 200,
     );
 
     return BlocProvider(
@@ -80,6 +101,7 @@ class ScanQrcodePage extends HookWidget {
       child: BlocBuilder<QrCodeScannerBloc, QrCodeScannerState>(
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: Colors.black,
             body: Column(
               children: [
                 BlocListener<QrCodeScannerBloc, QrCodeScannerState>(
@@ -111,11 +133,8 @@ class ScanQrcodePage extends HookWidget {
                     children: [
                       Center(
                         child: MobileScanner(
-                          scanWindow: scanWindow.outerRect,
+                          scanWindow: scanWindow,
                           controller: mobileController,
-                          errorBuilder: (context, error, child) {
-                            return ScannerErrorWidget(error: error);
-                          },
                           onDetect: (value) async {
                             final String? barcode =
                                 value.barcodes.first.displayValue;
@@ -199,9 +218,9 @@ class ScanQrcodePage extends HookWidget {
                                             Text(
                                               isValidTicket
                                                   ? StringConstants()
-                                                      .validTicket
+                                                  .validTicket
                                                   : StringConstants()
-                                                      .invalidTicket,
+                                                  .invalidTicket,
                                               style: const TextStyle(
                                                 fontSize: 24,
                                               ),
@@ -209,7 +228,7 @@ class ScanQrcodePage extends HookWidget {
                                             20.ph,
                                             Text(
                                               state.ticketControl?.ticket.ticket
-                                                      .title ??
+                                                  .title ??
                                                   '',
                                               style: const TextStyle(
                                                 fontSize: 24,
@@ -227,14 +246,25 @@ class ScanQrcodePage extends HookWidget {
                               mobileController.start();
                             });
                           },
+                          errorBuilder: (context, error, child) {
+                            return ScannerErrorWidget(error: error);
+                          },
                         ),
                       ),
-                      CustomPaint(
-                        painter: ScannerOverlay(
-                          scanWindow: scanWindow,
-                          borderColor: Theme.of(context).colorScheme.primary,
-                        ),
-                        child: Container(),
+
+                      ValueListenableBuilder(
+                        valueListenable: mobileController,
+                        builder: (context, value, child) {
+                          if (!value.isInitialized ||
+                              !value.isRunning ||
+                              value.error != null) {
+                            return const SizedBox();
+                          }
+
+                          return CustomPaint(
+                            painter: ScannerOverlay(scanWindow: scanWindow),
+                          );
+                        },
                       ),
                       Align(
                         alignment: Alignment.bottomCenter,
@@ -243,9 +273,7 @@ class ScanQrcodePage extends HookWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              ToggleFlashlightButton(
-                                controller: mobileController,
-                              ),
+                              ToggleFlashlightButton(controller: mobileController),
                               SwitchCameraButton(controller: mobileController),
                             ],
                           ),
@@ -259,6 +287,40 @@ class ScanQrcodePage extends HookWidget {
           );
         },
       ),
+    );
+  }
+}
+
+
+class ScannedBarcodeLabel extends StatelessWidget {
+  const ScannedBarcodeLabel({
+    super.key,
+    required this.barcodes,
+  });
+
+  final Stream<BarcodeCapture> barcodes;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: barcodes,
+      builder: (context, snapshot) {
+        final scannedBarcodes = snapshot.data?.barcodes ?? [];
+
+        if (scannedBarcodes.isEmpty) {
+          return const Text(
+            'Scan something!',
+            overflow: TextOverflow.fade,
+            style: TextStyle(color: Colors.white),
+          );
+        }
+
+        return Text(
+          scannedBarcodes.first.displayValue ?? 'No display value.',
+          overflow: TextOverflow.fade,
+          style: const TextStyle(color: Colors.white),
+        );
+      },
     );
   }
 }

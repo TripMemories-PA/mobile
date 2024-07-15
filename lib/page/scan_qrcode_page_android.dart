@@ -128,98 +128,88 @@ class ScanQrcodePageAndroid extends HookWidget {
                               context,
                               isOkPopUp: true,
                               width: MediaQuery.of(context).size.width * 0.9,
-                              height: MediaQuery.of(context).size.height * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.55,
                               content: BlocProvider(
                                 create: (context) => QrCodeScannerBloc(
                                   qrCodeScannerService: QrCodeScannerService(),
                                 )..add(CheckQrCodeEvent(barcode)),
-                                child: Column(
-                                  children: [
-                                    BlocListener<QrCodeScannerBloc,
-                                        QrCodeScannerState>(
-                                      listener: (context, state) async {
-                                        if (state.qrCodeStatus ==
-                                            QrCodeStatus.valid) {
-                                          final player = AudioPlayer();
-                                          await player.play(
-                                            AssetSource(
-                                              'sounds/rizz-sounds.mp3',
-                                            ),
-                                          );
-                                          Vibration.vibrate(
-                                            duration: 1000,
-                                            amplitude: 128,
-                                          );
-                                        } else if (state.qrCodeStatus ==
-                                            QrCodeStatus.invalid) {
-                                          final player = AudioPlayer();
-                                          await player.play(
-                                            AssetSource(
-                                              'sounds/windowError.mp3',
-                                            ),
-                                          );
-                                          Vibration.vibrate(
-                                            pattern: [0000, 500, 200, 500],
-                                            amplitude: 255,
-                                          );
-                                        }
-                                      },
-                                      child: const SizedBox.shrink(),
-                                    ),
-                                    BlocBuilder<QrCodeScannerBloc,
-                                        QrCodeScannerState>(
-                                      builder: (context, state) {
-                                        if (state.qrCodeStatus ==
-                                            QrCodeStatus.loading) {
-                                          return const Center(
-                                            child: CupertinoActivityIndicator(),
-                                          );
-                                        }
-                                        final bool isValidTicket =
-                                            state.ticketControl?.valid ?? false;
-                                        return Column(
-                                          children: [
-                                            if (isValidTicket)
-                                              Lottie.asset(
-                                                'assets/lottie/validation.json',
-                                                width: 200,
-                                                height: 200,
-                                                fit: BoxFit.fill,
-                                                repeat: false,
-                                              )
-                                            else
-                                              Lottie.asset(
-                                                'assets/lottie/error.json',
-                                                width: 200,
-                                                height: 200,
-                                                fit: BoxFit.fill,
-                                                repeat: false,
-                                              ),
-                                            20.ph,
-                                            Text(
-                                              isValidTicket
-                                                  ? StringConstants()
-                                                  .validTicket
-                                                  : StringConstants()
-                                                  .invalidTicket,
-                                              style: const TextStyle(
-                                                fontSize: 24,
-                                              ),
-                                            ),
-                                            20.ph,
-                                            Text(
-                                              state.ticketControl?.ticket.ticket
+                                child: BlocConsumer<QrCodeScannerBloc,
+                                    QrCodeScannerState>(
+                                  listener: (context, state) async {
+                                    if (state.qrCodeStatus ==
+                                        QrCodeStatus.valid) {
+                                      final player = AudioPlayer();
+                                      await player.play(
+                                        AssetSource(
+                                          'sounds/rizz-sounds.mp3',
+                                        ),
+                                      );
+                                      Vibration.vibrate(
+                                        duration: 1000,
+                                        amplitude: 128,
+                                      );
+                                    } else if (state.qrCodeStatus ==
+                                        QrCodeStatus.invalid) {
+                                      final player = AudioPlayer();
+                                      await player.play(
+                                        AssetSource(
+                                          'sounds/windowError.mp3',
+                                        ),
+                                      );
+                                      Vibration.vibrate(
+                                        pattern: [0000, 500, 200, 500],
+                                        amplitude: 255,
+                                      );
+                                    }
+                                  },
+                                  builder: (context, state) {
+                                    if (state.qrCodeStatus ==
+                                        QrCodeStatus.loading) {
+                                      return const Center(
+                                        child: CupertinoActivityIndicator(),
+                                      );
+                                    }
+                                    final bool isValidTicket =
+                                        state.ticketControl?.valid ?? false;
+                                    return Column(
+                                      children: [
+                                        if (isValidTicket)
+                                          Lottie.asset(
+                                            'assets/lottie/validation.json',
+                                            width: 200,
+                                            height: 200,
+                                            fit: BoxFit.fill,
+                                            repeat: false,
+                                          )
+                                        else
+                                          Lottie.asset(
+                                            'assets/lottie/error.json',
+                                            width: 200,
+                                            height: 200,
+                                            fit: BoxFit.fill,
+                                            repeat: false,
+                                          ),
+                                        20.ph,
+                                        Text(
+                                          isValidTicket
+                                              ? StringConstants().validTicket
+                                              : StringConstants().invalidTicket,
+                                          style: const TextStyle(
+                                            fontSize: 24,
+                                          ),
+                                        ),
+                                        20.ph,
+                                        Text(
+                                          state.ticketControl?.ticket.ticket
                                                   .title ??
-                                                  '',
-                                              style: const TextStyle(
-                                                fontSize: 24,
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  ],
+                                              '',
+                                          style: const TextStyle(
+                                            fontSize: 24,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 ),
                               ),
                             ).then((_) {

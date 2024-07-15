@@ -13,6 +13,8 @@ import 'bloc/auth_bloc/auth_event.dart';
 import 'bloc/auth_bloc/auth_state.dart';
 import 'bloc/cart/cart_bloc.dart';
 import 'bloc/meet/meet_bloc.dart';
+import 'bloc/profile/profile_bloc.dart';
+import 'component/popup/modify_user_infos_popup.dart';
 import 'components/scaffold_with_nav_bar.dart';
 import 'components/scaffold_with_nav_bar_poi.dart';
 import 'constants/route_name.dart';
@@ -427,6 +429,13 @@ class MyApp extends HookWidget {
                   final ConversationDto conversationDTO =
                       state.extra! as ConversationDto;
                   return ChatPage(conversationDto: conversationDTO);
+                },
+              ),
+              GoRoute(
+                path: RouteName.editProfile,
+                builder: (BuildContext context, GoRouterState state) {
+                  final ProfileBloc profileBloc = state.extra! as ProfileBloc;
+                  return UserInfosFormPopup(profileBloc: profileBloc);
                 },
               ),
             ],

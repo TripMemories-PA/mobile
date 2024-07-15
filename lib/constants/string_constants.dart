@@ -473,7 +473,7 @@ class StringConstants {
 
   String get addFriend => 'Ajouter un ami';
 
-  String get manageFriendsRequests => "Gérer les demandes d'amis";
+  String get manageFriendsRequests => "Demandes d'amis";
 
   String get noFriendAdded => 'Aucun ami ajouté';
 

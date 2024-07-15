@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../bloc/auth_bloc/auth_bloc.dart';
 import '../../bloc/auth_bloc/auth_state.dart';
@@ -20,10 +21,8 @@ class LoginForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController =
-        useTextEditingController();
-    final TextEditingController passwordController =
-        useTextEditingController();
+    final TextEditingController emailController = useTextEditingController();
+    final TextEditingController passwordController = useTextEditingController();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final rememberMe = useState(false);
     final hidePassword = useState(true);
@@ -42,9 +41,11 @@ class LoginForm extends HookWidget {
                   TextFormField(
                     readOnly: context.read<LoginBloc>().state.loading,
                     decoration: InputDecoration(
-                      hintText: '${StringConstants().email} ${StringConstants().or} ${StringConstants().username}',
+                      hintText:
+                          '${StringConstants().email} ${StringConstants().or} ${StringConstants().username}',
                     ),
-                    validator: (value) => FieldValidator.validateRequired(value: value),
+                    validator: (value) =>
+                        FieldValidator.validateRequired(value: value),
                     controller: emailController,
                   ),
                   15.ph,
@@ -109,7 +110,10 @@ class LoginForm extends HookWidget {
                       ),
                       Text(
                         StringConstants().rememberMe,
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: TextStyle(
+                          fontFamily: GoogleFonts.urbanist().fontFamily,
+                          fontSize: 12,
+                        ),
                       ),
                       const Spacer(),
                       // TODO(nono): Add the forgot password feature
@@ -122,6 +126,7 @@ class LoginForm extends HookWidget {
                               .copyWith(
                                 color: Theme.of(context).colorScheme.primary,
                                 decoration: TextDecoration.underline,
+                                fontFamily: GoogleFonts.urbanist().fontFamily,
                               ),
                         ),
                         onTap: () {},

@@ -78,8 +78,8 @@ class ProfileInfos extends StatelessWidget {
             Positioned(
               top: 10,
               left: 10,
-              child: BouncingWidget(
-                onTap: () {
+              child: IconButton(
+                onPressed: () {
                   confirmationPopUp(
                     context,
                     title: StringConstants().sureToDeleteAccount,
@@ -91,23 +91,7 @@ class ProfileInfos extends StatelessWidget {
                     }
                   });
                 },
-                child: CustomCard(
-                  backgroundColor: Colors.red,
-                  width: 170,
-                  height: 33,
-                  content: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: Text(
-                      StringConstants().deleteAccount,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.surface,
-                      ),
-                    ),
-                  ),
-                  borderColor: Colors.transparent,
-                ),
+                icon: const Icon(Icons.delete),
               ),
             ),
           Positioned(

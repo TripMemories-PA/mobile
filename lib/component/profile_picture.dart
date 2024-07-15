@@ -103,9 +103,11 @@ class ProfilePicture extends StatelessWidget {
   const ProfilePicture({
     super.key,
     this.uploadedFile,
+    this.addShadow = true,
   });
 
   final UploadFile? uploadedFile;
+  final bool addShadow;
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +116,9 @@ class ProfilePicture extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         boxShadow: [
+          if (addShadow)
           BoxShadow(
-            color: Colors.black.withOpacity(0.5),
+            color: Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
             spreadRadius: 1,
             blurRadius: 5,
             offset: const Offset(0, 3),

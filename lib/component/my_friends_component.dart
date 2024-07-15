@@ -22,64 +22,67 @@ class MyFriendsComponent extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CustomCard(
-              onTap: () async {
-                await userSearchingPopup(context);
-              },
-              width: MediaQuery.of(context).size.width * 0.40,
-              height: 30,
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.add,
-                    color: MyColors.purple,
-                  ),
-                  10.pw,
-                  Text(
-                    StringConstants().addFriend,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 10,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              CustomCard(
+                onTap: () async {
+                  await userSearchingPopup(context);
+                },
+                width: MediaQuery.of(context).size.width * 0.40,
+                height: 30,
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.add,
+                      color: MyColors.purple,
                     ),
-                  ),
-                ],
-              ),
-              borderColor: MyColors.darkGrey,
-              borderRadius: 20,
-            ),
-            CustomCard(
-              onTap: () async {
-                await myFriendsRequestsPopup(context);
-              },
-              width: MediaQuery.of(context).size.width * 0.40,
-              height: 30,
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.groups_2_outlined,
-                    color: MyColors.purple,
-                  ),
-                  10.pw,
-                  Text(
-                    StringConstants().manageFriendsRequests,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 10,
+                    10.pw,
+                    Text(
+                      StringConstants().addFriend,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 10,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                borderColor: Theme.of(context).colorScheme.tertiary,
+                borderRadius: 20,
               ),
-              borderColor: MyColors.darkGrey,
-              borderRadius: 20,
-            ),
-          ],
+              CustomCard(
+                onTap: () async {
+                  await myFriendsRequestsPopup(context);
+                },
+                width: MediaQuery.of(context).size.width * 0.40,
+                height: 30,
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.groups_2_outlined,
+                      color: MyColors.purple,
+                    ),
+                    10.pw,
+                    Text(
+                      StringConstants().manageFriendsRequests,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+                borderColor: Theme.of(context).colorScheme.tertiary,
+                borderRadius: 20,
+              ),
+            ],
+          ),
         ),
-        20.ph,
+        30.ph,
         BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
             if (context.read<ProfileBloc>().state.status ==

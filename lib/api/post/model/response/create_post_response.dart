@@ -16,7 +16,7 @@ class CreatePostResponse {
       poiId: json['poiId'],
       content: json['content'],
       imageId: json['imageId'],
-      note: json['note'],
+      note: double.parse(json['note'].toString()),
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       id: json['id'],

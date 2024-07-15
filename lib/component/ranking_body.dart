@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 import '../bloc/user_searching_bloc/user_searching_bloc.dart';
-import '../component/custom_card.dart';
 import '../component/profile_picture.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
@@ -49,7 +49,6 @@ class RankingBody extends HookWidget {
           return Text(StringConstants().noUserFound);
         } else {
           return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             body: Stack(
               children: [
                 DefaultTabController(
@@ -63,36 +62,50 @@ class RankingBody extends HookWidget {
                     },
                     body: TabBarView(
                       children: [
-                        SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 15.0,
-                                ),
-                                child: CustomCard(
-                                  content: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        for (int i = 0; i < users.length; i++)
-                                          Column(
-                                            children: [
-                                              _buildUserRankingCard(
-                                                context,
-                                                users[i],
-                                                i,
+                        RefreshIndicator(
+                          onRefresh: () async {
+                            _getRankingRequest(
+                              context,
+                              true,
+                            );
+                          },
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 23.0,
+                                    vertical: 8,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      for (int i = 0; i < users.length; i++)
+                                        Column(
+                                          children: [
+                                            _buildUserRankingCard(
+                                              context,
+                                              users[i],
+                                              i,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                height: 1,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary,
                                               ),
-                                              10.ph,
-                                            ],
-                                          ),
-                                        _buildLoadMore(context),
-                                      ],
-                                    ),
+                                            ),
+                                          ],
+                                        ),
+                                      _buildLoadMore(context),
+                                    ],
                                   ),
                                 ),
-                              ),
-                            ],
+                                20.ph,
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -134,18 +147,19 @@ class RankingBody extends HookWidget {
       onTap: () => context.push(
         '${RouteName.profilePage}/${user.id}',
       ),
-      child: CustomCard(
+      child: SizedBox(
         height: 75,
-        content: Row(
+        child: Row(
           children: [
             10.pw,
-            getTropheeIcon(i)!,
+            getTropheeIcon(i, context),
             15.pw,
             SizedBox(
               width: 40,
               height: 40,
               child: ProfilePicture(
                 uploadedFile: user.avatar,
+                addShadow: false,
               ),
             ),
             15.pw,
@@ -157,7 +171,12 @@ class RankingBody extends HookWidget {
                   AutoSizeText(
                     textAlign: TextAlign.left,
                     user.username,
-                    style: const TextStyle(fontSize: 20),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontFamily:
+                          GoogleFonts.urbanist(fontWeight: FontWeight.w900)
+                              .fontFamily,
+                    ),
                     maxLines: 1,
                     minFontSize: 10,
                     overflow: TextOverflow.ellipsis,
@@ -165,7 +184,12 @@ class RankingBody extends HookWidget {
                   AutoSizeText(
                     textAlign: TextAlign.left,
                     '${user.score} ${StringConstants().points}',
-                    style: const TextStyle(fontSize: 15),
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily:
+                          GoogleFonts.urbanist(fontWeight: FontWeight.w400)
+                              .fontFamily,
+                    ),
                     maxLines: 1,
                     minFontSize: 10,
                     overflow: TextOverflow.ellipsis,
@@ -181,16 +205,50 @@ class RankingBody extends HookWidget {
     );
   }
 
-  Image? getTropheeIcon(int i) {
+  Widget getTropheeIcon(int i, BuildContext context) {
     switch (i) {
       case 0:
-        return Image.asset('assets/images/gold_trophee.png');
+        return Image.asset(
+          'assets/images/gold_trophee.png',
+          width: 50,
+          height: 50,
+        );
       case 1:
-        return Image.asset('assets/images/silver_trophee.png');
+        return Image.asset(
+          'assets/images/silver_trophee.png',
+          width: 50,
+          height: 50,
+        );
       case 2:
-        return Image.asset('assets/images/bronze_trophee.png');
+        return Image.asset(
+          'assets/images/bronze_trophee.png',
+          width: 50,
+          height: 50,
+        );
       default:
-        return Image.asset('assets/images/black_trophee.png');
+        return Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  '${i + 1}',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
+              ),
+            ),
+            10.pw,
+          ],
+        );
     }
   }
 

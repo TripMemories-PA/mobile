@@ -122,9 +122,10 @@ class ScanQrcodePage extends HookWidget {
                             if (barcode == null) {
                               return;
                             }
-                            mobileController.stop();
+                            await mobileController.stop();
                             ticketInReview.value = true;
-                            await confirmationPopUp(
+                            if(context.mounted) {
+                              await confirmationPopUp(
                               context,
                               isOkPopUp: true,
                               width: MediaQuery.of(context).size.width * 0.9,
@@ -222,10 +223,11 @@ class ScanQrcodePage extends HookWidget {
                                   ],
                                 ),
                               ),
-                            ).then((_) {
+                            ).then((_) async {
                               ticketInReview.value = false;
-                              mobileController.start();
+                              await mobileController.start();
                             });
+                            }
                           },
                         ),
                       ),
@@ -249,9 +251,9 @@ class ScanQrcodePage extends HookWidget {
                               SwitchCameraButton(controller: mobileController),
                               IconButton(
                                 icon: const Icon(Icons.camera_alt_outlined),
-                                onPressed: () {
-                                  mobileController.stop();
-                                  mobileController.start();
+                                onPressed: () async {
+                                  await mobileController.stop();
+                                  await mobileController.start();
                                 },
                               ),
                             ],

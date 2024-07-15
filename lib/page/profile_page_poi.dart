@@ -164,6 +164,7 @@ class _PageContent extends HookWidget {
               Tab(text: StringConstants().posts),
               Tab(text: StringConstants().quiz),
             ],
+            dividerColor: Colors.transparent,
           ),
         ),
       ),

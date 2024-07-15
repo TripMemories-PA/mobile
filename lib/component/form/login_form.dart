@@ -21,8 +21,8 @@ class LoginForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController = useTextEditingController(text: 'poi@mail.com');
-    final TextEditingController passwordController = useTextEditingController(text: 'Test1234!');
+    final TextEditingController emailController = useTextEditingController();
+    final TextEditingController passwordController = useTextEditingController();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final rememberMe = useState(false);
     final hidePassword = useState(true);

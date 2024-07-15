@@ -114,8 +114,9 @@ class QuestService implements IQuestService, IQuestRepository {
   }) async {
     Response response;
     try {
+
       response = await DioClient.instance.get(
-        '$apiQuestsBaseUrl/pois/$poiId?page=$page&perPage=$perPage',
+        '${AppConfig.apiUrl}/pois/$poiId/quests?page=$page&perPage=$perPage',
       );
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());

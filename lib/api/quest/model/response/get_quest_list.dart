@@ -9,7 +9,7 @@ class GetQuestList {
 
   factory GetQuestList.fromJson(Map<String, dynamic> json) {
     return GetQuestList(
-      quests: List<Quest>.from(json['quests'].map((x) => Quest.fromJson(x))),
+      quests: List<Quest>.from(json['data'].map((x) => Quest.fromJson(x))),
       meta: MetaObject.fromJson(json['meta']),
     );
   }

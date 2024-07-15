@@ -177,7 +177,7 @@ class _PageContent extends HookWidget {
                     controller: monumentPostsScrollController,
                     child: _buildPostPart(),
                   ),
-                  SingleChildScrollView(child: _buildActuPart()),
+                  SingleChildScrollView(child: _buildQuestPart()),
                   SingleChildScrollView(child: _buildShop(context)),
                 ],
               ),
@@ -349,12 +349,12 @@ class _PageContent extends HookWidget {
     );
   }
 
-  Widget _buildActuPart() {
+  Widget _buildQuestPart() {
     return BlocProvider(
       create: (context) => QuestBloc(
         questRepository: RepositoryProvider.of<QuestRepository>(context),
         questService: QuestService(),
-      )..add(GetPoiQuestEvent(monument.id)),
+      )..add(GetPoiQuestEvent(monument.id, isRefresh: true)),
       child: BlocConsumer<QuestBloc, QuestState>(
         listener: (context, state) {
           if (state.status == QuestStatus.error) {
@@ -381,23 +381,68 @@ class _PageContent extends HookWidget {
                 else
                   state.questList.isEmpty
                       ? Text(StringConstants().noQuestForThisMonument)
-                      : Column(
-                          children: state.questList
-                              .map(
-                                (quest) => Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: MissionCard(
-                                    quest: quest,
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
+                      : _buildQuestList(state, context),
               ],
             ),
           );
         },
       ),
+    );
+  }
+
+  Column _buildQuestList(QuestState state, BuildContext context) {
+    return Column(
+      children: [
+        if (state.status == QuestStatus.loading)
+          const Center(child: CircularProgressIndicator())
+        else
+          state.questList.isEmpty
+              ? Text(
+                  StringConstants().noQuestForThisMonument,
+                )
+              : Column(
+                  children: [
+                    ...state.questList.map(
+                      (quest) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: MissionCard(
+                          quest: quest,
+                        ),
+                      ),
+                    ),
+                    if (state.hasMoreQuest)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: state.moreQuestStatus == QuestStatus.loading
+                            ? const CircularProgressIndicator()
+                            : ElevatedButton(
+                                onPressed: () {
+                                  context.read<QuestBloc>().add(
+                                        GetPoiQuestEvent(monument.id),
+                                      );
+                                },
+                                style: ButtonStyle(
+                                  shape: WidgetStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        20.0,
+                                      ),
+                                    ),
+                                  ),
+                                  backgroundColor: WidgetStateProperty.all(
+                                    Theme.of(context).colorScheme.primary,
+                                  ),
+                                ),
+                                child: Text(
+                                  StringConstants().loadMoreResults,
+                                ),
+                              ),
+                      )
+                    else
+                      Text(StringConstants().noMoreQuests),
+                  ],
+                ),
+      ],
     );
   }
 

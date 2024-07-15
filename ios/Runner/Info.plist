@@ -26,10 +26,14 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>io.flutter.embedded_views_preview</key>
+    <true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>App requires access to photo library to create social posts or customize their profile. App uploaded photos will be visible by all users.</string>
+	<string>L'application nécessite l'accès à la photothèque pour créer des posts sociaux ou personnaliser son profil. Les photos téléchargées par l'application seront visibles par tous les utilisateurs.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>App requires access to location, to display places near the user and optimize the trip, location will only be use at this purpose</string>
+	<string>L'application nécessite l'accès à la localisation, afin d'afficher les lieux à proximité de l'utilisateur et d'optimiser le voyage, la localisation ne sera utilisée qu'à cette fin.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>L'application nécessite l'accès à la localisation, afin d'afficher les lieux à proximité de l'utilisateur et d'optimiser le voyage, la localisation ne sera utilisée qu'à cette fin.</string>
 	<key>NSCameraUsageDescription</key>
     <string>L'application nécessite l'accès à la caméra afin de scanner votre qrCode et de pouvoir le valider</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

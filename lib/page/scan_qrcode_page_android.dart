@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,8 +18,8 @@ import '../hooks/mobile_scanner_hook.dart';
 import '../num_extensions.dart';
 import '../utils/messenger.dart';
 
-class ScannerOverlay extends CustomPainter {
-  ScannerOverlay({
+class ScannerOverlayAndroid extends CustomPainter {
+  ScannerOverlayAndroid({
     required this.scanWindow,
     this.borderColor = Colors.green,
     this.borderWidth = 4.0,
@@ -57,8 +58,8 @@ class ScannerOverlay extends CustomPainter {
   }
 }
 
-class ScanQrcodePage extends HookWidget {
-  const ScanQrcodePage({super.key});
+class ScanQrcodePageAndroid extends HookWidget {
+  const ScanQrcodePageAndroid({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -128,98 +129,108 @@ class ScanQrcodePage extends HookWidget {
                               context,
                               isOkPopUp: true,
                               width: MediaQuery.of(context).size.width * 0.9,
-                              height: MediaQuery.of(context).size.height * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.55,
                               content: BlocProvider(
                                 create: (context) => QrCodeScannerBloc(
                                   qrCodeScannerService: QrCodeScannerService(),
                                 )..add(CheckQrCodeEvent(barcode)),
-                                child: Column(
-                                  children: [
-                                    BlocListener<QrCodeScannerBloc,
-                                        QrCodeScannerState>(
-                                      listener: (context, state) async {
-                                        if (state.qrCodeStatus ==
-                                            QrCodeStatus.valid) {
-                                          final player = AudioPlayer();
-                                          await player.play(
-                                            AssetSource(
-                                              'sounds/rizz-sounds.mp3',
-                                            ),
-                                          );
-                                          Vibration.vibrate(
-                                            duration: 1000,
-                                            amplitude: 128,
-                                          );
-                                        } else if (state.qrCodeStatus ==
-                                            QrCodeStatus.invalid) {
-                                          final player = AudioPlayer();
-                                          await player.play(
-                                            AssetSource(
-                                              'sounds/windowError.mp3',
-                                            ),
-                                          );
-                                          Vibration.vibrate(
-                                            pattern: [0000, 500, 200, 500],
-                                            amplitude: 255,
-                                          );
-                                        }
-                                      },
-                                      child: const SizedBox.shrink(),
-                                    ),
-                                    BlocBuilder<QrCodeScannerBloc,
-                                        QrCodeScannerState>(
-                                      builder: (context, state) {
-                                        if (state.qrCodeStatus ==
-                                            QrCodeStatus.loading) {
-                                          return const Center(
-                                            child: CupertinoActivityIndicator(),
-                                          );
-                                        }
-                                        final bool isValidTicket =
-                                            state.ticketControl?.valid ?? false;
-                                        return Column(
-                                          children: [
-                                            if (isValidTicket)
-                                              Lottie.asset(
-                                                'assets/lottie/validation.json',
-                                                width: 200,
-                                                height: 200,
-                                                fit: BoxFit.fill,
-                                                repeat: false,
-                                              )
-                                            else
-                                              Lottie.asset(
-                                                'assets/lottie/error.json',
-                                                width: 200,
-                                                height: 200,
-                                                fit: BoxFit.fill,
-                                                repeat: false,
-                                              ),
-                                            20.ph,
-                                            Text(
-                                              isValidTicket
-                                                  ? StringConstants()
-                                                      .validTicket
-                                                  : StringConstants()
-                                                      .invalidTicket,
-                                              style: const TextStyle(
-                                                fontSize: 24,
-                                              ),
-                                            ),
-                                            20.ph,
-                                            Text(
-                                              state.ticketControl?.ticket.ticket
-                                                      .title ??
-                                                  '',
-                                              style: const TextStyle(
-                                                fontSize: 24,
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  ],
+                                child: BlocConsumer<QrCodeScannerBloc,
+                                    QrCodeScannerState>(
+                                  listener: (context, state) async {
+                                    if (state.qrCodeStatus ==
+                                        QrCodeStatus.valid) {
+                                      final player = AudioPlayer();
+                                      await player.play(
+                                        AssetSource(
+                                          'sounds/rizz-sounds.mp3',
+                                        ),
+                                      );
+                                      Vibration.vibrate(
+                                        duration: 1000,
+                                        amplitude: 128,
+                                      );
+                                    } else if (state.qrCodeStatus ==
+                                        QrCodeStatus.invalid) {
+                                      final player = AudioPlayer();
+                                      await player.play(
+                                        AssetSource(
+                                          'sounds/windowError.mp3',
+                                        ),
+                                      );
+                                      Vibration.vibrate(
+                                        pattern: [0000, 500, 200, 500],
+                                        amplitude: 255,
+                                      );
+                                    }
+                                  },
+                                  builder: (context, state) {
+                                    if (state.qrCodeStatus ==
+                                        QrCodeStatus.loading) {
+                                      return const Center(
+                                        child: CupertinoActivityIndicator(),
+                                      );
+                                    }
+                                    final bool isValidTicket =
+                                        state.ticketControl?.valid ?? false;
+                                    final int groupSize;
+                                    if (state.ticketControl?.ticket.meetId !=
+                                        null) {
+                                      groupSize = 1;
+                                    } else {
+                                      groupSize = state.ticketControl?.ticket
+                                              .ticket.groupSize ??
+                                          9999;
+                                    }
+                                    return Column(
+                                      children: [
+                                        if (isValidTicket)
+                                          Lottie.asset(
+                                            'assets/lottie/validation.json',
+                                            width: 200,
+                                            height: 200,
+                                            fit: BoxFit.fill,
+                                            repeat: false,
+                                          )
+                                        else
+                                          Lottie.asset(
+                                            'assets/lottie/error.json',
+                                            width: 200,
+                                            height: 200,
+                                            fit: BoxFit.fill,
+                                            repeat: false,
+                                          ),
+                                        20.ph,
+                                        Text(
+                                          isValidTicket
+                                              ? StringConstants().validTicket
+                                              : StringConstants().invalidTicket,
+                                          style: const TextStyle(
+                                            fontSize: 24,
+                                          ),
+                                        ),
+                                        20.ph,
+                                        AutoSizeText(
+                                          maxLines: 1,
+                                          state.ticketControl?.ticket.ticket
+                                                  .title ??
+                                              '',
+                                          style: const TextStyle(
+                                            fontSize: 24,
+                                          ),
+                                          minFontSize: 10,
+                                        ),
+                                        10.ph,
+                                        AutoSizeText(
+                                          '${StringConstants().nbPersons}: $groupSize',
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                          ),
+                                          minFontSize: 10,
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 ),
                               ),
                             ).then((_) {
@@ -230,7 +241,7 @@ class ScanQrcodePage extends HookWidget {
                         ),
                       ),
                       CustomPaint(
-                        painter: ScannerOverlay(
+                        painter: ScannerOverlayAndroid(
                           scanWindow: scanWindow,
                           borderColor: Theme.of(context).colorScheme.primary,
                         ),

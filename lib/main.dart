@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,7 +44,8 @@ import 'page/profile_page.dart';
 import 'page/profile_page_poi.dart';
 import 'page/quizz_page.dart';
 import 'page/ranking_page.dart';
-import 'page/scan_qrcode_page.dart';
+import 'page/scan_qrcode_page_android.dart';
+import 'page/scan_qrcode_page_ios.dart';
 import 'page/search_page.dart';
 import 'page/shop_page.dart';
 import 'page/splash_page.dart';
@@ -526,7 +529,9 @@ class MyApp extends HookWidget {
               GoRoute(
                 path: RouteName.qrCodeScanner,
                 builder: (BuildContext context, GoRouterState state) =>
-                    const ScanQrcodePage(),
+                    Platform.isAndroid
+                        ? const ScanQrcodePageAndroid()
+                        : const ScanQrcodePageIos(),
               ),
             ],
           ),

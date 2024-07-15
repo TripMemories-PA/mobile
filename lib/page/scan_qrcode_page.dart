@@ -120,7 +120,6 @@ class ScanQrcodePage extends HookWidget {
                       Center(
                         child: MobileScanner(
                           controller: mobileController,
-                          scanWindow: scanWindow.outerRect,
                           errorBuilder: (context, error, child) {
                             return ScannerErrorWidget(error: error);
                           },

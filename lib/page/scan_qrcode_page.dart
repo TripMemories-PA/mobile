@@ -112,7 +112,6 @@ class ScanQrcodePage extends HookWidget {
                       Center(
                         child: MobileScanner(
                           controller: mobileController,
-                          scanWindow: scanWindow.outerRect,
                           errorBuilder: (context, error, child) {
                             return ScannerErrorWidget(error: error);
                           },
@@ -122,10 +121,9 @@ class ScanQrcodePage extends HookWidget {
                             if (barcode == null) {
                               return;
                             }
-                            await mobileController.stop();
+                            mobileController.stop();
                             ticketInReview.value = true;
-                            if(context.mounted) {
-                              await confirmationPopUp(
+                            await confirmationPopUp(
                               context,
                               isOkPopUp: true,
                               width: MediaQuery.of(context).size.width * 0.9,
@@ -223,11 +221,10 @@ class ScanQrcodePage extends HookWidget {
                                   ],
                                 ),
                               ),
-                            ).then((_) async {
+                            ).then((_) {
                               ticketInReview.value = false;
-                              await mobileController.start();
+                              mobileController.start();
                             });
-                            }
                           },
                         ),
                       ),
@@ -249,13 +246,6 @@ class ScanQrcodePage extends HookWidget {
                                 controller: mobileController,
                               ),
                               SwitchCameraButton(controller: mobileController),
-                              IconButton(
-                                icon: const Icon(Icons.camera_alt_outlined),
-                                onPressed: () async {
-                                  await mobileController.stop();
-                                  await mobileController.start();
-                                },
-                              ),
                             ],
                           ),
                         ),

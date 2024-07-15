@@ -2,9 +2,10 @@ import 'package:image_picker/image_picker.dart';
 
 import 'model/query/post_quest_query_model.dart';
 import 'model/query/update_quest_query_model.dart';
+import 'model/response/post_quest_imaage_response.dart';
 
 abstract class IQuestService {
-  Future<void> storeImage(XFile file);
+  Future<PostQuestImageResponse> storeImage(XFile file);
 
   Future<void> storeQuest({required PostQuestQueryModel questData});
 

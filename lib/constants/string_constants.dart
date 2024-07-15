@@ -10,6 +10,10 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get noLabels => 'Pas de labels';
+
+  String get titleCannotBeEmpty => 'Le titre ne peut pas être vide';
+
   String get accessMeet => 'Accéder aux meets';
 
   String get sureToLeaveMeet =>
@@ -27,15 +31,32 @@ class StringConstants {
 
   String get cancel => 'Annuler';
 
+  String get imageSelection => 'Sélectionner une image';
+
+  String get pickImage => 'Choisir une image';
+
+  String get pleaseSelectImage => 'Veuillez sélectionner une image';
+
+  String get edit => 'Editer';
+
+  String get labels => 'Labels';
+
+  String get play => 'Jouer';
+
   String get joinChat => 'Rejoindre le chat';
+
+  String get done => 'Terminée';
+
+  String get notDone => 'Non terminée';
 
   String get questDeleted => 'Mission supprimée';
 
   String get questUpdated => 'Mission mise à jour';
 
-  String get sureToDeleteMission => 'Etes-vous sûr de vouloir supprimer cette mission ?';
+  String get sureToDeleteMission =>
+      'Etes-vous sûr de vouloir supprimer cette mission ?';
 
-  String get myMissions => 'Mes missions';
+  String get missions => 'Missions';
 
   String get monumentQuests => 'Quêtes du monument';
 
@@ -135,11 +156,14 @@ class StringConstants {
 
   String get fillQuestion => 'Veuillez remplir la question';
 
-  String get selectRightAnswer => 'Veuillez choisir la réponse correcte à cette question';
+  String get selectRightAnswer =>
+      'Veuillez choisir la réponse correcte à cette question';
 
-  String get fillAllAnswers => 'Veuillez remplir toutes les réponses crées, ou supprimez les vides';
+  String get fillAllAnswers =>
+      'Veuillez remplir toutes les réponses crées, ou supprimez les vides';
 
-  String get addAtLeastTwoAnswers => 'Veuillez ajouter au moins deux réponses possibles';
+  String get addAtLeastTwoAnswers =>
+      'Veuillez ajouter au moins deux réponses possibles';
 
   String get questionAdded => 'Question ajoutée';
 

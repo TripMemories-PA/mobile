@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_event.dart';
@@ -139,7 +140,9 @@ class _PageContent extends StatelessWidget {
                     child: EditQuiz(),
                   ),
                   SingleChildScrollView(
-                    child: PoiQuestEditor(poiId: monument.id,),
+                    child: PoiQuestEditor(
+                      poiId: monument.id,
+                    ),
                   ),
                 ],
               ),
@@ -187,7 +190,8 @@ class _PageContent extends StatelessWidget {
               fontSize: 30,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.primary,
-              height: 1,
+              fontFamily:
+                  GoogleFonts.urbanist(fontWeight: FontWeight.w700).fontFamily,
             ),
           ),
           15.ph,

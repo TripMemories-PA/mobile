@@ -22,4 +22,5 @@ class RouteName {
   static const String poiMeet = '/poiMeet';
   static const String meet = '/meet';
   static const String editMeet = '/editMeet';
+  static const String editQuest = '/editQuest';
 }

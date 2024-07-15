@@ -24,6 +24,7 @@ import 'constants/route_name.dart';
 import 'constants/transitions.dart';
 import 'dto/conversation/conversation_dto.dart';
 import 'dto/meet_bloc_and_obj_dto.dart';
+import 'dto/quest_dto.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
 import 'object/city.dart';
 import 'object/map_style.dart';
@@ -32,6 +33,7 @@ import 'object/poi/poi.dart';
 import 'page/chat_page.dart';
 import 'page/city_page.dart';
 import 'page/edit_meet_page.dart';
+import 'page/edit_quest_page.dart';
 import 'page/edit_question_page.dart';
 import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
@@ -577,6 +579,14 @@ class MyApp extends HookWidget {
                   final EditQuestionDTO editQuestionDTO =
                       state.extra! as EditQuestionDTO;
                   return EditQuestionPage(editQuestionDTO: editQuestionDTO);
+                },
+              ),
+              GoRoute(
+                path: RouteName.editQuest,
+                builder: (BuildContext context, GoRouterState state) {
+                  final QuestBlocDTO questBlocDTO =
+                      state.extra! as QuestBlocDTO;
+                  return EditQuestPage(questBlocDTO: questBlocDTO);
                 },
               ),
             ],

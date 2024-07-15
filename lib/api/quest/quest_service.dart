@@ -15,22 +15,31 @@ import 'i_quest_service.dart';
 import 'model/query/post_quest_query_model.dart';
 import 'model/query/update_quest_query_model.dart';
 import 'model/response/get_quest_list.dart';
+import 'model/response/post_quest_imaage_response.dart';
 
 class QuestService implements IQuestService, IQuestRepository {
   static const String apiQuestsBaseUrl = '${AppConfig.apiUrl}/quests';
 
   @override
-  Future<void> storeImage(XFile file) async {
+  Future<PostQuestImageResponse> storeImage(XFile file) async {
+    Response response;
     try {
       final FormData formData = FormData.fromMap({
         'file': await MultipartFile.fromFile(file.path, filename: 'image.jpg'),
       });
-      await DioClient.instance.post(
+      response = await DioClient.instance.post(
         '$apiQuestsBaseUrl/image',
         data: formData,
       );
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      return PostQuestImageResponse.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
     }
   }
 
@@ -114,7 +123,6 @@ class QuestService implements IQuestService, IQuestRepository {
   }) async {
     Response response;
     try {
-
       response = await DioClient.instance.get(
         '${AppConfig.apiUrl}/pois/$poiId/quests?page=$page&perPage=$perPage',
       );

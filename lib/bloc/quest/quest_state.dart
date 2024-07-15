@@ -8,6 +8,14 @@ enum QuestStatus {
   updated,
 }
 
+enum PublishQuestStep {
+  selectTitle,
+  pickImage,
+  selectLabels,
+  storeQuest,
+  posted
+}
+
 class QuestState {
   QuestState({
     this.status = QuestStatus.initial,
@@ -18,6 +26,10 @@ class QuestState {
     this.perPage = 10,
     this.moreQuestStatus = QuestStatus.initial,
     this.hasMoreQuest = true,
+    this.editedQuest,
+    this.pickImageStatus = QuestStatus.initial,
+    this.postQuestImageResponse,
+    this.publishQuestStep = PublishQuestStep.selectTitle,
   });
 
   final QuestStatus status;
@@ -28,6 +40,10 @@ class QuestState {
   final int perPage;
   final QuestStatus moreQuestStatus;
   final bool hasMoreQuest;
+  final Quest? editedQuest;
+  final QuestStatus pickImageStatus;
+  final PostQuestImageResponse? postQuestImageResponse;
+  final PublishQuestStep publishQuestStep;
 
   QuestState copyWith({
     QuestStatus? status,
@@ -38,6 +54,9 @@ class QuestState {
     int? perPage,
     QuestStatus? moreQuestStatus,
     bool? hasMoreQuest,
+    Quest? editedQuest,
+    QuestStatus? pickImageStatus,
+    PostQuestImageResponse? postQuestImageResponse,
   }) {
     return QuestState(
       status: status ?? this.status,
@@ -48,6 +67,10 @@ class QuestState {
       perPage: perPage ?? this.perPage,
       moreQuestStatus: moreQuestStatus ?? this.moreQuestStatus,
       hasMoreQuest: hasMoreQuest ?? this.hasMoreQuest,
+      editedQuest: editedQuest,
+      pickImageStatus: pickImageStatus ?? this.pickImageStatus,
+      postQuestImageResponse:
+          postQuestImageResponse ?? this.postQuestImageResponse,
     );
   }
 }

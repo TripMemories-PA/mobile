@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -171,6 +172,15 @@ class ScanQrcodePageAndroid extends HookWidget {
                                     }
                                     final bool isValidTicket =
                                         state.ticketControl?.valid ?? false;
+                                    final int groupSize;
+                                    if (state.ticketControl?.ticket.meetId !=
+                                        null) {
+                                      groupSize = 1;
+                                    } else {
+                                      groupSize = state.ticketControl?.ticket
+                                              .ticket.groupSize ??
+                                          9999;
+                                    }
                                     return Column(
                                       children: [
                                         if (isValidTicket)
@@ -199,13 +209,24 @@ class ScanQrcodePageAndroid extends HookWidget {
                                           ),
                                         ),
                                         20.ph,
-                                        Text(
+                                        AutoSizeText(
+                                          maxLines: 1,
                                           state.ticketControl?.ticket.ticket
                                                   .title ??
                                               '',
                                           style: const TextStyle(
                                             fontSize: 24,
                                           ),
+                                          minFontSize: 10,
+                                        ),
+                                        10.ph,
+                                        AutoSizeText(
+                                          '${StringConstants().nbPersons}: $groupSize',
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                          ),
+                                          minFontSize: 10,
+                                          maxLines: 1,
                                         ),
                                       ],
                                     );

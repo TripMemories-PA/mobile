@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +10,6 @@ import 'package:vibration/vibration.dart';
 
 import '../api/qr_code_scanner/qr_code_scanner_service.dart';
 import '../bloc/qr_code_scanner/qr_code_scannner_bloc.dart';
-import '../component/custom_card.dart';
 import '../component/popup/confirmation_dialog.dart';
 import '../component/qr_code_canner/scanner_button_widgets.dart';
 import '../component/qr_code_canner/scanner_error_widget.dart';
@@ -30,8 +30,6 @@ class ScannerOverlay extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // TODO: use `Offset.zero & size` instead of Rect.largest
-    // we need to pass the size to the custom paint widget
     final backgroundPath = Path()..addRect(Rect.largest);
 
     final cutoutPath = Path()
@@ -69,9 +67,6 @@ class ScannerOverlay extends CustomPainter {
       bottomRight: Radius.circular(borderRadius),
     );
 
-    // First, draw the background,
-    // with a cutout area that is a bit larger than the scan window.
-    // Finally, draw the scan window itself.
     canvas.drawPath(backgroundWithCutout, backgroundPaint);
     canvas.drawRRect(borderRect, borderPaint);
   }
@@ -191,6 +186,15 @@ class ScanQrcodePageIos extends HookWidget {
                                     }
                                     final bool isValidTicket =
                                         state.ticketControl?.valid ?? false;
+                                    final int groupSize;
+                                    if (state.ticketControl?.ticket.meetId !=
+                                        null) {
+                                      groupSize = 1;
+                                    } else {
+                                      groupSize = state.ticketControl?.ticket
+                                          .ticket.groupSize ??
+                                          9999;
+                                    }
                                     return Column(
                                       children: [
                                         if (isValidTicket)
@@ -219,13 +223,24 @@ class ScanQrcodePageIos extends HookWidget {
                                           ),
                                         ),
                                         20.ph,
-                                        Text(
+                                        AutoSizeText(
+                                          maxLines: 1,
                                           state.ticketControl?.ticket.ticket
                                               .title ??
                                               '',
                                           style: const TextStyle(
                                             fontSize: 24,
                                           ),
+                                          minFontSize: 10,
+                                        ),
+                                        10.ph,
+                                        AutoSizeText(
+                                          '${StringConstants().nbPersons}: $groupSize',
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                          ),
+                                          minFontSize: 10,
+                                          maxLines: 1,
                                         ),
                                       ],
                                     );
@@ -236,8 +251,7 @@ class ScanQrcodePageIos extends HookWidget {
                               ticketInReview.value = false;
                               mobileController.start();
                             });
-                          },
-                          errorBuilder: (context, error, child) {
+                          },                          errorBuilder: (context, error, child) {
                             return ScannerErrorWidget(error: error);
                           },
                         ),

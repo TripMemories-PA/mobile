@@ -9,6 +9,7 @@ class ControlledTicket {
     required this.ticket,
     required this.user,
     required this.createdAt,
+    this.meetId,
   });
 
   factory ControlledTicket.fromJson(Map<String, dynamic> json) {
@@ -19,6 +20,7 @@ class ControlledTicket {
       ticket: Ticket.fromJson(json['ticket'] as Map<String, dynamic>),
       user: Profile.fromJson(json['user'] as Map<String, dynamic>),
       createdAt: DateTime.parse(json['createdAt'] as String),
+      meetId: json['meetId'] as int?,
     );
   }
 
@@ -28,6 +30,7 @@ class ControlledTicket {
   Ticket ticket;
   Profile user;
   DateTime createdAt;
+  int? meetId;
 
   ControlledTicket copyWith({
     int? id,
@@ -36,6 +39,7 @@ class ControlledTicket {
     Ticket? ticket,
     Profile? user,
     DateTime? createdAt,
+    int? meetId,
   }) {
     return ControlledTicket(
       id: id ?? this.id,
@@ -44,6 +48,7 @@ class ControlledTicket {
       ticket: ticket ?? this.ticket,
       user: user ?? this.user,
       createdAt: createdAt ?? this.createdAt,
+      meetId: meetId ?? this.meetId,
     );
   }
 }

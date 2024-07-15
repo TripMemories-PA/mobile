@@ -467,6 +467,8 @@ class StringConstants {
 
   String get postedComment => 'Commentaires postés';
 
+  String get nbPersons => 'Nombre de personnes';
+
   String get ticketFor => 'Billet pour';
 
   String get logout => 'Se déconnecter';

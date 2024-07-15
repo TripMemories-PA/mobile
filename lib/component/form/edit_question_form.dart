@@ -197,22 +197,24 @@ class EditQuestionForm extends HookWidget {
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  if (answersControllers.value.length < 2 ||
-                      answersControllers.value
-                          .any((element) => element.text.isEmpty) ||
-                      questionController.text.isEmpty ||
-                      selectedAnswerIndex.value == null) {
-                    final String message = selectedAnswerIndex.value != null
-
-                        ? StringConstants().selectRightAnswer
-                        : StringConstants().editQuestionRestrictions;
+                  String? message;
+                  if(answersControllers.value.length < 2) {
+                    message = StringConstants().addAtLeastTwoAnswers;
+                  } else if(answersControllers.value.any((element) => element.text.isEmpty)) {
+                    message = StringConstants().fillAllAnswers;
+                  } else if(questionController.text.isEmpty) {
+                    message = StringConstants().fillQuestion;
+                  } else if(selectedAnswerIndex.value == null) {
+                    message = StringConstants().selectRightAnswer;
+                  }
+                  if(message != null) {
                     confirmationPopUp(
-                      context,
-                      content: Text(
-                        message,
-                      ),
-                      isOkPopUp: true,
-                    );
+                    context,
+                    content: Text(
+                      message,
+                    ),
+                    isOkPopUp: true,
+                  );
                   } else {
                     if (formKey.currentState!.validate()) {
                       final List<PostQuestionQueryAnswer> answers = [];

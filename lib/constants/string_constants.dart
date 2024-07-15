@@ -133,7 +133,13 @@ class StringConstants {
 
   String get editQuiz => 'Modifier le quiz';
 
-  String get selectRightAnswer => 'Sélectionnez la bonne réponse';
+  String get fillQuestion => 'Veuillez remplir la question';
+
+  String get selectRightAnswer => 'Veuillez choisir la réponse correcte à cette question';
+
+  String get fillAllAnswers => 'Veuillez remplir toutes les réponses crées, ou supprimez les vides';
+
+  String get addAtLeastTwoAnswers => 'Veuillez ajouter au moins deux réponses possibles';
 
   String get questionAdded => 'Question ajoutée';
 

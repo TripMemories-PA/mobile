@@ -577,6 +577,8 @@ class StringConstants {
 
   String get actu => 'Actualitées';
 
+  String get minute => 'minute';
+
   String get minutes => 'minutes';
 
   String get hour => 'heure';

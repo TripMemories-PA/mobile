@@ -36,11 +36,10 @@ class FeedComponent extends HookWidget {
             isRefresh: true,
             myPosts: myPosts,
             userId: userId,
-            isMyFeed: (context.read<AuthBloc>().state.status ==
-                        AuthStatus.authenticated &&
-                    context.read<AuthBloc>().state.user?.userTypeId != 3)
-                ? isMyFeed
-                : false,
+            isMyFeed: (context.read<AuthBloc>().state.status !=
+                        AuthStatus.authenticated ||
+                    context.read<AuthBloc>().state.user?.userTypeId != 3) &&
+                isMyFeed,
           ),
         ),
       child: BlocListener<AuthBloc, AuthState>(

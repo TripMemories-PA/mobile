@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 import '../api/meet/meet_service.dart';
@@ -505,8 +506,11 @@ class _MeetDetailsBody extends HookWidget {
         _buildBlueBandana(state, context),
         15.ph,
         _buildChatCard(),
-        25.ph,
-        _buildExitButton(context, state),
+        35.ph,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: _buildExitButton(context, state),
+        ),
         10.ph,
       ],
     );
@@ -520,28 +524,10 @@ class _MeetDetailsBody extends HookWidget {
           meet.title,
           textAlign: TextAlign.center,
           style: TextStyle(
-            letterSpacing: 1.5,
             fontSize: 30,
             color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.w900,
-            shadows: [
-              Shadow(
-                offset: const Offset(0.6, 0.6),
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              Shadow(
-                offset: const Offset(-0.6, -0.6),
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              Shadow(
-                offset: const Offset(0.6, -0.6),
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              Shadow(
-                offset: const Offset(-0.6, 0.6),
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ],
+            fontFamily:
+                GoogleFonts.urbanist(fontWeight: FontWeight.w900).fontFamily,
           ),
         ),
         15.ph,
@@ -770,19 +756,30 @@ class _MeetDetailsBody extends HookWidget {
               ? Theme.of(context).colorScheme.secondary
               : Theme.of(context).colorScheme.primary,
         ),
+        shape: WidgetStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
       ),
       onPressed: () {
         if (isLocked) {
           Messenger.showSnackBarError(StringConstants().meetLocked);
           return;
         }
-        context.read<MeetDetailsBloc>().add(LeaveMeetEvent());
+        confirmationPopUp(context, title: StringConstants().sureToLeaveMeet)
+            .then((choice) {
+          if (choice) {
+            context.read<MeetDetailsBloc>().add(LeaveMeetEvent());
+          }
+        });
       },
       child: Row(
         children: [
-          const Icon(Icons.exit_to_app),
-          Text(StringConstants().leaveMeet),
           const Spacer(),
+          const Icon(Icons.exit_to_app),
+          10.pw,
+          Text(StringConstants().leaveMeet),
           if (state.leavingMeetStatus == MeetDetailsQueryStatus.loading)
             const Padding(
               padding: EdgeInsets.symmetric(
@@ -798,6 +795,7 @@ class _MeetDetailsBody extends HookWidget {
                 ),
               ),
             ),
+          const Spacer(),
         ],
       ),
     );

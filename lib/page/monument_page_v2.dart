@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -199,6 +200,7 @@ class _PageContent extends HookWidget {
               Tab(text: StringConstants().actu),
               Tab(text: StringConstants().shop),
             ],
+            dividerColor: Colors.transparent,
           ),
         ),
       ),
@@ -407,6 +409,76 @@ class _PageContent extends HookWidget {
               },
             ),
           ),
+          20.ph,
+          Container(
+            width: double.infinity,
+            height: 160,
+            color: Theme.of(context).colorScheme.surfaceContainerLow,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AutoSizeText(
+                  StringConstants().wantToMeetOrGetReductions,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 20,
+                  ),
+                  maxLines: 2,
+                  minFontSize: 15,
+                  textAlign: TextAlign.center,
+                ),
+                20.ph,
+                ElevatedButton(
+                  onPressed: () => context.push(
+                    '${RouteName.poiMeet}/${monument.id}',
+                    extra: monument,
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(
+                      Colors.transparent,
+                    ),
+                    side: WidgetStateProperty.all(
+                      BorderSide(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    shape: WidgetStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    padding: WidgetStateProperty.all(
+                      EdgeInsets.zero,
+                    ),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0,
+                      vertical: 8.0,
+                    ),
+                    color: Colors.transparent,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.remove_red_eye_outlined,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        10.pw,
+                        Text(
+                          StringConstants().accessMeet,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -438,20 +510,49 @@ class _PageContent extends HookWidget {
               if (context.read<AuthBloc>().state.status ==
                       AuthStatus.authenticated &&
                   context.read<AuthBloc>().state.user?.userTypeId != 3)
-                ElevatedButton(
-                  onPressed: () => context.push(
-                    '${RouteName.poiMeet}/${monument.id}',
-                    extra: monument,
-                  ),
-                  child: Text(
-                    StringConstants().meet,
+                SizedBox(
+                  width: 70,
+                  height: 30,
+                  child: ElevatedButton(
+                    onPressed: () => context.push(
+                      '${RouteName.poiMeet}/${monument.id}',
+                      extra: monument,
+                    ),
+                    style: ButtonStyle(
+                      padding:
+                          WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
+                    child: AutoSizeText(
+                      StringConstants().meet,
+                      maxLines: 1,
+                    ),
                   ),
                 ),
-              ElevatedButton(
-                onPressed: () =>
-                    context.push('${RouteName.quizPage}/${monument.id}'),
-                child: Text(
-                  StringConstants().doQuiz,
+              20.pw,
+              SizedBox(
+                width: 70,
+                height: 30,
+                child: ElevatedButton(
+                  onPressed: () =>
+                      context.push('${RouteName.quizPage}/${monument.id}'),
+                  style: ButtonStyle(
+                    padding:
+                        WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                  child: AutoSizeText(
+                    StringConstants().doQuiz,
+                    maxLines: 1,
+                  ),
                 ),
               ),
             ],

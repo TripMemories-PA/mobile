@@ -10,6 +10,21 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get accessMeet => 'Accéder aux meets';
+
+  String get sureToLeaveMeet =>
+      'Etes-vous sûr de vouloir vous désinscrire de ce meet ?';
+
+  String get meetPresentation =>
+      "Qu'est ce qu'un meet ? Un meet est un événement qui vous permet de rencontrer de nouvelles personnes et de bénéficier de réductions sur les billets d'entrée des monuments. Vous pouvez également créer vos propres meets et inviter vos amis à y participer !";
+
+  String get bonVoyage => 'Bon voyage !';
+
+  String get meets => 'Les meets';
+
+  String get wantToMeetOrGetReductions =>
+      'Envie de rencontrer de nouvelles personnes ou bénéficier de réductions ?';
+
   String get cancel => 'Annuler';
 
   String get joinChat => 'Rejoindre le chat';
@@ -123,7 +138,7 @@ class StringConstants {
 
   String get quiz => 'Quiz';
 
-  String get doQuiz => 'Faire le quiz';
+  String get doQuiz => 'Quiz';
 
   String get question => 'question';
 
@@ -552,7 +567,7 @@ class StringConstants {
 
   String get meetJoined => 'Meet rejoint';
 
-  String get leaveMeet => 'Quitter le meet';
+  String get leaveMeet => 'Se désinscrire du meet';
 
   String get meetJoinFailed => 'Impossible de rejoindre le meet';
 }

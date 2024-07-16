@@ -107,21 +107,32 @@ class _MeetPageBody extends HookWidget {
       },
       builder: (context, state) {
         return Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => context.push(
+              RouteName.editMeet,
+              extra: MeetBlocAndObjDTO(
+                meetBloc: context.read<MeetBloc>(),
+                poi: poi,
+              ),
+            ),
+            child: const Icon(Icons.add),
+          ),
           appBar: AppBar(
-            leading: const SizedBox.shrink(),
-            actions: [
-              ElevatedButton(
-                onPressed: () => context.push(
-                  RouteName.editMeet,
-                  extra: MeetBlocAndObjDTO(
-                    meetBloc: context.read<MeetBloc>(),
-                    poi: poi,
+            leading: Column(
+              children: [
+                20.ph,
+                Text(
+                  textAlign: TextAlign.left,
+                  StringConstants().meets,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSecondary,
+                    fontSize: 25,
                   ),
                 ),
-                child: Text(
-                  StringConstants().createMeet,
-                ),
-              ),
+              ],
+            ),
+            leadingWidth: 150,
+            actions: [
               IconButton(
                 icon: const Icon(Icons.close),
                 onPressed: context.pop,
@@ -153,6 +164,50 @@ class _MeetPageBody extends HookWidget {
                         controller: scrollController,
                         itemCount: state.meets.length + 1,
                         itemBuilder: (context, index) {
+                          if (index == 0) {
+                            final meet = state.meets[index];
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      20.ph,
+                                      Text(
+                                        StringConstants().meetPresentation,
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      20.ph,
+                                      Text(
+                                        StringConstants().bonVoyage,
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary,
+                                          fontSize: 15,
+                                        ),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                      10.ph,
+                                    ],
+                                  ),
+                                ),
+                                _MeetPreviewCard(
+                                  meet: meet,
+                                  state: state,
+                                  key: Key(meet.id.toString()),
+                                ),
+                              ],
+                            );
+                          }
+
                           if (index == state.meets.length) {
                             return Padding(
                               padding: const EdgeInsets.all(16.0),

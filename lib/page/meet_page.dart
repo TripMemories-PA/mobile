@@ -464,25 +464,33 @@ class MeetCardPeople extends StatelessWidget {
                 .map(
                   (kvp) => Positioned(
                     left: (avatarSize - overlapAmount) * kvp.key,
-                    child: Container(
-                      width: avatarSize,
-                      height: avatarSize,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            spreadRadius: .5,
-                            blurRadius: 1,
-                            offset: const Offset(-1, 0),
-                          ),
-                        ],
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
-                      ),
-                      child: ClipOval(
-                        child: kvp.value.avatar == null
-                            ? const Center(child: Icon(Icons.person))
-                            : Image.network(kvp.value.avatar!.url),
+                    child: GestureDetector(
+                      onTap: () {
+                        context.push(
+                          '${RouteName.profilePage}/${kvp.value.id}',
+                        );
+                      },
+                      child: Container(
+                        width: avatarSize,
+                        height: avatarSize,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainerLow,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              spreadRadius: .5,
+                              blurRadius: 1,
+                              offset: const Offset(-1, 0),
+                            ),
+                          ],
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                        ),
+                        child: ClipOval(
+                          child: kvp.value.avatar == null
+                              ? const Center(child: Icon(Icons.person))
+                              : Image.network(kvp.value.avatar!.url),
+                        ),
                       ),
                     ),
                   ),

@@ -478,7 +478,7 @@ class _PageContent extends HookWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

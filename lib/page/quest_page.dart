@@ -107,8 +107,8 @@ class QuestPage extends HookWidget {
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: GoogleFonts.urbanist(
-                                    fontWeight: FontWeight.w700)
-                                .fontFamily,
+                              fontWeight: FontWeight.w700,
+                            ).fontFamily,
                           ),
                         ),
                       ),
@@ -121,8 +121,8 @@ class QuestPage extends HookWidget {
                           StringConstants().takeAPicture,
                           style: TextStyle(
                             fontFamily: GoogleFonts.urbanist(
-                                    fontWeight: FontWeight.w700)
-                                .fontFamily,
+                              fontWeight: FontWeight.w700,
+                            ).fontFamily,
                             fontSize: 20,
                           ),
                         ),
@@ -245,8 +245,8 @@ class QuestPage extends HookWidget {
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: GoogleFonts.urbanist(
-                                    fontWeight: FontWeight.w700)
-                                .fontFamily,
+                              fontWeight: FontWeight.w700,
+                            ).fontFamily,
                             color: Theme.of(context).colorScheme.primary,
                           ),
                           textAlign: TextAlign.center,

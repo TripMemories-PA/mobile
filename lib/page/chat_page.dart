@@ -1,14 +1,17 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../api/chat/chat_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/chat/chat_bloc.dart';
 import '../component/profile_picture.dart';
 import '../constants/my_colors.dart';
+import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../dto/conversation/conversation_dto.dart';
 import '../dto/conversation/meet_conversation_dto.dart';
@@ -60,12 +63,12 @@ class ChatPage extends HookWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                10.ph,
                 if (conversationDto is PrivateConversationDto)
                   _buildPrivateConversationHeader(),
                 if (conversationDto is MeetConversationDto)
                   _buildMeetConversationHeader(
                     conversationDto: conversationDto as MeetConversationDto,
+                    context: context,
                   ),
                 _ChatBody(
                   conversationId: conversationDto.id,
@@ -100,7 +103,10 @@ class ChatPage extends HookWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5,),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                  vertical: 5,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide(
@@ -122,7 +128,6 @@ class ChatPage extends HookWidget {
               ),
               textAlign: TextAlign.center,
             ),
-
           ),
 
           // IconButton(
@@ -134,7 +139,10 @@ class ChatPage extends HookWidget {
               return state.sendingMessageStatus == ConversationStatus.loading
                   ? const CircularProgressIndicator()
                   : IconButton(
-                      icon: const Icon(Icons.send),
+                      icon: const Icon(
+                        Icons.send,
+                        size: 17,
+                      ),
                       onPressed: () {
                         if (messageController.text.isNotEmpty &&
                             state.sendingMessageStatus !=
@@ -191,23 +199,56 @@ class ChatPage extends HookWidget {
 
   Column _buildMeetConversationHeader({
     required MeetConversationDto conversationDto,
+    required BuildContext context,
   }) {
     return Column(
       children: [
-        Text(
-          conversationDto.meet.title,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        SizedBox(
+          height: 140,
+          child: Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 120,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: Image.asset(
+                      fit: BoxFit.cover,
+                      'assets/images/paris_by_night.png',
+                    ).image,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 10,
+                child: MeetCardPeople(
+                  users: conversationDto.users,
+                  maxUserAvatar: 10,
+                  avatarSize: 45,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+          child: AutoSizeText(
+            conversationDto.meet.title,
+            style: TextStyle(
+              fontSize: 20,
+              fontFamily:
+                  GoogleFonts.urbanist(fontWeight: FontWeight.w700).fontFamily,
+            ),
+            maxLines: 2,
+            textAlign: TextAlign.center,
           ),
         ),
         10.ph,
-        MeetCardPeople(
-          users: conversationDto.users,
-          maxUserAvatar: 10,
-          avatarSize: 45,
+        Text(
+          '${conversationDto.users.length} ${StringConstants().participant}${conversationDto.users.length > 1 ? 's' : ''}',
         ),
-        10.ph,
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Container(
@@ -336,7 +377,8 @@ class _ChatBody extends HookWidget {
                           width: MediaQuery.of(context).size.width * 0.7,
                           child: Text(
                             _formatDate(
-                                state.conversation.messages[i].createdAt),
+                              state.conversation.messages[i].createdAt,
+                            ),
                             textAlign:
                                 state.conversation.messages[i].sender.id != myId
                                     ? TextAlign.left
@@ -408,40 +450,77 @@ class _ChatBody extends HookWidget {
     return DateTimeService.dateForMessage(date);
   }
 
-  Container _buildMessage(BuildContext context, message, int myId) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.7,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 4,
-      ),
-      margin: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: message.sender.id != myId
-            ? Theme.of(context).colorScheme.surfaceTint
-            : Theme.of(context).colorScheme.surfaceContainerLow,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(
-            message.sender.id != myId ? 0 : 10,
+  Row _buildMessage(BuildContext context, message, int myId) {
+    return Row(
+      children: [
+        if (message.sender.id != myId)
+          GestureDetector(
+          onTap: () {
+            if (message.sender.id != myId) {
+              context.push('${RouteName.profilePage}/${message.sender.id}');
+            }
+          },
+          child:
+
+          message.sender.avatar != null
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 5.0),
+                  child: ProfilePicture(
+                    uploadedFile: message.sender.avatar,
+                  ),
+                )
+              :
+          const Padding(
+            padding: EdgeInsets.only(left: 5.0),
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: CircleAvatar(
+                backgroundColor: MyColors.lightGrey,
+                child: Icon(
+                  Icons.person,
+                  size: 25,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
           ),
-          topRight: Radius.circular(
-            message.sender.id != myId ? 10 : 0,
           ),
-          bottomRight: const Radius.circular(10),
-          bottomLeft: const Radius.circular(10),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          message.content,
-          style: TextStyle(
+        Container(
+          width: MediaQuery.of(context).size.width * 0.7,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 4,
+          ),
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
             color: message.sender.id != myId
-                ? Theme.of(context).colorScheme.onSecondary
-                : Theme.of(context).colorScheme.onTertiary,
+                ? Theme.of(context).colorScheme.surfaceTint
+                : Theme.of(context).colorScheme.surfaceContainerLow,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(
+                message.sender.id != myId ? 0 : 10,
+              ),
+              topRight: Radius.circular(
+                message.sender.id != myId ? 10 : 0,
+              ),
+              bottomRight: const Radius.circular(10),
+              bottomLeft: const Radius.circular(10),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              message.content,
+              style: TextStyle(
+                color: message.sender.id != myId
+                    ? Theme.of(context).colorScheme.onSecondary
+                    : Theme.of(context).colorScheme.onTertiary,
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

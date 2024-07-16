@@ -6,12 +6,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/quest/quest_bloc.dart';
+import '../bloc/quest/quest_event.dart';
 import '../constants/my_colors.dart';
 import '../constants/route_name.dart';
 import '../constants/string_constants.dart';
 import '../dto/quest_dto.dart';
 import '../object/quest.dart';
 import 'custom_card.dart';
+import 'popup/confirmation_dialog.dart';
 
 class QuestCard extends StatelessWidget {
   const QuestCard({
@@ -56,36 +58,54 @@ class QuestCard extends StatelessWidget {
                         size: 25,
                       ),
                       const Spacer(),
-                      Expanded(
-                        child: CustomCard(
-                          backgroundColor: Colors.transparent,
-                          borderColor: Theme.of(context).colorScheme.primary,
-                          content: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.redeem,
-                                  size: 20,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                                Text(
-                                  '50 points',
-                                  style: TextStyle(
-                                    fontSize: 15,
+                      if (isAdmin)
+                        IconButton(
+                          onPressed: () {
+                            confirmationPopUp(
+                              context,
+                              title: StringConstants().sureToDeleteQuest,
+                            ).then(
+                              (value) => value
+                                  ? context
+                                      .read<QuestBloc>()
+                                      .add(DeleteQuestEvent(quest.id))
+                                  : null,
+                            );
+                          },
+                          icon: const Icon(Icons.delete),
+                        )
+                      else
+                        Expanded(
+                          child: CustomCard(
+                            backgroundColor: Colors.transparent,
+                            borderColor: Theme.of(context).colorScheme.primary,
+                            content: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.redeem,
+                                    size: 20,
                                     color:
                                         Theme.of(context).colorScheme.primary,
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily:
-                                        GoogleFonts.urbanist().fontFamily,
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    '50 points',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily:
+                                          GoogleFonts.urbanist().fontFamily,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                   const Spacer(),

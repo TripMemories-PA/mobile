@@ -10,6 +10,9 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get sureToDeleteQuest =>
+      'Etes-vous sûr de vouloir supprimer cette mission ?';
+
   String get questCreation => 'Création de mission';
 
   String get modifyQuest => 'Modifier la mission';

@@ -12,6 +12,12 @@ class StringConstants {
 
   String get questPosted => 'Mission postée';
 
+  String get onceQuestValidated =>
+      'Une fois validée, Remporte tes Point ! 🎰🎉';
+
+  String get pleaseTakeAPictureToValidateTheRequest =>
+      'Veuillez prendre une photo pour valider';
+
   String get takeAPicture => 'Prenez une photo';
 
   String get photoVisualisation => 'Visualisation de la photo';

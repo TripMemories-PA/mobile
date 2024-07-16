@@ -7,6 +7,7 @@ import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/post/post_bloc.dart';
 import '../constants/string_constants.dart';
+import '../num_extensions.dart';
 import '../object/post.dart';
 import '../repository/post/post_repository.dart';
 import 'post_card.dart';
@@ -56,7 +57,11 @@ class FeedComponent extends HookWidget {
         },
         child: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            return _PostListContent(myPosts, userId);
+            return _PostListContent(
+              myPosts: myPosts,
+              userId: userId,
+              isMyFeed: isMyFeed,
+            );
           },
         ),
       ),
@@ -65,13 +70,15 @@ class FeedComponent extends HookWidget {
 }
 
 class _PostListContent extends HookWidget {
-  const _PostListContent(
-    this.myPosts,
+  const _PostListContent({
+    required this.myPosts,
     this.userId,
-  );
+    this.isMyFeed = false,
+  });
 
   final bool myPosts;
   final int? userId;
+  final bool isMyFeed;
 
   @override
   Widget build(BuildContext context) {
@@ -101,10 +108,16 @@ class _PostListContent extends HookWidget {
                       GetPostsEvent(
                         isRefresh: true,
                         myPosts: myPosts,
-                        isMyFeed: context.read<AuthBloc>().state.status ==
-                                AuthStatus.authenticated &&
-                            context.read<AuthBloc>().state.user?.userTypeId !=
-                                3,
+                        userId: userId,
+                        isMyFeed: (context.read<AuthBloc>().state.status !=
+                                    AuthStatus.authenticated ||
+                                context
+                                        .read<AuthBloc>()
+                                        .state
+                                        .user
+                                        ?.userTypeId !=
+                                    3) &&
+                            isMyFeed,
                       ),
                     );
               },
@@ -114,7 +127,14 @@ class _PostListContent extends HookWidget {
                     )
                   : SingleChildScrollView(
                       controller: postScrollController,
-                      child: _buildPostList(context),
+                      child: BlocBuilder<PostBloc, PostState>(
+                        builder: (context, state) {
+                          return PostList(
+                            userId: userId,
+                            myPosts: myPosts,
+                          );
+                        },
+                      ),
                     ),
             );
           },
@@ -138,50 +158,67 @@ class _PostListContent extends HookWidget {
       );
     }
   }
+}
 
-  Widget _buildPostList(BuildContext context) {
-    return BlocBuilder<PostBloc, PostState>(
-      builder: (context, state) {
-        if (state.status == PostStatus.notLoading) {
-          final List<Post>? posts = state.posts?.data;
-          if (posts != null && posts.isNotEmpty) {
-            return Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  ...posts.map((post) {
-                    return Column(
-                      children: [
-                        PostCardLikable(post: post),
-                        const SizedBox(height: 10),
-                      ],
-                    );
-                  }),
-                  Center(
-                    child: context.read<PostBloc>().state.hasMorePosts
-                        ? (context.read<PostBloc>().state.status !=
-                                PostStatus.error
-                            ? const ShimmerPostAndMonumentResume()
-                            : _buildErrorWidget(context))
-                        : Text(StringConstants().noMorePosts),
-                  ),
-                ],
+class PostList extends StatelessWidget {
+  const PostList({
+    super.key,
+    required this.userId,
+    required this.myPosts,
+  });
+
+  final int? userId;
+  final bool myPosts;
+
+  @override
+  Widget build(BuildContext context) {
+    if (context.read<PostBloc>().state.status == PostStatus.notLoading) {
+      final List<Post>? posts = context.read<PostBloc>().state.posts?.data;
+      if (posts != null && posts.isNotEmpty) {
+        return Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                height: 50,
+                child: Image.asset(
+                  'assets/images/tripmemories_black_logo.png',
+                ),
               ),
-            );
-          } else {
-            return Center(child: Text(StringConstants().noPostYet));
-          }
-        } else if (state.getMorePostsStatus == PostStatus.loading) {
-          return const Center(child: ShimmerPostAndMonumentResume());
-        } else if (state.getMorePostsStatus == PostStatus.error) {
-          return Center(
-            child: Text(StringConstants().errorWhileLoadingPosts),
-          );
-        } else {
-          return Container();
-        }
-      },
-    );
+              10.ph,
+              ...posts.map((post) {
+                return Column(
+                  children: [
+                    PostCardLikable(post: post),
+                    const SizedBox(height: 10),
+                  ],
+                );
+              }),
+              Center(
+                child: context.read<PostBloc>().state.hasMorePosts
+                    ? (context.read<PostBloc>().state.status != PostStatus.error
+                        ? const ShimmerPostAndMonumentResume()
+                        : _buildErrorWidget(context))
+                    : Text(StringConstants().noMorePosts),
+              ),
+            ],
+          ),
+        );
+      } else {
+        return Center(child: Text(StringConstants().noPostYet));
+      }
+    } else if (context.read<PostBloc>().state.getMorePostsStatus ==
+        PostStatus.loading) {
+      return const Center(child: ShimmerPostAndMonumentResume());
+    } else if (context.read<PostBloc>().state.getMorePostsStatus ==
+        PostStatus.error) {
+      return Center(
+        child: Text(StringConstants().errorWhileLoadingPosts),
+      );
+    } else {
+      return Container();
+    }
   }
 
   Widget _buildErrorWidget(BuildContext context) {

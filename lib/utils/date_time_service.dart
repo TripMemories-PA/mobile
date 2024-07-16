@@ -44,6 +44,13 @@ class DateTimeService {
     ).format(dateTime);
   }
 
+  static String formatNbDayMonthYear(DateTime dateTime) {
+    return DateFormat(
+      'dd MMMM yyyy',
+      'fr_FR',
+    ).format(dateTime);
+  }
+
   static String dateForMessage(DateTime dateTime) {
     final now = DateTime.now();
     final difference = now.difference(dateTime.toLocal());

@@ -10,6 +10,8 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get address => 'Adresse';
+
   String get myFeed => "Mon fil d'actualité";
 
   String get generalFeed => "Fil d'actualité général";
@@ -85,7 +87,7 @@ class StringConstants {
 
   String get missions => 'Missions';
 
-  String get monumentQuests => 'Quêtes du monument';
+  String get monumentQuests => 'Quêtes';
 
   String get quests => 'Missions';
 
@@ -303,8 +305,6 @@ class StringConstants {
 
   String get country => 'Pays';
 
-  String get address => 'Adresse';
-
   String get zipCode => 'Code postal';
 
   String get billingDetails => 'Détails de facturation';
@@ -450,9 +450,9 @@ class StringConstants {
 
   String get noMoreUsers => "Plus d'utilisateurs à afficher.";
 
-  String get noMoreMonuments => 'Plus de monuments à afficher.';
+  String get noMoreMonuments => 'Plus de monuments1 à afficher.';
 
-  String get noMoreCities => 'Plus de monuments à afficher.';
+  String get noMoreCities => 'Plus de monuments2 à afficher.';
 
   String get noMoreComments => 'Plus de commentaires à afficher.';
 
@@ -496,7 +496,7 @@ class StringConstants {
   String get sureToDeleteQuestion =>
       'Etes-vous sûr de vouloir supprimer cette question ?';
 
-  String get deleteAccount => 'Supprimer le compte';
+  String get deleteAccount => 'Supprimer mon compte';
 
   String get sureToDeleteAccount =>
       'Etes-vous sûr de vouloir supprimer votre compte ?';

@@ -57,6 +57,7 @@ class EditMeetPage extends HookWidget {
                     onPressed: () => context.pop(),
                     icon: const Icon(Icons.close),
                   ),
+                  10.pw,
                 ],
                 centerTitle: true,
                 bottom: TabBar(

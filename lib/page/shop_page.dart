@@ -37,13 +37,6 @@ class ShopPage extends StatelessWidget {
                     TextStyle(color: Theme.of(context).colorScheme.onPrimary),
               ),
               centerTitle: true,
-              bottom: const PreferredSize(
-                preferredSize: Size.fromHeight(1),
-                child: Divider(
-                  color: Colors.black,
-                  height: 0,
-                ),
-              ),
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
@@ -56,7 +49,7 @@ class ShopPage extends StatelessWidget {
             ),
             body: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: BlocListener<TicketBloc, TicketState>(
+              child: BlocConsumer<TicketBloc, TicketState>(
                 listener: (context, state) {
                   if (state.status == TicketStatus.ticketPosted) {
                     Messenger.showSnackBarSuccess(
@@ -90,14 +83,25 @@ class ShopPage extends StatelessWidget {
                         );
                   }
                 },
-                child: Builder(
-                  builder: (context) {
-                    if (state.tickets == null) {
-                      return Center(
-                        child: Text(StringConstants().noTicketForThisMonument),
-                      );
-                    }
-                    return ListView.builder(
+                builder: (context, state) {
+                  if (state.tickets == null) {
+                    return Center(
+                      child: Text(StringConstants().noTicketForThisMonument),
+                    );
+                  }
+                  if (state.status == TicketStatus.loading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      context.read<TicketBloc>().add(
+                            GetTicketsEvent(
+                              monumentId:
+                                  context.read<AuthBloc>().state.user?.poiId,
+                            ),
+                          );
+                    },
+                    child: ListView.builder(
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -106,9 +110,9 @@ class ShopPage extends StatelessWidget {
                         );
                       },
                       itemCount: state.tickets?.length,
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           );

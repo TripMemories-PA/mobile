@@ -82,6 +82,7 @@ class ThemeGenerator {
 
   static FloatingActionButtonThemeData get _floatingActionButtonTheme =>
       const FloatingActionButtonThemeData(
+        backgroundColor: MyColors.purple,
         foregroundColor: Colors.white,
         shape: CircleBorder(),
       );

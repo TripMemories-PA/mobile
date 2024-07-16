@@ -77,7 +77,7 @@ class SearchByCity extends HookWidget {
           width: double.infinity,
           height: 180,
           child: Image.asset(
-            'assets/images/panorama_city.png',
+            'assets/images/panorama_city.jpeg',
             fit: BoxFit.cover,
           ),
         ),

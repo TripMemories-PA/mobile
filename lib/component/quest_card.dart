@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
+import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/quest/quest_bloc.dart';
 import '../bloc/quest/quest_event.dart';
 import '../constants/my_colors.dart';
@@ -26,7 +27,8 @@ class QuestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isAdmin =
-        context.read<AuthBloc>().state.user?.poiId == quest.poiId;
+        context.read<AuthBloc>().state.user?.poiId == quest.poiId &&
+            context.read<AuthBloc>().state.status == AuthStatus.authenticated;
     return CustomCard(
       height: 220,
       width: double.infinity,

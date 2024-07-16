@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,8 +21,22 @@ class FriendsAndVisitedWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                if (itIsMe) _buildFriendsCard(context),
-                _buildVisitedBuildingCard(context),
+                if (itIsMe)
+                  state.status == ProfileStatus.loading
+                      ? const SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: CupertinoActivityIndicator(),
+                        )
+                      : _buildFriendsCard(context),
+                if (state.status == ProfileStatus.loading)
+                  const SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: CupertinoActivityIndicator(),
+                  )
+                else
+                  _buildVisitedBuildingCard(context),
               ],
             ),
           ),
@@ -53,7 +68,7 @@ class FriendsAndVisitedWidget extends StatelessWidget {
   Widget _buildCard(
     String subText,
     int count,
-      BuildContext context,
+    BuildContext context,
   ) {
     return Center(
       child: Container(

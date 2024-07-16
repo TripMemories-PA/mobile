@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../bloc/monument_bloc/monument_bloc.dart';
 import '../../constants/string_constants.dart';
+import '../../num_extensions.dart';
 import '../../object/poi/poi.dart';
 import '../../repository/monument/monument_repository.dart';
 import '../custom_card.dart';
@@ -60,6 +61,7 @@ class _Body extends HookWidget {
         builder: (context) => Dialog(
           insetPadding: EdgeInsets.zero,
           child: CustomCard(
+            borderColor: Colors.transparent,
             width: MediaQuery.of(context).size.width * 0.9,
             height: MediaQuery.of(context).size.height * 0.9,
             content: SizedBox.expand(
@@ -113,9 +115,13 @@ class _Body extends HookWidget {
 
   Widget _buildTitle(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(
+        vertical: 30.0,
+      ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          30.pw,
           Text(
             StringConstants().searchMonuments,
             style: const TextStyle(
@@ -133,6 +139,7 @@ class _Body extends HookWidget {
               context.pop();
             },
           ),
+          10.pw,
         ],
       ),
     );

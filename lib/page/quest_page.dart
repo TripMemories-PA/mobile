@@ -82,6 +82,7 @@ class QuestPage extends HookWidget {
                     context.pop();
                   },
                 ),
+                10.pw,
               ],
             ),
             body: ListView(
@@ -128,39 +129,31 @@ class QuestPage extends HookWidget {
                         ),
                       ),
                       20.ph,
-                      Row(
-                        children: [
-                          const Spacer(),
-                          GestureDetector(
-                            onTap: () => _pickImage(image),
+                      GestureDetector(
+                        onTap: () => _pickImage(image),
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerLow,
+                          ),
+                          child: Center(
                             child: Container(
-                              height: 100,
-                              width: 100,
+                              padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .surfaceContainerLow,
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
-                              child: Center(
-                                child: Container(
-                                  padding: const EdgeInsets.all(20),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                  child: Icon(
-                                    Icons.camera_alt_outlined,
-                                    color:
-                                        Theme.of(context).colorScheme.surface,
-                                  ),
-                                ),
+                              child: Icon(
+                                Icons.camera_alt_outlined,
+                                color: Theme.of(context).colorScheme.surface,
                               ),
                             ),
                           ),
-                          const Spacer(),
-                        ],
+                        ),
                       ),
                       20.ph,
                       if (image.value == null)
@@ -271,6 +264,7 @@ class QuestPage extends HookWidget {
                                   size: 20,
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
+                                10.pw,
                                 Text(
                                   '50 points',
                                   style: TextStyle(

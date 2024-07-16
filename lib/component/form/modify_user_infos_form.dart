@@ -36,7 +36,7 @@ class ModifyUserInfosForm extends HookWidget {
           Container(
             height: 45,
             decoration: ShapeDecoration(
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.tertiary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -61,7 +61,7 @@ class ModifyUserInfosForm extends HookWidget {
           Container(
             height: 45,
             decoration: ShapeDecoration(
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.tertiary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -86,7 +86,7 @@ class ModifyUserInfosForm extends HookWidget {
           Container(
             height: 45,
             decoration: ShapeDecoration(
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.tertiary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -111,7 +111,7 @@ class ModifyUserInfosForm extends HookWidget {
           Container(
             height: 45,
             decoration: ShapeDecoration(
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.tertiary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),

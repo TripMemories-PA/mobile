@@ -172,14 +172,13 @@ class ScanQrcodePageAndroid extends HookWidget {
                                     }
                                     final bool isValidTicket =
                                         state.ticketControl?.valid ?? false;
-                                    final int groupSize;
+                                    final int? groupSize;
                                     if (state.ticketControl?.ticket.meetId !=
                                         null) {
                                       groupSize = 1;
                                     } else {
                                       groupSize = state.ticketControl?.ticket
-                                              .ticket.groupSize ??
-                                          9999;
+                                          .ticket.groupSize;
                                     }
                                     return Column(
                                       children: [
@@ -220,14 +219,15 @@ class ScanQrcodePageAndroid extends HookWidget {
                                           minFontSize: 10,
                                         ),
                                         10.ph,
-                                        AutoSizeText(
-                                          '${StringConstants().nbPersons}: $groupSize',
-                                          style: const TextStyle(
-                                            fontSize: 20,
+                                        if (groupSize != null)
+                                          AutoSizeText(
+                                            '${StringConstants().nbPersons}: $groupSize',
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                            minFontSize: 10,
+                                            maxLines: 1,
                                           ),
-                                          minFontSize: 10,
-                                          maxLines: 1,
-                                        ),
                                       ],
                                     );
                                   },

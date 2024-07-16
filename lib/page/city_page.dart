@@ -149,6 +149,7 @@ class _PageContent extends HookWidget {
               Tab(text: StringConstants().monuments),
               Tab(text: StringConstants().actu),
             ],
+            dividerColor: Colors.transparent,
           ),
         ),
       ),
@@ -173,6 +174,7 @@ class _PageContent extends HookWidget {
       padding: const EdgeInsets.all(15.0),
       child: Column(
         children: [
+          15.ph,
           Text(
             city.name,
             textAlign: TextAlign.center,
@@ -190,6 +192,7 @@ class _PageContent extends HookWidget {
               fontSize: 15,
             ),
           ),
+          10.ph,
           Text(
             '${StringConstants().monuments} ${StringConstants().of} ${city.name}',
             style: const TextStyle(
@@ -197,7 +200,7 @@ class _PageContent extends HookWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          15.ph,
+          20.ph,
           BlocBuilder<CityBloc, CityState>(
             builder: (context, state) {
               return Column(

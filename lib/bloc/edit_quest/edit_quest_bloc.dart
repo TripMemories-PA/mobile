@@ -79,7 +79,7 @@ class EditQuestBloc extends Bloc<EditQuestEvent, EditQuestState> {
         id: event.id,
         questData: event.queryModel,
       );
-      emit(state.copyWith(status: QuestStatus.initial));
+      emit(state.copyWith(status: QuestStatus.updated));
     } catch (e) {
       emit(
         state.copyWith(

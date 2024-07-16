@@ -19,6 +19,7 @@ enum PublishQuestStep {
 
 class EditQuestState {
   EditQuestState({
+    this.status = QuestStatus.initial,
     this.error,
     this.pickImageStatus = QuestStatus.initial,
     this.postQuestImageResponse = const PostQuestImageResponse(
@@ -27,6 +28,7 @@ class EditQuestState {
     this.publishQuestStep = PublishQuestStep.selectTitle,
   });
 
+  final QuestStatus status;
   final ApiError? error;
   final QuestStatus pickImageStatus;
   final PostQuestImageResponse postQuestImageResponse;
@@ -40,6 +42,7 @@ class EditQuestState {
     PublishQuestStep? publishQuestStep,
   }) {
     return EditQuestState(
+      status: status ?? this.status,
       pickImageStatus: pickImageStatus ?? this.pickImageStatus,
       postQuestImageResponse:
           postQuestImageResponse ?? this.postQuestImageResponse,

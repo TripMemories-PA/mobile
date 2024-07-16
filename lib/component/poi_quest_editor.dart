@@ -41,93 +41,104 @@ class PoiQuestEditor extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  20.ph,
-                  Row(
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<QuestBloc>().add(
+                    GetPoiQuestEvent(poiId, isRefresh: true),
+                  );
+            },
+            child: SingleChildScrollView(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
                     children: [
-                      const Spacer(),
-                      Text(
-                        StringConstants().missions,
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Theme.of(context).colorScheme.primary,
-                          fontFamily:
-                              GoogleFonts.urbanist(fontWeight: FontWeight.w700)
+                      20.ph,
+                      Row(
+                        children: [
+                          const Spacer(),
+                          Text(
+                            StringConstants().missions,
+                            style: TextStyle(
+                              fontSize: 30,
+                              color: Theme.of(context).colorScheme.primary,
+                              fontFamily: GoogleFonts.urbanist(
+                                      fontWeight: FontWeight.w700)
                                   .fontFamily,
-                        ),
-                      ),
-                      const Spacer(),
-                      IconButton(
-                        onPressed: () async {
-                          context.push(
-                            RouteName.editQuest,
-                            extra: QuestBlocDTO(
-                              questBloc: context.read<QuestBloc>(),
-                              poiId: poiId,
                             ),
-                          );
-                        },
-                        icon: const Icon(Icons.add),
-                      ),
-                      10.ph,
-                    ],
-                  ),
-                  20.ph,
-                  if (state.status == QuestStatus.loading)
-                    const Center(child: CircularProgressIndicator())
-                  else
-                    state.questList.isEmpty
-                        ? Text(StringConstants().noQuestForThisMonument)
-                        : Column(
-                            children: [
-                              ...state.questList.map(
-                                (quest) => Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: QuestCard(
-                                    quest: quest,
-                                  ),
+                          ),
+                          const Spacer(),
+                          IconButton(
+                            onPressed: () async {
+                              context.push(
+                                RouteName.editQuest,
+                                extra: QuestBlocDTO(
+                                  questBloc: context.read<QuestBloc>(),
+                                  poiId: poiId,
                                 ),
-                              ),
-                              if (state.hasMoreQuest)
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: state.moreQuestStatus ==
-                                          QuestStatus.loading
-                                      ? const CircularProgressIndicator()
-                                      : ElevatedButton(
-                                          onPressed: () {
-                                            context.read<QuestBloc>().add(
-                                                  GetPoiQuestEvent(poiId),
-                                                );
-                                          },
-                                          style: ButtonStyle(
-                                            shape: WidgetStateProperty.all(
-                                              RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20.0),
+                              );
+                            },
+                            icon: const Icon(Icons.add),
+                          ),
+                          10.ph,
+                        ],
+                      ),
+                      20.ph,
+                      if (state.status == QuestStatus.loading)
+                        const Center(child: CircularProgressIndicator())
+                      else
+                        state.questList.isEmpty
+                            ? Text(StringConstants().noQuestForThisMonument)
+                            : Column(
+                                children: [
+                                  ...state.questList.map(
+                                    (quest) => Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: QuestCard(
+                                        quest: quest,
+                                      ),
+                                    ),
+                                  ),
+                                  if (state.hasMoreQuest)
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: state.moreQuestStatus ==
+                                              QuestStatus.loading
+                                          ? const CircularProgressIndicator()
+                                          : ElevatedButton(
+                                              onPressed: () {
+                                                context.read<QuestBloc>().add(
+                                                      GetPoiQuestEvent(poiId),
+                                                    );
+                                              },
+                                              style: ButtonStyle(
+                                                shape: WidgetStateProperty.all(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0),
+                                                  ),
+                                                ),
+                                                backgroundColor:
+                                                    WidgetStateProperty.all(
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                ),
+                                              ),
+                                              child: Text(
+                                                StringConstants()
+                                                    .loadMoreResults,
                                               ),
                                             ),
-                                            backgroundColor:
-                                                WidgetStateProperty.all(
-                                              Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                            ),
-                                          ),
-                                          child: Text(
-                                            StringConstants().loadMoreResults,
-                                          ),
-                                        ),
-                                )
-                              else
-                                Text(StringConstants().noMoreQuests),
-                            ],
-                          ),
-                ],
+                                    )
+                                  else
+                                    Text(StringConstants().noMoreQuests),
+                                ],
+                              ),
+                    ],
+                  ),
+                ),
               ),
             ),
           );

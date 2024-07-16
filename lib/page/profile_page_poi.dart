@@ -139,10 +139,8 @@ class _PageContent extends StatelessWidget {
                   const SingleChildScrollView(
                     child: EditQuiz(),
                   ),
-                  SingleChildScrollView(
-                    child: PoiQuestEditor(
-                      poiId: monument.id,
-                    ),
+                  PoiQuestEditor(
+                    poiId: monument.id,
                   ),
                 ],
               ),

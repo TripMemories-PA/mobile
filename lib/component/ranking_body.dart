@@ -131,6 +131,11 @@ class RankingBody extends HookWidget {
           context,
           false,
         ),
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
         child: Text(StringConstants().loadMoreResults),
       );
     } else {
@@ -305,16 +310,16 @@ class RankingBody extends HookWidget {
         background: Center(
           child: Column(
             children: [
-              20.ph,
+              15.ph,
               Text(
                 StringConstants().thePodium,
                 style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 35,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
-              20.ph,
+              15.ph,
               Stack(
                 children: [
                   Image.asset(
@@ -424,7 +429,6 @@ class RankingBody extends HookWidget {
                   ),
                 ],
               ),
-              20.ph,
             ],
           ),
         ),

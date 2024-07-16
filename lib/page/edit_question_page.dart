@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import '../bloc/edit_quiz/edit_quiz_bloc.dart';
 import '../component/form/edit_question_form.dart';
-import '../object/quiz/question.dart';
+import '../dto/edit_question_dto.dart';
+import '../num_extensions.dart';
 
 class EditQuestionPage extends StatelessWidget {
   const EditQuestionPage({
@@ -14,19 +15,21 @@ class EditQuestionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EditQuestionForm(
-      editQuestionDTO.question,
-      editQuizBloc: editQuestionDTO.editQuizBloc,
+    return Scaffold(
+      appBar: AppBar(
+        leading: const SizedBox.shrink(),
+        actions: [
+          IconButton(
+            onPressed: () => context.pop(),
+            icon: const Icon(Icons.close),
+          ),
+          10.pw,
+        ],
+      ),
+      body: EditQuestionForm(
+        editQuestionDTO.question,
+        editQuizBloc: editQuestionDTO.editQuizBloc,
+      ),
     );
   }
-}
-
-class EditQuestionDTO {
-  EditQuestionDTO({
-    this.question,
-    required this.editQuizBloc,
-  });
-
-  Question? question;
-  EditQuizBloc editQuizBloc;
 }

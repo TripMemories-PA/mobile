@@ -137,6 +137,7 @@ class _MeetPageBody extends HookWidget {
                 icon: const Icon(Icons.close),
                 onPressed: context.pop,
               ),
+              10.pw,
             ],
           ),
           body: state.meetQueryStatus == MeetQueryStatus.loading
@@ -474,7 +475,8 @@ class MeetCardPeople extends StatelessWidget {
                         width: avatarSize,
                         height: avatarSize,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainerLow,
+                          color:
+                              Theme.of(context).colorScheme.surfaceContainerLow,
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.3),
@@ -537,6 +539,9 @@ class _JoinMeetButton extends StatelessWidget {
         backgroundColor: (meet.hasJoined ?? false)
             ? null
             : ((meet.canJoin ?? false) ? null : Colors.grey),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
       ),
       child: Center(
         child: isLoading

@@ -1,3 +1,3 @@
 class AppConfig {
-  static const String apiUrl = 'https://api.dev.tripmemories.fr';
+  static const String apiUrl = 'https://api.tripmemories.fr';
 }

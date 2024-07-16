@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 import '../api/post/post_service.dart';
@@ -240,6 +241,8 @@ class _PageContent extends HookWidget {
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.primary,
               height: 1,
+              fontFamily:
+                  GoogleFonts.urbanist(fontWeight: FontWeight.w700).fontFamily,
             ),
           ),
           15.ph,
@@ -264,24 +267,50 @@ class _PageContent extends HookWidget {
               height: 300,
             ),
           ),
-          10.ph,
-          Text(
-            monument.address ?? '',
-            style: const TextStyle(
-              fontSize: 15,
-            ),
-          ),
-          Text(
-            monument.city?.name ?? '',
-            style: const TextStyle(
-              fontSize: 15,
-            ),
-          ),
-          Text(
-            monument.city?.zipCode ?? '',
-            style: const TextStyle(
-              fontSize: 15,
-            ),
+          30.ph,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.home_outlined,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  5.pw,
+                  Text(
+                    StringConstants().address,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
+              5.ph,
+              Text(
+                monument.address ?? '',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: GoogleFonts.urbanist(fontWeight: FontWeight.w700)
+                      .fontFamily,
+                ),
+              ),
+              5.ph,
+              Text(
+                monument.city?.name ?? '',
+                style: const TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+              5.ph,
+              Text(
+                monument.city?.zipCode ?? '',
+                style: const TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+            ],
           ),
         ],
       ),

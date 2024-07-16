@@ -41,37 +41,45 @@ class PoiFeed extends StatelessWidget {
                   return BlocBuilder<MonumentBloc, MonumentState>(
                     builder: (context, state) {
                       return Expanded(
-                        child: ListView(
-                          children: [
-                            ...context
-                                .read<MonumentBloc>()
-                                .state
-                                .selectedMonumentPosts
-                                .map(
-                                  (post) => Column(
-                                    children: [
-                                      PostCardLikable(
-                                        post: post,
-                                      ),
-                                      20.ph,
-                                    ],
-                                  ),
-                                ),
-                            Center(
-                              child: context
-                                      .read<MonumentBloc>()
-                                      .state
-                                      .getMonumentsHasMorePosts
-                                  ? (context
+                        child: RefreshIndicator(
+                          onRefresh: () async {
+                            _getPosts(context, true);
+                          },
+                          child: state.selectedPostGetMonumentsStatus ==
+                                  MonumentStatus.loading
+                              ? const CircularProgressIndicator()
+                              : ListView(
+                                  children: [
+                                    ...context
+                                        .read<MonumentBloc>()
+                                        .state
+                                        .selectedMonumentPosts
+                                        .map(
+                                          (post) => Column(
+                                            children: [
+                                              PostCardLikable(
+                                                post: post,
+                                              ),
+                                              20.ph,
+                                            ],
+                                          ),
+                                        ),
+                                    Center(
+                                      child: context
                                               .read<MonumentBloc>()
                                               .state
-                                              .status !=
-                                          MonumentStatus.error
-                                      ? const ShimmerPostAndMonumentResume()
-                                      : _buildErrorWidget(context))
-                                  : Text(StringConstants().noMorePosts),
-                            ),
-                          ],
+                                              .getMonumentsHasMorePosts
+                                          ? (context
+                                                      .read<MonumentBloc>()
+                                                      .state
+                                                      .status !=
+                                                  MonumentStatus.error
+                                              ? const ShimmerPostAndMonumentResume()
+                                              : _buildErrorWidget(context))
+                                          : Text(StringConstants().noMorePosts),
+                                    ),
+                                  ],
+                                ),
                         ),
                       );
                     },

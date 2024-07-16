@@ -106,10 +106,7 @@ class SearchingCityBody extends HookWidget {
                         : (state.status == CityStatus.error
                             ? _buildErrorWidget(context)
                             : const SizedBox.shrink()))
-                    : Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(StringConstants().noMoreCities),
-                      ),
+                    : null,
               ),
             ],
           );

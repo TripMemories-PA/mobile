@@ -132,7 +132,7 @@ class SearchingUsersBody extends HookWidget {
                     );
               },
             ),
-            10.ph,
+            30.ph,
             if (searching.value) _buildSearchUserList(searchContent),
             if (searching.value)
               Padding(
@@ -269,7 +269,7 @@ class SearchingUsersBody extends HookWidget {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(height: 10),
+            30.ph,
             UserList(
               users: context.read<UserSearchingBloc>().state.users?.data ?? [],
               needToPop: true,

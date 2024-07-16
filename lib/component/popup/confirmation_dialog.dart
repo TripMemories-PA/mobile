@@ -28,6 +28,7 @@ class ConfirmationDialog extends StatelessWidget {
     final Widget? tmpContent = content;
     return Dialog(
       child: CustomCard(
+        borderColor: Colors.transparent,
         height: height ?? 200,
         width: width,
         content: Padding(

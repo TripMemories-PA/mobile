@@ -265,6 +265,7 @@ class _PageContent extends StatelessWidget {
             }
           },
         ),
+        10.pw,
       ],
       expandedHeight: 300,
       flexibleSpace: FlexibleSpaceBar(

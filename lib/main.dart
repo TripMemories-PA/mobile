@@ -23,6 +23,7 @@ import 'components/scaffold_with_nav_bar_poi.dart';
 import 'constants/route_name.dart';
 import 'constants/transitions.dart';
 import 'dto/conversation/conversation_dto.dart';
+import 'dto/edit_question_dto.dart';
 import 'dto/meet_bloc_and_obj_dto.dart';
 import 'dto/quest_dto.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
@@ -349,7 +350,7 @@ class MyApp extends HookWidget {
                     ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
-                      return CustomTransition.buildBottomToTopPopTransition(
+                      return CustomTransition.buildRightToLeftPopTransition(
                         animation,
                         child,
                       );

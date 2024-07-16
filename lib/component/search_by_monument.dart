@@ -77,7 +77,7 @@ class SearchByMonument extends HookWidget {
           width: double.infinity,
           height: 180,
           child: Image.asset(
-            'assets/images/panorama.png',
+            'assets/images/panorama.jpg',
             fit: BoxFit.cover,
           ),
         ),

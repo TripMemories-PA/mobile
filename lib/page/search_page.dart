@@ -61,7 +61,7 @@ class SlidePage extends HookWidget {
           margin: EdgeInsets.zero,
           padding: EdgeInsets.zero,
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
             color: Theme.of(context).colorScheme.surface,
           ),
           child: ToggleButtons(
@@ -73,7 +73,7 @@ class SlidePage extends HookWidget {
                 curve: Curves.easeInOut,
               );
             },
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
             selectedColor: Theme.of(context).colorScheme.onPrimary,
             fillColor: Theme.of(context).colorScheme.primary,
             color: Theme.of(context).colorScheme.onSecondary,

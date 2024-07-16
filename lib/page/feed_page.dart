@@ -33,7 +33,8 @@ class FeedPage extends HookWidget {
                     AuthStatus.authenticated
                 ? _buildAppBar(context, pageController, generalFeedSelected)
                 : null,
-            body: context.read<AuthBloc>().state.status == AuthStatus.authenticated
+            body: context.read<AuthBloc>().state.status ==
+                    AuthStatus.authenticated
                 ? _buildPageView(pageController, generalFeedSelected)
                 : const Padding(
                     padding: EdgeInsets.all(8.0),
@@ -89,7 +90,8 @@ class FeedPage extends HookWidget {
     );
   }
 
-  PageView _buildPageView(PageController pageController, ValueNotifier<bool> generalFeedSelected) {
+  PageView _buildPageView(
+      PageController pageController, ValueNotifier<bool> generalFeedSelected) {
     return PageView(
       controller: pageController,
       onPageChanged: (index) {
@@ -98,7 +100,9 @@ class FeedPage extends HookWidget {
       children: const [
         Padding(
           padding: EdgeInsets.all(8.0),
-          child: FeedComponent(isMyFeed: true,),
+          child: FeedComponent(
+            isMyFeed: true,
+          ),
         ),
         Padding(
           padding: EdgeInsets.all(8.0),

@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -38,10 +39,6 @@ class ProfileBanner extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
           ),
           child: Column(
             children: [
@@ -146,24 +143,38 @@ class ProfileBanner extends StatelessWidget {
                       },
                     ),
                   ),
-                  Text(
-                    '${context.read<ProfileBloc>().state.profile?.firstname ?? 'User'} ${context.read<ProfileBloc>().state.profile?.lastname ?? context.read<ProfileBloc>().state.profile?.id.toString()}',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontFamily:
-                          GoogleFonts.urbanist(fontWeight: FontWeight.w700)
-                              .fontFamily,
+                  if (state.status == ProfileStatus.loading)
+                    const SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: CupertinoActivityIndicator(),
+                    )
+                  else
+                    Text(
+                      '${context.read<ProfileBloc>().state.profile?.firstname} ${context.read<ProfileBloc>().state.profile?.lastname}',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily:
+                            GoogleFonts.urbanist(fontWeight: FontWeight.w700)
+                                .fontFamily,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '@${context.read<ProfileBloc>().state.profile?.username}',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey,
+                  if (state.status == ProfileStatus.loading)
+                    const SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: CupertinoActivityIndicator(),
+                    )
+                  else
+                    Text(
+                      '@${context.read<ProfileBloc>().state.profile?.username}',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
                   FriendsAndVisitedWidget(
                     itIsMe: isMyProfile,
                   ),
@@ -242,9 +253,6 @@ class ProfileBanner extends StatelessWidget {
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(
                 Radius.circular(10),
-              ),
-              border: Border.fromBorderSide(
-                BorderSide(),
               ),
             ),
             child: Container(

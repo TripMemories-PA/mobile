@@ -125,44 +125,57 @@ class PostCard extends HookWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          // TODO(nono): à confirmer
-                          if (context.read<AuthBloc>().state.user?.poiId !=
-                                  null &&
-                              context.read<AuthBloc>().state.user?.poiId ==
-                                  post.poi.id) {
-                            context.go(
-                              RouteName.profilePagePoi,
-                            );
-                          } else {
-                            final String? path =
-                                ModalRoute.of(context)?.settings.name;
-                            if (path != null &&
-                                !path.contains(post.poi.id.toString())) {
-                              context.push(
-                                '${RouteName.monumentPage}/${post.poi.id}',
-                              );
-                            }
-                          }
-                        },
-                        child: Text(
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          post.poi.name,
-                          style: TextStyle(
-                            shadows: [
-                              Shadow(
-                                color: Theme.of(context).colorScheme.primary,
-                                offset: const Offset(0, -5),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              // TODO(nono): à confirmer
+                              if (context.read<AuthBloc>().state.user?.poiId !=
+                                      null &&
+                                  context.read<AuthBloc>().state.user?.poiId ==
+                                      post.poi.id) {
+                                context.go(
+                                  RouteName.profilePagePoi,
+                                );
+                              } else {
+                                final String? path =
+                                    ModalRoute.of(context)?.settings.name;
+                                if (path != null &&
+                                    !path.contains(post.poi.id.toString())) {
+                                  context.push(
+                                    '${RouteName.monumentPage}/${post.poi.id}',
+                                  );
+                                }
+                              }
+                            },
+                            child: Text(
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              post.poi.name,
+                              style: TextStyle(
+                                shadows: [
+                                  Shadow(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    offset: const Offset(0, -5),
+                                  ),
+                                ],
+                                color: Colors.transparent,
+                                decoration: TextDecoration.underline,
+                                decorationColor:
+                                    Theme.of(context).colorScheme.primary,
                               ),
-                            ],
-                            color: Colors.transparent,
-                            decoration: TextDecoration.underline,
-                            decorationColor:
-                                Theme.of(context).colorScheme.primary,
+                            ),
                           ),
-                        ),
+                          const Spacer(),
+                          Text(
+                            DateTimeService.formatNbDayMonthYear(
+                                post.createdAt),
+                            style: const TextStyle(
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
                       ),
                       12.ph,
                       Text(
@@ -212,18 +225,7 @@ class PostCard extends HookWidget {
                               : null,
                         ),
                         5.pw,
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              DateTimeService.formatDateTime(post.createdAt),
-                              style: const TextStyle(
-                                fontSize: 12,
-                              ),
-                            ),
-                            Text(post.createdBy.username),
-                          ],
-                        ),
+                        Text(post.createdBy.username),
                       ],
                     ),
                   ),

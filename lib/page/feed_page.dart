@@ -91,7 +91,9 @@ class FeedPage extends HookWidget {
   }
 
   PageView _buildPageView(
-      PageController pageController, ValueNotifier<bool> generalFeedSelected) {
+    PageController pageController,
+    ValueNotifier<bool> generalFeedSelected,
+  ) {
     return PageView(
       controller: pageController,
       onPageChanged: (index) {

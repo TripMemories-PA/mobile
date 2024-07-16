@@ -22,6 +22,7 @@ class EditTweetPage extends HookWidget {
     super.key,
     this.preSelectedMonument,
   });
+
   final Poi? preSelectedMonument;
 
   Future<void> _selectImage(ValueNotifier<XFile?> image) async {
@@ -192,8 +193,8 @@ class EditTweetPage extends HookWidget {
                               child: Text(
                                 StringConstants().publish,
                                 style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
                               ),
                             ),
                           ),

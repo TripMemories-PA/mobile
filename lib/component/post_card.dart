@@ -170,7 +170,8 @@ class PostCard extends HookWidget {
                           const Spacer(),
                           Text(
                             DateTimeService.formatNbDayMonthYear(
-                                post.createdAt),
+                              post.createdAt,
+                            ),
                             style: const TextStyle(
                               fontSize: 12,
                             ),

@@ -127,13 +127,23 @@ class PostCard extends HookWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          final String? path =
-                              ModalRoute.of(context)?.settings.name;
-                          if (path != null &&
-                              !path.contains(post.poi.id.toString())) {
-                            context.push(
-                              '${RouteName.monumentPage}/${post.poi.id}',
+                          // TODO(nono): à confirmer
+                          if (context.read<AuthBloc>().state.user?.poiId !=
+                                  null &&
+                              context.read<AuthBloc>().state.user?.poiId ==
+                                  post.poi.id) {
+                            context.go(
+                              RouteName.profilePagePoi,
                             );
+                          } else {
+                            final String? path =
+                                ModalRoute.of(context)?.settings.name;
+                            if (path != null &&
+                                !path.contains(post.poi.id.toString())) {
+                              context.push(
+                                '${RouteName.monumentPage}/${post.poi.id}',
+                              );
+                            }
                           }
                         },
                         child: Text(
@@ -364,21 +374,24 @@ class PostCardLikable extends HookWidget {
   Widget build(BuildContext context) {
     final showHeart = useState(false);
     final showDislike = useState(false);
-    final isAnimationRunning =
-        useState(false); // Ajouté pour suivre l'état de l'animation
+    final isAnimationRunning = useState(false);
     final controller = useAnimationController(
       duration: const Duration(milliseconds: 500),
     );
 
     return InkWell(
-      onDoubleTap: () => handleDoubleTap(
-        controller,
-        context,
-        post,
-        showHeart,
-        showDislike,
-        isAnimationRunning, // Ajouté pour passer l'état de l'animation
-      ),
+      onDoubleTap: () =>
+          (context.read<AuthBloc>().state.status == AuthStatus.authenticated &&
+                  context.read<AuthBloc>().state.user?.id != post.createdBy.id)
+              ? handleDoubleTap(
+                  controller,
+                  context,
+                  post,
+                  showHeart,
+                  showDislike,
+                  isAnimationRunning,
+                )
+              : null,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -411,8 +424,7 @@ class PostCardLikable extends HookWidget {
     Post post,
     ValueNotifier<bool> showHeart,
     ValueNotifier<bool> showDislike,
-    ValueNotifier<bool>
-        isAnimationRunning, // Ajouté pour suivre l'état de l'animation
+    ValueNotifier<bool> isAnimationRunning,
   ) {
     if (isAnimationRunning.value) {
       return;
@@ -435,8 +447,7 @@ class PostCardLikable extends HookWidget {
         Future.delayed(const Duration(milliseconds: 1200), () {
           showDislike.value = false;
           controller.reset();
-          isAnimationRunning.value =
-              false; // Réinitialisation de l'état de l'animation
+          isAnimationRunning.value = false;
         });
       });
       return;
@@ -451,8 +462,7 @@ class PostCardLikable extends HookWidget {
       Future.delayed(const Duration(milliseconds: 2000), () {
         showHeart.value = false;
         controller.reset();
-        isAnimationRunning.value =
-            false; // Réinitialisation de l'état de l'animation
+        isAnimationRunning.value = false;
       });
     });
     return;

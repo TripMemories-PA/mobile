@@ -10,6 +10,33 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get sureToDeleteQuest =>
+      'Etes-vous sûr de vouloir supprimer cette mission ?';
+
+  String get questCreation => 'Création de mission';
+
+  String get modifyQuest => 'Modifier la mission';
+
+  String get questPosted => 'Mission postée';
+
+  String get onceQuestValidated =>
+      'Une fois validée, Remporte tes Point ! 🎰🎉';
+
+  String get pleaseTakeAPictureToValidateTheRequest =>
+      'Veuillez prendre une photo pour valider';
+
+  String get takeAPicture => 'Prenez une photo';
+
+  String get photoVisualisation => 'Visualisation de la photo';
+
+  String get noLabels => 'Pas de labels';
+
+  String get pleaseSelectLabel => 'Veuillez sélectionner un label';
+
+  String get noMoreQuests => 'Plus de missions à afficher';
+
+  String get titleCannotBeEmpty => 'Le titre ne peut pas être vide';
+
   String get accessMeet => 'Accéder aux meets';
 
   String get sureToLeaveMeet =>
@@ -27,9 +54,42 @@ class StringConstants {
 
   String get cancel => 'Annuler';
 
+  String get imageSelection => 'Sélectionner une image';
+
+  String get pickImage => 'Choisir une image';
+
+  String get pleaseSelectImage => 'Veuillez sélectionner une image';
+
+  String get edit => 'Editer';
+
+  String get labels => 'Labels';
+
+  String get play => 'Jouer';
+
   String get joinChat => 'Rejoindre le chat';
 
+  String get done => 'Terminée';
+
+  String get notDone => 'Non terminée';
+
+  String get questDeleted => 'Mission supprimée';
+
+  String get questUpdated => 'Mission mise à jour';
+
+  String get sureToDeleteMission =>
+      'Etes-vous sûr de vouloir supprimer cette mission ?';
+
+  String get missions => 'Missions';
+
+  String get monumentQuests => 'Quêtes du monument';
+
+  String get quests => 'Missions';
+
+  String get quest => 'Mission 🗼';
+
   String get userKicked => 'Utilisateur expulsé';
+
+  String get noQuestForThisMonument => 'Pas de quête pour ce monument';
 
   String get errorWhilePostingMessage =>
       'Erreur lors de la publication du message';
@@ -119,7 +179,16 @@ class StringConstants {
 
   String get editQuiz => 'Modifier le quiz';
 
-  String get selectRightAnswer => 'Sélectionnez la bonne réponse';
+  String get fillQuestion => 'Veuillez remplir la question';
+
+  String get selectRightAnswer =>
+      'Veuillez choisir la réponse correcte à cette question';
+
+  String get fillAllAnswers =>
+      'Veuillez remplir toutes les réponses crées, ou supprimez les vides';
+
+  String get addAtLeastTwoAnswers =>
+      'Veuillez ajouter au moins deux réponses possibles';
 
   String get questionAdded => 'Question ajoutée';
 

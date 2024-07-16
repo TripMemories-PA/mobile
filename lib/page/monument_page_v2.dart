@@ -9,14 +9,18 @@ import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
 import '../api/post/post_service.dart';
+import '../api/quest/quest_service.dart';
 import '../api/ticket/ticket_service.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/auth_bloc/auth_state.dart';
 import '../bloc/monument_bloc/monument_bloc.dart';
 import '../bloc/post/post_bloc.dart';
+import '../bloc/quest/quest_bloc.dart';
+import '../bloc/quest/quest_event.dart';
 import '../bloc/ticket_bloc/ticket_bloc.dart';
 import '../component/map_mini.dart';
 import '../component/post_card.dart';
+import '../component/quest_card.dart';
 import '../component/shimmer/shimmer_post_and_monument_resume.dart';
 import '../component/ticket_card.dart';
 import '../component/ticket_slider.dart';
@@ -28,7 +32,9 @@ import '../object/poi/poi.dart';
 import '../object/ticket.dart';
 import '../repository/monument/monument_repository.dart';
 import '../repository/post/post_repository.dart';
+import '../repository/quest/quest_repository.dart';
 import '../repository/ticket/ticket_repository.dart';
+import '../utils/messenger.dart';
 
 class MonumentPageV2 extends HookWidget {
   const MonumentPageV2({super.key, required this.monumentId});
@@ -171,7 +177,7 @@ class _PageContent extends HookWidget {
                     controller: monumentPostsScrollController,
                     child: _buildPostPart(),
                   ),
-                  SingleChildScrollView(child: _buildActuPart()),
+                  SingleChildScrollView(child: _buildQuestPart()),
                   SingleChildScrollView(child: _buildShop(context)),
                 ],
               ),
@@ -197,7 +203,7 @@ class _PageContent extends HookWidget {
             tabs: [
               Tab(text: StringConstants().description),
               Tab(text: StringConstants().posts),
-              Tab(text: StringConstants().actu),
+              Tab(text: StringConstants().monumentQuests),
               Tab(text: StringConstants().shop),
             ],
             dividerColor: Colors.transparent,
@@ -343,9 +349,100 @@ class _PageContent extends HookWidget {
     );
   }
 
-  Widget _buildActuPart() {
-    return Center(
-      child: Text(StringConstants().actu),
+  Widget _buildQuestPart() {
+    return BlocProvider(
+      create: (context) => QuestBloc(
+        questRepository: RepositoryProvider.of<QuestRepository>(context),
+        questService: QuestService(),
+      )..add(GetPoiQuestEvent(monument.id, isRefresh: true)),
+      child: BlocConsumer<QuestBloc, QuestState>(
+        listener: (context, state) {
+          if (state.status == QuestStatus.error) {
+            Messenger.showSnackBarError(
+              state.error?.getDescription() ?? StringConstants().errorOccurred,
+            );
+          }
+        },
+        builder: (context, state) {
+          return Center(
+            child: Column(
+              children: [
+                20.ph,
+                Text(
+                  StringConstants().monumentQuests,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+                20.ph,
+                if (state.status == QuestStatus.loading)
+                  const CircularProgressIndicator()
+                else
+                  state.questList.isEmpty
+                      ? Text(StringConstants().noQuestForThisMonument)
+                      : _buildQuestList(state, context),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Column _buildQuestList(QuestState state, BuildContext context) {
+    return Column(
+      children: [
+        if (state.status == QuestStatus.loading)
+          const Center(child: CircularProgressIndicator())
+        else
+          state.questList.isEmpty
+              ? Text(
+                  StringConstants().noQuestForThisMonument,
+                )
+              : Column(
+                  children: [
+                    ...state.questList.map(
+                      (quest) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: QuestCard(
+                          quest: quest,
+                        ),
+                      ),
+                    ),
+                    if (state.hasMoreQuest)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: state.moreQuestStatus == QuestStatus.loading
+                            ? const CircularProgressIndicator()
+                            : ElevatedButton(
+                                onPressed: () {
+                                  context.read<QuestBloc>().add(
+                                        GetPoiQuestEvent(monument.id),
+                                      );
+                                },
+                                style: ButtonStyle(
+                                  shape: WidgetStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        20.0,
+                                      ),
+                                    ),
+                                  ),
+                                  backgroundColor: WidgetStateProperty.all(
+                                    Theme.of(context).colorScheme.primary,
+                                  ),
+                                ),
+                                child: Text(
+                                  StringConstants().loadMoreResults,
+                                ),
+                              ),
+                      )
+                    else
+                      Text(StringConstants().noMoreQuests),
+                  ],
+                ),
+      ],
     );
   }
 

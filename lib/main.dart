@@ -10,6 +10,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 
 import 'api/auth/auth_service.dart';
+import 'api/quest/quest_service.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
 import 'bloc/auth_bloc/auth_event.dart';
 import 'bloc/auth_bloc/auth_state.dart';
@@ -23,14 +24,17 @@ import 'constants/route_name.dart';
 import 'constants/transitions.dart';
 import 'dto/conversation/conversation_dto.dart';
 import 'dto/meet_bloc_and_obj_dto.dart';
+import 'dto/quest_dto.dart';
 import 'local_storage/secure_storage/auth_token_handler.dart';
 import 'object/city.dart';
 import 'object/map_style.dart';
 import 'object/marker_icons_custom.dart';
 import 'object/poi/poi.dart';
+import 'object/quest.dart';
 import 'page/chat_page.dart';
 import 'page/city_page.dart';
 import 'page/edit_meet_page.dart';
+import 'page/edit_quest_page.dart';
 import 'page/edit_question_page.dart';
 import 'page/edit_tweet_page.dart';
 import 'page/feed_page.dart';
@@ -42,6 +46,7 @@ import 'page/monument_page_v2.dart';
 import 'page/payment_sheet_screen.dart';
 import 'page/profile_page.dart';
 import 'page/profile_page_poi.dart';
+import 'page/quest_page.dart';
 import 'page/quizz_page.dart';
 import 'page/ranking_page.dart';
 import 'page/scan_qrcode_page_android.dart';
@@ -56,6 +61,7 @@ import 'repository/meet/meet_repository.dart';
 import 'repository/monument/monument_repository.dart';
 import 'repository/post/post_repository.dart';
 import 'repository/profile/profile_repository.dart';
+import 'repository/quest/quest_repository.dart';
 import 'repository/quiz/quiz_repository.dart';
 import 'repository/ticket/ticket_repository.dart';
 import 'service/chat/chat_remote_data_source.dart';
@@ -138,6 +144,9 @@ Future<void> main() async {
           create: (context) => ChatRepository(
             chatRemoteDataSource: ChatRemoteDataSource(),
           ),
+        ),
+        RepositoryProvider(
+          create: (context) => QuestRepository(QuestService()),
         ),
       ],
       child: MultiBlocProvider(
@@ -281,6 +290,25 @@ class MyApp extends HookWidget {
                     key: state.pageKey,
                     child: EditMeetPage(
                       meetBlocAndObjDTO: dto,
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return CustomTransition.buildBottomToTopPopTransition(
+                        animation,
+                        child,
+                      );
+                    },
+                  );
+                },
+              ),
+              GoRoute(
+                path: RouteName.questDetails,
+                pageBuilder: (context, state) {
+                  final Quest quest = state.extra! as Quest;
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: QuestPage(
+                      quest: quest,
                     ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
@@ -505,6 +533,18 @@ class MyApp extends HookWidget {
               ),
               GoRoute(
                 path: '${RouteName.monumentPage}/:monumentId',
+                redirect: (context, state) {
+                  final int monumentId =
+                      int.parse(state.pathParameters['monumentId']!);
+                  final bool shouldRedirect =
+                      context.read<AuthBloc>().state.user?.poiId == monumentId;
+
+                  if (shouldRedirect) {
+                    return RouteName.profilePagePoi;
+                  }
+
+                  return null;
+                },
                 pageBuilder: (context, state) {
                   return CustomTransitionPage(
                     key: state.pageKey,
@@ -572,6 +612,14 @@ class MyApp extends HookWidget {
                   final EditQuestionDTO editQuestionDTO =
                       state.extra! as EditQuestionDTO;
                   return EditQuestionPage(editQuestionDTO: editQuestionDTO);
+                },
+              ),
+              GoRoute(
+                path: RouteName.editQuest,
+                builder: (BuildContext context, GoRouterState state) {
+                  final QuestBlocDTO questBlocDTO =
+                      state.extra! as QuestBlocDTO;
+                  return EditQuestPage(questBlocDTO: questBlocDTO);
                 },
               ),
             ],

@@ -10,6 +10,10 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get myFeed => "Mon fil d'actualité";
+
+  String get generalFeed => "Fil d'actualité général";
+
   String get sureToDeleteQuest =>
       'Etes-vous sûr de vouloir supprimer cette mission ?';
 

@@ -18,10 +18,12 @@ class FeedComponent extends HookWidget {
     super.key,
     this.userId,
     this.myPosts = false,
+    this.isMyFeed = false,
   });
 
   final int? userId;
   final bool myPosts;
+  final bool isMyFeed;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +36,11 @@ class FeedComponent extends HookWidget {
             isRefresh: true,
             myPosts: myPosts,
             userId: userId,
-            isMyFeed: context.read<AuthBloc>().state.status ==
-                    AuthStatus.authenticated &&
-                context.read<AuthBloc>().state.user?.userTypeId != 3,
+            isMyFeed: (context.read<AuthBloc>().state.status ==
+                        AuthStatus.authenticated &&
+                    context.read<AuthBloc>().state.user?.userTypeId != 3)
+                ? isMyFeed
+                : false,
           ),
         ),
       child: BlocListener<AuthBloc, AuthState>(

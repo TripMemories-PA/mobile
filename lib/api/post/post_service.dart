@@ -20,6 +20,7 @@ class PostService implements IPostService, IPostRepository {
   static const String apiGetUserPostUrl =
       '${AppConfig.apiUrl}/users/[user_id]/posts';
   static const String apiCitiesBaseUrl = '${AppConfig.apiUrl}/cities';
+  static const String feedUrl = '${AppConfig.apiUrl}/me/friends/posts';
 
   @override
   Future<CreatePostResponse> createPost({

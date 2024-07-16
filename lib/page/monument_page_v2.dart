@@ -19,8 +19,8 @@ import '../bloc/quest/quest_bloc.dart';
 import '../bloc/quest/quest_event.dart';
 import '../bloc/ticket_bloc/ticket_bloc.dart';
 import '../component/map_mini.dart';
-import '../component/poi_quest_editor.dart';
 import '../component/post_card.dart';
+import '../component/quest_card.dart';
 import '../component/shimmer/shimmer_post_and_monument_resume.dart';
 import '../component/ticket_card.dart';
 import '../component/ticket_slider.dart';
@@ -405,7 +405,7 @@ class _PageContent extends HookWidget {
                     ...state.questList.map(
                       (quest) => Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: MissionCard(
+                        child: QuestCard(
                           quest: quest,
                         ),
                       ),

@@ -12,6 +12,10 @@ class StringConstants {
 
   String get questPosted => 'Mission postée';
 
+  String get takeAPicture => 'Prenez une photo';
+
+  String get photoVisualisation => 'Visualisation de la photo';
+
   String get noLabels => 'Pas de labels';
 
   String get pleaseSelectLabel => 'Veuillez sélectionner un label';
@@ -67,6 +71,8 @@ class StringConstants {
   String get monumentQuests => 'Quêtes du monument';
 
   String get quests => 'Missions';
+
+  String get quest => 'Mission 🗼';
 
   String get userKicked => 'Utilisateur expulsé';
 

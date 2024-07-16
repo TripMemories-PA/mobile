@@ -30,6 +30,7 @@ import 'object/city.dart';
 import 'object/map_style.dart';
 import 'object/marker_icons_custom.dart';
 import 'object/poi/poi.dart';
+import 'object/quest.dart';
 import 'page/chat_page.dart';
 import 'page/city_page.dart';
 import 'page/edit_meet_page.dart';
@@ -45,6 +46,7 @@ import 'page/monument_page_v2.dart';
 import 'page/payment_sheet_screen.dart';
 import 'page/profile_page.dart';
 import 'page/profile_page_poi.dart';
+import 'page/quest_page.dart';
 import 'page/quizz_page.dart';
 import 'page/ranking_page.dart';
 import 'page/scan_qrcode_page_android.dart';
@@ -288,6 +290,25 @@ class MyApp extends HookWidget {
                     key: state.pageKey,
                     child: EditMeetPage(
                       meetBlocAndObjDTO: dto,
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return CustomTransition.buildBottomToTopPopTransition(
+                        animation,
+                        child,
+                      );
+                    },
+                  );
+                },
+              ),
+              GoRoute(
+                path: RouteName.questDetails,
+                pageBuilder: (context, state) {
+                  final Quest quest = state.extra! as Quest;
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: QuestPage(
+                      quest: quest,
                     ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {

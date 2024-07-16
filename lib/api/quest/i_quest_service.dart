@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:image_picker/image_picker.dart';
 
 import 'model/query/post_quest_query_model.dart';
 import 'model/query/update_quest_query_model.dart';
+import 'model/response/check_quest_validity_response.dart';
 import 'model/response/post_quest_imaage_response.dart';
 
 abstract class IQuestService {
@@ -16,5 +19,8 @@ abstract class IQuestService {
 
   Future<void> deleteQuest(int id);
 
-  Future<void> validateQuest({required int id, required XFile file});
+  Future<CheckQuestValidityResponse> validateQuest({
+    required int id,
+    required File file,
+  });
 }

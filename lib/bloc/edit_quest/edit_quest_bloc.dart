@@ -16,7 +16,6 @@ class EditQuestBloc extends Bloc<EditQuestEvent, EditQuestState> {
     on<StoreQuestImageEvent>(_onStoreImage);
     on<StoreQuestEvent>(_onStoreQuest);
     on<UpdateQuestEvent>(_onUpdateQuest);
-    on<ValidateQuestEvent>(_onValidateQuest);
     on<SelectTitleEvent>(_onSelectTitle);
   }
 
@@ -86,26 +85,6 @@ class EditQuestBloc extends Bloc<EditQuestEvent, EditQuestState> {
         state.copyWith(
           status: QuestStatus.error,
           error: e is CustomException ? e.apiError : ApiError.unknown(),
-        ),
-      );
-    }
-  }
-
-  Future<void> _onValidateQuest(
-    ValidateQuestEvent event,
-    Emitter<EditQuestState> emit,
-  ) async {
-    emit(state.copyWith(status: QuestStatus.loading));
-    try {
-      await questService.validateQuest(id: event.id, file: event.file);
-      emit(state.copyWith(status: QuestStatus.initial));
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: QuestStatus.error,
-          error: ApiError(
-            e.toString(),
-          ),
         ),
       );
     }

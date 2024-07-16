@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +15,7 @@ import '../exception/parsing_response_exception.dart';
 import 'i_quest_service.dart';
 import 'model/query/post_quest_query_model.dart';
 import 'model/query/update_quest_query_model.dart';
+import 'model/response/check_quest_validity_response.dart';
 import 'model/response/get_quest_list.dart';
 import 'model/response/post_quest_imaage_response.dart';
 
@@ -101,17 +103,28 @@ class QuestService implements IQuestService, IQuestRepository {
   }
 
   @override
-  Future<void> validateQuest({required int id, required XFile file}) async {
+  Future<CheckQuestValidityResponse> validateQuest({
+    required int id,
+    required File file,
+  }) async {
+    Response response;
     try {
       final FormData formData = FormData.fromMap({
         'file': await MultipartFile.fromFile(file.path, filename: 'image.jpg'),
       });
-      await DioClient.instance.post(
+      response = await DioClient.instance.post(
         '$apiQuestsBaseUrl/$id/validate',
         data: formData,
       );
     } on BadRequestException {
       throw BadRequestException(AuthError.notAuthenticated());
+    }
+    try {
+      return CheckQuestValidityResponse.fromJson(response.data);
+    } catch (e) {
+      throw ParsingResponseException(
+        ApiError.errorOccurredWhileParsingResponse(),
+      );
     }
   }
 

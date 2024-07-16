@@ -24,13 +24,6 @@ class UpdateQuestEvent extends EditQuestEvent {
   final UpdateQuestQueryModel queryModel;
 }
 
-class ValidateQuestEvent extends EditQuestEvent {
-  ValidateQuestEvent({required this.id, required this.file});
-
-  final int id;
-  final XFile file;
-}
-
 class SelectTitleEvent extends EditQuestEvent {
   SelectTitleEvent(this.title);
 

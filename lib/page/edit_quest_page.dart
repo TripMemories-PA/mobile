@@ -39,12 +39,12 @@ class EditQuestPage extends HookWidget {
           }
           if (state.publishQuestStep == PublishQuestStep.posted) {
             Messenger.showSnackBarSuccess(StringConstants().questPosted);
-            questBlocDTO.questBloc.add(GetQuestEvent(questBlocDTO.poiId));
+            questBlocDTO.questBloc.add(GetPoiQuestEvent(questBlocDTO.poiId));
             context.pop();
           }
           if (state.publishQuestStep == PublishQuestStep.updated) {
             Messenger.showSnackBarSuccess(StringConstants().questionUpdated);
-            questBlocDTO.questBloc.add(GetQuestEvent(questBlocDTO.poiId));
+            questBlocDTO.questBloc.add(GetPoiQuestEvent(questBlocDTO.poiId));
             context.pop();
           }
         },

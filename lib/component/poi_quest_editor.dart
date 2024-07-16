@@ -63,8 +63,8 @@ class PoiQuestEditor extends StatelessWidget {
                               fontSize: 30,
                               color: Theme.of(context).colorScheme.primary,
                               fontFamily: GoogleFonts.urbanist(
-                                      fontWeight: FontWeight.w700)
-                                  .fontFamily,
+                                fontWeight: FontWeight.w700,
+                              ).fontFamily,
                             ),
                           ),
                           const Spacer(),
@@ -116,7 +116,8 @@ class PoiQuestEditor extends StatelessWidget {
                                                   RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            20.0),
+                                                      20.0,
+                                                    ),
                                                   ),
                                                 ),
                                                 backgroundColor:

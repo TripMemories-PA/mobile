@@ -11,6 +11,7 @@ import '../api/quest/quest_service.dart';
 import '../bloc/edit_quest/edit_quest_bloc.dart';
 import '../bloc/edit_quest/edit_quest_event.dart';
 import '../bloc/quest/quest_event.dart';
+import '../constants/my_colors.dart';
 import '../constants/string_constants.dart';
 import '../dto/quest_dto.dart';
 import '../num_extensions.dart';
@@ -30,7 +31,7 @@ class EditQuestPage extends HookWidget {
     final titleController = useTextEditingController(
       text: questBlocDTO.quest?.title,
     );
-    final selectedLabel = useState<String>('');
+    final selectedLabel = useState<MapEntry<int, String>?>(null);
     return BlocProvider(
       create: (context) => EditQuestBloc(questService: QuestService()),
       child: BlocConsumer<EditQuestBloc, EditQuestState>(
@@ -59,6 +60,18 @@ class EditQuestPage extends HookWidget {
         },
         builder: (context, state) {
           return Scaffold(
+            appBar: AppBar(
+              leading: const SizedBox(),
+              actions: [
+                IconButton(
+                  onPressed: () => context.pop(),
+                  icon: const Icon(
+                    Icons.close,
+                  ),
+                ),
+                10.pw,
+              ],
+            ),
             body: questToModify != null
                 ? _buildUpdateQuestBody(
                     titleController,
@@ -83,106 +96,160 @@ class EditQuestPage extends HookWidget {
     TextEditingController titleController,
     BuildContext context,
     EditQuestState state,
-    ValueNotifier<String> selectedLabel,
+    ValueNotifier<MapEntry<int, String>?> selectedLabel,
   ) {
     return Center(
-      child: Stepper(
-        currentStep: currentStep.value,
-        steps: [
-          Step(
-            title: Text(StringConstants().title),
-            content: Column(
-              children: [
-                TextField(
-                  controller: titleController,
-                ),
-                20.ph,
-                ElevatedButton(
-                  onPressed: () {
-                    if (titleController.text.isNotEmpty) {
-                      context.read<EditQuestBloc>().add(
-                            SelectTitleEvent(
-                              titleController.text,
-                            ),
-                          );
-                    } else {
-                      Messenger.showSnackBarError(
-                        StringConstants().titleCannotBeEmpty,
-                      );
-                    }
-                  },
-                  child: Text(StringConstants().validate),
-                ),
-              ],
+      child: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              StringConstants().questCreation,
+              style: TextStyle(
+                fontSize: 30,
+                color: Theme.of(context).colorScheme.primary,
+                fontFamily: GoogleFonts.urbanist(
+                  fontWeight: FontWeight.w700,
+                ).fontFamily,
+              ),
             ),
           ),
-          Step(
-            title: Text(StringConstants().imageSelection),
-            content: ElevatedButton(
-              onPressed: () {
-                _selectImage(context);
-              },
-              child: Text(StringConstants().pickImage),
-            ),
-          ),
-          Step(
-            title: Text(StringConstants().labels),
-            content: state.postQuestImageResponse.labels.isEmpty
-                ? Text(StringConstants().noLabels)
-                : Column(
-                    children: [
-                      Wrap(
-                        spacing: 8.0,
-                        runSpacing: 8.0,
-                        children: state.postQuestImageResponse.labels
-                            .map(
-                              (label) => SizedBox(
-                                width: 100,
-                                height: 50,
-                                child: ElevatedButton(
-                                  onPressed: () => selectedLabel.value = label,
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        WidgetStateProperty.resolveWith(
-                                      (states) => selectedLabel.value == label
-                                          ? Colors.green
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                    ),
-                                  ),
-                                  child: Text(label),
+          Stepper(
+            controlsBuilder: (BuildContext ctx, ControlsDetails dtl) {
+              return const SizedBox.shrink();
+            },
+            margin: EdgeInsets.zero,
+            currentStep: currentStep.value,
+            steps: [
+              Step(
+                state: currentStep.value > 0
+                    ? StepState.complete
+                    : StepState.indexed,
+                stepStyle: StepStyle(
+                  color: currentStep.value > 0 ? MyColors.success : null,
+                ),
+                title: Text(StringConstants().title),
+                content: Column(
+                  children: [
+                    TextField(
+                      controller: titleController,
+                    ),
+                    20.ph,
+                    ElevatedButton(
+                      onPressed: () {
+                        if (titleController.text.isNotEmpty) {
+                          context.read<EditQuestBloc>().add(
+                                SelectTitleEvent(
+                                  titleController.text,
                                 ),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                      20.ph,
-                      ElevatedButton(
+                              );
+                        } else {
+                          Messenger.showSnackBarError(
+                            StringConstants().titleCannotBeEmpty,
+                          );
+                        }
+                      },
+                      child: Text(StringConstants().validate),
+                    ),
+                  ],
+                ),
+              ),
+              Step(
+                state: currentStep.value > 1
+                    ? StepState.complete
+                    : StepState.indexed,
+                stepStyle: StepStyle(
+                  color: currentStep.value > 1 ? MyColors.success : null,
+                ),
+                title: Text(StringConstants().imageSelection),
+                content: state.pickImageStatus == QuestStatus.loading
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
                         onPressed: () {
-                          final UploadFile? file =
-                              state.postQuestImageResponse.file;
-                          if (selectedLabel.value.isNotEmpty && file != null) {
-                            context.read<EditQuestBloc>().add(
-                                  StoreQuestEvent(
-                                    PostQuestQueryModel(
-                                      title: titleController.text,
-                                      label: selectedLabel.value,
-                                      poiId: questBlocDTO.poiId,
-                                      imageId: file.id,
+                          _selectImage(context);
+                        },
+                        child: Text(StringConstants().pickImage),
+                      ),
+              ),
+              Step(
+                state: selectedLabel.value != null
+                    ? StepState.complete
+                    : StepState.indexed,
+                stepStyle: StepStyle(
+                  color: selectedLabel.value != null ? MyColors.success : null,
+                ),
+                title: Text(StringConstants().labels),
+                content: state.postQuestImageResponse.labels.isEmpty
+                    ? Text(StringConstants().noLabels)
+                    : Column(
+                        children: [
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 8.0,
+                            children: state.postQuestImageResponse.labels
+                                .asMap()
+                                .entries
+                                .map(
+                                  (entry) => SizedBox(
+                                    width: 125,
+                                    height: 63,
+                                    child: ElevatedButton(
+                                      onPressed: () => selectedLabel.value =
+                                          MapEntry(entry.key, entry.value),
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            WidgetStateProperty.resolveWith(
+                                          (states) =>
+                                              selectedLabel.value?.key ==
+                                                      entry.key
+                                                  ? Colors.green
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        entry.value,
+                                      ),
                                     ),
                                   ),
-                                );
-                          } else {
-                            Messenger.showSnackBarError(
-                              StringConstants().pleaseSelectLabel,
-                            );
-                          }
-                        },
-                        child: Text(StringConstants().validate),
+                                )
+                                .toList(),
+                          ),
+                          20.ph,
+                          if (state.status == QuestStatus.loading)
+                            const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          else
+                            ElevatedButton(
+                              onPressed: () {
+                                final UploadFile? file =
+                                    state.postQuestImageResponse.file;
+                                if (selectedLabel.value != null &&
+                                    file != null) {
+                                  context.read<EditQuestBloc>().add(
+                                        StoreQuestEvent(
+                                          PostQuestQueryModel(
+                                            title: titleController.text,
+                                            label: selectedLabel.value!.value,
+                                            poiId: questBlocDTO.poiId,
+                                            imageId: file.id,
+                                          ),
+                                        ),
+                                      );
+                                } else {
+                                  Messenger.showSnackBarError(
+                                    StringConstants().pleaseSelectLabel,
+                                  );
+                                }
+                              },
+                              child: Text(StringConstants().validate),
+                            ),
+                        ],
                       ),
-                    ],
-                  ),
+              ),
+            ],
           ),
         ],
       ),

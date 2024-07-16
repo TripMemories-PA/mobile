@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../api/quest/model/query/post_quest_query_model.dart';
@@ -201,6 +202,29 @@ class EditQuestPage extends HookWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Row(
+                  children: [
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () => context.pop(),
+                      icon: const Icon(
+                        Icons.close,
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Text(
+                  StringConstants().modifyQuest,
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Theme.of(context).colorScheme.primary,
+                    fontFamily: GoogleFonts.urbanist(
+                      fontWeight: FontWeight.w700,
+                    ).fontFamily,
+                  ),
+                ),
+                40.ph,
                 TextField(
                   controller: titleController,
                   maxLines: 3,
@@ -239,6 +263,7 @@ class EditQuestPage extends HookWidget {
                         )
                       : Text(StringConstants().validate),
                 ),
+                const Spacer(),
               ],
             ),
           ),

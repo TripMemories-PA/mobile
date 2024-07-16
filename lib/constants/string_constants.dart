@@ -10,6 +10,8 @@ class StringConstants {
 
   String get points => 'points';
 
+  String get modifyQuest => 'Modifier la mission';
+
   String get questPosted => 'Mission postée';
 
   String get onceQuestValidated =>

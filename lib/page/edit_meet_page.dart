@@ -295,7 +295,8 @@ class _FormReduction extends HookWidget {
                         onTap: () async {
                           final DateTime? pickedDate = await showDatePicker(
                             context: context,
-                            initialDate: DateTime.now(),
+                            initialDate:
+                                DateTime.now().add(const Duration(days: 7)),
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2101),
                             locale: const Locale('fr', 'FR'),
@@ -342,6 +343,15 @@ class _FormReduction extends HookWidget {
                                                   itemCount: tickets.length,
                                                   itemBuilder:
                                                       (context, index) {
+                                                    if (tickets[index]
+                                                                .groupSize >=
+                                                            2 &&
+                                                        tickets[index]
+                                                                .groupSize <=
+                                                            50) {
+                                                      return const SizedBox
+                                                          .shrink();
+                                                    }
                                                     return GestureDetector(
                                                       onTap: () {
                                                         selectedTicket.value =

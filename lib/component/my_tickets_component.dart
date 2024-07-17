@@ -18,7 +18,7 @@ class MyTicketsComponent extends StatelessWidget {
         return Column(
           children: [
             if (state.myTickets == null)
-              const Center(child: Text('No tickets yet'))
+              const Center(child: Text('Pas encore de ticket'))
             else
               Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -92,9 +92,6 @@ class TicketCard extends StatelessWidget {
                                   QrImageView(
                                     data: ticket.qrCode,
                                     size: 300.0,
-                                    embeddedImage: const AssetImage(
-                                      'assets/images/app_logo_qr_code_light.png',
-                                    ),
                                   ),
                                   Center(
                                     child: ElevatedButton(

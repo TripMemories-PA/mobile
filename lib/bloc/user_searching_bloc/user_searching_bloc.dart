@@ -6,6 +6,7 @@ import '../../api/exception/custom_exception.dart';
 import '../../api/profile/i_profile_service.dart';
 import '../../api/profile/response/get_friends_pagination_response.dart';
 import '../../local_storage/secure_storage/auth_token_handler.dart';
+import '../../object/profile.dart';
 import '../../repository/profile/i_profile_repository.dart';
 
 part 'user_searching_event.dart';
@@ -66,9 +67,20 @@ class UserSearchingBloc extends Bloc<UserSearchingEvent, UserSearchingState> {
         await profileService.sendFriendRequest(
           userId: event.userId,
         );
+
+        List<Profile> users = state.users?.data ?? [];
+        users = users.map((user) {
+          if (user.id.toString() == event.userId) {
+            return user.copyWith(
+              hasSentFriendRequest: true,
+            );
+          }
+          return user;
+        }).toList();
         emit(
           state.copyWith(
             status: UserSearchingStatus.requestSent,
+            users: state.users?.copyWith(data: users),
           ),
         );
       } catch (e) {

@@ -30,7 +30,10 @@ class FriendRequestsList extends StatelessWidget {
           child: Column(
             children: users
                 .map(
-                  (friend) => UserToAddCard(user: friend, needToPop: needToPop),
+                  (friend) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: UserToAddCard(user: friend, needToPop: needToPop),
+                  ),
                 )
                 .toList(),
           ),

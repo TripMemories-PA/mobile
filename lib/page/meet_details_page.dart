@@ -328,16 +328,24 @@ class _UserCardPaymentStatus extends StatelessWidget {
 }
 
 class _TicketCardToBuy extends HookWidget {
-  const _TicketCardToBuy({required this.ticket, required this.meetId});
+  const _TicketCardToBuy({
+    required this.ticket,
+    required this.meetId,
+    this.canBuy = true,
+  });
 
   final Ticket ticket;
   final int meetId;
+  final bool canBuy;
 
   @override
   Widget build(BuildContext context) {
+    final Ticket ticketTmp = ticket.copyWith(
+      price: double.parse((ticket.price / ticket.groupSize).toStringAsFixed(2)),
+    );
     return TicketCardAdmin(
-      article: ticket,
-      buyButton: _buildBuyButton(ticket),
+      article: ticketTmp,
+      buyButton: canBuy ? _buildBuyButton(ticketTmp) : const SizedBox(),
     );
   }
 
@@ -490,17 +498,29 @@ class _MeetDetailsBody extends HookWidget {
             ],
           ),
         ),
-        if (tmpTicket != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: _TicketCardToBuy(
-              ticket: tmpTicket,
-              meetId: meetId,
-            ),
-          )
-        else
-          TicketTabView(
-            tickets: state.ticketsToBuy,
+        if (context.read<MeetDetailsBloc>().state.users.isNotEmpty)
+          Builder(
+            builder: (context) {
+              final Profile me =
+                  context.read<MeetDetailsBloc>().state.users.firstWhere(
+                        (user) =>
+                            user.id == context.read<AuthBloc>().state.user?.id,
+                      );
+              if (tmpTicket != null) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: _TicketCardToBuy(
+                    ticket: tmpTicket,
+                    meetId: meetId,
+                    canBuy: me.hasPaid == false,
+                  ),
+                );
+              } else {
+                return TicketTabView(
+                  tickets: state.ticketsToBuy,
+                );
+              }
+            },
           ),
         15.ph,
         _buildBlueBandana(state, context),

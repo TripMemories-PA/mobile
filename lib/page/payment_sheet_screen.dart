@@ -70,6 +70,7 @@ class PaymentScreen extends HookWidget {
             ),
             10.ph,
             Stepper(
+              physics: const ClampingScrollPhysics(),
               controlsBuilder: emptyControlBuilder,
               currentStep: step.value,
               steps: [

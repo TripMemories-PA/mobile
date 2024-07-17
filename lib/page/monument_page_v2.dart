@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
+import '../api/error/specific_error/auth_error.dart';
 import '../api/post/post_service.dart';
 import '../api/quest/quest_service.dart';
 import '../api/ticket/ticket_service.dart';
@@ -387,6 +388,9 @@ class _PageContent extends HookWidget {
       child: BlocConsumer<QuestBloc, QuestState>(
         listener: (context, state) {
           if (state.status == QuestStatus.error) {
+            if (state.error is AuthError) {
+              return;
+            }
             Messenger.showSnackBarError(
               state.error?.getDescription() ?? StringConstants().errorOccurred,
             );

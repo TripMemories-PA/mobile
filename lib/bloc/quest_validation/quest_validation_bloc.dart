@@ -29,9 +29,7 @@ class QuestValidationBloc
         emit(
           state.copyWith(
             status: QuestValidationStatus.error,
-            error: ApiError(
-              e.toString(),
-            ),
+            error: ApiError.errorOccurred(),
           ),
         );
       }

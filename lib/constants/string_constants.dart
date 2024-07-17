@@ -320,7 +320,7 @@ class StringConstants {
 
   String get errorOccurredFromStripe => 'Erreur survenue depuis Stripe';
 
-  String get deleteBillingDetails => 'Supprimer les détails de facturation';
+  String get deleteBillingDetails => 'Editer les détails de facturation';
 
   String get fillBillingDetails =>
       'Veuillez remplir les détails de facturation';

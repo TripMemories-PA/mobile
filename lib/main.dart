@@ -31,7 +31,6 @@ import 'object/city.dart';
 import 'object/map_style.dart';
 import 'object/marker_icons_custom.dart';
 import 'object/poi/poi.dart';
-import 'object/quest.dart';
 import 'page/chat_page.dart';
 import 'page/city_page.dart';
 import 'page/edit_meet_page.dart';
@@ -305,11 +304,11 @@ class MyApp extends HookWidget {
               GoRoute(
                 path: RouteName.questDetails,
                 pageBuilder: (context, state) {
-                  final Quest quest = state.extra! as Quest;
+                  final QuestBlocDTO quest = state.extra! as QuestBlocDTO;
                   return CustomTransitionPage(
                     key: state.pageKey,
                     child: QuestPage(
-                      quest: quest,
+                      dto: quest,
                     ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {

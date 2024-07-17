@@ -368,12 +368,19 @@ class ProfileBanner extends StatelessWidget {
             const Spacer(),
             CustomCard(
               onTap: () {
+                if (context.read<CartBloc>().state.cartElements.isEmpty) {
+                  return;
+                }
                 context.pop();
                 context.push(
                   RouteName.buy,
                   extra: context.read<CartBloc>(),
                 );
               },
+              backgroundColor:
+                  context.read<CartBloc>().state.cartElements.isEmpty
+                      ? Theme.of(context).colorScheme.secondary
+                      : Theme.of(context).colorScheme.surface,
               borderRadius: 30,
               borderColor: Colors.transparent,
               content: Padding(

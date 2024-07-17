@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../bloc/profile/profile_bloc.dart';
@@ -7,18 +6,24 @@ import '../../constants/my_colors.dart';
 import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
 import '../../utils/field_validator.dart';
+import '../../utils/messenger.dart';
 import '../bouncing_widget.dart';
 
 class UpdatePasswordForm extends HookWidget {
   const UpdatePasswordForm({
     super.key,
+    required this.profileBloc,
   });
+
+  final ProfileBloc profileBloc;
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController passwordController = useTextEditingController();
     final TextEditingController confirmPasswordController =
         useTextEditingController();
+    final hidePassword = useState<bool>(true);
+    final hideConfirmPassword = useState<bool>(true);
     return Form(
       child: Column(
         children: [
@@ -31,6 +36,7 @@ class UpdatePasswordForm extends HookWidget {
               ),
             ),
             child: TextFormField(
+              obscureText: hidePassword.value,
               decoration: InputDecoration(
                 hintText: StringConstants().password,
                 border: InputBorder.none,
@@ -39,7 +45,9 @@ class UpdatePasswordForm extends HookWidget {
                 prefixIcon: const Icon(Icons.lock_outline),
                 suffixIcon: InkWell(
                   child: const Icon(Icons.remove_red_eye_outlined),
-                  onTap: () {},
+                  onTap: () {
+                    hidePassword.value = !hidePassword.value;
+                  },
                 ),
               ),
               textAlignVertical: TextAlignVertical.center,
@@ -57,12 +65,20 @@ class UpdatePasswordForm extends HookWidget {
               ),
             ),
             child: TextFormField(
+              textInputAction: TextInputAction.done,
+              obscureText: hideConfirmPassword.value,
               decoration: InputDecoration(
                 hintText: StringConstants().confirmPassword,
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
                 prefixIcon: const Icon(Icons.lock_outline),
+                suffixIcon: InkWell(
+                  child: const Icon(Icons.remove_red_eye_outlined),
+                  onTap: () {
+                    hideConfirmPassword.value = !hideConfirmPassword.value;
+                  },
+                ),
               ),
               textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validateSamePassword(
@@ -75,11 +91,17 @@ class UpdatePasswordForm extends HookWidget {
           15.ph,
           BouncingWidget(
             onTap: () async {
-              context.read<ProfileBloc>().add(
-                    UpdatePasswordEvent(
-                      passwordController.text,
-                    ),
-                  );
+              if (passwordController.text != confirmPasswordController.text) {
+                Messenger.showSnackBarError(
+                  StringConstants().passwordsDoNotMatch,
+                );
+                return;
+              }
+              profileBloc.add(
+                UpdatePasswordEvent(
+                  passwordController.text,
+                ),
+              );
             },
             child: Container(
               height: 45,

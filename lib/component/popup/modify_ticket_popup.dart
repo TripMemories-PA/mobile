@@ -132,10 +132,17 @@ class TicketFormPopup extends HookWidget {
                                   decoration: InputDecoration(
                                     hintText: StringConstants().price,
                                   ),
-                                  validator: (value) =>
-                                      FieldValidator.validateRequired(
-                                    value: value,
-                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Le prix ne peut pas être vide';
+                                    }
+                                    final parsedValue = int.tryParse(value);
+                                    if (parsedValue == null ||
+                                        parsedValue < 1) {
+                                      return 'Le prix doit être au minimum de 1';
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 TextFormField(
                                   textCapitalization:

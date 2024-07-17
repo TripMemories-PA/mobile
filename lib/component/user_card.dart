@@ -27,6 +27,12 @@ class UserCard extends StatelessWidget {
       final String? avatarUrl = user.avatar?.url;
       final bool isFriend = user.isFriend ?? false;
       return CustomCard(
+        onTap: () {
+          context.push('${RouteName.profilePage}/${user.id}');
+          if (needToPop) {
+            context.pop();
+          }
+        },
         width: 165,
         height: 150,
         borderColor: MyColors.lightGrey,
@@ -157,89 +163,48 @@ class UserCard extends StatelessWidget {
     );
   }
 
-  Stack _buildUserPhoto(
+  Container _buildUserPhoto(
     String? avatarUrl,
     BuildContext context,
     String userId,
   ) {
-    return Stack(
-      children: [
-        Container(
-          width: 160,
-          height: 80,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: avatarUrl != null
-              ? ClipRRect(
-                  borderRadius: BorderRadius.circular(10.0),
-                  child: LayoutBuilder(
-                    builder:
-                        (BuildContext context, BoxConstraints constraints) {
-                      return ProgressiveImage(
-                        placeholder: null,
-                        // size: 1.87KB
-                        thumbnail: const AssetImage(
-                          'assets/images/user_placeholder.jpg',
-                        ),
-                        // size: 1.29MB
-                        image: NetworkImage(avatarUrl),
-                        height: constraints.maxHeight,
-                        width: constraints.maxWidth,
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  ),
-                )
-              : Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    color: MyColors.lightGrey,
-                  ),
-                  child: const Icon(
-                    Icons.person,
-                    size: 40,
-                    color: Colors.grey,
-                  ),
-                ),
-        ),
-        Positioned(
-          top: 10,
-          left: 10,
-          child: Container(
-            width: 20,
-            height: 20,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              shape: BoxShape.circle,
-              border: Border.fromBorderSide(
-                BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
-            child: Theme(
-              data: ThemeData(
-                iconTheme: const IconThemeData(
-                  color: MyColors.purple,
-                ),
-              ),
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                iconSize: 10,
-                icon: const Icon(Icons.remove_red_eye_outlined),
-                color: Theme.of(context).colorScheme.primary,
-                onPressed: () {
-                  context.push('${RouteName.profilePage}/$userId');
-                  if (needToPop) {
-                    context.pop();
-                  }
+    return Container(
+      width: 160,
+      height: 80,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: avatarUrl != null
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return ProgressiveImage(
+                    placeholder: null,
+                    // size: 1.87KB
+                    thumbnail: const AssetImage(
+                      'assets/images/user_placeholder.jpg',
+                    ),
+                    // size: 1.29MB
+                    image: NetworkImage(avatarUrl),
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth,
+                    fit: BoxFit.cover,
+                  );
                 },
               ),
+            )
+          : Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                color: MyColors.lightGrey,
+              ),
+              child: const Icon(
+                Icons.person,
+                size: 40,
+                color: Colors.grey,
+              ),
             ),
-          ),
-        ),
-      ],
     );
   }
 }

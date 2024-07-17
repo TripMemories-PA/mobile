@@ -11,9 +11,9 @@ import '../../num_extensions.dart';
 import '../../repository/profile/profile_repository.dart';
 import '../../utils/messenger.dart';
 import '../custom_card.dart';
+import '../friend_requests_list.dart';
 import '../search_bar_custom.dart';
 import '../shimmer/shimmer_post_and_monument_resume_grid.dart';
-import '../user_list.dart';
 
 class UserSearching extends HookWidget {
   const UserSearching({
@@ -200,7 +200,7 @@ class SearchingUsersBody extends HookWidget {
                   ),
                 ),
               ),
-              UserList(
+              FriendRequestsList(
                 users: state.usersSearchByName?.data ?? [],
                 needToPop: true,
               ),
@@ -270,7 +270,7 @@ class SearchingUsersBody extends HookWidget {
               ),
             ),
             30.ph,
-            UserList(
+            FriendRequestsList(
               users: context.read<UserSearchingBloc>().state.users?.data ?? [],
               needToPop: true,
             ),

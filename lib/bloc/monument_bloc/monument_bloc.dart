@@ -142,6 +142,9 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
     });
 
     on<GetMonumentPostsEvent>((event, emit) async {
+      if (!event.isRefresh && !state.getMonumentsHasMorePosts) {
+        return;
+      }
       emit(
         state.copyWith(
           selectedPostGetMonumentsStatus: MonumentStatus.loading,
@@ -153,6 +156,17 @@ class MonumentBloc extends Bloc<MonumentEvent, MonumentState> {
         page: event.isRefresh ? 1 : state.postMonumentPage + 1,
         perPage: perPage,
       );
+      if (event.isRefresh) {
+        emit(
+          state.copyWith(
+            selectedMonumentPosts: posts.data,
+            selectedPostGetMonumentsStatus: MonumentStatus.notLoading,
+            getMonumentsHasMorePosts: posts.data.length == perPage,
+            postMonumentPage: 1,
+          ),
+        );
+        return;
+      }
       emit(
         state.copyWith(
           selectedPostGetMonumentsStatus: MonumentStatus.notLoading,

@@ -42,7 +42,7 @@ class QuestPage extends HookWidget {
             );
             Messenger.showSnackBarSuccess('Validé !');
             dto.questBloc.add(
-              GetQuestEvent(dto.poiId),
+              GetPoiQuestEvent(dto.poiId, isRefresh: true),
             );
             context.pop();
           }

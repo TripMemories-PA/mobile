@@ -9,6 +9,7 @@ class Comment {
     required this.createdBy,
     required this.likesCount,
     required this.isLiked,
+    this.isReported,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
@@ -20,6 +21,7 @@ class Comment {
       createdBy: Profile.fromJson(json['createdBy'] as Map<String, dynamic>),
       likesCount: json['likesCount'] as int,
       isLiked: json['isLiked'] as bool,
+      isReported: json['isReported'] as bool?,
     );
   }
 
@@ -31,6 +33,7 @@ class Comment {
     Profile? createdBy,
     int? likesCount,
     bool? isLiked,
+    bool? isReported,
   }) {
     return Comment(
       id: id ?? this.id,
@@ -40,6 +43,7 @@ class Comment {
       createdBy: createdBy ?? this.createdBy,
       likesCount: likesCount ?? this.likesCount,
       isLiked: isLiked ?? this.isLiked,
+      isReported: isReported ?? this.isReported,
     );
   }
 
@@ -50,4 +54,5 @@ class Comment {
   Profile createdBy;
   int likesCount;
   bool isLiked;
+  bool? isReported;
 }

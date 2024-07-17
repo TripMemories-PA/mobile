@@ -27,7 +27,7 @@ class UserInfosFormPopup extends StatelessWidget {
     final Profile profile = profileBloc.state.profile!;
     final String? bannerUrl = profile.banner?.url;
     return SizedBox.expand(
-      child: Column(
+      child: ListView(
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.23,
@@ -80,7 +80,7 @@ class UserInfosFormPopup extends StatelessWidget {
                   profileBloc: profileBloc,
                 ),
                 30.ph,
-                const UpdatePasswordForm(),
+                UpdatePasswordForm(profileBloc: profileBloc),
               ],
             ),
           ),

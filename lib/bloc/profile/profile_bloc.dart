@@ -97,7 +97,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     });
 
     on<UpdatePasswordEvent>((event, emit) async {
-      await profileService.updatePassword(password: event.password);
+      emit(state.copyWith(status: ProfileStatus.loading));
+      try {
+        await profileService.updatePassword(password: event.password);
+        emit(state.copyWith(status: ProfileStatus.updated));
+      } catch (e) {
+        emit(
+          state.copyWith(
+            status: ProfileStatus.error,
+            error: e is CustomException ? e.apiError : ApiError.unknown(),
+          ),
+        );
+      }
     });
 
     on<GetFriendsEvent>(

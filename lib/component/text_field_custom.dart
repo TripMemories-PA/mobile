@@ -23,6 +23,8 @@ class TextFieldCustom extends StatelessWidget {
         ),
       ),
       child: TextField(
+        textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.done,
         controller: controller,
         decoration: InputDecoration(
           hintText: hintText,

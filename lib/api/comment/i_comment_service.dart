@@ -16,4 +16,8 @@ abstract class ICommentService {
   Future<void> dislikeComment({
     required int commentId,
   });
+
+  Future<void> reportComment({
+    required int commentId,
+  });
 }

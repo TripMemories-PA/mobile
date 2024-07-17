@@ -46,6 +46,8 @@ class BillingDetailsForm extends StatelessWidget {
             child: Column(
               children: [
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   controller: controllers.nameController,
                   decoration:
                       InputDecoration(labelText: StringConstants().name),
@@ -54,6 +56,8 @@ class BillingDetailsForm extends StatelessWidget {
                 ),
                 10.ph,
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   controller: controllers.emailController,
                   decoration:
                       InputDecoration(labelText: StringConstants().email),
@@ -62,6 +66,8 @@ class BillingDetailsForm extends StatelessWidget {
                 ),
                 10.ph,
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   controller: controllers.phoneController,
                   decoration:
                       InputDecoration(labelText: StringConstants().phoneNumber),
@@ -70,6 +76,8 @@ class BillingDetailsForm extends StatelessWidget {
                 ),
                 10.ph,
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   controller: controllers.cityController,
                   decoration:
                       InputDecoration(labelText: StringConstants().city),
@@ -78,6 +86,8 @@ class BillingDetailsForm extends StatelessWidget {
                 ),
                 10.ph,
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   controller: controllers.postalCodeController,
                   decoration:
                       InputDecoration(labelText: StringConstants().zipCode),
@@ -86,6 +96,8 @@ class BillingDetailsForm extends StatelessWidget {
                 ),
                 10.ph,
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   controller: controllers.countryController,
                   decoration:
                       InputDecoration(labelText: StringConstants().country),
@@ -94,6 +106,8 @@ class BillingDetailsForm extends StatelessWidget {
                 ),
                 10.ph,
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   controller: controllers.line1Controller,
                   decoration:
                       InputDecoration(labelText: StringConstants().address),

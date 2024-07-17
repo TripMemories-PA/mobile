@@ -238,6 +238,46 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         }
       },
     );
+
+    on<ReportCommentEvent>(
+      (event, emit) async {
+        try {
+          await commentService.reportComment(commentId: event.commentId);
+          final List<Comment> updatedComments =
+              state.commentResponse!.data.map((comment) {
+            if (comment.id == event.commentId) {
+              comment = comment.copyWith(isReported: true);
+            }
+            return comment;
+          }).toList();
+          emit(
+            state.copyWith(
+              status: CommentStatus.reported,
+              commentResponse:
+                  state.commentResponse?.copyWith(data: updatedComments),
+            ),
+          );
+        } catch (e) {
+          if (e is CustomException) {
+            emit(
+              state.copyWith(
+                status: CommentStatus.error,
+                error: e.apiError,
+              ),
+            );
+          } else {
+            emit(
+              state.copyWith(
+                status: CommentStatus.error,
+                error: e is CustomException
+                    ? e.apiError
+                    : ApiError.errorOccurred(),
+              ),
+            );
+          }
+        }
+      },
+    );
   }
 
   int postId;

@@ -42,6 +42,8 @@ class ModifyUserInfosForm extends HookWidget {
               ),
             ),
             child: TextFormField(
+              textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                 hintText: StringConstants().username,
                 border: InputBorder.none,
@@ -67,6 +69,8 @@ class ModifyUserInfosForm extends HookWidget {
               ),
             ),
             child: TextFormField(
+              textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                 hintText: StringConstants().lastName,
                 border: InputBorder.none,

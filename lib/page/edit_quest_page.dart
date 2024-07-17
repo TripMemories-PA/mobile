@@ -132,6 +132,8 @@ class EditQuestPage extends HookWidget {
                 content: Column(
                   children: [
                     TextField(
+                      textCapitalization: TextCapitalization.sentences,
+                      textInputAction: TextInputAction.done,
                       controller: titleController,
                     ),
                     20.ph,
@@ -293,6 +295,8 @@ class EditQuestPage extends HookWidget {
                 ),
                 40.ph,
                 TextField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   controller: titleController,
                   maxLines: 3,
                 ),

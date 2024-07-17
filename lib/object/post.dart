@@ -18,6 +18,7 @@ class Post {
     required this.commentsCount,
     required this.isLiked,
     required this.poi,
+    this.isReported,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) {
@@ -40,6 +41,7 @@ class Post {
       commentsCount: json['commentsCount'] as int,
       isLiked: json['isLiked'] as bool,
       poi: Poi.fromJson(json['poi'] as Map<String, dynamic>),
+      isReported: json['isReported'] as bool?,
     );
   }
 
@@ -58,6 +60,7 @@ class Post {
     int? commentsCount,
     bool? isLiked,
     Poi? poi,
+    bool? isReported,
   }) {
     return Post(
       id: id ?? this.id,
@@ -74,6 +77,7 @@ class Post {
       commentsCount: commentsCount ?? this.commentsCount,
       isLiked: isLiked ?? this.isLiked,
       poi: poi ?? this.poi,
+      isReported: isReported ?? this.isReported,
     );
   }
 
@@ -91,4 +95,5 @@ class Post {
   final int commentsCount;
   final bool isLiked;
   final Poi poi;
+  final bool? isReported;
 }

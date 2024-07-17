@@ -67,3 +67,9 @@ class GetCityPostEvent extends PostEvent {
   final int id;
   final bool isRefresh;
 }
+
+class ReportPostEvent extends PostEvent {
+  ReportPostEvent(this.postId);
+
+  final int postId;
+}

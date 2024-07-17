@@ -41,8 +41,18 @@ class EditQuestionForm extends HookWidget {
               .toList() ??
           [],
     );
+    int? rightAnswerIndex;
+    final Question? questionTmp = question;
+    if (questionTmp != null) {
+      for (int i = 0; i < questionTmp.answers.length; i++) {
+        if (questionTmp.answers[i].isCorrect ?? false) {
+          rightAnswerIndex = i;
+          break;
+        }
+      }
+    }
     final selectedAnswerIndex = useState<int?>(
-      question != null ? 0 : null,
+      rightAnswerIndex,
     );
     final ValueNotifier<XFile?> image = useState(null);
     final loadingImage = useState(false);
@@ -64,6 +74,8 @@ class EditQuestionForm extends HookWidget {
         children: [
           30.ph,
           TextFormField(
+            textCapitalization: TextCapitalization.sentences,
+            textInputAction: TextInputAction.done,
             maxLines: 3,
             controller: questionController,
             decoration: InputDecoration(
@@ -122,6 +134,8 @@ class EditQuestionForm extends HookWidget {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          textCapitalization: TextCapitalization.sentences,
+                          textInputAction: TextInputAction.done,
                           maxLines: 2,
                           controller: entry.value,
                           decoration: InputDecoration(
@@ -198,23 +212,24 @@ class EditQuestionForm extends HookWidget {
               ElevatedButton(
                 onPressed: () {
                   String? message;
-                  if(answersControllers.value.length < 2) {
+                  if (answersControllers.value.length < 2) {
                     message = StringConstants().addAtLeastTwoAnswers;
-                  } else if(answersControllers.value.any((element) => element.text.isEmpty)) {
+                  } else if (answersControllers.value
+                      .any((element) => element.text.isEmpty)) {
                     message = StringConstants().fillAllAnswers;
-                  } else if(questionController.text.isEmpty) {
+                  } else if (questionController.text.isEmpty) {
                     message = StringConstants().fillQuestion;
-                  } else if(selectedAnswerIndex.value == null) {
+                  } else if (selectedAnswerIndex.value == null) {
                     message = StringConstants().selectRightAnswer;
                   }
-                  if(message != null) {
+                  if (message != null) {
                     confirmationPopUp(
-                    context,
-                    content: Text(
-                      message,
-                    ),
-                    isOkPopUp: true,
-                  );
+                      context,
+                      content: Text(
+                        message,
+                      ),
+                      isOkPopUp: true,
+                    );
                   } else {
                     if (formKey.currentState!.validate()) {
                       final List<PostQuestionQueryAnswer> answers = [];

@@ -108,6 +108,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           }
           add(GetPostsEvent(isRefresh: true, myPosts: true));
         }
+        add(GetPostsEvent(isRefresh: true));
       },
     );
 
@@ -287,6 +288,43 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         ),
       );
     });
+
+    on<ReportPostEvent>(
+      (event, emit) async {
+        try {
+          await postService.reportPost(postId: event.postId);
+          final List<Post> posts = state.posts!.data.map((post) {
+            if (post.id == event.postId) {
+              post = post.copyWith(isReported: true);
+            }
+            return post;
+          }).toList();
+          emit(
+            state.copyWith(
+              status: PostStatus.postReported,
+              posts: state.posts!.copyWith(data: posts),
+            ),
+          );
+          add(GetPostsEvent(isRefresh: true));
+        } catch (e) {
+          if (e is CustomException) {
+            emit(
+              state.copyWith(
+                status: PostStatus.error,
+                error: e.apiError,
+              ),
+            );
+          } else {
+            emit(
+              state.copyWith(
+                status: PostStatus.error,
+                error: ApiError.errorOccurred(),
+              ),
+            );
+          }
+        }
+      },
+    );
   }
 
   final IPostRepository postRepository;

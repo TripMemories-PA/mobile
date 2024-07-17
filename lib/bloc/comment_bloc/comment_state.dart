@@ -6,7 +6,8 @@ enum CommentStatus {
   error,
   commentPosted,
   commentDeleted,
-  commentLiked
+  commentLiked,
+  reported,
 }
 
 class CommentState {

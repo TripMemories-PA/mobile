@@ -29,6 +29,8 @@ class EditMeetForm extends HookWidget {
         child: Column(
           children: [
             TextFormField(
+              textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
               controller: titleController,
               decoration: InputDecoration(labelText: StringConstants().title),
               validator: (value) =>
@@ -36,6 +38,8 @@ class EditMeetForm extends HookWidget {
             ),
             10.ph,
             TextFormField(
+              textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
               controller: descriptionController,
               decoration:
                   InputDecoration(labelText: StringConstants().description),

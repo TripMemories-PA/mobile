@@ -49,7 +49,9 @@ class FriendsAndVisitedWidget extends StatelessWidget {
     final int friendsCount =
         context.read<ProfileBloc>().state.friends.meta.total;
     return _buildCard(
-      StringConstants().friendAdded,
+      friendsCount == 1
+          ? StringConstants().friendAdded
+          : StringConstants().friendsAdded,
       friendsCount,
       context,
     );
@@ -59,7 +61,9 @@ class FriendsAndVisitedWidget extends StatelessWidget {
     final int visitedCount =
         context.read<ProfileBloc>().state.profile?.poisCount ?? 0;
     return _buildCard(
-      StringConstants().visitedBuildings,
+      visitedCount == 1
+          ? StringConstants().visitedBuilding
+          : StringConstants().visitedBuildings,
       visitedCount,
       context,
     );

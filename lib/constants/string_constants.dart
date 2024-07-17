@@ -12,7 +12,16 @@ class StringConstants {
 
   String get address => 'Adresse';
 
+  String get alreadyReported => 'Déjà signalé';
+
+  String get pleaseFillAllFields => 'Veuillez remplir tous les champs';
+
   String get myFeed => "Mon fil d'actualité";
+
+  String get confirmReportComment =>
+      'Etes-vous sûr de vouloir signaler ce commentaire ?';
+
+  String get thankyouForYourFeedback => 'Merci pour votre retour !';
 
   String get generalFeed => "Fil d'actualité général";
 
@@ -568,6 +577,10 @@ class StringConstants {
   String get noFriendAdded => 'Aucun ami ajouté';
 
   String get friendAdded => 'Ami ajouté';
+
+  String get friendsAdded => 'Amis ajoutés';
+
+  String get visitedBuilding => 'Monument visité';
 
   String get visitedBuildings => 'Monuments visités';
 

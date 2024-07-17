@@ -108,6 +108,8 @@ class _FormMeeting extends HookWidget {
             child: Column(
               children: [
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   maxLines: 2,
                   controller: titleController,
                   decoration:
@@ -117,6 +119,8 @@ class _FormMeeting extends HookWidget {
                 ),
                 10.ph,
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   maxLines: 4,
                   controller: descriptionController,
                   decoration:
@@ -126,6 +130,8 @@ class _FormMeeting extends HookWidget {
                 ),
                 10.ph,
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   controller: sizeController,
                   decoration:
                       InputDecoration(labelText: StringConstants().groupSize),
@@ -150,6 +156,8 @@ class _FormMeeting extends HookWidget {
                 ),
                 10.ph,
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   controller: dateController,
                   decoration: InputDecoration(
                     labelText: StringConstants().date,
@@ -258,12 +266,16 @@ class _FormReduction extends HookWidget {
                   child: Column(
                     children: [
                       TextFormField(
+                        textCapitalization: TextCapitalization.sentences,
+                        textInputAction: TextInputAction.done,
                         controller: titleController,
                         decoration: const InputDecoration(labelText: 'Title'),
                         validator: (value) =>
                             FieldValidator.validateRequired(value: value),
                       ),
                       TextFormField(
+                        textCapitalization: TextCapitalization.sentences,
+                        textInputAction: TextInputAction.done,
                         controller: descriptionController,
                         decoration: const InputDecoration(
                           labelText: 'Description',
@@ -272,6 +284,8 @@ class _FormReduction extends HookWidget {
                             FieldValidator.validateRequired(value: value),
                       ),
                       TextFormField(
+                        textCapitalization: TextCapitalization.sentences,
+                        textInputAction: TextInputAction.done,
                         controller: dateController,
                         decoration: const InputDecoration(
                           labelText: 'Date',
@@ -281,7 +295,8 @@ class _FormReduction extends HookWidget {
                         onTap: () async {
                           final DateTime? pickedDate = await showDatePicker(
                             context: context,
-                            initialDate: DateTime.now(),
+                            initialDate:
+                                DateTime.now().add(const Duration(days: 7)),
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2101),
                             locale: const Locale('fr', 'FR'),
@@ -310,6 +325,7 @@ class _FormReduction extends HookWidget {
                                     context: context,
                                     builder: (context) => Dialog(
                                       child: CustomCard(
+                                        borderColor: Colors.transparent,
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.8,
@@ -328,6 +344,15 @@ class _FormReduction extends HookWidget {
                                                   itemCount: tickets.length,
                                                   itemBuilder:
                                                       (context, index) {
+                                                    if (tickets[index]
+                                                                .groupSize >=
+                                                            2 &&
+                                                        tickets[index]
+                                                                .groupSize <=
+                                                            50) {
+                                                      return const SizedBox
+                                                          .shrink();
+                                                    }
                                                     return GestureDetector(
                                                       onTap: () {
                                                         selectedTicket.value =

@@ -75,9 +75,17 @@ class ProfileService implements IProfileService, IProfileRepository {
   }
 
   @override
-  Future<void> updatePassword({required String password}) {
-    // TODO(nono): implement updateProfile
-    throw UnimplementedError();
+  Future<void> updatePassword({required String password}) async {
+    try {
+      await DioClient.instance.put(
+        '$apiMeUrl/password',
+        data: {
+          'password': password,
+        },
+      );
+    } on BadRequestException {
+      throw BadRequestException(AuthError.notAuthenticated());
+    }
   }
 
   @override

@@ -198,4 +198,13 @@ class PostService implements IPostService, IPostRepository {
       );
     }
   }
+
+  @override
+  Future<void> reportPost({required int postId}) async {
+    try {
+      await DioClient.instance.post('$apiPostBaseUrl/$postId/report');
+    } on BadRequestException {
+      throw BadRequestException(ApiError.errorOccurred());
+    }
+  }
 }

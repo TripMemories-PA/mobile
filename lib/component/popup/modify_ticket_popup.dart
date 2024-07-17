@@ -100,6 +100,8 @@ class TicketFormPopup extends HookWidget {
                             child: Column(
                               children: [
                                 TextFormField(
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
                                   controller: articleTitleController,
                                   decoration: InputDecoration(
                                     hintText: StringConstants().title,
@@ -111,6 +113,8 @@ class TicketFormPopup extends HookWidget {
                                 ),
                                 10.ph,
                                 TextFormField(
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
                                   controller: articleDescriptionController,
                                   decoration: InputDecoration(
                                     hintText: StringConstants().description,
@@ -134,6 +138,8 @@ class TicketFormPopup extends HookWidget {
                                   ),
                                 ),
                                 TextFormField(
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
                                   controller: quantityController,
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
@@ -145,6 +151,8 @@ class TicketFormPopup extends HookWidget {
                                   ),
                                 ),
                                 TextFormField(
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
                                   controller: groupSizeController,
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(

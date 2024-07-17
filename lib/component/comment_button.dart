@@ -371,37 +371,39 @@ class CommentButtonContent extends HookWidget {
                         ],
                       ),
                       5.ph,
-                      IconButton(
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(
-                            Colors.transparent,
+                      if (context.read<AuthBloc>().state.status ==
+                          AuthStatus.authenticated)
+                        IconButton(
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all(
+                              Colors.transparent,
+                            ),
+                          ),
+                          onPressed: () {
+                            if (comment.isReported ?? false) {
+                              Messenger.showSnackBarError(
+                                StringConstants().alreadyReported,
+                              );
+                              return;
+                            }
+                            confirmationPopUp(
+                              context,
+                              title: StringConstants().confirmReportComment,
+                            ).then((value) {
+                              if (value) {
+                                context
+                                    .read<CommentBloc>()
+                                    .add(ReportCommentEvent(comment.id));
+                              }
+                            });
+                          },
+                          icon: Icon(
+                            comment.isReported ?? false
+                                ? Icons.flag
+                                : Icons.flag_outlined,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
-                        onPressed: () {
-                          if (comment.isReported ?? false) {
-                            Messenger.showSnackBarError(
-                              StringConstants().alreadyReported,
-                            );
-                            return;
-                          }
-                          confirmationPopUp(
-                            context,
-                            title: StringConstants().confirmReportComment,
-                          ).then((value) {
-                            if (value) {
-                              context
-                                  .read<CommentBloc>()
-                                  .add(ReportCommentEvent(comment.id));
-                            }
-                          });
-                        },
-                        icon: Icon(
-                          comment.isReported ?? false
-                              ? Icons.flag
-                              : Icons.flag_outlined,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
                     ],
                   ),
             ],

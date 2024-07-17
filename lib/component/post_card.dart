@@ -317,7 +317,9 @@ class PostCard extends HookWidget {
                   ),
                 5.pw,
                 if (context.read<AuthBloc>().state.user?.id !=
-                    post.createdBy.id)
+                        post.createdBy.id &&
+                    context.read<AuthBloc>().state.status ==
+                        AuthStatus.authenticated)
                   IconButton(
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all(

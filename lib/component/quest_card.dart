@@ -149,6 +149,15 @@ class QuestCard extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
+                        if (context.read<AuthBloc>().state.status !=
+                            AuthStatus.authenticated) {
+                          confirmationPopUp(
+                            context,
+                            title: StringConstants().pleaseLogin,
+                            isOkPopUp: true,
+                          );
+                          return;
+                        }
                         if (quest.done && !isAdmin) {
                           return;
                         } else {
@@ -178,7 +187,9 @@ class QuestCard extends StatelessWidget {
                         backgroundColor: WidgetStateProperty.all(
                           isAdmin
                               ? Theme.of(context).colorScheme.primary
-                              : (quest.done
+                              : ((quest.done ||
+                                      context.read<AuthBloc>().state.status !=
+                                          AuthStatus.authenticated)
                                   ? Theme.of(context).colorScheme.tertiary
                                   : Theme.of(context).colorScheme.primary),
                         ),

@@ -51,6 +51,8 @@ class SubscribeForm extends HookWidget {
                   ),
                   12.ph,
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    textInputAction: TextInputAction.done,
                     readOnly: context.read<SubscribeBloc>().state.loading,
                     decoration: InputDecoration(
                       hintText: StringConstants().username,
@@ -85,8 +87,8 @@ class SubscribeForm extends HookWidget {
                         onChanged: context.read<SubscribeBloc>().state.loading
                             ? null
                             : (bool? value) {
-                          rememberMe.value = value!;
-                        },
+                                rememberMe.value = value!;
+                              },
                         checkColor: Colors.black,
                       ),
                       Text(
@@ -142,6 +144,8 @@ class SubscribeForm extends HookWidget {
         Expanded(
           flex: 2,
           child: TextFormField(
+            textCapitalization: TextCapitalization.sentences,
+            textInputAction: TextInputAction.done,
             readOnly: context.read<SubscribeBloc>().state.loading,
             decoration: InputDecoration(
               hintText: StringConstants().firstName,
@@ -157,6 +161,8 @@ class SubscribeForm extends HookWidget {
         Expanded(
           flex: 3,
           child: TextFormField(
+            textCapitalization: TextCapitalization.sentences,
+            textInputAction: TextInputAction.done,
             readOnly: context.read<SubscribeBloc>().state.loading,
             decoration: InputDecoration(
               hintText: StringConstants().lastName,

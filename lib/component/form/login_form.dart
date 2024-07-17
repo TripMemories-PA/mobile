@@ -39,6 +39,8 @@ class LoginForm extends HookWidget {
               child: Column(
                 children: [
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    textInputAction: TextInputAction.done,
                     readOnly: context.read<LoginBloc>().state.loading,
                     decoration: InputDecoration(
                       hintText:
@@ -50,6 +52,8 @@ class LoginForm extends HookWidget {
                   ),
                   15.ph,
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    textInputAction: TextInputAction.done,
                     readOnly: context.read<LoginBloc>().state.loading,
                     obscureText: hidePassword.value,
                     decoration: InputDecoration(

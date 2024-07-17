@@ -8,7 +8,7 @@ import '../../../constants/string_constants.dart';
 import '../../../utils/field_validator.dart';
 
 class PasswordTextField extends HookWidget {
-  const PasswordTextField({
+  const PasswordTextField( textCapitalization: TextCapitalization.sentences, textInputAction: TextInputAction.done,{
     super.key,
     required this.passwordController,
     this.previousPasswordController,
@@ -21,6 +21,8 @@ class PasswordTextField extends HookWidget {
   Widget build(BuildContext context) {
     final hidePassword = useState(true);
     return TextFormField(
+      textCapitalization: TextCapitalization.sentences,
+      textInputAction: TextInputAction.done,
       readOnly: context.read<SubscribeBloc>().state.loading,
       obscureText: hidePassword.value,
       decoration: InputDecoration(

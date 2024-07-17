@@ -40,6 +40,8 @@ class SearchBarCustom extends StatelessWidget {
         valueListenable: searchContent,
         builder: (context, value, child) {
           return TextField(
+            textCapitalization: TextCapitalization.sentences,
+            textInputAction: TextInputAction.done,
             textAlignVertical: TextAlignVertical.center,
             controller: searchController,
             decoration: InputDecoration(

@@ -108,6 +108,8 @@ class _FormMeeting extends HookWidget {
             child: Column(
               children: [
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   maxLines: 2,
                   controller: titleController,
                   decoration:
@@ -117,6 +119,8 @@ class _FormMeeting extends HookWidget {
                 ),
                 10.ph,
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   maxLines: 4,
                   controller: descriptionController,
                   decoration:
@@ -126,6 +130,8 @@ class _FormMeeting extends HookWidget {
                 ),
                 10.ph,
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   controller: sizeController,
                   decoration:
                       InputDecoration(labelText: StringConstants().groupSize),
@@ -150,6 +156,8 @@ class _FormMeeting extends HookWidget {
                 ),
                 10.ph,
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
                   controller: dateController,
                   decoration: InputDecoration(
                     labelText: StringConstants().date,
@@ -258,12 +266,16 @@ class _FormReduction extends HookWidget {
                   child: Column(
                     children: [
                       TextFormField(
+                        textCapitalization: TextCapitalization.sentences,
+                        textInputAction: TextInputAction.done,
                         controller: titleController,
                         decoration: const InputDecoration(labelText: 'Title'),
                         validator: (value) =>
                             FieldValidator.validateRequired(value: value),
                       ),
                       TextFormField(
+                        textCapitalization: TextCapitalization.sentences,
+                        textInputAction: TextInputAction.done,
                         controller: descriptionController,
                         decoration: const InputDecoration(
                           labelText: 'Description',
@@ -272,6 +284,8 @@ class _FormReduction extends HookWidget {
                             FieldValidator.validateRequired(value: value),
                       ),
                       TextFormField(
+                        textCapitalization: TextCapitalization.sentences,
+                        textInputAction: TextInputAction.done,
                         controller: dateController,
                         decoration: const InputDecoration(
                           labelText: 'Date',

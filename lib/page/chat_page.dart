@@ -93,6 +93,8 @@ class ChatPage extends HookWidget {
         children: [
           Expanded(
             child: TextField(
+              textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
               minLines: 1,
               maxLines: 4,
               controller: messageController,
@@ -455,36 +457,33 @@ class _ChatBody extends HookWidget {
       children: [
         if (message.sender.id != myId)
           GestureDetector(
-          onTap: () {
-            if (message.sender.id != myId) {
-              context.push('${RouteName.profilePage}/${message.sender.id}');
-            }
-          },
-          child:
-
-          message.sender.avatar != null
-              ? Padding(
-                  padding: const EdgeInsets.only(left: 5.0),
-                  child: ProfilePicture(
-                    uploadedFile: message.sender.avatar,
+            onTap: () {
+              if (message.sender.id != myId) {
+                context.push('${RouteName.profilePage}/${message.sender.id}');
+              }
+            },
+            child: message.sender.avatar != null
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 5.0),
+                    child: ProfilePicture(
+                      uploadedFile: message.sender.avatar,
+                    ),
+                  )
+                : const Padding(
+                    padding: EdgeInsets.only(left: 5.0),
+                    child: SizedBox(
+                      height: 40,
+                      width: 40,
+                      child: CircleAvatar(
+                        backgroundColor: MyColors.lightGrey,
+                        child: Icon(
+                          Icons.person,
+                          size: 25,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
                   ),
-                )
-              :
-          const Padding(
-            padding: EdgeInsets.only(left: 5.0),
-            child: SizedBox(
-              height: 40,
-              width: 40,
-              child: CircleAvatar(
-                backgroundColor: MyColors.lightGrey,
-                child: Icon(
-                  Icons.person,
-                  size: 25,
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-          ),
           ),
         Container(
           width: MediaQuery.of(context).size.width * 0.7,

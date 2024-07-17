@@ -329,6 +329,8 @@ class EditTweetPage extends HookWidget {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: TextField(
+        textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.done,
         controller: textEditingController,
         maxLength: 40,
         textAlign: TextAlign.left,
@@ -358,6 +360,8 @@ class EditTweetPage extends HookWidget {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: TextField(
+        textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.done,
         controller: textEditingController,
         maxLength: 500,
         maxLines: null,

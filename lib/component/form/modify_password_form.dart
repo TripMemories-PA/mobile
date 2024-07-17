@@ -36,6 +36,8 @@ class UpdatePasswordForm extends HookWidget {
               ),
             ),
             child: TextFormField(
+              textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
               obscureText: hidePassword.value,
               decoration: InputDecoration(
                 hintText: StringConstants().password,
@@ -65,6 +67,7 @@ class UpdatePasswordForm extends HookWidget {
               ),
             ),
             child: TextFormField(
+              textCapitalization: TextCapitalization.sentences,
               textInputAction: TextInputAction.done,
               obscureText: hideConfirmPassword.value,
               decoration: InputDecoration(

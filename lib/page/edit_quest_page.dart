@@ -115,6 +115,7 @@ class EditQuestPage extends HookWidget {
             ),
           ),
           Stepper(
+            physics: const ClampingScrollPhysics(),
             controlsBuilder: (BuildContext ctx, ControlsDetails dtl) {
               return const SizedBox.shrink();
             },

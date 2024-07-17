@@ -44,7 +44,7 @@ class QuestPage extends HookWidget {
           if (state.status == QuestValidationStatus.failed) {
             AudioPlayer().play(
               AssetSource(
-                'sounds/augh.mp3',
+                'sounds/windowError.mp3',
               ),
             );
             Messenger.showSnackBarError('Echec de la validation');
@@ -360,6 +360,14 @@ class QuestPage extends HookWidget {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
+      final File newImage = File(pickedFile.path);
+      final int bytes = await newImage.length();
+      final double megabytes = bytes / (1024 * 1024);
+      if (megabytes > 5) {
+        Messenger.showSnackBarError('Image trop lourde');
+        return;
+      }
+
       imageHook.value = File(pickedFile.path);
     }
   }

@@ -325,6 +325,7 @@ class _FormReduction extends HookWidget {
                                     context: context,
                                     builder: (context) => Dialog(
                                       child: CustomCard(
+                                        borderColor: Colors.transparent,
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.8,

@@ -19,6 +19,7 @@ import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/post.dart';
 import '../utils/date_time_service.dart';
+import '../utils/messenger.dart';
 import 'comment_button.dart';
 import 'custom_card.dart';
 import 'popup/confirmation_dialog.dart';
@@ -313,6 +314,40 @@ class PostCard extends HookWidget {
                         }
                       }
                     },
+                  ),
+                5.pw,
+                if (context.read<AuthBloc>().state.user?.id !=
+                    post.createdBy.id)
+                  IconButton(
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(
+                        Colors.transparent,
+                      ),
+                    ),
+                    onPressed: () {
+                      if (post.isReported ?? false) {
+                        Messenger.showSnackBarError(
+                          StringConstants().alreadyReported,
+                        );
+                        return;
+                      }
+                      confirmationPopUp(
+                        context,
+                        title: StringConstants().confirmReportComment,
+                      ).then((value) {
+                        if (value) {
+                          context
+                              .read<PostBloc>()
+                              .add(ReportPostEvent(post.id));
+                        }
+                      });
+                    },
+                    icon: Icon(
+                      post.isReported ?? false
+                          ? Icons.flag
+                          : Icons.flag_outlined,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
               ],
             ),

@@ -44,6 +44,7 @@ class CommentButton extends HookWidget {
       ),
       onPressed: () {
         showModalBottomSheet(
+          backgroundColor: Theme.of(context).colorScheme.surface,
           isScrollControlled: true,
           context: context,
           builder: (context) {
@@ -156,19 +157,16 @@ class CommentButtonContent extends HookWidget {
                         ),
                         Center(
                           child: state.hasMoreComments
-                              ? (state.searchMoreCommentsStatus !=
-                                      CommentStatus.error
-                                  ? ElevatedButton(
-                                      onPressed: () {
-                                        context
-                                            .read<CommentBloc>()
-                                            .add(GetCommentsEvent());
-                                      },
-                                      child: Text(
-                                        StringConstants().loadMoreResults,
-                                      ),
-                                    )
-                                  : _buildErrorWidget(context))
+                              ? ElevatedButton(
+                                  onPressed: () {
+                                    context
+                                        .read<CommentBloc>()
+                                        .add(GetCommentsEvent());
+                                  },
+                                  child: Text(
+                                    StringConstants().loadMoreResults,
+                                  ),
+                                )
                               : Text(StringConstants().noMoreComments),
                         ),
                         20.ph,
@@ -217,6 +215,11 @@ class CommentButtonContent extends HookWidget {
                   CommentStatus.commentPosted) {
                 Messenger.showSnackBarSuccess(StringConstants().postedComment);
                 controller.clear();
+              }
+              if (state.status == CommentStatus.reported) {
+                Messenger.showSnackBarSuccess(
+                  StringConstants().thankyouForYourFeedback,
+                );
               }
             },
             child: const SizedBox.shrink(),
@@ -336,33 +339,69 @@ class CommentButtonContent extends HookWidget {
                     },
                   )
                 else
-                  Row(
+                  Column(
                     children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              comment.isLiked
+                                  ? Icons.favorite
+                                  : Icons.favorite_outline,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all(
+                                Colors.transparent,
+                              ),
+                            ),
+                            onPressed: () async {
+                              if (context.read<AuthBloc>().state.status ==
+                                  AuthStatus.authenticated) {
+                                context.read<CommentBloc>().add(
+                                      comment.isLiked
+                                          ? DislikeCommentEvent(comment.id)
+                                          : LikeCommentEvent(comment.id),
+                                    );
+                              }
+                            },
+                          ),
+                          Text(comment.likesCount.toString()),
+                          10.pw,
+                        ],
+                      ),
+                      5.ph,
                       IconButton(
-                        icon: Icon(
-                          comment.isLiked
-                              ? Icons.favorite
-                              : Icons.favorite_outline,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all(
                             Colors.transparent,
                           ),
                         ),
-                        onPressed: () async {
-                          if (context.read<AuthBloc>().state.status ==
-                              AuthStatus.authenticated) {
-                            context.read<CommentBloc>().add(
-                                  comment.isLiked
-                                      ? DislikeCommentEvent(comment.id)
-                                      : LikeCommentEvent(comment.id),
-                                );
+                        onPressed: () {
+                          if (comment.isReported ?? false) {
+                            Messenger.showSnackBarError(
+                              StringConstants().alreadyReported,
+                            );
+                            return;
                           }
+                          confirmationPopUp(
+                            context,
+                            title: StringConstants().confirmReportComment,
+                          ).then((value) {
+                            if (value) {
+                              context
+                                  .read<CommentBloc>()
+                                  .add(ReportCommentEvent(comment.id));
+                            }
+                          });
                         },
+                        icon: Icon(
+                          comment.isReported ?? false
+                              ? Icons.flag
+                              : Icons.flag_outlined,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
-                      Text(comment.likesCount.toString()),
-                      10.pw,
                     ],
                   ),
             ],

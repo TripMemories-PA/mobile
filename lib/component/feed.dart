@@ -10,6 +10,7 @@ import '../constants/string_constants.dart';
 import '../num_extensions.dart';
 import '../object/post.dart';
 import '../repository/post/post_repository.dart';
+import '../utils/messenger.dart';
 import 'post_card.dart';
 import 'shimmer/shimmer_post_and_monument_resume.dart';
 import 'shimmer/shimmer_post_and_monument_resume_list.dart';
@@ -43,26 +44,18 @@ class FeedComponent extends HookWidget {
                 isMyFeed,
           ),
         ),
-      child: BlocListener<AuthBloc, AuthState>(
+      child: BlocListener<PostBloc, PostState>(
         listener: (context, state) {
-          context.read<PostBloc>().add(
-                GetPostsEvent(
-                  isRefresh: true,
-                  myPosts: myPosts,
-                  userId: userId,
-                  isMyFeed: state.status == AuthStatus.authenticated &&
-                      state.user?.userTypeId != 3,
-                ),
-              );
-        },
-        child: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            return _PostListContent(
-              myPosts: myPosts,
-              userId: userId,
-              isMyFeed: isMyFeed,
+          if (state.status == PostStatus.postReported) {
+            Messenger.showSnackBarSuccess(
+              StringConstants().thankyouForYourFeedback,
             );
-          },
+          }
+        },
+        child: _PostListContent(
+          myPosts: myPosts,
+          userId: userId,
+          isMyFeed: isMyFeed,
         ),
       ),
     );
@@ -224,7 +217,9 @@ class PostList extends StatelessWidget {
         child: Text(StringConstants().errorWhileLoadingPosts),
       );
     } else {
-      return Container();
+      return Container(
+        color: Colors.yellow,
+      );
     }
   }
 

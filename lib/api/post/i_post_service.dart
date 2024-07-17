@@ -23,4 +23,8 @@ abstract class IPostService {
   Future<void> dislikePost({
     required int postId,
   });
+
+  Future<void> reportPost({
+    required int postId,
+  });
 }

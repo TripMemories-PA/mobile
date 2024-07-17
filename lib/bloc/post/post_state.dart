@@ -7,6 +7,7 @@ enum PostStatus {
   updated,
   error,
   postDeleted,
+  postReported,
 }
 
 class PostState {
@@ -46,7 +47,7 @@ class PostState {
       postsPerPage: postsPerPage ?? this.postsPerPage,
       hasMorePosts: hasMorePosts ?? this.hasMorePosts,
       selectedCityGetPostsStatus:
-      selectedCityGetPostsStatus ?? this.selectedCityGetPostsStatus,
+          selectedCityGetPostsStatus ?? this.selectedCityGetPostsStatus,
       selectedCityPosts: selectedCityPosts ?? this.selectedCityPosts,
       postCityPage: postCityPage ?? this.postCityPage,
       getCityHasMorePosts: getCityHasMorePosts ?? this.getCityHasMorePosts,

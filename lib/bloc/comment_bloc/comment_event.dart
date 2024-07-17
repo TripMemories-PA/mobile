@@ -39,3 +39,9 @@ class DeleteCommentEvent extends CommentEvent {
 
   final int commentId;
 }
+
+class ReportCommentEvent extends CommentEvent {
+  ReportCommentEvent(this.commentId);
+
+  final int commentId;
+}

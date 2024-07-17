@@ -8,7 +8,7 @@ import '../../../constants/string_constants.dart';
 import '../../../utils/field_validator.dart';
 
 class PasswordTextField extends HookWidget {
-  const PasswordTextField( textCapitalization: TextCapitalization.sentences, textInputAction: TextInputAction.done,{
+  const PasswordTextField({
     super.key,
     required this.passwordController,
     this.previousPasswordController,

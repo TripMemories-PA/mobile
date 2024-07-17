@@ -77,4 +77,13 @@ class CommentService implements ICommentService, ICommentRepository {
       throw BadRequestException(ApiError.errorOccurredWhileParsingResponse());
     }
   }
+
+  @override
+  Future<void> reportComment({required int commentId}) async {
+    try {
+      await DioClient.instance.post('$apiCommentBaseUrl/$commentId/report');
+    } on BadRequestException {
+      throw BadRequestException(ApiError.errorOccurred());
+    }
+  }
 }

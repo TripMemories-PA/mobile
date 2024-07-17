@@ -12,7 +12,14 @@ class StringConstants {
 
   String get address => 'Adresse';
 
+  String get alreadyReported => 'Déjà signalé';
+
   String get myFeed => "Mon fil d'actualité";
+
+  String get confirmReportComment =>
+      'Etes-vous sûr de vouloir signaler ce commentaire ?';
+
+  String get thankyouForYourFeedback => 'Merci pour votre retour !';
 
   String get generalFeed => "Fil d'actualité général";
 

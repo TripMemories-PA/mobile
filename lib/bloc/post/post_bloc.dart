@@ -108,6 +108,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           }
           add(GetPostsEvent(isRefresh: true, myPosts: true));
         }
+        add(GetPostsEvent(isRefresh: true));
       },
     );
 

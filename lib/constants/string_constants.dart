@@ -14,6 +14,8 @@ class StringConstants {
 
   String get alreadyReported => 'Déjà signalé';
 
+  String get pleaseFillAllFields => 'Veuillez remplir tous les champs';
+
   String get myFeed => "Mon fil d'actualité";
 
   String get confirmReportComment =>

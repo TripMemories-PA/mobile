@@ -13,18 +13,26 @@ class SplashPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useEffect(
-      () {
+          () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          context.read<AuthBloc>().add(AppStarted());
-          Future.delayed(const Duration(seconds: 3), () {
-            if (context.mounted) {
-              context.go(
-                context.read<AuthBloc>().state.user?.userTypeId == 3
-                    ? RouteName.shopPage
-                    : RouteName.searchPage,
-              );
-            }
-          });
+          if (!context.read<AuthBloc>().state.appStarted) {
+            context.go(
+              context.read<AuthBloc>().state.user?.userTypeId == 3
+                  ? RouteName.shopPage
+                  : RouteName.searchPage,
+            );
+          } else {
+            context.read<AuthBloc>().add(AppStarted());
+            Future.delayed(const Duration(seconds: 3), () {
+              if (context.mounted) {
+                context.go(
+                  context.read<AuthBloc>().state.user?.userTypeId == 3
+                      ? RouteName.shopPage
+                      : RouteName.searchPage,
+                );
+              }
+            });
+          }
         });
 
         return null;

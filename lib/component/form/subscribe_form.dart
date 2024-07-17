@@ -51,7 +51,6 @@ class SubscribeForm extends HookWidget {
                   ),
                   12.ph,
                   TextFormField(
-                    textCapitalization: TextCapitalization.sentences,
                     textInputAction: TextInputAction.done,
                     readOnly: context.read<SubscribeBloc>().state.loading,
                     decoration: InputDecoration(

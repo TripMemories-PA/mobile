@@ -21,7 +21,6 @@ class PasswordTextField extends HookWidget {
   Widget build(BuildContext context) {
     final hidePassword = useState(true);
     return TextFormField(
-      textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.done,
       readOnly: context.read<SubscribeBloc>().state.loading,
       obscureText: hidePassword.value,

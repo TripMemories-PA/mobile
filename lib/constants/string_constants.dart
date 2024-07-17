@@ -578,6 +578,10 @@ class StringConstants {
 
   String get friendAdded => 'Ami ajouté';
 
+  String get friendsAdded => 'Amis ajoutés';
+
+  String get visitedBuilding => 'Monument visité';
+
   String get visitedBuildings => 'Monuments visités';
 
   String get showMoreResults => 'Afficher plus de résultats';

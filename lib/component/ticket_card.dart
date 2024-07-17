@@ -67,13 +67,25 @@ class TicketCardAdmin extends StatelessWidget {
             10.ph,
             Row(
               children: [
-                Text(
-                  '${article.price} €',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 30,
-                  ),
+                Column(
+                  children: [
+                    Text(
+                      '${article.price} €',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 30,
+                      ),
+                    ),
+                    5.ph,
+                    Text(
+                      '${StringConstants().groupSize}: ${article.groupSize}',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
                 ),
                 const Spacer(),
                 Column(

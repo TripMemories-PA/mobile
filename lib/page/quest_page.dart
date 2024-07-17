@@ -10,16 +10,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../api/quest/quest_service.dart';
+import '../bloc/quest/quest_event.dart';
 import '../bloc/quest_validation/quest_validation_bloc.dart';
 import '../constants/string_constants.dart';
+import '../dto/quest_dto.dart';
 import '../num_extensions.dart';
-import '../object/quest.dart';
 import '../utils/messenger.dart';
 
 class QuestPage extends HookWidget {
-  const QuestPage({super.key, required this.quest});
+  const QuestPage({super.key, required this.dto});
 
-  final Quest quest;
+  final QuestBlocDTO dto;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +41,10 @@ class QuestPage extends HookWidget {
               ),
             );
             Messenger.showSnackBarSuccess('Validé !');
+            dto.questBloc.add(
+              GetQuestEvent(dto.poiId),
+            );
+            context.pop();
           }
           if (state.status == QuestValidationStatus.failed) {
             AudioPlayer().play(
@@ -104,7 +109,7 @@ class QuestPage extends HookWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          quest.title,
+                          dto.quest!.title,
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: GoogleFonts.urbanist(
@@ -296,7 +301,7 @@ class QuestPage extends HookWidget {
                             state.status != QuestValidationStatus.loading) {
                           context.read<QuestValidationBloc>().add(
                                 ValidateQuestEvent(
-                                  id: quest.id,
+                                  id: dto.quest!.id,
                                   file: file,
                                 ),
                               );
@@ -363,7 +368,7 @@ class QuestPage extends HookWidget {
       final File newImage = File(pickedFile.path);
       final int bytes = await newImage.length();
       final double megabytes = bytes / (1024 * 1024);
-      if (megabytes > 5) {
+      if (megabytes > 10) {
         Messenger.showSnackBarError('Image trop lourde');
         return;
       }

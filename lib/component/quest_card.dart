@@ -171,9 +171,14 @@ class QuestCard extends StatelessWidget {
                               ),
                             );
                           } else {
+                            final QuestBlocDTO dto = QuestBlocDTO(
+                              questBloc: context.read<QuestBloc>(),
+                              quest: quest,
+                              poiId: quest.poiId,
+                            );
                             context.push(
                               RouteName.questDetails,
-                              extra: quest,
+                              extra: dto,
                             );
                           }
                         }

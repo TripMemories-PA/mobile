@@ -44,17 +44,32 @@ class EditQuestPage extends HookWidget {
           }
           if (state.publishQuestStep == PublishQuestStep.posted) {
             Messenger.showSnackBarSuccess(StringConstants().questPosted);
-            questBlocDTO.questBloc.add(GetPoiQuestEvent(questBlocDTO.poiId));
+            questBlocDTO.questBloc.add(
+              GetPoiQuestEvent(
+                questBlocDTO.poiId,
+                isRefresh: true,
+              ),
+            );
             context.pop();
           }
           if (state.publishQuestStep == PublishQuestStep.updated) {
             Messenger.showSnackBarSuccess(StringConstants().questionUpdated);
-            questBlocDTO.questBloc.add(GetPoiQuestEvent(questBlocDTO.poiId));
+            questBlocDTO.questBloc.add(
+              GetPoiQuestEvent(
+                questBlocDTO.poiId,
+                isRefresh: true,
+              ),
+            );
             context.pop();
           }
           if (state.status == QuestStatus.updated) {
             Messenger.showSnackBarSuccess(StringConstants().questUpdated);
-            questBlocDTO.questBloc.add(GetPoiQuestEvent(questBlocDTO.poiId));
+            questBlocDTO.questBloc.add(
+              GetPoiQuestEvent(
+                questBlocDTO.poiId,
+                isRefresh: true,
+              ),
+            );
             context.pop();
           }
         },
@@ -272,17 +287,6 @@ class EditQuestPage extends HookWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () => context.pop(),
-                      icon: const Icon(
-                        Icons.close,
-                      ),
-                    ),
-                  ],
-                ),
                 const Spacer(),
                 Text(
                   StringConstants().modifyQuest,

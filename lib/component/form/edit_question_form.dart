@@ -41,8 +41,18 @@ class EditQuestionForm extends HookWidget {
               .toList() ??
           [],
     );
+    int? rightAnswerIndex;
+    final Question? questionTmp = question;
+    if (questionTmp != null) {
+      for (int i = 0; i < questionTmp.answers.length; i++) {
+        if (questionTmp.answers[i].isCorrect ?? false) {
+          rightAnswerIndex = i;
+          break;
+        }
+      }
+    }
     final selectedAnswerIndex = useState<int?>(
-      question != null ? 0 : null,
+      rightAnswerIndex,
     );
     final ValueNotifier<XFile?> image = useState(null);
     final loadingImage = useState(false);

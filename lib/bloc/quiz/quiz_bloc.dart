@@ -4,7 +4,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../api/error/api_error.dart';
 import '../../api/exception/custom_exception.dart';
 import '../../api/quiz/i_quiz_service.dart';
-import '../../api/quiz/model/query/post_question_query.dart';
 import '../../api/quiz/model/response/check_question_response.dart';
 import '../../object/quiz/quiz.dart';
 import '../../repository/quiz/i_quiz_repository.dart';
@@ -56,18 +55,6 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           ),
         );
       }
-    });
-
-    on<UpdateQuestionEvent>((event, emit) {
-      throw UnimplementedError();
-    });
-
-    on<DeleteQuestionEvent>((event, emit) {
-      throw UnimplementedError();
-    });
-
-    on<PostQuestionEvent>((event, emit) {
-      throw UnimplementedError();
     });
 
     on<CheckQuestionEvent>((event, emit) async {

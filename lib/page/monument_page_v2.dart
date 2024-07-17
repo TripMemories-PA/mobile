@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
-import '../api/error/specific_error/auth_error.dart';
 import '../api/post/post_service.dart';
 import '../api/quest/quest_service.dart';
 import '../api/ticket/ticket_service.dart';
@@ -175,11 +174,27 @@ class _PageContent extends HookWidget {
                 controller: tabController,
                 children: [
                   SingleChildScrollView(child: _buildDescription(context)),
-                  SingleChildScrollView(
-                    controller: monumentPostsScrollController,
-                    child: _buildPostPart(),
+                  RefreshIndicator(
+                    onRefresh: () async {
+                      _getPosts(context, true);
+                    },
+                    child: SingleChildScrollView(
+                      controller: monumentPostsScrollController,
+                      child: context
+                                  .read<MonumentBloc>()
+                                  .state
+                                  .selectedPostGetMonumentsStatus ==
+                              MonumentStatus.loading
+                          ? const SizedBox(
+                              height: 200,
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            )
+                          : _buildPostPart(),
+                    ),
                   ),
-                  SingleChildScrollView(child: _buildQuestPart()),
+                  _buildQuestPart(),
                   SingleChildScrollView(child: _buildShop(context)),
                 ],
               ),
@@ -388,34 +403,40 @@ class _PageContent extends HookWidget {
       child: BlocConsumer<QuestBloc, QuestState>(
         listener: (context, state) {
           if (state.status == QuestStatus.error) {
-            if (state.error is AuthError) {
-              return;
-            }
             Messenger.showSnackBarError(
               state.error?.getDescription() ?? StringConstants().errorOccurred,
             );
           }
         },
         builder: (context, state) {
-          return Center(
-            child: Column(
-              children: [
-                20.ph,
-                Text(
-                  StringConstants().monumentQuests,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<QuestBloc>().add(
+                    GetPoiQuestEvent(monument.id, isRefresh: true),
+                  );
+            },
+            child: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  children: [
+                    20.ph,
+                    Text(
+                      StringConstants().monumentQuests,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    20.ph,
+                    if (state.status == QuestStatus.loading)
+                      const CircularProgressIndicator()
+                    else
+                      state.questList.isEmpty
+                          ? Text(StringConstants().noQuestForThisMonument)
+                          : _buildQuestList(state, context),
+                  ],
                 ),
-                20.ph,
-                if (state.status == QuestStatus.loading)
-                  const CircularProgressIndicator()
-                else
-                  state.questList.isEmpty
-                      ? Text(StringConstants().noQuestForThisMonument)
-                      : _buildQuestList(state, context),
-              ],
+              ),
             ),
           );
         },

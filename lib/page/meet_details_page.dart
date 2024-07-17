@@ -340,9 +340,12 @@ class _TicketCardToBuy extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Ticket ticketTmp = ticket.copyWith(
+      price: double.parse((ticket.price / ticket.groupSize).toStringAsFixed(2)),
+    );
     return TicketCardAdmin(
-      article: ticket,
-      buyButton: canBuy ? _buildBuyButton(ticket) : const SizedBox(),
+      article: ticketTmp,
+      buyButton: canBuy ? _buildBuyButton(ticketTmp) : const SizedBox(),
     );
   }
 

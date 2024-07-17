@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image/image.dart' as img;
@@ -169,7 +170,7 @@ class _MapCustomState extends State<MapCustom> {
             if (selectedPoi != null)
               Positioned(
                 right: 10,
-                bottom: 170,
+                bottom: 210,
                 child: IconButton(
                   icon: const Icon(Icons.close),
                   onPressed: () {
@@ -199,6 +200,16 @@ class _MapCustomState extends State<MapCustom> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        mini: true,
+        onPressed: _centerCamera,
+        child: Icon(
+          Icons.my_location,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
     );
   }
 
@@ -299,10 +310,22 @@ class _MapCustomState extends State<MapCustom> {
     );
   }
 
+  Future<void> _centerCamera() async {
+    final Position currentPosition = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    mapController.animateCamera(
+      CameraUpdate.newLatLng(
+        LatLng(currentPosition.latitude, currentPosition.longitude),
+      ),
+    );
+  }
+
   GoogleMap _buildGoogleMap() {
     return GoogleMap(
+      myLocationEnabled: true,
       myLocationButtonEnabled: false,
-      mapToolbarEnabled: false,
+      zoomControlsEnabled: false,
       onCameraIdle: () async {
         EasyDebounce.debounce('search_map_monuments', Durations.medium1,
             () async {
@@ -362,7 +385,7 @@ class _MapCustomState extends State<MapCustom> {
     return Positioned(
       left: 0,
       right: 0,
-      bottom: 30,
+      bottom: 65,
       child: Center(
         child: GestureDetector(
           onTap: () {

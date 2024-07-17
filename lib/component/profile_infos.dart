@@ -52,7 +52,10 @@ class ProfileInfos extends StatelessWidget {
                 shape: const CircleBorder(),
                 children: [
                   SpeedDialChild(
-                    child: const Icon(Icons.logout),
+                    child: Icon(
+                      Icons.logout,
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                     backgroundColor: MyColors.fail,
                     label: StringConstants().logout,
                     labelStyle: const TextStyle(fontSize: 18.0),
@@ -73,7 +76,10 @@ class ProfileInfos extends StatelessWidget {
                     },
                   ),
                   SpeedDialChild(
-                    child: const Icon(Icons.delete),
+                    child: Icon(
+                      Icons.delete,
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                     backgroundColor: MyColors.fail,
                     label: StringConstants().deleteAccount,
                     labelStyle: const TextStyle(

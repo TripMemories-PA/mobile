@@ -62,9 +62,9 @@ class MyFriendsComponent extends StatelessWidget {
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.groups_2_outlined,
-                      color: MyColors.purple,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     10.pw,
                     Text(

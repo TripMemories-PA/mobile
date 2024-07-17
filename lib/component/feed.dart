@@ -206,7 +206,14 @@ class PostList extends StatelessWidget {
           ),
         );
       } else {
-        return Center(child: Text(StringConstants().noPostYet));
+        return Center(
+          child: Container(
+            color: Colors.red,
+            height: MediaQuery.of(context).size.height * 0.5,
+            width: MediaQuery.of(context).size.width * 0.5,
+            child: Text(StringConstants().noPostYet),
+          ),
+        );
       }
     } else if (context.read<PostBloc>().state.getMorePostsStatus ==
         PostStatus.loading) {

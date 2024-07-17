@@ -136,6 +136,7 @@ class UserToAddCard extends StatelessWidget {
       icon: const Icon(Icons.chat_outlined),
       color: Colors.white,
       onPressed: () {
+        context.pop();
         context.push(
           '${RouteName.chatPage}/${user.id}',
           extra: conversationDto,

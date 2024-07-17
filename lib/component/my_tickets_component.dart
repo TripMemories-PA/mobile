@@ -92,9 +92,6 @@ class TicketCard extends StatelessWidget {
                                   QrImageView(
                                     data: ticket.qrCode,
                                     size: 300.0,
-                                    embeddedImage: const AssetImage(
-                                      'assets/images/app_logo_qr_code_light.png',
-                                    ),
                                   ),
                                   Center(
                                     child: ElevatedButton(

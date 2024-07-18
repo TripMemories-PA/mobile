@@ -345,13 +345,12 @@ class _FormReduction extends HookWidget {
                                                   itemBuilder:
                                                       (context, index) {
                                                     if (tickets[index]
-                                                                .groupSize >=
+                                                                .groupSize <=
                                                             2 &&
                                                         tickets[index]
                                                                 .groupSize <=
                                                             50) {
-                                                      return const SizedBox
-                                                          .shrink();
+                                                      return  const SizedBox.shrink();
                                                     }
                                                     return GestureDetector(
                                                       onTap: () {

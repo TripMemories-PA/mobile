@@ -5,12 +5,14 @@ import '../../constants/string_constants.dart';
 import '../../num_extensions.dart';
 import '../custom_card.dart';
 
+enum PopupType {ok, yesNo}
+
 class ConfirmationDialog extends StatelessWidget {
   const ConfirmationDialog({
     super.key,
     this.title,
     this.subtitle,
-    this.isOkPopUp = false,
+    this.popupType = PopupType.yesNo,
     this.content,
     this.height,
     this.width,
@@ -18,7 +20,7 @@ class ConfirmationDialog extends StatelessWidget {
 
   final String? title;
   final String? subtitle;
-  final bool? isOkPopUp;
+  final PopupType popupType;
   final Widget? content;
   final double? height;
   final double? width;
@@ -41,7 +43,7 @@ class ConfirmationDialog extends StatelessWidget {
               else
                 Text(title ?? StringConstants().confirmAction),
               16.ph,
-              if (isOkPopUp ?? false)
+              if (popupType == PopupType.ok)
                 Center(
                   child: TextButton(
                     child: Text(StringConstants().ok),
@@ -84,7 +86,7 @@ Future<bool> confirmationPopUp(
       builder: (_) => ConfirmationDialog(
         title: title,
         subtitle: subtitle,
-        isOkPopUp: isOkPopUp,
+        popupType: (isOkPopUp ?? false) ? PopupType.ok : PopupType.yesNo,
         content: content,
         height: height,
         width: width,

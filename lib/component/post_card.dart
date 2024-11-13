@@ -337,7 +337,7 @@ class PostCard extends HookWidget {
                         context,
                         title: StringConstants().confirmReportComment,
                       ).then((value) {
-                        if (value) {
+                        if (value && context.mounted) {
                           context
                               .read<PostBloc>()
                               .add(ReportPostEvent(post.id));

@@ -412,7 +412,7 @@ class _ActionButtons extends StatelessWidget {
               title: StringConstants().warning,
               content: Text(StringConstants().aboutToDeleteMeet),
             ).then((value) {
-              if (value) {
+              if (value && context.mounted) {
                 context.read<MeetBloc>().add(DeleteMeet(meetId: meet.id));
               }
             });

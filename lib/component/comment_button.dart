@@ -390,7 +390,7 @@ class CommentButtonContent extends HookWidget {
                               context,
                               title: StringConstants().confirmReportComment,
                             ).then((value) {
-                              if (value) {
+                              if (value && context.mounted) {
                                 context
                                     .read<CommentBloc>()
                                     .add(ReportCommentEvent(comment.id));

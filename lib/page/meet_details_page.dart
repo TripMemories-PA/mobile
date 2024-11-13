@@ -304,8 +304,8 @@ class _UserCardPaymentStatus extends StatelessWidget {
                     title: StringConstants().sureToKickUser,
                   ).then((choice) {
                     final int? meetId =
-                        context.read<MeetDetailsBloc>().state.meet?.id;
-                    if (choice && meetId != null) {
+                        context.mounted ? context.read<MeetDetailsBloc>().state.meet?.id : null;
+                    if (choice && meetId != null && context.mounted) {
                       context.read<MeetDetailsBloc>().add(
                             KickUser(
                               userId: user.id,
@@ -789,7 +789,7 @@ class _MeetDetailsBody extends HookWidget {
         }
         confirmationPopUp(context, title: StringConstants().sureToLeaveMeet)
             .then((choice) {
-          if (choice) {
+          if (choice && context.mounted) {
             context.read<MeetDetailsBloc>().add(LeaveMeetEvent());
           }
         });

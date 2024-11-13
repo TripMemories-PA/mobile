@@ -67,7 +67,7 @@ class QuestCard extends StatelessWidget {
                               context,
                               title: StringConstants().sureToDeleteQuest,
                             ).then(
-                              (value) => value
+                              (value) => (value && context.mounted)
                                   ? context
                                       .read<QuestBloc>()
                                       .add(DeleteQuestEvent(quest.id))

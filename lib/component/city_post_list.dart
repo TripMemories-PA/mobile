@@ -81,19 +81,19 @@ class _PostListContent extends HookWidget {
                                 PostStatus.error
                             ? const ShimmerPostAndMonumentResumeList()
                             : _buildErrorWidget(context))
-                        : Text(StringConstants().noMorePosts),
+                        : const Text(StringConstants.noMorePosts),
                   ),
                 ],
               ),
             );
           } else {
-            return Center(child: Text(StringConstants().noPostYet));
+            return const Center(child: Text(StringConstants.noPostYet));
           }
         } else if (state.selectedCityGetPostsStatus == PostStatus.loading) {
           return const Center(child: ShimmerPostAndMonumentResumeList());
         } else if (state.selectedCityGetPostsStatus == PostStatus.error) {
-          return Center(
-            child: Text(StringConstants().errorWhileLoadingPosts),
+          return const Center(
+            child: Text(StringConstants.errorWhileLoadingPosts),
           );
         } else {
           return Container();
@@ -105,10 +105,10 @@ class _PostListContent extends HookWidget {
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
+        const Text(StringConstants.errorAppendedWhileGettingData),
         ElevatedButton(
           onPressed: () => _getPostsRequest(context),
-          child: Text(StringConstants().retry),
+          child: const Text(StringConstants.retry),
         ),
       ],
     );

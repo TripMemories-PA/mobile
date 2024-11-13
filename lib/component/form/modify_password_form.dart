@@ -40,7 +40,7 @@ class UpdatePasswordForm extends HookWidget {
               textInputAction: TextInputAction.done,
               obscureText: hidePassword.value,
               decoration: InputDecoration(
-                hintText: StringConstants().password,
+                hintText: StringConstants.password,
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
@@ -71,7 +71,7 @@ class UpdatePasswordForm extends HookWidget {
               textInputAction: TextInputAction.done,
               obscureText: hideConfirmPassword.value,
               decoration: InputDecoration(
-                hintText: StringConstants().confirmPassword,
+                hintText: StringConstants.confirmPassword,
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
@@ -96,7 +96,7 @@ class UpdatePasswordForm extends HookWidget {
             onTap: () async {
               if (passwordController.text != confirmPasswordController.text) {
                 Messenger.showSnackBarError(
-                  StringConstants().passwordsDoNotMatch,
+                  StringConstants.passwordsDoNotMatch,
                 );
                 return;
               }
@@ -114,10 +114,10 @@ class UpdatePasswordForm extends HookWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              child: Center(
+              child: const Center(
                 child: Text(
-                  StringConstants().updatePassword,
-                  style: const TextStyle(color: Colors.white),
+                  StringConstants.updatePassword,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),

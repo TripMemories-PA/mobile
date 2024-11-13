@@ -99,7 +99,7 @@ class ChatPage extends HookWidget {
               maxLines: 4,
               controller: messageController,
               decoration: InputDecoration(
-                hintText: StringConstants().writeMessage,
+                hintText: StringConstants.writeMessage,
                 hintStyle: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontWeight: FontWeight.bold,
@@ -249,7 +249,7 @@ class ChatPage extends HookWidget {
         ),
         10.ph,
         Text(
-          '${conversationDto.users.length} ${StringConstants().participant}${conversationDto.users.length > 1 ? 's' : ''}',
+          '${conversationDto.users.length} ${StringConstants.participant}${conversationDto.users.length > 1 ? 's' : ''}',
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),

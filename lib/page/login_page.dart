@@ -20,7 +20,7 @@ class LoginPage extends HookWidget {
         body: Column(
           children: [
             _buildHeader(),
-            SizedBox(
+            const SizedBox(
               height: 60,
               child: TabBar(
                 dividerColor: Colors.transparent,
@@ -28,15 +28,15 @@ class LoginPage extends HookWidget {
                 tabs: [
                   Tab(
                     icon: Text(
-                      StringConstants().login,
-                      style: const TextStyle(fontSize: 17),
+                      StringConstants.login,
+                      style: TextStyle(fontSize: 17),
                     ),
                     iconMargin: EdgeInsets.zero,
                   ),
                   Tab(
                     icon: Text(
-                      StringConstants().subscribe,
-                      style: const TextStyle(fontSize: 17),
+                      StringConstants.subscribe,
+                      style: TextStyle(fontSize: 17),
                     ),
                   ),
                 ],
@@ -83,17 +83,17 @@ class LoginPage extends HookWidget {
           Column(
             children: [
               40.ph,
-              Text(
-                StringConstants().welcomeBack,
-                style: const TextStyle(
+              const Text(
+                StringConstants.welcomeBack,
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               15.ph,
-              Text(
-                StringConstants().typeYourInfos,
-                style: const TextStyle(
+              const Text(
+                StringConstants.typeYourInfos,
+                style: TextStyle(
                   fontSize: 16,
                 ),
               ),
@@ -116,17 +116,17 @@ class LoginPage extends HookWidget {
         children: [
           Column(
             children: [
-              Text(
-                StringConstants().readyToComeAboard,
-                style: const TextStyle(
+              const Text(
+                StringConstants.readyToComeAboard,
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               15.ph,
-              Text(
-                StringConstants().subscribeText,
-                style: const TextStyle(
+              const Text(
+                StringConstants.subscribeText,
+                style: TextStyle(
                   fontSize: 13,
                 ),
               ),

@@ -5,22 +5,22 @@ class AuthError extends ApiError {
   const AuthError(super.description);
 
   static AuthError wrongEmailOrPassword() {
-    return AuthError(StringConstants().wrongEmailOrPassword);
+    return const AuthError(StringConstants.wrongEmailOrPassword);
   }
 
   static AuthError alreadyExists() {
-    return AuthError(StringConstants().emailOrUsernameAlreadyExists);
+    return const AuthError(StringConstants.emailOrUsernameAlreadyExists);
   }
 
   static AuthError notAuthenticated() {
-    return AuthError(StringConstants().notAuthenticated);
+    return const AuthError(StringConstants.notAuthenticated);
   }
 
   static AuthError errorOccurredWhileLoggingIn() {
-    return AuthError(StringConstants().errorOccurredWhileLoggingIn);
+    return const AuthError(StringConstants.errorOccurredWhileLoggingIn);
   }
 
   static AuthError tokenExpired() {
-    return AuthError(StringConstants().tokenExpired);
+    return const AuthError(StringConstants.tokenExpired);
   }
 }

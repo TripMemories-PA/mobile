@@ -11,23 +11,23 @@ class FieldValidator {
     int? minLenghtValue,
   }) {
     if (value == null || value.isEmpty) {
-      return StringConstants().requiredField;
+      return StringConstants.requiredField;
     }
 
     if (minLenghtValue != null && value.length < minLenghtValue) {
-      return '${StringConstants().fieldMustContainsAtLeast} $minLenghtValue ${StringConstants().characters}';
+      return '${StringConstants.fieldMustContainsAtLeast} $minLenghtValue ${StringConstants.characters}';
     }
     return null;
   }
 
   static String? validatePassword(dynamic value) {
     if (value == null || value.isEmpty) {
-      return StringConstants().requiredField;
+      return StringConstants.requiredField;
     }
 
     final password = value.toString();
 
-    final String phrase = StringConstants().passwordValidator;
+    const String phrase = StringConstants.passwordValidator;
 
     if (password.length < 8 ||
         password.length > 16 ||
@@ -51,19 +51,19 @@ class FieldValidator {
       return valid;
     }
     if (password != confirmPassword) {
-      return StringConstants().passwordsDoNotMatch;
+      return StringConstants.passwordsDoNotMatch;
     }
     return null;
   }
 
   static String? validateEmail(String email) {
     if (email.isEmpty) {
-      return StringConstants().requiredField;
+      return StringConstants.requiredField;
     } else {
       final isValidEmail =
           RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(email);
       if (!isValidEmail) {
-        return StringConstants().invalidEmail;
+        return StringConstants.invalidEmail;
       }
       return null;
     }
@@ -71,13 +71,13 @@ class FieldValidator {
 
   static String? validateIntFormat(String? value) {
     if (value == null || value.isEmpty) {
-      return StringConstants().requiredField;
+      return StringConstants.requiredField;
     }
     try {
       int.parse(value);
       return null;
     } catch (e) {
-      return StringConstants().valueMustBeANumber;
+      return StringConstants.valueMustBeANumber;
     }
   }
 }

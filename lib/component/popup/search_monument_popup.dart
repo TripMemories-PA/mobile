@@ -122,9 +122,9 @@ class _Body extends HookWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           30.pw,
-          Text(
-            StringConstants().searchMonuments,
-            style: const TextStyle(
+          const Text(
+            StringConstants.searchMonuments,
+            style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),

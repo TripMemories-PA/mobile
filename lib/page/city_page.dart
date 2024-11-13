@@ -145,9 +145,9 @@ class _PageContent extends HookWidget {
             unselectedLabelColor: MyColors.darkGrey,
             controller: tabController,
             indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Tab(text: StringConstants().monuments),
-              Tab(text: StringConstants().actu),
+            tabs: const [
+              Tab(text: StringConstants.monuments),
+              Tab(text: StringConstants.actu),
             ],
             dividerColor: Colors.transparent,
           ),
@@ -194,7 +194,7 @@ class _PageContent extends HookWidget {
           ),
           10.ph,
           Text(
-            '${StringConstants().monuments} ${StringConstants().of} ${city.name}',
+            '${StringConstants.monuments} ${StringConstants.of} ${city.name}',
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -219,7 +219,7 @@ class _PageContent extends HookWidget {
                                     CityStatus.error
                                 ? const ShimmerPostAndMonumentResume()
                                 : _buildErrorWidget(context))
-                            : Text(StringConstants().noMorePosts),
+                            : const Text(StringConstants.noMorePosts),
                   ),
                 ],
               );
@@ -241,10 +241,10 @@ class _PageContent extends HookWidget {
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
+        const Text(StringConstants.errorAppendedWhileGettingData),
         ElevatedButton(
           onPressed: () => _getPosts(context, true),
-          child: Text(StringConstants().retry),
+          child: const Text(StringConstants.retry),
         ),
       ],
     );

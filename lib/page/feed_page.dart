@@ -80,9 +80,9 @@ class FeedPage extends HookWidget {
             minWidth: 170.0,
           ),
           isSelected: generalFeedSelected.value ? [false, true] : [true, false],
-          children: <Widget>[
-            Text(StringConstants().myFeed),
-            Text(StringConstants().generalFeed),
+          children: const <Widget>[
+            Text(StringConstants.myFeed),
+            Text(StringConstants.generalFeed),
           ],
         ),
       ),

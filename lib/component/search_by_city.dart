@@ -90,7 +90,7 @@ class SearchByCity extends HookWidget {
                 child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
-                    text: '${StringConstants().discoverTheIncredible} ',
+                    text: '${StringConstants.discoverTheIncredible} ',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -98,7 +98,7 @@ class SearchByCity extends HookWidget {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: StringConstants().cities,
+                        text: StringConstants.cities,
                         style: TextStyle(
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
@@ -106,7 +106,7 @@ class SearchByCity extends HookWidget {
                         ),
                       ),
                       TextSpan(
-                        text: ' ${StringConstants().thatFranceIsHiding}',
+                        text: ' ${StringConstants.thatFranceIsHiding}',
                         style: TextStyle(
                           fontFamily: GoogleFonts.urbanist().fontFamily,
                         ),

@@ -44,12 +44,12 @@ class ModifyUserInfosForm extends HookWidget {
             child: TextFormField(
               textCapitalization: TextCapitalization.sentences,
               textInputAction: TextInputAction.done,
-              decoration: InputDecoration(
-                hintText: StringConstants().username,
+              decoration: const InputDecoration(
+                hintText: StringConstants.username,
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
-                prefixIcon: const Icon(Icons.person_outline),
+                prefixIcon: Icon(Icons.person_outline),
               ),
               textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validateRequired(
@@ -71,12 +71,12 @@ class ModifyUserInfosForm extends HookWidget {
             child: TextFormField(
               textCapitalization: TextCapitalization.sentences,
               textInputAction: TextInputAction.done,
-              decoration: InputDecoration(
-                hintText: StringConstants().lastName,
+              decoration: const InputDecoration(
+                hintText: StringConstants.lastName,
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
-                prefixIcon: const Icon(Icons.person_outline),
+                prefixIcon: Icon(Icons.person_outline),
               ),
               textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validateRequired(
@@ -96,12 +96,12 @@ class ModifyUserInfosForm extends HookWidget {
               ),
             ),
             child: TextFormField(
-              decoration: InputDecoration(
-                hintText: StringConstants().firstName,
+              decoration: const InputDecoration(
+                hintText: StringConstants.firstName,
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
-                prefixIcon: const Icon(Icons.person_outline),
+                prefixIcon: Icon(Icons.person_outline),
               ),
               textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validateRequired(
@@ -121,12 +121,12 @@ class ModifyUserInfosForm extends HookWidget {
               ),
             ),
             child: TextFormField(
-              decoration: InputDecoration(
-                hintText: StringConstants().email,
+              decoration: const InputDecoration(
+                hintText: StringConstants.email,
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
-                prefixIcon: const Icon(Icons.alternate_email),
+                prefixIcon: Icon(Icons.alternate_email),
               ),
               textAlignVertical: TextAlignVertical.center,
               validator: (value) => FieldValidator.validateEmail(value!),
@@ -156,10 +156,10 @@ class ModifyUserInfosForm extends HookWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              child: Center(
+              child: const Center(
                 child: Text(
-                  StringConstants().modifyInfos,
-                  style: const TextStyle(color: Colors.white),
+                  StringConstants.modifyInfos,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),

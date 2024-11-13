@@ -53,7 +53,7 @@ class _LoadingButtonState extends State<LoadingButton> {
     try {
       await widget.onPressed!();
     } catch (e, s) {
-      Messenger.showSnackBarError(StringConstants().errorOccurred);
+      Messenger.showSnackBarError(StringConstants.errorOccurred);
       log(e.toString(), error: e, stackTrace: s);
       rethrow;
     } finally {

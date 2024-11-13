@@ -48,7 +48,7 @@ class FeedComponent extends HookWidget {
         listener: (context, state) {
           if (state.status == PostStatus.postReported) {
             Messenger.showSnackBarSuccess(
-              StringConstants().thankyouForYourFeedback,
+              StringConstants.thankyouForYourFeedback,
             );
           }
         },
@@ -193,7 +193,7 @@ class PostList extends StatelessWidget {
                     ? (context.read<PostBloc>().state.status != PostStatus.error
                         ? const ShimmerPostAndMonumentResume()
                         : _buildErrorWidget(context))
-                    : Text(StringConstants().noMorePosts),
+                    : const Text(StringConstants.noMorePosts),
               ),
             ],
           ),
@@ -203,7 +203,7 @@ class PostList extends StatelessWidget {
           child: SizedBox(
             height: MediaQuery.of(context).size.height * 0.5,
             width: MediaQuery.of(context).size.width * 0.5,
-            child: Text(StringConstants().noPostYet),
+            child: const Text(StringConstants.noPostYet),
           ),
         );
       }
@@ -212,8 +212,8 @@ class PostList extends StatelessWidget {
       return const Center(child: ShimmerPostAndMonumentResume());
     } else if (context.read<PostBloc>().state.getMorePostsStatus ==
         PostStatus.error) {
-      return Center(
-        child: Text(StringConstants().errorWhileLoadingPosts),
+      return const Center(
+        child: Text(StringConstants.errorWhileLoadingPosts),
       );
     } else {
       return Container(
@@ -224,10 +224,10 @@ class PostList extends StatelessWidget {
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
+        const Text(StringConstants.errorAppendedWhileGettingData),
         ElevatedButton(
           onPressed: () => _getPostsRequest(context),
-          child: Text(StringConstants().retry),
+          child: const Text(StringConstants.retry),
         ),
       ],
     );

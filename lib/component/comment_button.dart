@@ -120,7 +120,7 @@ class CommentButtonContent extends HookWidget {
           } else if (state.status == CommentStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state.commentResponse == null) {
-            return Text(StringConstants().noComments);
+            return const Text(StringConstants.noComments);
           } else {
             return ListView(
               children: [
@@ -129,7 +129,7 @@ class CommentButtonContent extends HookWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 30.0),
                     child: Text(
-                      StringConstants().comments,
+                      StringConstants.comments,
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                   ),
@@ -163,11 +163,11 @@ class CommentButtonContent extends HookWidget {
                                         .read<CommentBloc>()
                                         .add(GetCommentsEvent());
                                   },
-                                  child: Text(
-                                    StringConstants().loadMoreResults,
+                                  child: const Text(
+                                    StringConstants.loadMoreResults,
                                   ),
                                 )
-                              : Text(StringConstants().noMoreComments),
+                              : const Text(StringConstants.noMoreComments),
                         ),
                         20.ph,
                       ],
@@ -188,10 +188,10 @@ class CommentButtonContent extends HookWidget {
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
+        const Text(StringConstants.errorAppendedWhileGettingData),
         ElevatedButton(
           onPressed: () => _getComments(context),
-          child: Text(StringConstants().retry),
+          child: const Text(StringConstants.retry),
         ),
       ],
     );
@@ -213,12 +213,12 @@ class CommentButtonContent extends HookWidget {
                 );
               } else if (state.addCommentStatus ==
                   CommentStatus.commentPosted) {
-                Messenger.showSnackBarSuccess(StringConstants().postedComment);
+                Messenger.showSnackBarSuccess(StringConstants.postedComment);
                 controller.clear();
               }
               if (state.status == CommentStatus.reported) {
                 Messenger.showSnackBarSuccess(
-                  StringConstants().thankyouForYourFeedback,
+                  StringConstants.thankyouForYourFeedback,
                 );
               }
             },
@@ -325,7 +325,7 @@ class CommentButtonContent extends HookWidget {
                     onPressed: () async {
                       final bool result = await confirmationPopUp(
                         context,
-                        title: StringConstants().sureToDeleteComment,
+                        title: StringConstants.sureToDeleteComment,
                       );
                       if (!result) {
                         return;
@@ -382,13 +382,13 @@ class CommentButtonContent extends HookWidget {
                           onPressed: () {
                             if (comment.isReported ?? false) {
                               Messenger.showSnackBarError(
-                                StringConstants().alreadyReported,
+                                StringConstants.alreadyReported,
                               );
                               return;
                             }
                             confirmationPopUp(
                               context,
-                              title: StringConstants().confirmReportComment,
+                              title: StringConstants.confirmReportComment,
                             ).then((value) {
                               if (value && context.mounted) {
                                 context

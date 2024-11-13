@@ -126,10 +126,10 @@ class ProfilePage extends HookWidget {
             unselectedLabelColor: MyColors.darkGrey,
             controller: tabController,
             indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Tab(text: StringConstants().myFriends),
-              Tab(text: StringConstants().myPosts),
-              Tab(text: StringConstants().myTickets),
+            tabs: const [
+              Tab(text: StringConstants.myFriends),
+              Tab(text: StringConstants.myPosts),
+              Tab(text: StringConstants.myTickets),
             ],
           ),
         ),
@@ -161,17 +161,17 @@ class ProfilePage extends HookWidget {
                 if (state.status == ProfileStatus.error) {
                   Messenger.showSnackBarError(
                     state.error?.getDescription() ??
-                        StringConstants().errorWhilePostingComment,
+                        StringConstants.errorWhilePostingComment,
                   );
                 }
                 if (state.status == ProfileStatus.updated) {
                   Messenger.showSnackBarSuccess(
-                    StringConstants().profileUpdated,
+                    StringConstants.profileUpdated,
                   );
                 }
                 if (state.status == ProfileStatus.postDeleted) {
                   Messenger.showSnackBarSuccess(
-                    StringConstants().postDeleted,
+                    StringConstants.postDeleted,
                   );
                 }
               },

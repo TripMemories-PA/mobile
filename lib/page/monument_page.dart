@@ -124,7 +124,7 @@ class _PageContent extends HookWidget {
         ),
         15.ph,
         Text(
-          '${StringConstants().lastPostsFrom} ${monument.name}',
+          '${StringConstants.lastPostsFrom} ${monument.name}',
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -166,7 +166,7 @@ class _PageContent extends HookWidget {
                                     MonumentStatus.error
                                 ? const ShimmerPostAndMonumentResume()
                                 : _buildErrorWidget(context))
-                            : Text(StringConstants().noMorePosts),
+                            : const Text(StringConstants.noMorePosts),
                       ),
                     ],
                   );
@@ -182,10 +182,10 @@ class _PageContent extends HookWidget {
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
+        const Text(StringConstants.errorAppendedWhileGettingData),
         ElevatedButton(
           onPressed: () => _getPosts(context, true),
-          child: Text(StringConstants().retry),
+          child: const Text(StringConstants.retry),
         ),
       ],
     );

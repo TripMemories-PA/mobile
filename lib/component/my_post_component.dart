@@ -35,7 +35,7 @@ class MyPostsComponents extends StatelessWidget {
               ),
             );
           } else {
-            return Center(child: Text(StringConstants().noPostYet));
+            return const Center(child: Text(StringConstants.noPostYet));
           }
         } else if (state.status == PostStatus.loading) {
           return Center(
@@ -46,8 +46,8 @@ class MyPostsComponents extends StatelessWidget {
             ),
           );
         } else if (state.getMorePostsStatus == PostStatus.error) {
-          return Center(
-            child: Text(StringConstants().errorWhileLoadingPosts),
+          return const Center(
+            child: Text(StringConstants.errorWhileLoadingPosts),
           );
         } else {
           return Container();

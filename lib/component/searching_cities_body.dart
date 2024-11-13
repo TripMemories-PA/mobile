@@ -45,7 +45,7 @@ class SearchingCityBody extends HookWidget {
             context: context,
             searching: searching,
             searchContent: searchContent,
-            hintText: StringConstants().searchCities,
+            hintText: StringConstants.searchCities,
             onSearch: (value) {
               context.read<CityBloc>().add(
                     GetCitiesEvent(
@@ -72,7 +72,7 @@ class SearchingCityBody extends HookWidget {
         } else if (state.status == CityStatus.loading) {
           return const Center(child: ShimmerPostAndMonumentResumeGrid());
         } else if (state.cities.isEmpty) {
-          return Text(StringConstants().noCityFound);
+          return const Text(StringConstants.noCityFound);
         } else {
           return Column(
             children: [
@@ -81,7 +81,7 @@ class SearchingCityBody extends HookWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    '${state.cities.length} ${StringConstants().result}${state.cities.length > 1 ? 's' : ''}',
+                    '${state.cities.length} ${StringConstants.result}${state.cities.length > 1 ? 's' : ''}',
                     style: const TextStyle(
                       color: MyColors.darkGrey,
                     ),
@@ -118,10 +118,10 @@ class SearchingCityBody extends HookWidget {
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
+        const Text(StringConstants.errorAppendedWhileGettingData),
         ElevatedButton(
           onPressed: () => _getMonumentsRequest(context),
-          child: Text(StringConstants().retry),
+          child: const Text(StringConstants.retry),
         ),
       ],
     );

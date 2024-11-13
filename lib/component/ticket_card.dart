@@ -79,7 +79,7 @@ class TicketCardAdmin extends StatelessWidget {
                     ),
                     5.ph,
                     Text(
-                      '${StringConstants().groupSize}: ${article.groupSize}',
+                      '${StringConstants.groupSize}: ${article.groupSize}',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
                         fontSize: 10,
@@ -98,7 +98,7 @@ class TicketCardAdmin extends StatelessWidget {
                           color: Theme.of(context).colorScheme.primary,
                         ),
                         Text(
-                          '${article.quantity} ${article.quantity > 1 ? StringConstants().leftTickets : StringConstants().leftTicket}',
+                          '${article.quantity} ${article.quantity > 1 ? StringConstants.leftTickets : StringConstants.leftTicket}',
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class TicketCardAdmin extends StatelessWidget {
     return BouncingWidget(
       onTap: () {
         Messenger.showSnackBarSuccess(
-          StringConstants().addedToCart,
+          StringConstants.addedToCart,
         );
         context.read<CartBloc>().add(
               AddArticle(
@@ -144,7 +144,7 @@ class TicketCardAdmin extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            StringConstants().addArticle,
+            StringConstants.addArticle,
             style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
           ),
         ),
@@ -168,7 +168,7 @@ class TicketCardAdmin extends StatelessWidget {
               ).then((bool result) {
                 if (result) {
                   Messenger.showSnackBarSuccess(
-                    StringConstants().modifiedArticle,
+                    StringConstants.modifiedArticle,
                   );
                 }
               });
@@ -179,7 +179,7 @@ class TicketCardAdmin extends StatelessWidget {
             onPressed: () async {
               await confirmationPopUp(
                 context,
-                title: StringConstants().doYouReallyWantToDeleteThisArticle,
+                title: StringConstants.doYouReallyWantToDeleteThisArticle,
                 isOkPopUp: false,
               ).then((bool result) {
                 if (result && context.mounted) {

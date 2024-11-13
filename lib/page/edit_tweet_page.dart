@@ -51,7 +51,7 @@ class EditTweetPage extends HookWidget {
         selectedMonument == null ||
         rating == 0.0) {
       Messenger.showSnackBarError(
-        StringConstants().pleaseFillAllFields,
+        StringConstants.pleaseFillAllFields,
       );
       return;
     }
@@ -91,7 +91,7 @@ class EditTweetPage extends HookWidget {
                           );
                         } else if (state.status == EditTweetStatus.posted) {
                           Messenger.showSnackBarSuccess(
-                            StringConstants().tweetPosted,
+                            StringConstants.tweetPosted,
                           );
                           context.pop();
                         }
@@ -152,14 +152,14 @@ class EditTweetPage extends HookWidget {
                         children: [
                           _buildTitle(context, titleController),
                           10.ph,
-                          Text(
-                            StringConstants().rateYourExperience,
+                          const Text(
+                            StringConstants.rateYourExperience,
                             textAlign: TextAlign.left,
                           ),
                           _buildRatingBar(context, rating),
                           10.ph,
                           Text(
-                            StringConstants().myExperience,
+                            StringConstants.myExperience,
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onSurface,
                               fontSize: 25,
@@ -170,7 +170,7 @@ class EditTweetPage extends HookWidget {
                           _buildPostText(context, contentController),
                           10.ph,
                           Text(
-                            StringConstants().location,
+                            StringConstants.location,
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onSurface,
                               fontSize: 25,
@@ -207,7 +207,7 @@ class EditTweetPage extends HookWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    StringConstants().publish,
+                                    StringConstants.publish,
                                     style: TextStyle(
                                       color:
                                           Theme.of(context).colorScheme.surface,
@@ -260,7 +260,7 @@ class EditTweetPage extends HookWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
           child: Text(
-            StringConstants().addPhoto,
+            StringConstants.addPhoto,
             style: TextStyle(
               color: Theme.of(context).colorScheme.surface,
             ),
@@ -299,7 +299,7 @@ class EditTweetPage extends HookWidget {
               content: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
-                  StringConstants().addLocation,
+                  StringConstants.addLocation,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.surface,
                   ),
@@ -365,14 +365,14 @@ class EditTweetPage extends HookWidget {
         maxLength: 40,
         textAlign: TextAlign.left,
         textAlignVertical: TextAlignVertical.center,
-        decoration: InputDecoration(
-          hintText: StringConstants().addTitle,
+        decoration: const InputDecoration(
+          hintText: StringConstants.addTitle,
           counterText: '',
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
           contentPadding:
-              const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+              EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
         ),
       ),
     );
@@ -395,10 +395,10 @@ class EditTweetPage extends HookWidget {
         controller: textEditingController,
         maxLength: 500,
         maxLines: null,
-        decoration: InputDecoration(
-          hintText: StringConstants().shareYourExperience,
+        decoration: const InputDecoration(
+          hintText: StringConstants.shareYourExperience,
           counterText: '',
-          contentPadding: const EdgeInsets.all(
+          contentPadding: EdgeInsets.all(
             12.0,
           ),
           border: InputBorder.none,
@@ -481,7 +481,7 @@ class EditTweetPage extends HookWidget {
               ),
               10.pw,
               Text(
-                StringConstants().back,
+                StringConstants.back,
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
                   fontSize: 11,
@@ -501,7 +501,7 @@ class EditTweetPage extends HookWidget {
           content: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
-              StringConstants().publish,
+              StringConstants.publish,
               style: TextStyle(color: Theme.of(context).colorScheme.surface),
             ),
           ),

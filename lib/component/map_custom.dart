@@ -504,7 +504,7 @@ class _MapCustomState extends State<MapCustom> {
                             onRatingUpdate: (double value) {},
                           ),
                           Text(
-                            '(${selectedPoi.postsCount} ${StringConstants().reviews}',
+                            '(${selectedPoi.postsCount} ${StringConstants.reviews}',
                             style: TextStyle(
                               fontSize: 9,
                               color: Theme.of(context).colorScheme.primary,
@@ -629,7 +629,7 @@ class _MapCustomState extends State<MapCustom> {
                         maxLines: 2,
                       ),
                       Text(
-                        '${selectedProfile.poisCount?.toString() ?? 0} ${StringConstants().visitedBuildings}',
+                        '${selectedProfile.poisCount?.toString() ?? 0} ${StringConstants.visitedBuildings}',
                       ),
                       10.ph,
                     ],
@@ -704,7 +704,7 @@ class _SearchOnMap extends HookWidget {
       child: Column(
         children: [
           SearchBarCustom(
-            hintText: StringConstants().searchMonuments,
+            hintText: StringConstants.searchMonuments,
             searchController: searchController,
             context: context,
             searching: searching,
@@ -797,10 +797,10 @@ class _SearchOnMap extends HookWidget {
                                                   MonumentStatus.error
                                               ? _buildErrorWidget(context)
                                               : const SizedBox.shrink()))
-                                      : SizedBox(
+                                      : const SizedBox(
                                           width: double.infinity,
                                           child: Text(
-                                            StringConstants().noMoreMonuments,
+                                            StringConstants.noMoreMonuments,
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
@@ -824,7 +824,7 @@ class _SearchOnMap extends HookWidget {
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
+        const Text(StringConstants.errorAppendedWhileGettingData),
         ElevatedButton(
           onPressed: () => {
             context.read<MonumentBloc>().add(
@@ -834,7 +834,7 @@ class _SearchOnMap extends HookWidget {
                   ),
                 ),
           },
-          child: Text(StringConstants().retry),
+          child: const Text(StringConstants.retry),
         ),
       ],
     );

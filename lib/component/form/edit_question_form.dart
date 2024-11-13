@@ -78,13 +78,13 @@ class EditQuestionForm extends HookWidget {
             textInputAction: TextInputAction.done,
             maxLines: 3,
             controller: questionController,
-            decoration: InputDecoration(
-              labelText: StringConstants().questionCap,
-              border: const OutlineInputBorder(),
+            decoration: const InputDecoration(
+              labelText: StringConstants.questionCap,
+              border: OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return StringConstants().requiredField;
+                return StringConstants.requiredField;
               }
               return null;
             },
@@ -140,12 +140,12 @@ class EditQuestionForm extends HookWidget {
                           controller: entry.value,
                           decoration: InputDecoration(
                             labelText:
-                                '${StringConstants().answer} ${entry.key + 1}',
+                                '${StringConstants.answer} ${entry.key + 1}',
                             border: const OutlineInputBorder(),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return StringConstants().requiredField;
+                              return StringConstants.requiredField;
                             }
                             return null;
                           },
@@ -184,7 +184,7 @@ class EditQuestionForm extends HookWidget {
               ),
             ),
           20.ph,
-          Center(child: Text(StringConstants().selectRightAnswer)),
+          const Center(child: Text(StringConstants.selectRightAnswer)),
           10.ph,
           Center(
             child: ToggleButtons(
@@ -213,14 +213,14 @@ class EditQuestionForm extends HookWidget {
                 onPressed: () {
                   String? message;
                   if (answersControllers.value.length < 2) {
-                    message = StringConstants().addAtLeastTwoAnswers;
+                    message = StringConstants.addAtLeastTwoAnswers;
                   } else if (answersControllers.value
                       .any((element) => element.text.isEmpty)) {
-                    message = StringConstants().fillAllAnswers;
+                    message = StringConstants.fillAllAnswers;
                   } else if (questionController.text.isEmpty) {
-                    message = StringConstants().fillQuestion;
+                    message = StringConstants.fillQuestion;
                   } else if (selectedAnswerIndex.value == null) {
-                    message = StringConstants().selectRightAnswer;
+                    message = StringConstants.selectRightAnswer;
                   }
                   if (message != null) {
                     confirmationPopUp(
@@ -262,8 +262,8 @@ class EditQuestionForm extends HookWidget {
                 },
                 child: Text(
                   question != null
-                      ? StringConstants().update
-                      : StringConstants().add,
+                      ? StringConstants.update
+                      : StringConstants.add,
                 ),
               ),
             ],
@@ -332,7 +332,7 @@ class EditQuestionForm extends HookWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
           child: Text(
-            StringConstants().addPhoto,
+            StringConstants.addPhoto,
             style: TextStyle(
               color: Theme.of(context).colorScheme.surface,
             ),

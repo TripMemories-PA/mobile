@@ -28,7 +28,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       controller: widget.passwordController,
       obscureText: hidePassword,
       decoration: InputDecoration(
-        hintText: StringConstants().password,
+        hintText: StringConstants.password,
         prefixIcon: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.0),
           child: Icon(Icons.lock_outline),

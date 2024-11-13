@@ -42,36 +42,36 @@ class ScaffoldWithNavBar extends StatelessWidget {
       unselectedItemColor: Colors.grey,
       elevation: 0,
       type: BottomNavigationBarType.fixed,
-      items: <BottomNavigationBarItem>[
+      items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: const Icon(
+          icon: Icon(
             Icons.search_outlined,
           ),
-          label: StringConstants().search,
+          label: StringConstants.search,
         ),
         BottomNavigationBarItem(
-          icon: const Icon(
+          icon: Icon(
             Icons.location_on_outlined,
           ),
-          label: StringConstants().map,
+          label: StringConstants.map,
         ),
         BottomNavigationBarItem(
-          icon: const Icon(
+          icon: Icon(
             Icons.notifications_outlined,
           ),
-          label: StringConstants().feed,
+          label: StringConstants.feed,
         ),
         BottomNavigationBarItem(
-          icon: const Icon(
+          icon: Icon(
             Icons.emoji_events_outlined,
           ),
-          label: StringConstants().ranking,
+          label: StringConstants.ranking,
         ),
         BottomNavigationBarItem(
-          icon: const Icon(
+          icon: Icon(
             Icons.person_outline,
           ),
-          label: StringConstants().profile,
+          label: StringConstants.profile,
         ),
       ],
       currentIndex: navigationShell.currentIndex,

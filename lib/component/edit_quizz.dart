@@ -43,7 +43,7 @@ class EditQuiz extends StatelessWidget {
                   children: [
                     const Spacer(),
                     Text(
-                      StringConstants().editQuiz,
+                      StringConstants.editQuiz,
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -100,10 +100,10 @@ class EditQuiz extends StatelessWidget {
                                             GetMyQuizEvent(),
                                           ),
                                   child:
-                                      Text(StringConstants().loadMoreResults),
+                                      const Text(StringConstants.loadMoreResults),
                                 );
                               } else {
-                                return Text(StringConstants().noMoreQuestions);
+                                return const Text(StringConstants.noMoreQuestions);
                               }
                           }
                         },
@@ -118,18 +118,18 @@ class EditQuiz extends StatelessWidget {
           switch (state.smallEvent) {
             case EditQuizSmallEvent.deleteQuestion:
               Messenger.showSnackBarSuccess(
-                StringConstants().questionDeleted,
+                StringConstants.questionDeleted,
               );
             case null:
               break;
 
             case EditQuizSmallEvent.updateQuestion:
               Messenger.showSnackBarSuccess(
-                StringConstants().questionUpdated,
+                StringConstants.questionUpdated,
               );
             case EditQuizSmallEvent.postQuestion:
               Messenger.showSnackBarSuccess(
-                StringConstants().questionAdded,
+                StringConstants.questionAdded,
               );
           }
           if (state.error != null) {
@@ -185,7 +185,7 @@ class EditQuestionWidget extends StatelessWidget {
               onPressed: () async {
                 final bool result = await confirmationPopUp(
                   context,
-                  title: StringConstants().sureToDeleteQuestion,
+                  title: StringConstants.sureToDeleteQuestion,
                 );
                 if (!result) {
                   return;

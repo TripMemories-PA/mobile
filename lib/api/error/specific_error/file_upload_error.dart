@@ -5,6 +5,6 @@ class FileUploadError extends ApiError {
   const FileUploadError(super.description);
 
   static FileUploadError badImageFormat() {
-    return FileUploadError(StringConstants().badImageFormat);
+    return const FileUploadError(StringConstants.badImageFormat);
   }
 }

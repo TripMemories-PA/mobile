@@ -255,7 +255,7 @@ class PostCard extends HookWidget {
                         AuthStatus.guest) {
                       await confirmationPopUp(
                         context,
-                        title: StringConstants().pleaseLogin,
+                        title: StringConstants.pleaseLogin,
                         isOkPopUp: true,
                       );
                     } else {
@@ -302,7 +302,7 @@ class PostCard extends HookWidget {
                     onPressed: () async {
                       final bool result = await confirmationPopUp(
                         context,
-                        title: StringConstants().sureToDeletePost,
+                        title: StringConstants.sureToDeletePost,
                       );
                       if (!result) {
                         return;
@@ -329,13 +329,13 @@ class PostCard extends HookWidget {
                     onPressed: () {
                       if (post.isReported ?? false) {
                         Messenger.showSnackBarError(
-                          StringConstants().alreadyReported,
+                          StringConstants.alreadyReported,
                         );
                         return;
                       }
                       confirmationPopUp(
                         context,
-                        title: StringConstants().confirmReportComment,
+                        title: StringConstants.confirmReportComment,
                       ).then((value) {
                         if (value && context.mounted) {
                           context

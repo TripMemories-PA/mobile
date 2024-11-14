@@ -25,6 +25,7 @@ class MonumentResumeList extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return GridView.builder(
+          cacheExtent: 60,
           controller: monumentsScrollController,
           padding: const EdgeInsets.all(10.0),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

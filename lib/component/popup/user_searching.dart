@@ -122,7 +122,7 @@ class SearchingUsersBody extends HookWidget {
               context: context,
               searching: searching,
               searchContent: searchContent,
-              hintText: StringConstants().searchFriends,
+              hintText: StringConstants.searchFriends,
               onSearch: (value) {
                 context.read<UserSearchingBloc>().add(
                       SearchUsersEvent(
@@ -148,7 +148,7 @@ class SearchingUsersBody extends HookWidget {
                       ),
                     ),
                     15.pw,
-                    Text(StringConstants().or),
+                    const Text(StringConstants.or),
                     15.pw,
                     Container(
                       height: 3,
@@ -184,7 +184,7 @@ class SearchingUsersBody extends HookWidget {
             ),
           );
         } else if (state.usersSearchByName?.data == null) {
-          return Text(StringConstants().noUserFound);
+          return const Text(StringConstants.noUserFound);
         } else {
           return Column(
             children: [
@@ -193,7 +193,7 @@ class SearchingUsersBody extends HookWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    '${state.usersSearchByName!.data.length} ${StringConstants().result}${state.usersSearchByName!.data.length > 1 ? 's' : ''}',
+                    '${state.usersSearchByName!.data.length} ${StringConstants.result}${state.usersSearchByName!.data.length > 1 ? 's' : ''}',
                     style: const TextStyle(
                       color: MyColors.darkGrey,
                     ),
@@ -217,10 +217,10 @@ class SearchingUsersBody extends HookWidget {
                                     ),
                                   );
                             },
-                            child: Text(StringConstants().showMoreResults),
+                            child: const Text(StringConstants.showMoreResults),
                           )
                         : _buildErrorWidget(context))
-                    : Text(StringConstants().noMoreUsers),
+                    : const Text(StringConstants.noMoreUsers),
               ),
               if (state.searchingUserByNameStatus ==
                   UserSearchingStatus.loading)
@@ -242,13 +242,13 @@ class SearchingUsersBody extends HookWidget {
     TextEditingController searchController,
     ValueNotifier<String> searchContent,
   ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          StringConstants().addFriends,
-          style: const TextStyle(
+          StringConstants.addFriends,
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -262,11 +262,11 @@ class SearchingUsersBody extends HookWidget {
       builder: (context, state) {
         return Column(
           children: [
-            Align(
+            const Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                StringConstants().youCouldKnow,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                StringConstants.youCouldKnow,
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             30.ph,
@@ -286,13 +286,13 @@ class SearchingUsersBody extends HookWidget {
                           ),
                         )
                       : _buildErrorWidget(context))
-                  : Text(StringConstants().noMoreUsers),
+                  : const Text(StringConstants.noMoreUsers),
             ),
             BlocListener<UserSearchingBloc, UserSearchingState>(
               listener: (context, state) {
                 if (state.status == UserSearchingStatus.requestSent) {
                   Messenger.showSnackBarQuickInfo(
-                    StringConstants().friendRequestSent,
+                    StringConstants.friendRequestSent,
                     context,
                   );
                 }
@@ -308,10 +308,10 @@ class SearchingUsersBody extends HookWidget {
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
+        const Text(StringConstants.errorAppendedWhileGettingData),
         ElevatedButton(
           onPressed: () => _getUsersRequest(context),
-          child: Text(StringConstants().retry),
+          child: const Text(StringConstants.retry),
         ),
       ],
     );

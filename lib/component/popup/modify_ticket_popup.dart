@@ -53,8 +53,8 @@ class TicketFormPopup extends HookWidget {
                         children: [
                           Text(
                             article != null
-                                ? StringConstants().modifyArticle
-                                : StringConstants().addArticle,
+                                ? StringConstants.modifyArticle
+                                : StringConstants.addArticle,
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -64,7 +64,7 @@ class TicketFormPopup extends HookWidget {
                           CustomCard(
                             width: 100,
                             content: Text(
-                              StringConstants().close,
+                              StringConstants.close,
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.surface,
                               ),
@@ -103,8 +103,8 @@ class TicketFormPopup extends HookWidget {
                                   textCapitalization:
                                       TextCapitalization.sentences,
                                   controller: articleTitleController,
-                                  decoration: InputDecoration(
-                                    hintText: StringConstants().title,
+                                  decoration: const InputDecoration(
+                                    hintText: StringConstants.title,
                                   ),
                                   validator: (value) =>
                                       FieldValidator.validateRequired(
@@ -116,8 +116,8 @@ class TicketFormPopup extends HookWidget {
                                   textCapitalization:
                                       TextCapitalization.sentences,
                                   controller: articleDescriptionController,
-                                  decoration: InputDecoration(
-                                    hintText: StringConstants().description,
+                                  decoration: const InputDecoration(
+                                    hintText: StringConstants.description,
                                   ),
                                   maxLines: 10,
                                   validator: (value) =>
@@ -129,8 +129,8 @@ class TicketFormPopup extends HookWidget {
                                 TextFormField(
                                   controller: articlePriceController,
                                   keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                    hintText: StringConstants().price,
+                                  decoration: const InputDecoration(
+                                    hintText: StringConstants.price,
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
@@ -149,8 +149,8 @@ class TicketFormPopup extends HookWidget {
                                       TextCapitalization.sentences,
                                   controller: quantityController,
                                   keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                    hintText: StringConstants().quantity,
+                                  decoration: const InputDecoration(
+                                    hintText: StringConstants.quantity,
                                   ),
                                   validator: (value) =>
                                       FieldValidator.validateRequired(
@@ -162,8 +162,8 @@ class TicketFormPopup extends HookWidget {
                                       TextCapitalization.sentences,
                                   controller: groupSizeController,
                                   keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                    hintText: StringConstants().groupSize,
+                                  decoration: const InputDecoration(
+                                    hintText: StringConstants.groupSize,
                                   ),
                                   validator: (value) =>
                                       FieldValidator.validateRequired(
@@ -178,8 +178,8 @@ class TicketFormPopup extends HookWidget {
                                     children: [
                                       Text(
                                         article != null
-                                            ? StringConstants().modifyArticle
-                                            : StringConstants().addArticle,
+                                            ? StringConstants.modifyArticle
+                                            : StringConstants.addArticle,
                                         style: TextStyle(
                                           color: ticketBloc.state.status ==
                                                   TicketStatus.loading

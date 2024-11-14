@@ -53,7 +53,7 @@ class PaymentScreen extends HookWidget {
     final billingDetails = useState<BillingDetails?>(null);
     return Scaffold(
       appBar: AppBar(
-        title: Text(StringConstants().payment),
+        title: const Text(StringConstants.payment),
         leading: IconButton(
           icon: const Icon(Icons.chevron_left),
           onPressed: () => Navigator.of(context).pop(),
@@ -66,7 +66,7 @@ class PaymentScreen extends HookWidget {
               Text('Meet: ${cartBloc.state.meetId}'),
             10.ph,
             Text(
-              '${StringConstants().total}: ${cartBloc.state.totalPrice.toStringAsFixed(2)} €',
+              '${StringConstants.total}: ${cartBloc.state.totalPrice.toStringAsFixed(2)} €',
             ),
             10.ph,
             Stepper(
@@ -75,8 +75,8 @@ class PaymentScreen extends HookWidget {
               currentStep: step.value,
               steps: [
                 Step(
-                  title: Text(
-                    StringConstants().billingDetails,
+                  title: const Text(
+                    StringConstants.billingDetails,
                   ),
                   content: Column(
                     children: [
@@ -87,7 +87,7 @@ class PaymentScreen extends HookWidget {
                               billingDetails.value;
                           if (billingDetailsValue == null) {
                             Messenger.showSnackBarError(
-                              StringConstants().fillBillingDetails,
+                              StringConstants.fillBillingDetails,
                             );
                           } else {
                             initPaymentSheet(
@@ -97,13 +97,13 @@ class PaymentScreen extends HookWidget {
                             );
                           }
                         },
-                        text: StringConstants().initPayment,
+                        text: StringConstants.initPayment,
                       ),
                     ],
                   ),
                 ),
                 Step(
-                  title: Text(StringConstants().confirmPayment),
+                  title: const Text(StringConstants.confirmPayment),
                   content: LoadingButton(
                     onPressed: () => confirmPayment(step).then(
                       (value) => {
@@ -116,7 +116,7 @@ class PaymentScreen extends HookWidget {
                           },
                       },
                     ),
-                    text: StringConstants().payNow,
+                    text: StringConstants.payNow,
                   ),
                 ),
               ],
@@ -148,7 +148,7 @@ class PaymentScreen extends HookWidget {
           20.ph,
           ElevatedButton(
             onPressed: () => billingDetails.value = null,
-            child: Text(StringConstants().deleteBillingDetails),
+            child: const Text(StringConstants.deleteBillingDetails),
           ),
         ],
       );
@@ -199,7 +199,7 @@ class PaymentScreen extends HookWidget {
           returnURL: 'flutterstripe://redirect',
 
           // Extra params
-          primaryButtonLabel: StringConstants().payNow,
+          primaryButtonLabel: StringConstants.payNow,
           applePay: const PaymentSheetApplePay(
             merchantCountryCode: 'FR',
           ),
@@ -233,7 +233,7 @@ class PaymentScreen extends HookWidget {
       );
       step.value = 1;
     } catch (e) {
-      Messenger.showSnackBarError(StringConstants().errorOccurred);
+      Messenger.showSnackBarError(StringConstants.errorOccurred);
       rethrow;
     }
   }
@@ -246,22 +246,22 @@ class PaymentScreen extends HookWidget {
       await Stripe.instance.presentPaymentSheet();
 
       step.value = 0;
-      Messenger.showSnackBarSuccess(StringConstants().paymentSuccess);
+      Messenger.showSnackBarSuccess(StringConstants.paymentSuccess);
       cartBloc.add(MeetTicketBought());
       return true;
     } on Exception catch (e) {
       if (e is StripeException) {
         if (e.error.code.index == FailureCode.Canceled.index) {
           Messenger.showSnackBarError(
-            StringConstants().paymentCanceled,
+            StringConstants.paymentCanceled,
           );
         } else {
           Messenger.showSnackBarError(
-            StringConstants().errorOccurredFromStripe,
+            StringConstants.errorOccurredFromStripe,
           );
         }
       } else {
-        Messenger.showSnackBarError(StringConstants().errorOccurred);
+        Messenger.showSnackBarError(StringConstants.errorOccurred);
       }
       return false;
     }

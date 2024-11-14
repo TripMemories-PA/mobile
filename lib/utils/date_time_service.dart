@@ -11,11 +11,11 @@ class DateTimeService {
     final difference = now.difference(dateTime.toLocal());
 
     if (difference.inMinutes < 1) {
-      return StringConstants().justNow;
+      return StringConstants.justNow;
     } else if (difference.inHours < 24) {
       final int hours = difference.inHours;
       final int minutes = difference.inMinutes.remainder(60);
-      return '${StringConstants().thereIs} ${hours > 0 ? '$hours ${StringConstants().hour}${hours > 1 ? 's' : ''}' : ''} $minutes ${StringConstants().minutes}';
+      return '${StringConstants.thereIs} ${hours > 0 ? '$hours ${StringConstants.hour}${hours > 1 ? 's' : ''}' : ''} $minutes ${StringConstants.minutes}';
     }
 
     final String dateFormated = DateFormat(
@@ -56,11 +56,11 @@ class DateTimeService {
     final difference = now.difference(dateTime.toLocal());
 
     if (difference.inMinutes < 1) {
-      return StringConstants().justNow;
+      return StringConstants.justNow;
     } else if (difference.inHours < 24) {
       final int hours = difference.inHours;
       final int minutes = difference.inMinutes.remainder(60);
-      return '${hours > 0 ? '$hours ${StringConstants().hour}${hours > 1 ? 's' : ''}' : ''} $minutes ${StringConstants().minute}${minutes > 1 ? 's' : ''}';
+      return '${hours > 0 ? '$hours ${StringConstants.hour}${hours > 1 ? 's' : ''}' : ''} $minutes ${StringConstants.minute}${minutes > 1 ? 's' : ''}';
     }
 
     final String dateFormated = DateFormat(

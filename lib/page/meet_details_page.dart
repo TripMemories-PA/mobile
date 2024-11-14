@@ -64,11 +64,11 @@ class MeetDetailsPage extends StatelessWidget {
           }
           if (state.error != null) {
             Messenger.showSnackBarError(
-              state.error?.getDescription() ?? StringConstants().errorOccurred,
+              state.error?.getDescription() ?? StringConstants.errorOccurred,
             );
           }
           if (state.deleteUserStatus == DeleteUserStatus.deleted) {
-            Messenger.showSnackBarSuccess(StringConstants().userKicked);
+            Messenger.showSnackBarSuccess(StringConstants.userKicked);
           }
         },
         builder: (context, state) {
@@ -80,7 +80,7 @@ class MeetDetailsPage extends StatelessWidget {
             );
           } else {
             return meet == null
-                ? Text(StringConstants().noMeetFound)
+                ? const Text(StringConstants.noMeetFound)
                 : Scaffold(
                     body: RefreshIndicator(
                       onRefresh: () async {
@@ -149,9 +149,9 @@ class _UserList extends HookWidget {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        StringConstants().soldTickets,
-                        style: const TextStyle(
+                      const Text(
+                        StringConstants.soldTickets,
+                        style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
                         ),
@@ -170,7 +170,7 @@ class _UserList extends HookWidget {
                           .where((user) => user.hasPaid ?? false)
                           .length;
                       return Text(
-                        '$paidUsersCount ${StringConstants().ticket}${paidUsersCount > 1 ? 's' : ''} ${StringConstants().bought}${paidUsersCount > 1 ? 's' : ''} - ${state.users.length - paidUsersCount} ${StringConstants().participant}${state.users.length > 1 ? 's' : ''} ${StringConstants().pending}',
+                        '$paidUsersCount ${StringConstants.ticket}${paidUsersCount > 1 ? 's' : ''} ${StringConstants.bought}${paidUsersCount > 1 ? 's' : ''} - ${state.users.length - paidUsersCount} ${StringConstants.participant}${state.users.length > 1 ? 's' : ''} ${StringConstants.pending}',
                         textAlign: TextAlign.left,
                       );
                     },
@@ -180,10 +180,10 @@ class _UserList extends HookWidget {
                     state.users.length + 1,
                     (index) {
                       if (index == state.users.length) {
-                        return Padding(
-                          padding: const EdgeInsets.all(16.0),
+                        return const Padding(
+                          padding: EdgeInsets.all(16.0),
                           child: Center(
-                            child: Text(StringConstants().noMoreUsers),
+                            child: Text(StringConstants.noMoreUsers),
                           ),
                         );
                       }
@@ -261,8 +261,8 @@ class _UserCardPaymentStatus extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        StringConstants().status,
+                      const Text(
+                        StringConstants.status,
                         textAlign: TextAlign.left,
                       ),
                       5.ph,
@@ -278,8 +278,8 @@ class _UserCardPaymentStatus extends StatelessWidget {
                         child: Center(
                           child: Text(
                             user.hasPaid ?? false
-                                ? StringConstants().boughTicket
-                                : StringConstants().pending,
+                                ? StringConstants.boughTicket
+                                : StringConstants.pending,
                           ),
                         ),
                       ),
@@ -301,7 +301,7 @@ class _UserCardPaymentStatus extends StatelessWidget {
                 onPressed: () async {
                   confirmationPopUp(
                     context,
-                    title: StringConstants().sureToKickUser,
+                    title: StringConstants.sureToKickUser,
                   ).then((choice) {
                     final int? meetId =
                         context.mounted ? context.read<MeetDetailsBloc>().state.meet?.id : null;
@@ -387,7 +387,7 @@ class _TicketCardToBuy extends HookWidget {
               ),
               child: Center(
                 child: Text(
-                  StringConstants().addArticle,
+                  StringConstants.addArticle,
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                 ),
@@ -436,7 +436,7 @@ class _MeetDetailsBody extends HookWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  '${meet.usersCount} ${StringConstants().participant}${(state.users.length) > 1 ? 's' : ''}',
+                  '${meet.usersCount} ${StringConstants.participant}${(state.users.length) > 1 ? 's' : ''}',
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
@@ -472,7 +472,7 @@ class _MeetDetailsBody extends HookWidget {
                     child: Row(
                       children: [
                         Text(
-                          StringConstants().iParticipate,
+                          StringConstants.iParticipate,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                           ),
@@ -652,7 +652,7 @@ class _MeetDetailsBody extends HookWidget {
                       fontWeight: FontWeight.w500,
                     ),
                     children: [
-                      TextSpan(text: '${StringConstants().already} '),
+                      const TextSpan(text: '${StringConstants.already} '),
                       TextSpan(
                         text: '${userThatPaid.length} ',
                         style: const TextStyle(
@@ -661,14 +661,14 @@ class _MeetDetailsBody extends HookWidget {
                       ),
                       TextSpan(
                         text:
-                            '${StringConstants().place}${userThatPaid.length > 1 ? 's' : ''} ',
+                            '${StringConstants.place}${userThatPaid.length > 1 ? 's' : ''} ',
                         style: const TextStyle(
                           decoration: TextDecoration.underline,
                         ),
                       ),
                       TextSpan(
                         text:
-                            '${StringConstants().sold}${userThatPaid.length > 1 ? 's' : ''}',
+                            '${StringConstants.sold}${userThatPaid.length > 1 ? 's' : ''}',
                       ),
                     ],
                   ),
@@ -752,7 +752,7 @@ class _MeetDetailsBody extends HookWidget {
             ),
             10.pw,
             Text(
-              StringConstants().seeDetail,
+              StringConstants.seeDetail,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
               ),
@@ -784,10 +784,10 @@ class _MeetDetailsBody extends HookWidget {
       ),
       onPressed: () {
         if (isLocked) {
-          Messenger.showSnackBarError(StringConstants().meetLocked);
+          Messenger.showSnackBarError(StringConstants.meetLocked);
           return;
         }
-        confirmationPopUp(context, title: StringConstants().sureToLeaveMeet)
+        confirmationPopUp(context, title: StringConstants.sureToLeaveMeet)
             .then((choice) {
           if (choice && context.mounted) {
             context.read<MeetDetailsBloc>().add(LeaveMeetEvent());
@@ -799,7 +799,7 @@ class _MeetDetailsBody extends HookWidget {
           const Spacer(),
           const Icon(Icons.exit_to_app),
           10.pw,
-          Text(StringConstants().leaveMeet),
+          const Text(StringConstants.leaveMeet),
           if (state.leavingMeetStatus == MeetDetailsQueryStatus.loading)
             const Padding(
               padding: EdgeInsets.symmetric(
@@ -883,7 +883,7 @@ class _MeetDetailsBody extends HookWidget {
                                 ),
                                 5.pw,
                                 Text(
-                                  '${meet.usersCount} ${StringConstants().participant}${(meet.usersCount ?? 0) > 1 ? 's' : ''}',
+                                  '${meet.usersCount} ${StringConstants.participant}${(meet.usersCount ?? 0) > 1 ? 's' : ''}',
                                 ),
                               ],
                             ),
@@ -898,7 +898,7 @@ class _MeetDetailsBody extends HookWidget {
                               final String? channel = meet.channel;
                               if (channel == null) {
                                 Messenger.showSnackBarError(
-                                  StringConstants().errorOccurred,
+                                  StringConstants.errorOccurred,
                                 );
                                 return;
                               }
@@ -929,9 +929,9 @@ class _MeetDetailsBody extends HookWidget {
                               minimumSize:
                                   WidgetStateProperty.all(const Size(0, 30)),
                             ),
-                            child: AutoSizeText(
-                              StringConstants().joinChat,
-                              style: const TextStyle(
+                            child: const AutoSizeText(
+                              StringConstants.joinChat,
+                              style: TextStyle(
                                 fontSize: 12,
                               ),
                               maxLines: 1,

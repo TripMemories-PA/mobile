@@ -43,7 +43,7 @@ class EditQuestPage extends HookWidget {
             currentStep.value = 2;
           }
           if (state.publishQuestStep == PublishQuestStep.posted) {
-            Messenger.showSnackBarSuccess(StringConstants().questPosted);
+            Messenger.showSnackBarSuccess(StringConstants.questPosted);
             questBlocDTO.questBloc.add(
               GetPoiQuestEvent(
                 questBlocDTO.poiId,
@@ -53,7 +53,7 @@ class EditQuestPage extends HookWidget {
             context.pop();
           }
           if (state.publishQuestStep == PublishQuestStep.updated) {
-            Messenger.showSnackBarSuccess(StringConstants().questionUpdated);
+            Messenger.showSnackBarSuccess(StringConstants.questionUpdated);
             questBlocDTO.questBloc.add(
               GetPoiQuestEvent(
                 questBlocDTO.poiId,
@@ -63,7 +63,7 @@ class EditQuestPage extends HookWidget {
             context.pop();
           }
           if (state.status == QuestStatus.updated) {
-            Messenger.showSnackBarSuccess(StringConstants().questUpdated);
+            Messenger.showSnackBarSuccess(StringConstants.questUpdated);
             questBlocDTO.questBloc.add(
               GetPoiQuestEvent(
                 questBlocDTO.poiId,
@@ -119,7 +119,7 @@ class EditQuestPage extends HookWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
-              StringConstants().questCreation,
+              StringConstants.questCreation,
               style: TextStyle(
                 fontSize: 30,
                 color: Theme.of(context).colorScheme.primary,
@@ -144,7 +144,7 @@ class EditQuestPage extends HookWidget {
                 stepStyle: StepStyle(
                   color: currentStep.value > 0 ? MyColors.success : null,
                 ),
-                title: Text(StringConstants().title),
+                title: const Text(StringConstants.title),
                 content: Column(
                   children: [
                     TextField(
@@ -163,11 +163,11 @@ class EditQuestPage extends HookWidget {
                               );
                         } else {
                           Messenger.showSnackBarError(
-                            StringConstants().titleCannotBeEmpty,
+                            StringConstants.titleCannotBeEmpty,
                           );
                         }
                       },
-                      child: Text(StringConstants().validate),
+                      child: const Text(StringConstants.validate),
                     ),
                   ],
                 ),
@@ -179,14 +179,14 @@ class EditQuestPage extends HookWidget {
                 stepStyle: StepStyle(
                   color: currentStep.value > 1 ? MyColors.success : null,
                 ),
-                title: Text(StringConstants().imageSelection),
+                title: const Text(StringConstants.imageSelection),
                 content: state.pickImageStatus == QuestStatus.loading
                     ? const CircularProgressIndicator()
                     : ElevatedButton(
                         onPressed: () {
                           _selectImage(context);
                         },
-                        child: Text(StringConstants().pickImage),
+                        child: const Text(StringConstants.pickImage),
                       ),
               ),
               Step(
@@ -196,9 +196,9 @@ class EditQuestPage extends HookWidget {
                 stepStyle: StepStyle(
                   color: selectedLabel.value != null ? MyColors.success : null,
                 ),
-                title: Text(StringConstants().labels),
+                title: const Text(StringConstants.labels),
                 content: state.postQuestImageResponse.labels.isEmpty
-                    ? Text(StringConstants().noLabels)
+                    ? const Text(StringConstants.noLabels)
                     : Column(
                         children: [
                           Wrap(
@@ -258,11 +258,11 @@ class EditQuestPage extends HookWidget {
                                       );
                                 } else {
                                   Messenger.showSnackBarError(
-                                    StringConstants().pleaseSelectLabel,
+                                    StringConstants.pleaseSelectLabel,
                                   );
                                 }
                               },
-                              child: Text(StringConstants().validate),
+                              child: const Text(StringConstants.validate),
                             ),
                         ],
                       ),
@@ -289,7 +289,7 @@ class EditQuestPage extends HookWidget {
               children: [
                 const Spacer(),
                 Text(
-                  StringConstants().modifyQuest,
+                  StringConstants.modifyQuest,
                   style: TextStyle(
                     fontSize: 30,
                     color: Theme.of(context).colorScheme.primary,
@@ -327,7 +327,7 @@ class EditQuestPage extends HookWidget {
                           );
                     } else {
                       Messenger.showSnackBarError(
-                        StringConstants().titleCannotBeEmpty,
+                        StringConstants.titleCannotBeEmpty,
                       );
                     }
                   },
@@ -337,7 +337,7 @@ class EditQuestPage extends HookWidget {
                           padding: EdgeInsets.all(5.0),
                           child: CircularProgressIndicator(),
                         )
-                      : Text(StringConstants().validate),
+                      : const Text(StringConstants.validate),
                 ),
                 const Spacer(),
               ],
@@ -361,7 +361,7 @@ class EditQuestPage extends HookWidget {
                     ),
               }
             else
-              Messenger.showSnackBarError(StringConstants().pleaseSelectImage),
+              Messenger.showSnackBarError(StringConstants.pleaseSelectImage),
           },
         );
   }

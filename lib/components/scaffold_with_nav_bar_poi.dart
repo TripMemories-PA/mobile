@@ -42,30 +42,30 @@ class ScaffoldWithNavBarPoi extends StatelessWidget {
       unselectedItemColor: Colors.grey,
       elevation: 0,
       type: BottomNavigationBarType.fixed,
-      items: <BottomNavigationBarItem>[
+      items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: const Icon(
+          icon: Icon(
             Icons.shopping_cart_outlined,
           ),
-          label: StringConstants().shop,
+          label: StringConstants.shop,
         ),
         BottomNavigationBarItem(
-          icon: const Icon(
+          icon: Icon(
             Icons.notifications_outlined,
           ),
-          label: StringConstants().feed,
+          label: StringConstants.feed,
         ),
         BottomNavigationBarItem(
-          icon: const Icon(
+          icon: Icon(
             Icons.qr_code_2,
           ),
-          label: StringConstants().qrCodeScanner,
+          label: StringConstants.qrCodeScanner,
         ),
         BottomNavigationBarItem(
-          icon: const Icon(
+          icon: Icon(
             Icons.person_outline,
           ),
-          label: StringConstants().profile,
+          label: StringConstants.profile,
         ),
       ],
       currentIndex: navigationShell.currentIndex,

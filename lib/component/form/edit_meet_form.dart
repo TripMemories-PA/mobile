@@ -32,7 +32,7 @@ class EditMeetForm extends HookWidget {
               textCapitalization: TextCapitalization.sentences,
               textInputAction: TextInputAction.done,
               controller: titleController,
-              decoration: InputDecoration(labelText: StringConstants().title),
+              decoration: const InputDecoration(labelText: StringConstants.title),
               validator: (value) =>
                   FieldValidator.validateRequired(value: value),
             ),
@@ -42,7 +42,7 @@ class EditMeetForm extends HookWidget {
               textInputAction: TextInputAction.done,
               controller: descriptionController,
               decoration:
-                  InputDecoration(labelText: StringConstants().description),
+                  const InputDecoration(labelText: StringConstants.description),
               validator: (value) =>
                   FieldValidator.validateRequired(value: value),
             ),
@@ -56,8 +56,8 @@ class EditMeetForm extends HookWidget {
                   );
                 }
               },
-              child: Text(
-                StringConstants().validate,
+              child: const Text(
+                StringConstants.validate,
               ),
             ),
             20.ph,

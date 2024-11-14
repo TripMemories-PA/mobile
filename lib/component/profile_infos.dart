@@ -57,12 +57,12 @@ class ProfileInfos extends StatelessWidget {
                       color: Theme.of(context).colorScheme.surface,
                     ),
                     backgroundColor: MyColors.fail,
-                    label: StringConstants().logout,
+                    label: StringConstants.logout,
                     labelStyle: const TextStyle(fontSize: 18.0),
                     onTap: () async {
                       final bool result = await confirmationPopUp(
                         context,
-                        title: StringConstants().logoutConfirmation,
+                        title: StringConstants.logoutConfirmation,
                       );
                       if (!result) {
                         return;
@@ -81,14 +81,14 @@ class ProfileInfos extends StatelessWidget {
                       color: Theme.of(context).colorScheme.surface,
                     ),
                     backgroundColor: MyColors.fail,
-                    label: StringConstants().deleteAccount,
+                    label: StringConstants.deleteAccount,
                     labelStyle: const TextStyle(
                       fontSize: 18.0,
                     ),
                     onTap: () {
                       confirmationPopUp(
                         context,
-                        title: StringConstants().sureToDeleteAccount,
+                        title: StringConstants.sureToDeleteAccount,
                       ).then((bool result) {
                         if (result && context.mounted) {
                           context.read<AuthBloc>().add(

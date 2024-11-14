@@ -59,9 +59,9 @@ class MyFriendsRequests extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            StringConstants().friendRequests,
-            style: const TextStyle(
+          const Text(
+            StringConstants.friendRequests,
+            style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -114,7 +114,7 @@ class MyFriendsRequests extends StatelessWidget {
                               FriendRequestStatus.error
                           ? const ShimmerFriendRequestList()
                           : _buildErrorWidget(context))
-                      : Text(StringConstants().noMoreFriends),
+                      : const Text(StringConstants.noMoreFriends),
                 ),
                 BlocListener<FriendRequestBloc, FriendRequestState>(
                   listener: (context, state) {
@@ -122,8 +122,8 @@ class MyFriendsRequests extends StatelessWidget {
                         state.status == FriendRequestStatus.refused) {
                       Messenger.showSnackBarQuickInfo(
                         state.status == FriendRequestStatus.accepted
-                            ? StringConstants().friendRequestAccepted
-                            : StringConstants().friendRequestRefused,
+                            ? StringConstants.friendRequestAccepted
+                            : StringConstants.friendRequestRefused,
                         context,
                       );
                     }
@@ -292,10 +292,10 @@ class MyFriendsRequests extends StatelessWidget {
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
+        const Text(StringConstants.errorAppendedWhileGettingData),
         ElevatedButton(
           onPressed: () => _getFriendRequests(context),
-          child: Text(StringConstants().retry),
+          child: const Text(StringConstants.retry),
         ),
       ],
     );

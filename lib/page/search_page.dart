@@ -53,43 +53,9 @@ class SlidePage extends HookWidget {
     final citySearchSelected = useState(false);
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        title: Container(
-          height: 30,
-          margin: EdgeInsets.zero,
-          padding: EdgeInsets.zero,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(15)),
-            color: Theme.of(context).colorScheme.surface,
-          ),
-          child: ToggleButtons(
-            onPressed: (int index) {
-              citySearchSelected.value = index == 1;
-              pageController.animateToPage(
-                index,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-              );
-            },
-            borderRadius: const BorderRadius.all(Radius.circular(15)),
-            selectedColor: Theme.of(context).colorScheme.onPrimary,
-            fillColor: Theme.of(context).colorScheme.primary,
-            color: Theme.of(context).colorScheme.onSecondary,
-            constraints: const BoxConstraints(
-              minHeight: 30.0,
-              minWidth: 170.0,
-            ),
-            isSelected:
-                citySearchSelected.value ? [false, true] : [true, false],
-            children: <Widget>[
-              Text(StringConstants().searchByName),
-              Text(StringConstants().searchByCity),
-            ],
-          ),
-        ),
-        centerTitle: true,
+      appBar: _SearchPageAppBar(
+        citySearchSelected: citySearchSelected,
+        pageController: pageController,
       ),
       body: PageView(
         controller: pageController,
@@ -107,6 +73,79 @@ class SlidePage extends HookWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SearchPageAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _SearchPageAppBar({
+    required this.citySearchSelected,
+    required this.pageController,
+  });
+
+  final ValueNotifier<bool> citySearchSelected;
+  final PageController pageController;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
+      title: Container(
+        height: 30,
+        margin: EdgeInsets.zero,
+        padding: EdgeInsets.zero,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          color: Theme.of(context).colorScheme.surface,
+        ),
+        child: SearchPageToggleButtons(
+          citySearchSelected: citySearchSelected,
+          pageController: pageController,
+        ),
+      ),
+      centerTitle: true,
+    );
+  }
+}
+
+class SearchPageToggleButtons extends StatelessWidget {
+  const SearchPageToggleButtons({
+    super.key,
+    required this.citySearchSelected,
+    required this.pageController,
+  });
+
+  final ValueNotifier<bool> citySearchSelected;
+  final PageController pageController;
+
+  @override
+  Widget build(BuildContext context) {
+    return ToggleButtons(
+      onPressed: (int index) {
+        citySearchSelected.value = index == 1;
+        pageController.animateToPage(
+          index,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      },
+      borderRadius: const BorderRadius.all(Radius.circular(15)),
+      selectedColor: Theme.of(context).colorScheme.onPrimary,
+      fillColor: Theme.of(context).colorScheme.primary,
+      color: Theme.of(context).colorScheme.onSecondary,
+      constraints: const BoxConstraints(
+        minHeight: 30.0,
+        minWidth: 170.0,
+      ),
+      isSelected: citySearchSelected.value ? [false, true] : [true, false],
+      children: const <Widget>[
+        Text(StringConstants.searchByName),
+        Text(StringConstants.searchByCity),
+      ],
     );
   }
 }

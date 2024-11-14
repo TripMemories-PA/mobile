@@ -53,10 +53,10 @@ class ProfilePagePoi extends HookWidget {
           }
           final Poi? monument = state.selectedMonument;
           if (monument == null) {
-            return Scaffold(
+            return const Scaffold(
               body: Center(
                 child: Text(
-                  StringConstants().errorOccurred,
+                  StringConstants.errorOccurred,
                 ),
               ),
             );
@@ -163,11 +163,11 @@ class _PageContent extends StatelessWidget {
             unselectedLabelColor: MyColors.darkGrey,
             controller: tabController,
             indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Tab(text: StringConstants().description),
-              Tab(text: StringConstants().posts),
-              Tab(text: StringConstants().quiz),
-              Tab(text: StringConstants().quests),
+            tabs: const [
+              Tab(text: StringConstants.description),
+              Tab(text: StringConstants.posts),
+              Tab(text: StringConstants.quiz),
+              Tab(text: StringConstants.quests),
             ],
             dividerColor: Colors.transparent,
           ),
@@ -252,7 +252,7 @@ class _PageContent extends StatelessWidget {
           onPressed: () async {
             final bool result = await confirmationPopUp(
               context,
-              title: StringConstants().logoutConfirmation,
+              title: StringConstants.logoutConfirmation,
             );
             if (!result) {
               return;

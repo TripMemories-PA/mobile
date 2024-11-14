@@ -5,10 +5,10 @@ class UserInfoError extends ApiError {
   const UserInfoError(super.description);
 
   static UserInfoError cannotGetUserDetails() {
-    return UserInfoError(StringConstants().cannotGetUserDetails);
+    return const UserInfoError(StringConstants.cannotGetUserDetails);
   }
 
   static UserInfoError cannotGetUserTweets() {
-    return UserInfoError(StringConstants().cannotGetUserPosts);
+    return const UserInfoError(StringConstants.cannotGetUserPosts);
   }
 }

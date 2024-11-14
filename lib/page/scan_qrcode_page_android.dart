@@ -96,10 +96,10 @@ class ScanQrcodePageAndroid extends HookWidget {
                 Container(
                   height: 50,
                   color: Theme.of(context).primaryColor,
-                  child: Center(
+                  child: const Center(
                     child: Text(
-                      StringConstants().qrCodeScannerTitle,
-                      style: const TextStyle(
+                      StringConstants.qrCodeScannerTitle,
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,
                       ),
@@ -201,8 +201,8 @@ class ScanQrcodePageAndroid extends HookWidget {
                                         20.ph,
                                         Text(
                                           isValidTicket
-                                              ? StringConstants().validTicket
-                                              : StringConstants().invalidTicket,
+                                              ? StringConstants.validTicket
+                                              : StringConstants.invalidTicket,
                                           style: const TextStyle(
                                             fontSize: 24,
                                           ),
@@ -221,7 +221,7 @@ class ScanQrcodePageAndroid extends HookWidget {
                                         10.ph,
                                         if (groupSize != null)
                                           AutoSizeText(
-                                            '${StringConstants().nbPersons}: $groupSize',
+                                            '${StringConstants.nbPersons}: $groupSize',
                                             style: const TextStyle(
                                               fontSize: 20,
                                             ),

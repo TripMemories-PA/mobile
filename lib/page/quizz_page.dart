@@ -51,12 +51,12 @@ class QuizPage extends StatelessWidget {
                     child: state.status == QuizStatus.error
                         ? Text(
                             state.error?.getDescription() ??
-                                StringConstants().errorOccurred,
+                                StringConstants.errorOccurred,
                           )
                         : (quiz != null
                             ? _buildBody(quiz, context)
-                            : Center(
-                                child: Text(StringConstants().noData),
+                            : const Center(
+                                child: Text(StringConstants.noData),
                               )),
                   ),
           );
@@ -88,7 +88,7 @@ class QuizPage extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                '${context.read<QuizBloc>().state.currentQuestionIndex + 1} ${StringConstants().on} $totalQuestions',
+                '${context.read<QuizBloc>().state.currentQuestionIndex + 1} ${StringConstants.on} $totalQuestions',
                 style: TextStyle(
                   fontSize: 20,
                   color: Theme.of(context).colorScheme.onPrimary,
@@ -96,7 +96,7 @@ class QuizPage extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                '${context.read<QuizBloc>().state.score} ${StringConstants().points}',
+                '${context.read<QuizBloc>().state.score} ${StringConstants.points}',
                 style: TextStyle(
                   fontSize: 20,
                   color: Theme.of(context).colorScheme.onPrimary,
@@ -166,7 +166,7 @@ class QuizPage extends StatelessWidget {
       children: [
         const Spacer(),
         Text(
-          StringConstants().quizEnded,
+          StringConstants.quizEnded,
           style: TextStyle(
             color: Theme.of(context).colorScheme.tertiary,
             fontSize: 25,
@@ -181,7 +181,7 @@ class QuizPage extends StatelessWidget {
         ),
         20.ph,
         Text(
-          '${StringConstants().score} : ${context.read<QuizBloc>().state.score}',
+          '${StringConstants.score} : ${context.read<QuizBloc>().state.score}',
           style: TextStyle(
             color: Theme.of(context).colorScheme.tertiary,
             fontSize: 25,
@@ -194,7 +194,7 @@ class QuizPage extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
           borderColor: Colors.transparent,
           content: Text(
-            StringConstants().back,
+            StringConstants.back,
             style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
             ),
@@ -227,7 +227,7 @@ class QuestionWidget extends HookWidget {
       listener: (context, state) async {
         if (state.status == QuizStatus.error) {
           Messenger.showSnackBarError(
-            state.error?.getDescription() ?? StringConstants().errorOccurred,
+            state.error?.getDescription() ?? StringConstants.errorOccurred,
           );
         }
         if (state.isValidAnswer != null) {
@@ -275,7 +275,7 @@ class QuestionWidget extends HookWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              StringConstants().selectAnAnswer,
+              StringConstants.selectAnAnswer,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSecondary,
                 fontSize: 15,
@@ -316,7 +316,7 @@ class QuestionWidget extends HookWidget {
             onTap: () {
               if (answerSelected.value == -1) {
                 Messenger.showSnackBarError(
-                  StringConstants().selectAnAnswer,
+                  StringConstants.selectAnAnswer,
                 );
                 return;
               }
@@ -340,8 +340,8 @@ class QuestionWidget extends HookWidget {
               borderColor: Colors.transparent,
               content: Text(
                 context.read<QuizBloc>().state.isValidAnswer != null
-                    ? StringConstants().nextQuestion
-                    : StringConstants().validate,
+                    ? StringConstants.nextQuestion
+                    : StringConstants.validate,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),

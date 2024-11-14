@@ -41,12 +41,12 @@ class RankingBody extends HookWidget {
           );
         }
         if (users == null) {
-          return Text(StringConstants().noData);
+          return const Text(StringConstants.noData);
         }
         if (state.status == UserSearchingStatus.error) {
           return _buildErrorWidget(context);
         } else if (users.isEmpty) {
-          return Text(StringConstants().noUserFound);
+          return const Text(StringConstants.noUserFound);
         } else {
           return Scaffold(
             body: Stack(
@@ -136,10 +136,10 @@ class RankingBody extends HookWidget {
             borderRadius: BorderRadius.circular(20),
           ),
         ),
-        child: Text(StringConstants().loadMoreResults),
+        child: const Text(StringConstants.loadMoreResults),
       );
     } else {
-      return Text(StringConstants().noMoreUsers);
+      return const Text(StringConstants.noMoreUsers);
     }
   }
 
@@ -188,7 +188,7 @@ class RankingBody extends HookWidget {
                   ),
                   AutoSizeText(
                     textAlign: TextAlign.left,
-                    '${user.score} ${StringConstants().points}',
+                    '${user.score} ${StringConstants.points}',
                     style: TextStyle(
                       fontSize: 15,
                       fontFamily:
@@ -260,13 +260,13 @@ class RankingBody extends HookWidget {
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
+        const Text(StringConstants.errorAppendedWhileGettingData),
         ElevatedButton(
           onPressed: () => _getRankingRequest(
             context,
             true,
           ),
-          child: Text(StringConstants().retry),
+          child: const Text(StringConstants.retry),
         ),
       ],
     );
@@ -290,7 +290,7 @@ class RankingBody extends HookWidget {
           color: Theme.of(context).colorScheme.primaryContainer,
           child: Text(
             textAlign: TextAlign.center,
-            StringConstants().totalRanking,
+            StringConstants.totalRanking,
             style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -312,7 +312,7 @@ class RankingBody extends HookWidget {
             children: [
               15.ph,
               Text(
-                StringConstants().thePodium,
+                StringConstants.thePodium,
                 style: TextStyle(
                   fontSize: 35,
                   fontWeight: FontWeight.bold,

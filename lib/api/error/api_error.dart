@@ -6,51 +6,51 @@ class ApiError {
   final String _description;
 
   static ApiError hostUnreachable() {
-    return ApiError(StringConstants().hostUnreachable);
+    return const ApiError(StringConstants.hostUnreachable);
   }
 
   static ApiError cannotReachLocalData() {
-    return ApiError(StringConstants().cannotReachLocalData);
+    return const ApiError(StringConstants.cannotReachLocalData);
   }
 
   static ApiError unknown() {
-    return ApiError(StringConstants().unknownError);
+    return const ApiError(StringConstants.unknownError);
   }
 
   static ApiError errorOccurredWhileQueryingServer() {
-    return ApiError(StringConstants().errorOccurredWhileQueryingServer);
+    return const ApiError(StringConstants.errorOccurredWhileQueryingServer);
   }
 
   static ApiError errorOccurredWhileParsingResponse() {
-    return ApiError(StringConstants().errorOccurredWhileParsingResponse);
+    return const ApiError(StringConstants.errorOccurredWhileParsingResponse);
   }
 
   static ApiError requestTimeout() {
-    return ApiError(StringConstants().requestTimeout);
+    return const ApiError(StringConstants.requestTimeout);
   }
 
   static ApiError errorAppendedWhileGettingData() {
-    return ApiError(StringConstants().errorAppendedWhileGettingData);
+    return const ApiError(StringConstants.errorAppendedWhileGettingData);
   }
 
   static ApiError badRequest() {
-    return ApiError(StringConstants().badRequest);
+    return const ApiError(StringConstants.badRequest);
   }
 
   static ApiError unauthorized() {
-    return ApiError(StringConstants().unauthorized);
+    return const ApiError(StringConstants.unauthorized);
   }
 
   static ApiError errorOccurred() {
-    return ApiError(StringConstants().errorOccurred);
+    return const ApiError(StringConstants.errorOccurred);
   }
 
   static ApiError errorWhilePostingMessage() {
-    return ApiError(StringConstants().errorWhilePostingMessage);
+    return const ApiError(StringConstants.errorWhilePostingMessage);
   }
 
   static ApiError errorWhileFetchingMessages() {
-    return ApiError(StringConstants().errorWhileFetchingMessages);
+    return const ApiError(StringConstants.errorWhileFetchingMessages);
   }
 
   String getDescription() {

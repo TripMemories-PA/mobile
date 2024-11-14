@@ -41,10 +41,10 @@ class MyFriendsComponent extends StatelessWidget {
                       color: MyColors.purple,
                     ),
                     10.pw,
-                    Text(
-                      StringConstants().addFriend,
+                    const Text(
+                      StringConstants.addFriend,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 10,
                       ),
                     ),
@@ -67,10 +67,10 @@ class MyFriendsComponent extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     10.pw,
-                    Text(
-                      StringConstants().manageFriendsRequests,
+                    const Text(
+                      StringConstants.manageFriendsRequests,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 10,
                       ),
                     ),
@@ -105,7 +105,7 @@ class MyFriendsComponent extends StatelessWidget {
     final List<Profile> friends =
         context.read<ProfileBloc>().state.friends.data;
     if (friends.isEmpty) {
-      return Center(child: Text(StringConstants().noFriendAdded));
+      return const Center(child: Text(StringConstants.noFriendAdded));
     }
     if (context.read<ProfileBloc>().state.status == ProfileStatus.loading) {
       return SizedBox(
@@ -126,7 +126,7 @@ class MyFriendsComponent extends StatelessWidget {
             Center(
               child: context.read<ProfileBloc>().state.hasMoreFriends
                   ? _buildHasMoreTweetsPart(context)
-                  : Text(StringConstants().noMoreFriends),
+                  : const Text(StringConstants.noMoreFriends),
             ),
           ],
         );
@@ -154,7 +154,7 @@ class MyFriendsComponent extends StatelessWidget {
                 onPressed: () {
                   _getNextFriends(context: context);
                 },
-                child: Text(StringConstants().showMoreResults),
+                child: const Text(StringConstants.showMoreResults),
               );
       },
     );
@@ -163,10 +163,10 @@ class MyFriendsComponent extends StatelessWidget {
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
+        const Text(StringConstants.errorAppendedWhileGettingData),
         ElevatedButton(
           onPressed: () => _getNextFriends(context: context, isRefresh: true),
-          child: Text(StringConstants().retry),
+          child: const Text(StringConstants.retry),
         ),
       ],
     );

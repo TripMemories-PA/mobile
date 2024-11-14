@@ -97,7 +97,7 @@ class TicketCard extends StatelessWidget {
                                     child: ElevatedButton(
                                       onPressed: () =>
                                           Navigator.of(context).pop(),
-                                      child: Text(StringConstants().close),
+                                      child: const Text(StringConstants.close),
                                     ),
                                   ),
                                 ],
@@ -106,19 +106,19 @@ class TicketCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      child: Text(StringConstants().showQrCode),
+                      child: const Text(StringConstants.showQrCode),
                     ),
                   ),
                 ),
               ],
             ),
             20.ph,
-            Text('${StringConstants().ticketFor} ${ticket.ticket.poi.name}'),
+            Text('${StringConstants.ticketFor} ${ticket.ticket.poi.name}'),
             20.ph,
             Text(
               ticket.usedAt != null
-                  ? StringConstants().usedTicket
-                  : StringConstants().notUsedTicket,
+                  ? StringConstants.usedTicket
+                  : StringConstants.notUsedTicket,
               style: TextStyle(
                 color: ticket.usedAt != null ? Colors.red : Colors.green,
               ),

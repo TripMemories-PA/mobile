@@ -68,10 +68,10 @@ class MonumentPageV2 extends HookWidget {
           }
           final Poi? monument = state.selectedMonument;
           if (monument == null) {
-            return Scaffold(
+            return const Scaffold(
               body: Center(
                 child: Text(
-                  StringConstants().errorOccurred,
+                  StringConstants.errorOccurred,
                 ),
               ),
             );
@@ -217,11 +217,11 @@ class _PageContent extends HookWidget {
             unselectedLabelColor: MyColors.darkGrey,
             controller: tabController,
             indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Tab(text: StringConstants().description),
-              Tab(text: StringConstants().posts),
-              Tab(text: StringConstants().monumentQuests),
-              Tab(text: StringConstants().shop),
+            tabs: const [
+              Tab(text: StringConstants.description),
+              Tab(text: StringConstants.posts),
+              Tab(text: StringConstants.monumentQuests),
+              Tab(text: StringConstants.shop),
             ],
             dividerColor: Colors.transparent,
           ),
@@ -295,7 +295,7 @@ class _PageContent extends HookWidget {
                   ),
                   5.pw,
                   Text(
-                    StringConstants().address,
+                    StringConstants.address,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontSize: 15,
@@ -339,7 +339,7 @@ class _PageContent extends HookWidget {
       child: Column(
         children: [
           Text(
-            '${StringConstants().lastPostsFrom} ${monument.name}',
+            '${StringConstants.lastPostsFrom} ${monument.name}',
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -380,7 +380,7 @@ class _PageContent extends HookWidget {
                                       MonumentStatus.error
                                   ? const ShimmerPostAndMonumentResume()
                                   : _buildErrorWidget(context))
-                              : Text(StringConstants().noMorePosts),
+                              : const Text(StringConstants.noMorePosts),
                         ),
                       ],
                     );
@@ -404,7 +404,7 @@ class _PageContent extends HookWidget {
         listener: (context, state) {
           if (state.status == QuestStatus.error) {
             Messenger.showSnackBarError(
-              state.error?.getDescription() ?? StringConstants().errorOccurred,
+              state.error?.getDescription() ?? StringConstants.errorOccurred,
             );
           }
         },
@@ -420,9 +420,9 @@ class _PageContent extends HookWidget {
                 child: Column(
                   children: [
                     20.ph,
-                    Text(
-                      StringConstants().monumentQuests,
-                      style: const TextStyle(
+                    const Text(
+                      StringConstants.monumentQuests,
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
@@ -432,7 +432,7 @@ class _PageContent extends HookWidget {
                       const CircularProgressIndicator()
                     else
                       state.questList.isEmpty
-                          ? Text(StringConstants().noQuestForThisMonument)
+                          ? const Text(StringConstants.noQuestForThisMonument)
                           : _buildQuestList(state, context),
                   ],
                 ),
@@ -451,8 +451,8 @@ class _PageContent extends HookWidget {
           const Center(child: CircularProgressIndicator())
         else
           state.questList.isEmpty
-              ? Text(
-                  StringConstants().noQuestForThisMonument,
+              ? const Text(
+                  StringConstants.noQuestForThisMonument,
                 )
               : Column(
                   children: [
@@ -487,13 +487,13 @@ class _PageContent extends HookWidget {
                                     Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
-                                child: Text(
-                                  StringConstants().loadMoreResults,
+                                child: const Text(
+                                  StringConstants.loadMoreResults,
                                 ),
                               ),
                       )
                     else
-                      Text(StringConstants().noMoreQuests),
+                      const Text(StringConstants.noMoreQuests),
                   ],
                 ),
       ],
@@ -505,9 +505,9 @@ class _PageContent extends HookWidget {
       child: Column(
         children: [
           20.ph,
-          Text(
-            StringConstants().doNotWaitToBuy,
-            style: const TextStyle(
+          const Text(
+            StringConstants.doNotWaitToBuy,
+            style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
             ),
@@ -534,9 +534,9 @@ class _PageContent extends HookWidget {
                   child: state.status == TicketStatus.loading
                       ? const Center(child: CircularProgressIndicator())
                       : tickets == null
-                          ? Center(
+                          ? const Center(
                               child: Text(
-                                StringConstants().noTicketForThisMonument,
+                                StringConstants.noTicketForThisMonument,
                               ),
                             )
                           : (tickets.length == 1
@@ -569,7 +569,7 @@ class _PageContent extends HookWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AutoSizeText(
-                  StringConstants().wantToMeetOrGetReductions,
+                  StringConstants.wantToMeetOrGetReductions,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.primary,
@@ -618,7 +618,7 @@ class _PageContent extends HookWidget {
                         ),
                         10.pw,
                         Text(
-                          StringConstants().accessMeet,
+                          StringConstants.accessMeet,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                           ),
@@ -638,10 +638,10 @@ class _PageContent extends HookWidget {
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
+        const Text(StringConstants.errorAppendedWhileGettingData),
         ElevatedButton(
           onPressed: () => _getPosts(context, true),
-          child: Text(StringConstants().retry),
+          child: const Text(StringConstants.retry),
         ),
       ],
     );
@@ -678,8 +678,8 @@ class _PageContent extends HookWidget {
                         ),
                       ),
                     ),
-                    child: AutoSizeText(
-                      StringConstants().meet,
+                    child: const AutoSizeText(
+                      StringConstants.meet,
                       maxLines: 1,
                     ),
                   ),
@@ -700,8 +700,8 @@ class _PageContent extends HookWidget {
                       ),
                     ),
                   ),
-                  child: AutoSizeText(
-                    StringConstants().doQuiz,
+                  child: const AutoSizeText(
+                    StringConstants.doQuiz,
                     maxLines: 1,
                   ),
                 ),

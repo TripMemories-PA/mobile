@@ -13,13 +13,13 @@ class ScannerErrorWidget extends StatelessWidget {
     String errorMessage;
 
     if (error.errorCode == MobileScannerErrorCode.controllerUninitialized) {
-      errorMessage = StringConstants().controllerNotReady;
+      errorMessage = StringConstants.controllerNotReady;
     } else if (error.errorCode == MobileScannerErrorCode.permissionDenied) {
-      errorMessage = StringConstants().permissionDenied;
+      errorMessage = StringConstants.permissionDenied;
     } else if (error.errorCode == MobileScannerErrorCode.unsupported) {
-      errorMessage = StringConstants().unsupportedDevice;
+      errorMessage = StringConstants.unsupportedDevice;
     } else {
-      errorMessage = StringConstants().errorOccurred;
+      errorMessage = StringConstants.errorOccurred;
     }
 
     return ColoredBox(

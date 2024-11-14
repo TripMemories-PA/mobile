@@ -50,7 +50,7 @@ class BillingDetailsForm extends StatelessWidget {
                   textInputAction: TextInputAction.done,
                   controller: controllers.nameController,
                   decoration:
-                      InputDecoration(labelText: StringConstants().name),
+                      const InputDecoration(labelText: StringConstants.name),
                   validator: (value) =>
                       FieldValidator.validateRequired(value: value),
                 ),
@@ -60,7 +60,7 @@ class BillingDetailsForm extends StatelessWidget {
                   textInputAction: TextInputAction.done,
                   controller: controllers.emailController,
                   decoration:
-                      InputDecoration(labelText: StringConstants().email),
+                      const InputDecoration(labelText: StringConstants.email),
                   validator: (value) =>
                       FieldValidator.validateRequired(value: value),
                 ),
@@ -70,7 +70,7 @@ class BillingDetailsForm extends StatelessWidget {
                   textInputAction: TextInputAction.done,
                   controller: controllers.phoneController,
                   decoration:
-                      InputDecoration(labelText: StringConstants().phoneNumber),
+                      const InputDecoration(labelText: StringConstants.phoneNumber),
                   validator: (value) =>
                       FieldValidator.validateRequired(value: value),
                 ),
@@ -80,7 +80,7 @@ class BillingDetailsForm extends StatelessWidget {
                   textInputAction: TextInputAction.done,
                   controller: controllers.cityController,
                   decoration:
-                      InputDecoration(labelText: StringConstants().city),
+                      const InputDecoration(labelText: StringConstants.city),
                   validator: (value) =>
                       FieldValidator.validateRequired(value: value),
                 ),
@@ -90,7 +90,7 @@ class BillingDetailsForm extends StatelessWidget {
                   textInputAction: TextInputAction.done,
                   controller: controllers.postalCodeController,
                   decoration:
-                      InputDecoration(labelText: StringConstants().zipCode),
+                      const InputDecoration(labelText: StringConstants.zipCode),
                   validator: (value) =>
                       FieldValidator.validateRequired(value: value),
                 ),
@@ -100,7 +100,7 @@ class BillingDetailsForm extends StatelessWidget {
                   textInputAction: TextInputAction.done,
                   controller: controllers.countryController,
                   decoration:
-                      InputDecoration(labelText: StringConstants().country),
+                      const InputDecoration(labelText: StringConstants.country),
                   validator: (value) =>
                       FieldValidator.validateRequired(value: value),
                 ),
@@ -110,14 +110,14 @@ class BillingDetailsForm extends StatelessWidget {
                   textInputAction: TextInputAction.done,
                   controller: controllers.line1Controller,
                   decoration:
-                      InputDecoration(labelText: StringConstants().address),
+                      const InputDecoration(labelText: StringConstants.address),
                   validator: (value) =>
                       FieldValidator.validateRequired(value: value),
                 ),
                 20.ph,
                 ElevatedButton(
                   onPressed: submitForm,
-                  child: Text(StringConstants().validate),
+                  child: const Text(StringConstants.validate),
                 ),
               ],
             ),

@@ -26,7 +26,7 @@ class PasswordTextField extends HookWidget {
       obscureText: hidePassword.value,
       decoration: InputDecoration(
         errorMaxLines: 4,
-        hintText: StringConstants().password,
+        hintText: StringConstants.password,
         suffixIcon: InkWell(
           child: Icon(
             hidePassword.value ? Icons.remove_red_eye : Icons.visibility_off,

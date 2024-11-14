@@ -32,12 +32,12 @@ class PoiQuestEditor extends StatelessWidget {
         listener: (context, state) {
           if (state.status == QuestStatus.error) {
             Messenger.showSnackBarError(
-              state.error?.getDescription() ?? StringConstants().errorOccurred,
+              state.error?.getDescription() ?? StringConstants.errorOccurred,
             );
           } else if (state.status == QuestStatus.deleted) {
-            Messenger.showSnackBarSuccess(StringConstants().questDeleted);
+            Messenger.showSnackBarSuccess(StringConstants.questDeleted);
           } else if (state.status == QuestStatus.updated) {
-            Messenger.showSnackBarSuccess(StringConstants().questUpdated);
+            Messenger.showSnackBarSuccess(StringConstants.questUpdated);
           }
         },
         builder: (context, state) {
@@ -58,7 +58,7 @@ class PoiQuestEditor extends StatelessWidget {
                         children: [
                           const Spacer(),
                           Text(
-                            StringConstants().missions,
+                            StringConstants.missions,
                             style: TextStyle(
                               fontSize: 30,
                               color: Theme.of(context).colorScheme.primary,
@@ -88,7 +88,7 @@ class PoiQuestEditor extends StatelessWidget {
                         const Center(child: CircularProgressIndicator())
                       else
                         state.questList.isEmpty
-                            ? Text(StringConstants().noQuestForThisMonument)
+                            ? const Text(StringConstants.noQuestForThisMonument)
                             : Column(
                                 children: [
                                   ...state.questList.map(
@@ -127,14 +127,14 @@ class PoiQuestEditor extends StatelessWidget {
                                                       .primary,
                                                 ),
                                               ),
-                                              child: Text(
-                                                StringConstants()
+                                              child: const Text(
+                                                StringConstants
                                                     .loadMoreResults,
                                               ),
                                             ),
                                     )
                                   else
-                                    Text(StringConstants().noMoreQuests),
+                                    const Text(StringConstants.noMoreQuests),
                                 ],
                               ),
                     ],

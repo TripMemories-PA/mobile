@@ -76,7 +76,7 @@ class PoiFeed extends StatelessWidget {
                                                   MonumentStatus.error
                                               ? const ShimmerPostAndMonumentResume()
                                               : _buildErrorWidget(context))
-                                          : Text(StringConstants().noMorePosts),
+                                          : const Text(StringConstants.noMorePosts),
                                     ),
                                   ],
                                 ),
@@ -110,10 +110,10 @@ class PoiFeed extends StatelessWidget {
   Widget _buildErrorWidget(BuildContext context) {
     return Column(
       children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
+        const Text(StringConstants.errorAppendedWhileGettingData),
         ElevatedButton(
           onPressed: () => _getPosts(context, true),
-          child: Text(StringConstants().retry),
+          child: const Text(StringConstants.retry),
         ),
       ],
     );

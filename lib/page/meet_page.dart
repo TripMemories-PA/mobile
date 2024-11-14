@@ -83,26 +83,26 @@ class _MeetPageBody extends HookWidget {
     return BlocConsumer<MeetBloc, MeetState>(
       listener: (context, state) {
         if (state.joinMeetStatus == JoinMeetStatus.accepted) {
-          Messenger.showSnackBarSuccess(StringConstants().meetJoined);
+          Messenger.showSnackBarSuccess(StringConstants.meetJoined);
         } else if (state.joinMeetStatus == JoinMeetStatus.rejected) {
-          Messenger.showSnackBarError(StringConstants().meetJoinFailed);
+          Messenger.showSnackBarError(StringConstants.meetJoinFailed);
         }
         if (state.meetQueryStatus == MeetQueryStatus.error) {
           Messenger.showSnackBarError(
-            state.error?.getDescription() ?? StringConstants().errorOccurred,
+            state.error?.getDescription() ?? StringConstants.errorOccurred,
           );
         }
         if (state.deleteMeetStatus == DeleteMeetStatus.deleted) {
-          Messenger.showSnackBarSuccess(StringConstants().meetDeleted);
+          Messenger.showSnackBarSuccess(StringConstants.meetDeleted);
         }
         if (state.deleteMeetStatus == DeleteMeetStatus.error) {
-          Messenger.showSnackBarError(StringConstants().meetDeleteFailed);
+          Messenger.showSnackBarError(StringConstants.meetDeleteFailed);
         }
         if (state.updateMeetStatus == UpdateMeetStatus.updated) {
-          Messenger.showSnackBarSuccess(StringConstants().meetUpdated);
+          Messenger.showSnackBarSuccess(StringConstants.meetUpdated);
         }
         if (state.updateMeetStatus == UpdateMeetStatus.error) {
-          Messenger.showSnackBarError(StringConstants().meetUpdateFailed);
+          Messenger.showSnackBarError(StringConstants.meetUpdateFailed);
         }
       },
       builder: (context, state) {
@@ -123,7 +123,7 @@ class _MeetPageBody extends HookWidget {
                 20.ph,
                 Text(
                   textAlign: TextAlign.left,
-                  StringConstants().meets,
+                  StringConstants.meets,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSecondary,
                     fontSize: 25,
@@ -149,8 +149,8 @@ class _MeetPageBody extends HookWidget {
                   ),
                 )
               : (state.meets.isEmpty
-                  ? Center(
-                      child: Text(StringConstants().noMeetFound),
+                  ? const Center(
+                      child: Text(StringConstants.noMeetFound),
                     )
                   : RefreshIndicator(
                       onRefresh: () async {
@@ -177,7 +177,7 @@ class _MeetPageBody extends HookWidget {
                                     children: [
                                       20.ph,
                                       Text(
-                                        StringConstants().meetPresentation,
+                                        StringConstants.meetPresentation,
                                         style: TextStyle(
                                           color: Theme.of(context)
                                               .colorScheme
@@ -187,7 +187,7 @@ class _MeetPageBody extends HookWidget {
                                       ),
                                       20.ph,
                                       Text(
-                                        StringConstants().bonVoyage,
+                                        StringConstants.bonVoyage,
                                         style: TextStyle(
                                           color: Theme.of(context)
                                               .colorScheme
@@ -210,10 +210,10 @@ class _MeetPageBody extends HookWidget {
                           }
 
                           if (index == state.meets.length) {
-                            return Padding(
-                              padding: const EdgeInsets.all(16.0),
+                            return const Padding(
+                              padding: EdgeInsets.all(16.0),
                               child: Center(
-                                child: Text(StringConstants().noMoreMeets),
+                                child: Text(StringConstants.noMoreMeets),
                               ),
                             );
                           }
@@ -339,9 +339,9 @@ class _ActionButtons extends StatelessWidget {
       icon: const Icon(Icons.more_vert),
       itemBuilder: (BuildContext context) => <PopupMenuEntry>[
         PopupMenuItem(
-          child: ListTile(
-            leading: const Icon(Icons.edit_outlined),
-            title: Text(StringConstants().editMeet),
+          child: const ListTile(
+            leading: Icon(Icons.edit_outlined),
+            title: Text(StringConstants.editMeet),
           ),
           onTap: () {
             showDialog(
@@ -356,9 +356,9 @@ class _ActionButtons extends StatelessWidget {
                         padding: const EdgeInsets.all(25),
                         children: [
                           30.ph,
-                          Text(
-                            StringConstants().editMeet,
-                            style: const TextStyle(
+                          const Text(
+                            StringConstants.editMeet,
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                             ),
@@ -402,15 +402,15 @@ class _ActionButtons extends StatelessWidget {
           },
         ),
         PopupMenuItem(
-          child: ListTile(
-            leading: const Icon(Icons.delete_outline),
-            title: Text(StringConstants().deleteMeet),
+          child: const ListTile(
+            leading: Icon(Icons.delete_outline),
+            title: Text(StringConstants.deleteMeet),
           ),
           onTap: () {
             confirmationPopUp(
               context,
-              title: StringConstants().warning,
-              content: Text(StringConstants().aboutToDeleteMeet),
+              title: StringConstants.warning,
+              content: const Text(StringConstants.aboutToDeleteMeet),
             ).then((value) {
               if (value && context.mounted) {
                 context.read<MeetBloc>().add(DeleteMeet(meetId: meet.id));
@@ -502,7 +502,7 @@ class MeetCardPeople extends StatelessWidget {
         ),
         8.pw,
         if (hasJoined && length > maxUserAvatar)
-          Text('${StringConstants().you} '),
+          const Text('${StringConstants.you} '),
         if (rest > 0) Text('+ $rest'),
       ],
     );
@@ -553,8 +553,8 @@ class _JoinMeetButton extends StatelessWidget {
               )
             : Text(
                 (meet.hasJoined ?? false)
-                    ? StringConstants().seeMeet
-                    : StringConstants().joinMeet,
+                    ? StringConstants.seeMeet
+                    : StringConstants.joinMeet,
               ),
       ),
     );

@@ -53,8 +53,8 @@ class SubscribeForm extends HookWidget {
                   TextFormField(
                     textInputAction: TextInputAction.done,
                     readOnly: context.read<SubscribeBloc>().state.loading,
-                    decoration: InputDecoration(
-                      hintText: StringConstants().username,
+                    decoration: const InputDecoration(
+                      hintText: StringConstants.username,
                     ),
                     validator: (value) =>
                         FieldValidator.validateRequired(value: value),
@@ -63,8 +63,8 @@ class SubscribeForm extends HookWidget {
                   12.ph,
                   TextFormField(
                     readOnly: context.read<SubscribeBloc>().state.loading,
-                    decoration: InputDecoration(
-                      hintText: StringConstants().email,
+                    decoration: const InputDecoration(
+                      hintText: StringConstants.email,
                     ),
                     validator: (value) => FieldValidator.validateEmail(value!),
                     controller: emailController,
@@ -91,7 +91,7 @@ class SubscribeForm extends HookWidget {
                         checkColor: Colors.black,
                       ),
                       Text(
-                        StringConstants().rememberMe,
+                        StringConstants.rememberMe,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       const Spacer(),
@@ -146,8 +146,8 @@ class SubscribeForm extends HookWidget {
             textCapitalization: TextCapitalization.sentences,
             textInputAction: TextInputAction.done,
             readOnly: context.read<SubscribeBloc>().state.loading,
-            decoration: InputDecoration(
-              hintText: StringConstants().firstName,
+            decoration: const InputDecoration(
+              hintText: StringConstants.firstName,
             ),
             validator: (value) => FieldValidator.validateRequired(
               value: value,
@@ -163,8 +163,8 @@ class SubscribeForm extends HookWidget {
             textCapitalization: TextCapitalization.sentences,
             textInputAction: TextInputAction.done,
             readOnly: context.read<SubscribeBloc>().state.loading,
-            decoration: InputDecoration(
-              hintText: StringConstants().lastName,
+            decoration: const InputDecoration(
+              hintText: StringConstants.lastName,
             ),
             validator: (value) => FieldValidator.validateRequired(
               value: value,
@@ -222,16 +222,16 @@ class SubscribeForm extends HookWidget {
                 }
                 if (state.subscribed) {
                   Messenger.showSnackBarSuccess(
-                    StringConstants().successfullSubscription,
+                    StringConstants.successfullSubscription,
                   );
                 }
               },
               child: const SizedBox.shrink(),
             ),
-            Center(
+            const Center(
               child: Text(
-                StringConstants().subscribe,
-                style: const TextStyle(color: Colors.white),
+                StringConstants.subscribe,
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ],

@@ -51,7 +51,7 @@ class EditMeetPage extends HookWidget {
             child: Scaffold(
               appBar: AppBar(
                 leading: const SizedBox.shrink(),
-                title: Text(StringConstants().createMeet),
+                title: const Text(StringConstants.createMeet),
                 actions: [
                   IconButton(
                     onPressed: () => context.pop(),
@@ -60,10 +60,10 @@ class EditMeetPage extends HookWidget {
                   10.pw,
                 ],
                 centerTitle: true,
-                bottom: TabBar(
+                bottom: const TabBar(
                   tabs: [
-                    Tab(text: StringConstants().meetPeople),
-                    Tab(text: StringConstants().haveReduction),
+                    Tab(text: StringConstants.meetPeople),
+                    Tab(text: StringConstants.haveReduction),
                   ],
                 ),
               ),
@@ -113,7 +113,7 @@ class _FormMeeting extends HookWidget {
                   maxLines: 2,
                   controller: titleController,
                   decoration:
-                      InputDecoration(labelText: StringConstants().title),
+                      const InputDecoration(labelText: StringConstants.title),
                   validator: (value) =>
                       FieldValidator.validateRequired(value: value),
                 ),
@@ -124,7 +124,7 @@ class _FormMeeting extends HookWidget {
                   maxLines: 4,
                   controller: descriptionController,
                   decoration:
-                      InputDecoration(labelText: StringConstants().description),
+                      const InputDecoration(labelText: StringConstants.description),
                   validator: (value) =>
                       FieldValidator.validateRequired(value: value),
                 ),
@@ -134,7 +134,7 @@ class _FormMeeting extends HookWidget {
                   textInputAction: TextInputAction.done,
                   controller: sizeController,
                   decoration:
-                      InputDecoration(labelText: StringConstants().groupSize),
+                      const InputDecoration(labelText: StringConstants.groupSize),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     final String? check =
@@ -143,10 +143,10 @@ class _FormMeeting extends HookWidget {
                       return value;
                     } else {
                       if (int.parse(value!) < 2) {
-                        return StringConstants().valueMustBeGreaterThanTwo;
+                        return StringConstants.valueMustBeGreaterThanTwo;
                       } else {
                         if (int.parse(value) > 50) {
-                          return StringConstants().valueMustBeLessThanFifty;
+                          return StringConstants.valueMustBeLessThanFifty;
                         } else {
                           return null;
                         }
@@ -159,9 +159,9 @@ class _FormMeeting extends HookWidget {
                   textCapitalization: TextCapitalization.sentences,
                   textInputAction: TextInputAction.done,
                   controller: dateController,
-                  decoration: InputDecoration(
-                    labelText: StringConstants().date,
-                    suffixIcon: const Icon(Icons.calendar_today),
+                  decoration: const InputDecoration(
+                    labelText: StringConstants.date,
+                    suffixIcon: Icon(Icons.calendar_today),
                   ),
                   readOnly: true,
                   onTap: () async {
@@ -217,7 +217,7 @@ class _FormMeeting extends HookWidget {
                           );
                     }
                   },
-                  child: Text(StringConstants().createMeet),
+                  child: const Text(StringConstants.createMeet),
                 ),
                 if (context.read<MeetBloc>().state.postMeetStatus ==
                     PostMeetStatus.loading)
@@ -336,8 +336,8 @@ class _FormReduction extends HookWidget {
                                           padding: const EdgeInsets.all(10.0),
                                           child: Column(
                                             children: [
-                                              Text(
-                                                StringConstants().selectTicket,
+                                              const Text(
+                                                StringConstants.selectTicket,
                                               ),
                                               Expanded(
                                                 child: ListView.builder(
@@ -373,7 +373,7 @@ class _FormReduction extends HookWidget {
                                     ),
                                   );
                                 },
-                                child: Text(StringConstants().selectTicket),
+                                child: const Text(StringConstants.selectTicket),
                               )
                             : Stack(
                                 children: [
@@ -402,8 +402,8 @@ class _FormReduction extends HookWidget {
                                   Icons.error,
                                   color: Colors.red,
                                 ),
-                                content: Text(
-                                  StringConstants().pleaseSelectATicket,
+                                content: const Text(
+                                  StringConstants.pleaseSelectATicket,
                                   textAlign: TextAlign.center,
                                 ),
                                 actions: [
@@ -446,7 +446,7 @@ class _FormReduction extends HookWidget {
                             }
                           }
                         },
-                        child: Text(StringConstants().createMeet),
+                        child: const Text(StringConstants.createMeet),
                       ),
                       if (context.read<MeetBloc>().state.postMeetStatus ==
                           PostMeetStatus.loading)

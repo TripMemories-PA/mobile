@@ -36,6 +36,11 @@ class ThemeGenerator {
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
+        bodySmall: TextStyle(
+          fontFamily: GoogleFonts.urbanist().fontFamily,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
       );
 
   static ColorScheme get _colorScheme => const ColorScheme(
@@ -199,7 +204,7 @@ class ThemeGenerator {
         dialogBackgroundColor: _colorScheme.surface,
         dialogTheme: _dialogTheme,
         colorScheme: _colorScheme,
-        textTheme: _textTheme,
+        textTheme: GoogleFonts.urbanistTextTheme(),
         checkboxTheme: _checkBoxTheme,
         textButtonTheme: _textButtonTheme,
         elevatedButtonTheme: _elevatedButtonTheme,

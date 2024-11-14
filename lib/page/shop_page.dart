@@ -32,7 +32,7 @@ class ShopPage extends StatelessWidget {
             appBar: AppBar(
               backgroundColor: Theme.of(context).colorScheme.primary,
               title: Text(
-                StringConstants().myProducts,
+                StringConstants.myProducts,
                 style:
                     TextStyle(color: Theme.of(context).colorScheme.onPrimary),
               ),
@@ -53,7 +53,7 @@ class ShopPage extends StatelessWidget {
                 listener: (context, state) {
                   if (state.status == TicketStatus.ticketPosted) {
                     Messenger.showSnackBarSuccess(
-                      StringConstants().ticketPosted,
+                      StringConstants.ticketPosted,
                     );
                     context.read<TicketBloc>().add(
                           GetTicketsEvent(
@@ -63,7 +63,7 @@ class ShopPage extends StatelessWidget {
                         );
                   } else if (state.status == TicketStatus.ticketDeleted) {
                     Messenger.showSnackBarSuccess(
-                      StringConstants().ticketDeleted,
+                      StringConstants.ticketDeleted,
                     );
                     context.read<TicketBloc>().add(
                           GetTicketsEvent(
@@ -73,7 +73,7 @@ class ShopPage extends StatelessWidget {
                         );
                   } else if (state.status == TicketStatus.ticketUpdated) {
                     Messenger.showSnackBarSuccess(
-                      StringConstants().ticketUpdated,
+                      StringConstants.ticketUpdated,
                     );
                     context.read<TicketBloc>().add(
                           GetTicketsEvent(
@@ -85,8 +85,8 @@ class ShopPage extends StatelessWidget {
                 },
                 builder: (context, state) {
                   if (state.tickets == null) {
-                    return Center(
-                      child: Text(StringConstants().noTicketForThisMonument),
+                    return const Center(
+                      child: Text(StringConstants.noTicketForThisMonument),
                     );
                   }
                   if (state.status == TicketStatus.loading) {

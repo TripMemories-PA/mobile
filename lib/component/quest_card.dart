@@ -65,7 +65,7 @@ class QuestCard extends StatelessWidget {
                           onPressed: () {
                             confirmationPopUp(
                               context,
-                              title: StringConstants().sureToDeleteQuest,
+                              title: StringConstants.sureToDeleteQuest,
                             ).then(
                               (value) => (value && context.mounted)
                                   ? context
@@ -126,8 +126,8 @@ class QuestCard extends StatelessWidget {
                       children: [
                         Text(
                           quest.done
-                              ? StringConstants().done
-                              : StringConstants().notDone,
+                              ? StringConstants.done
+                              : StringConstants.notDone,
                           style: TextStyle(
                             fontSize: 15,
                             color:
@@ -153,7 +153,7 @@ class QuestCard extends StatelessWidget {
                             AuthStatus.authenticated) {
                           confirmationPopUp(
                             context,
-                            title: StringConstants().pleaseLogin,
+                            title: StringConstants.pleaseLogin,
                             isOkPopUp: true,
                           );
                           return;
@@ -201,8 +201,8 @@ class QuestCard extends StatelessWidget {
                       ),
                       child: Text(
                         isAdmin
-                            ? StringConstants().edit
-                            : StringConstants().play,
+                            ? StringConstants.edit
+                            : StringConstants.play,
                       ),
                     ),
                   ),

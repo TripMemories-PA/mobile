@@ -41,12 +41,12 @@ class ConfirmationDialog extends StatelessWidget {
               if (tmpContent != null)
                 tmpContent
               else
-                Text(title ?? StringConstants().confirmAction),
+                Text(title ?? StringConstants.confirmAction),
               16.ph,
               if (popupType == PopupType.ok)
                 Center(
                   child: TextButton(
-                    child: Text(StringConstants().ok),
+                    child: const Text(StringConstants.ok),
                     onPressed: () => context.pop(),
                   ),
                 )
@@ -55,11 +55,11 @@ class ConfirmationDialog extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     TextButton(
-                      child: Text(StringConstants().no),
+                      child: const Text(StringConstants.no),
                       onPressed: () => context.pop(false),
                     ),
                     ElevatedButton(
-                      child: Text(StringConstants().yes),
+                      child: const Text(StringConstants.yes),
                       onPressed: () => context.pop(true),
                     ),
                   ],

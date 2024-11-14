@@ -100,7 +100,7 @@ class ProfileBanner extends StatelessWidget {
                                                 ),
                                               );
                                           Messenger.showSnackBarQuickInfo(
-                                            StringConstants().friendDeleted,
+                                            StringConstants.friendDeleted,
                                             context,
                                           );
                                         }
@@ -121,7 +121,7 @@ class ProfileBanner extends StatelessWidget {
                                                 ),
                                               );
                                           Messenger.showSnackBarQuickInfo(
-                                            StringConstants().friendRequestSent,
+                                            StringConstants.friendRequestSent,
                                             context,
                                           );
                                         }
@@ -274,9 +274,9 @@ class ProfileBanner extends StatelessWidget {
                         10.ph,
                         Row(
                           children: [
-                            Text(
-                              StringConstants().cart,
-                              style: const TextStyle(
+                            const Text(
+                              StringConstants.cart,
+                              style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -343,7 +343,7 @@ class ProfileBanner extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  StringConstants().total,
+                  StringConstants.total,
                   style: TextStyle(
                     fontSize: 30,
                     color: Theme.of(context).colorScheme.surface,
@@ -386,7 +386,7 @@ class ProfileBanner extends StatelessWidget {
               content: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  StringConstants().buy,
+                  StringConstants.buy,
                   style: TextStyle(
                     fontSize: 15,
                     color: Theme.of(context).colorScheme.primary,
@@ -577,7 +577,7 @@ class ProfileBanner extends StatelessWidget {
         ),
         10.pw,
         Text(
-          StringConstants().tickets,
+          StringConstants.tickets,
           style: TextStyle(color: Theme.of(context).colorScheme.primary),
         ),
       ],
@@ -616,7 +616,7 @@ class ProfileBanner extends StatelessWidget {
           onPressed = () async {
             confirmationPopUp(
               context,
-              title: StringConstants().sureToDeleteAccount,
+              title: StringConstants.sureToDeleteAccount,
             ).then((bool result) {
               if (result && context.mounted) {
                 context
@@ -633,7 +633,7 @@ class ProfileBanner extends StatelessWidget {
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurface,
               ),
-              StringConstants().friendRequestSent,
+              StringConstants.friendRequestSent,
             ),
           );
           onPressed = () {};
@@ -642,8 +642,8 @@ class ProfileBanner extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.30,
             child: Column(
               children: [
-                Text(
-                  StringConstants().friendRequestReceived,
+                const Text(
+                  StringConstants.friendRequestReceived,
                   textAlign: TextAlign.center,
                 ),
                 10.ph,
@@ -651,10 +651,10 @@ class ProfileBanner extends StatelessWidget {
                   onPressed: () async {
                     await myFriendsRequestsPopup(context);
                   },
-                  child: AutoSizeText(
-                    StringConstants().seeMyFriendRequests,
+                  child: const AutoSizeText(
+                    StringConstants.seeMyFriendRequests,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                     ),
                     maxLines: 2,

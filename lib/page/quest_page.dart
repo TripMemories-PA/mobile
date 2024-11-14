@@ -31,7 +31,7 @@ class QuestPage extends HookWidget {
         listener: (context, state) {
           if (state.error != null) {
             Messenger.showSnackBarError(
-              state.error?.getDescription() ?? StringConstants().errorOccurred,
+              state.error?.getDescription() ?? StringConstants.errorOccurred,
             );
           }
           if (state.status == QuestValidationStatus.success) {
@@ -66,7 +66,7 @@ class QuestPage extends HookWidget {
                     children: [
                       20.pw,
                       Text(
-                        StringConstants().quest,
+                        StringConstants.quest,
                         style: TextStyle(
                           fontSize: 30,
                           color: Theme.of(context).colorScheme.onSecondary,
@@ -124,7 +124,7 @@ class QuestPage extends HookWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          StringConstants().takeAPicture,
+                          StringConstants.takeAPicture,
                           style: TextStyle(
                             fontFamily: GoogleFonts.urbanist(
                               fontWeight: FontWeight.w700,
@@ -179,14 +179,14 @@ class QuestPage extends HookWidget {
                                 borderRadius: BorderRadius.circular(25),
                                 color: Theme.of(context).colorScheme.tertiary,
                               ),
-                              child: Center(
+                              child: const Center(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
+                                  padding: EdgeInsets.all(10.0),
                                   child: AutoSizeText(
-                                    StringConstants().photoVisualisation,
+                                    StringConstants.photoVisualisation,
                                     textAlign: TextAlign.center,
                                     maxLines: 2,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 15,
                                     ),
                                     minFontSize: 10,
@@ -239,7 +239,7 @@ class QuestPage extends HookWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          StringConstants().onceQuestValidated,
+                          StringConstants.onceQuestValidated,
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: GoogleFonts.urbanist(
@@ -343,8 +343,8 @@ class QuestPage extends HookWidget {
                               child: CircularProgressIndicator(),
                             )
                           else
-                            Text(
-                              StringConstants().validate,
+                            const Text(
+                              StringConstants.validate,
                             ),
                         ],
                       ),

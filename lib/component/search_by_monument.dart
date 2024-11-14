@@ -44,7 +44,7 @@ class SearchByMonument extends HookWidget {
       },
       child: Column(
         children: [
-          _buildHeader(),
+          const _SearchByMonumentHeader(),
           20.ph,
           Expanded(
             child: SearchingMonumentBody(
@@ -69,8 +69,13 @@ class SearchByMonument extends HookWidget {
       );
     }
   }
+}
 
-  Widget _buildHeader() {
+class _SearchByMonumentHeader extends StatelessWidget {
+  const _SearchByMonumentHeader();
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         SizedBox(
@@ -90,7 +95,7 @@ class SearchByMonument extends HookWidget {
                 child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
-                    text: '${StringConstants().discoverTheIncredible} ',
+                    text: '${StringConstants.discoverTheIncredible} ',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -98,7 +103,7 @@ class SearchByMonument extends HookWidget {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: StringConstants().monuments,
+                        text: StringConstants.monuments,
                         style: TextStyle(
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
@@ -107,7 +112,7 @@ class SearchByMonument extends HookWidget {
                       ),
                       TextSpan(
                         text:
-                            ' ${StringConstants().theTreasuresThatFranceHarbors}',
+                            ' ${StringConstants.theTreasuresThatFranceHarbors}',
                         style: TextStyle(
                           fontFamily: GoogleFonts.urbanist().fontFamily,
                         ),

@@ -44,7 +44,7 @@ class SearchingMonumentBody extends HookWidget {
             context: context,
             searching: searching,
             searchContent: searchContent,
-            hintText: StringConstants().searchMonuments,
+            hintText: StringConstants.searchMonuments,
             onSearch: (value) {
               context.read<MonumentBloc>().add(
                     GetMonumentsEvent(
@@ -55,23 +55,91 @@ class SearchingMonumentBody extends HookWidget {
             },
           ),
           10.ph,
-          Expanded(child: _buildSearchMonumentList(searchContent)),
+          Expanded(
+            child: _SearchMonumentList(
+              searchContent: searchContent,
+              request: () => _getMonumentsRequest(context),
+              monumentsScrollController: monumentsScrollController,
+              bodySize: bodySize,
+              needToPop: needToPop,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  BlocBuilder<MonumentBloc, MonumentState> _buildSearchMonumentList(
-    ValueNotifier<String> searchContent,
-  ) {
+  void _getMonumentsRequest(BuildContext context) {
+    context.read<MonumentBloc>().add(
+          GetMonumentsEvent(
+            isRefresh: true,
+            searchingCriteria: searchContent.value,
+          ),
+        );
+  }
+}
+
+class _NoMoreMonument extends StatelessWidget {
+  const _NoMoreMonument();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.all(15.0),
+      child: Text(StringConstants.noMoreMonuments),
+    );
+  }
+}
+
+class _ErrorWidget extends StatelessWidget {
+  const _ErrorWidget({
+    required this.onPressed,
+  });
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text(StringConstants.errorAppendedWhileGettingData),
+        ElevatedButton(
+          onPressed: () => onPressed(),
+          child: const Text(StringConstants.retry),
+        ),
+      ],
+    );
+  }
+}
+
+class _SearchMonumentList extends StatelessWidget {
+  const _SearchMonumentList({
+    required this.searchContent,
+    required this.request,
+    required this.monumentsScrollController,
+    required this.bodySize,
+    required this.needToPop,
+  });
+
+  final ValueNotifier<String> searchContent;
+  final VoidCallback request;
+  final ScrollController monumentsScrollController;
+  final SearchingMonumentBodySize bodySize;
+  final bool needToPop;
+
+  @override
+  Widget build(BuildContext context) {
+    print('SearchMonumentList building');
     return BlocBuilder<MonumentBloc, MonumentState>(
       builder: (context, state) {
         if (state.status == MonumentStatus.error) {
-          return _buildErrorWidget(context);
+          return _ErrorWidget(
+            onPressed: () => request(),
+          );
         } else if (state.status == MonumentStatus.loading) {
           return const Center(child: ShimmerPostAndMonumentResumeGrid());
         } else if (state.monuments.isEmpty) {
-          return Text(StringConstants().noMonumentFound);
+          return const Text(StringConstants.noMonumentFound);
         } else {
           return Column(
             children: [
@@ -80,7 +148,7 @@ class SearchingMonumentBody extends HookWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    '${state.monuments.length} ${StringConstants().result}${state.monuments.length > 1 ? 's' : ''}',
+                    '${state.monuments.length} ${StringConstants.result}${state.monuments.length > 1 ? 's' : ''}',
                     style: const TextStyle(
                       color: MyColors.darkGrey,
                     ),
@@ -104,38 +172,16 @@ class SearchingMonumentBody extends HookWidget {
                             size: 20,
                           )
                         : (state.status == MonumentStatus.error
-                            ? _buildErrorWidget(context)
+                            ? _ErrorWidget(
+                                onPressed: () => request(),
+                              )
                             : const SizedBox.shrink()))
-                    : Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(StringConstants().noMoreMonuments),
-                      ),
+                    : const _NoMoreMonument(),
               ),
             ],
           );
         }
       },
     );
-  }
-
-  Widget _buildErrorWidget(BuildContext context) {
-    return Column(
-      children: [
-        Text(StringConstants().errorAppendedWhileGettingData),
-        ElevatedButton(
-          onPressed: () => _getMonumentsRequest(context),
-          child: Text(StringConstants().retry),
-        ),
-      ],
-    );
-  }
-
-  void _getMonumentsRequest(BuildContext context) {
-    context.read<MonumentBloc>().add(
-          GetMonumentsEvent(
-            isRefresh: true,
-            searchingCriteria: searchContent.value,
-          ),
-        );
   }
 }

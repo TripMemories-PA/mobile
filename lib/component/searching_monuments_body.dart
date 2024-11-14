@@ -129,7 +129,6 @@ class _SearchMonumentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('SearchMonumentList building');
     return BlocBuilder<MonumentBloc, MonumentState>(
       builder: (context, state) {
         if (state.status == MonumentStatus.error) {
